@@ -74,10 +74,16 @@ const Home = (props: HomeProps) => {
   //   <div>Pizza {mediaItemCount}</div>
   // );
 
-  // const x = require('../assets/test.jpg');
+  if (isNil(props.mediaItems) || (props.mediaItems.length === 0)) {
+    return (
+      <div>Burrito</div>
+    );
+  }
+
+  const imageFilePath = 'file://' + props.mediaItems[0].filePath;
   return (
     <div>
-      <img src='images/test.jpg'/>
+      <img src={imageFilePath}/>
     </div>
   );
 
