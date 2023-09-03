@@ -75,9 +75,23 @@ const Home = (props: HomeProps) => {
   // );
 
   // const x = require('../assets/test.jpg');
+  // <img src='images/test.jpg'/>
+
+  if (isNil(props.mediaItems) || props.mediaItems.length === 0) {
+    return (
+      <div>Loading...</div>
+    );
+  }
+
+  const prefix = '/Users/tedshaffer/Documents/pgData/GoogleMediaItems/';
+  const prefixLength = prefix.length;
+  const relativePath = props.mediaItems[0].filePath!.substring(prefixLength);
+  console.log('relativePath: ' + relativePath);
+  const relativeUrl = 'images/' + relativePath;
+  console.log('relative url: ' + relativeUrl);
   return (
     <div>
-      <img src='images/test.jpg'/>
+      <img src={relativeUrl}></img>
     </div>
   );
 
