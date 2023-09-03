@@ -25,6 +25,7 @@ import { isNil } from 'lodash';
 //   onInitializeApp: () => any;
 // }
 
+
 export interface HomeProps {
   mediaItems: MediaItem[],
   onLoadMediaItems: () => any;
@@ -67,10 +68,19 @@ const Home = (props: HomeProps) => {
   //     );
   // }
 
-  const mediaItemCount: number = isNil(props.mediaItems) ? 0 : props.mediaItems.length;
+  // const imageFilePath = 'file:///Users/tedshaffer/Documents/pgData/GoogleMediaItems/e/A/AEEKk912PZxymMuIR4HV6_HtZFKDfcHykbqqSrNnGE4Z-r_jgEHg4IEF1KnuEhFx6lkKKw-waIIEdT9ZkSagtd1hB4XHOnLCeA.jpg';
+  // const mediaItemCount: number = isNil(props.mediaItems) ? 0 : props.mediaItems.length;
+  // return (
+  //   <div>Pizza {mediaItemCount}</div>
+  // );
+
+  // const x = require('../assets/test.jpg');
   return (
-    <div>Pizza {mediaItemCount}</div>
+    <div>
+      <img src='images/test.jpg'/>
+    </div>
   );
+
 };
 
 function mapStateToProps(state: any) {
