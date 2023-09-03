@@ -8,14 +8,15 @@ module.exports = {
   entry: './src/index.tsx',
 
   output: {
+    libraryTarget: 'umd',
     publicPath: './build/',
     filename: 'bundle.js',
     path: __dirname + '/build'
   },
 
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
 
-  target: 'web',
+  target: 'electron-renderer',
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json', '.css'],

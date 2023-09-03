@@ -35,6 +35,8 @@ export interface HomeProps {
 const Home = (props: HomeProps) => {
 
 
+  console.log('Home component invoked');
+  
   React.useEffect(() => {
     console.log('React.useEffect');
     props.onLoadMediaItems();
@@ -75,9 +77,20 @@ const Home = (props: HomeProps) => {
   // );
 
   // const x = require('../assets/test.jpg');
+  // <img src='images/test.jpg'/>
+
+  if (isNil(props.mediaItems) || props.mediaItems.length === 0) {
+    return (
+      <div>loading...</div>
+    );
+  }
+
+  const imgSrc = 'file:///' + props.mediaItems[0].filePath;
+  console.log(imgSrc);
+
   return (
     <div>
-      <img src='images/test.jpg'/>
+      <img src={imgSrc}></img>
     </div>
   );
 

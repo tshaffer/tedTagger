@@ -2,11 +2,13 @@
   "name": "ted_tagger",
   "version": "0.0.1",
   "description": "Add tags to google photos using Description field in metadata",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "build": "webpack",
-    "buildW": "webpack --watch",
-    "package-setversion": "genversion --es6 --semi src/version.ts"
+    "build": "node node_modules/webpack/bin/webpack --config ./webpack.config.js",
+    "buildW": "node node_modules/webpack/bin/webpack --config ./webpack.config.js --watch",
+    "package-setversion": "genversion --es6 --semi src/version.ts",
+    "build-electron": "cross-env NODE_ENV=develop PLATFORM=electron node scripts/build.js",
+    "start-electron": "cross-env NODE_ENV=develop PLATFORM=electron node scripts/start.js"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -36,6 +38,9 @@
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "copy-webpack-plugin": "^4.2.3",
     "css-loader": "^6.5.1",
+    "electron": "^12.0.11",
+    "electron-debug": "^3.2.0",
+    "electron-devtools-installer": "^3.2.0",
     "genversion": "^3.0.2",
     "source-map-loader": "^2.0.0",
     "style-loader": "^3.3.1",
@@ -46,6 +51,11 @@
   },
   "eslintConfig": {
     "extends": [
+      "react-app"
+    ]
+  },
+  "babel": {
+    "presets": [
       "react-app"
     ]
   },

@@ -1,12 +1,32 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "esModuleInterop": true,
+    "declaration": true,
+    "outDir": "./dist/typings",
+    "module": "esnext",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "jsx": "react"
-  }
+    "allowJs": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": false
+  },
+  "exclude": [
+    "node_modules",
+    "dev",
+    "dist",
+    "env",
+    "config",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts"
+  ]
 }

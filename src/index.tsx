@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import { rootReducer } from './models';
 
 import Home from './components/Home';
 
+console.log('index.tsx entry');
+
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(
   rootReducer, /* preloadedState, */ composeEnhancers(
@@ -21,15 +23,25 @@ const divStyle = {
   height: '1080px',
 };
 
-const container = document.getElementById('content');
-const root = createRoot(container!);
+// const container = document.getElementById('content');
+// const root = createRoot(container!);
 
-root.render(
+// eslint-disable-next-line react/no-deprecated
+ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <div style={divStyle}>
+      <Home />
+    </div>
   </Provider>,
+  document.getElementById('content') as HTMLElement
 );
+
+// root.render(
+//   <Provider store={store}>
+//     <BrowserRouter>
+//       <Routes>
+//         <Route path='/' element={<Home />} />
+//       </Routes>
+//     </BrowserRouter>
+//   </Provider>,
+// );
