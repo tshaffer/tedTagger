@@ -53,8 +53,8 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new CopyWebpackPlugin([
-      { from: '/Users/tedshaffer/Documents/Projects/tedTagger/build/bundle.js', to: '/Users/tedshaffer/Documents/Projects/pgPhotoManagement/public/build' },
-      { from: '/Users/tedshaffer/Documents/Projects/tedTagger/build/bundle.js.map', to: '/Users/tedshaffer/Documents/Projects/pgPhotoManagement/public/build' },
+      { from: '/Users/tedshaffer/Documents/Projects/tedTagger/build/bundle.js', to: '/Users/tedshaffer/Documents/Projects/tedTaggerServer/public/build' },
+      { from: '/Users/tedshaffer/Documents/Projects/tedTagger/build/bundle.js.map', to: '/Users/tedshaffer/Documents/Projects/tedTaggerServer/public/build' },
     ]),
   ]
 };
