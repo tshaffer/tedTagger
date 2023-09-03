@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { AppState } from '../types';
+import { loadMediaItems } from '../controllers/mediaItems';
+import { TedTaggerDispatch } from '../models';
 // import {
 //   initializeApp,
 // } from '../controllers';
@@ -21,9 +23,17 @@ import { AppState } from '../types';
 //   onInitializeApp: () => any;
 // }
 
-// const Home = (props: HomeProps) => {
-const Home = (props: any) => {
+export interface HomeProps {
+  onLoadMediaItems: () => any;
+}
 
+
+const Home = (props: HomeProps) => {
+
+
+  React.useEffect(() => {
+    props.onLoadMediaItems();
+  }, []);
 
   // React.useEffect(() => {
   //   if (!props.appInitialized) {
@@ -53,7 +63,7 @@ const Home = (props: any) => {
   //     );
   // }
   return (
-    <div>pizza</div>
+    <div>Pizza</div>
   );
 };
 
@@ -64,11 +74,10 @@ function mapStateToProps(state: any) {
   };
 }
 
-// const mapDispatchToProps = (dispatch: MealWheelDispatch) => {
-//   return bindActionCreators({
-//     onInitializeApp: initializeApp,
-//   }, dispatch);
-// };
+const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
+  return bindActionCreators({
+    onLoadMediaItems: loadMediaItems,
+  }, dispatch);
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Home);
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
