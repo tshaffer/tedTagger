@@ -2,35 +2,21 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Navigate } from 'react-router-dom';
 
-import { AppState, MediaItem } from '../types';
+import { MediaItem } from '../types';
 import { loadMediaItems } from '../controllers/mediaItems';
 import { TedTaggerDispatch } from '../models';
 import { getMediaItems } from '../selectors';
 import { isNil } from 'lodash';
-// import {
-//   initializeApp,
-// } from '../controllers';
 
-// import {
-//   getAppInitialized,
-//   getAppState,
-// } from '../selectors';
-// import { MealWheelDispatch } from '../models';
-
-// export interface HomeProps {
-//   appInitialized: boolean;
-//   appState: AppState,
-//   onInitializeApp: () => any;
-// }
-
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}
 
 export interface HomeProps {
   mediaItems: MediaItem[],
   onLoadMediaItems: () => any;
 }
-
 
 const Home = (props: HomeProps) => {
 
@@ -40,58 +26,32 @@ const Home = (props: HomeProps) => {
     props.onLoadMediaItems();
   }, []);
 
-  // React.useEffect(() => {
-  //   if (!props.appInitialized) {
-  //     props.onInitializeApp();
-  //   }
-  // }, [props.appInitialized]);
-
-
-  // const divStyle = {
-  //   height: '98vh',
-  // };
-
-  // if (!props.appInitialized) {
-  //   return (
-  //     <div style={divStyle}>Loading...</div>
-  //   );
-  // }
-
-  // switch (props.appState.uiState) {
-  //   case UiState.SelectUser:
-  //     return <Navigate to='/login' />;
-  //   case UiState.Other:
-  //     return <Navigate to='/app' />;
-  //   default:
-  //     return (
-  //       <div style={divStyle}>Loading...</div>
-  //     );
-  // }
-
-  // const imageFilePath = 'file:///Users/tedshaffer/Documents/pgData/GoogleMediaItems/e/A/AEEKk912PZxymMuIR4HV6_HtZFKDfcHykbqqSrNnGE4Z-r_jgEHg4IEF1KnuEhFx6lkKKw-waIIEdT9ZkSagtd1hB4XHOnLCeA.jpg';
-  // const mediaItemCount: number = isNil(props.mediaItems) ? 0 : props.mediaItems.length;
-  // return (
-  //   <div>Pizza {mediaItemCount}</div>
-  // );
-
-  // const x = require('../assets/test.jpg');
-  // <img src='images/test.jpg'/>
-
   if (isNil(props.mediaItems) || props.mediaItems.length === 0) {
     return (
       <div>Loading...</div>
     );
   }
 
+  const imageIndex = getRandomInt(props.mediaItems.length - 1);
+
   const prefix = '/Users/tedshaffer/Documents/pgData/GoogleMediaItems/';
   const prefixLength = prefix.length;
-  const relativePath = props.mediaItems[0].filePath!.substring(prefixLength);
+  const relativePath = props.mediaItems[imageIndex].filePath!.substring(prefixLength);
   console.log('relativePath: ' + relativePath);
   const relativeUrl = 'images/' + relativePath;
   console.log('relative url: ' + relativeUrl);
+
+  const imgStyle = {
+    display: 'block',
+    maxWidth: '1600px',
+    maxHeight: '840px',
+    width: 'auto',
+    height: 'auto'
+  };
+
   return (
     <div>
-      <img src={relativeUrl}></img>
+      <img style={imgStyle} src={relativeUrl}></img>
     </div>
   );
 
