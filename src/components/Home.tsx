@@ -4,9 +4,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { AppState } from '../types';
+import { AppState, MediaItem } from '../types';
 import { loadMediaItems } from '../controllers/mediaItems';
 import { TedTaggerDispatch } from '../models';
+import { getMediaItems } from '../selectors';
+import { isNil } from 'lodash';
 // import {
 //   initializeApp,
 // } from '../controllers';
@@ -24,6 +26,7 @@ import { TedTaggerDispatch } from '../models';
 // }
 
 export interface HomeProps {
+  mediaItems: MediaItem[],
   onLoadMediaItems: () => any;
 }
 
@@ -32,6 +35,7 @@ const Home = (props: HomeProps) => {
 
 
   React.useEffect(() => {
+    console.log('React.useEffect');
     props.onLoadMediaItems();
   }, []);
 
@@ -62,15 +66,16 @@ const Home = (props: HomeProps) => {
   //       <div style={divStyle}>Loading...</div>
   //     );
   // }
+
+  const mediaItemCount: number = isNil(props.mediaItems) ? 0 : props.mediaItems.length;
   return (
-    <div>Pizza</div>
+    <div>Pizza {mediaItemCount}</div>
   );
 };
 
 function mapStateToProps(state: any) {
   return {
-    // appInitialized: getAppInitialized(state),
-    // appState: getAppState(state),
+    mediaItems: getMediaItems(state),
   };
 }
 
