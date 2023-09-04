@@ -34,11 +34,21 @@ export default function BasicGrid() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              sx={{ height: 621 }}
+              component="img"
+              height="350"
               image="/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg"
               title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -53,9 +63,20 @@ export default function BasicGrid() {
           </Card>
         </Grid>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              sx={{ width: 325 }}
+              component="img"
+              height="350"
+              title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
               image="/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -67,18 +88,6 @@ export default function BasicGrid() {
                   Mac Miller
                 </Typography>
               </CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button>flibbet</Button>
-                <IconButton aria-label="previous">
-                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-                </IconButton>
-                <IconButton aria-label="play/pause">
-                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                </IconButton>
-                <IconButton aria-label="next">
-                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-                </IconButton>
-              </Box>
             </Box>
           </Card>
         </Grid>
