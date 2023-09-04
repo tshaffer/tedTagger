@@ -45,6 +45,7 @@ export default function BasicGrid() {
                 </Typography>
               </CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                <Button>flibbet</Button>
                 <IconButton aria-label="previous">
                   {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
                 </IconButton>
@@ -86,10 +87,39 @@ export default function BasicGrid() {
             </CardActions>
           </Card>
         </Grid>
-        <Grid xs={4}>
-          <Item>xs=4</Item>
+        <Grid xs={6}>
+          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+            <CardMedia
+              component="img"
+              sx={{ width: 151 }}
+              image="/images/test.jpg"
+              alt="Live from space album cover"
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <CardContent sx={{ flex: '1 0 auto' }}>
+                <Typography component="div" variant="h5">
+                  Live From Space
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                  Mac Miller
+                </Typography>
+              </CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                <Button>flibbet</Button>
+                <IconButton aria-label="previous">
+                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+                </IconButton>
+                <IconButton aria-label="play/pause">
+                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                </IconButton>
+                <IconButton aria-label="next">
+                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+                </IconButton>
+              </Box>
+            </Box>
+          </Card>
         </Grid>
-        <Grid xs={8}>
+        <Grid xs={6}>
           <Card sx={{ minWidth: 275 }}>
             <CardContent>
               <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
