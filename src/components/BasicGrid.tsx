@@ -44,9 +44,9 @@ export default function BasicGrid() {
             }}
           >
             <CardMedia
+              image="/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg"
               component="img"
               height="350"
-              image="/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg"
               title="Live from space album cover"
               sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
@@ -73,11 +73,11 @@ export default function BasicGrid() {
             }}
           >
             <CardMedia
+              image="/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg"
               component="img"
               height="350"
               title="Live from space album cover"
               sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
-              image="/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -92,12 +92,21 @@ export default function BasicGrid() {
           </Card>
         </Grid>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              component="img"
-              sx={{ width: 325 }}
               image="/images/6/Q/AEEKk90c-DA0Pb0MXE6GGpSZf0xmEReu3AVjQBCJoEjHtXt3mpRufLB2xUFMGR1vMq00HA7wcJ1lrEaMSAA-D8BbEJKFyaMd6Q.jpg"
-              alt="Live from space album cover"
+              component="img"
+              height="350"
+              title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -108,28 +117,25 @@ export default function BasicGrid() {
                   Mac Miller
                 </Typography>
               </CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button>flibbet</Button>
-                <IconButton aria-label="previous">
-                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-                </IconButton>
-                <IconButton aria-label="play/pause">
-                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                </IconButton>
-                <IconButton aria-label="next">
-                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-                </IconButton>
-              </Box>
             </Box>
           </Card>
         </Grid>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              component="img"
-              sx={{ width: 325 }}
               image="/images/9/Q/AEEKk92TG30_-78TtFuU-L16Cns_wA8J8bWBJ5uytMPqAZzPliMBWSLrXhrS4HjnkpyIW0YGpKLcK1mZpFphZekyt13x8jlK9Q.jpg"
-              alt="Live from space album cover"
+              component="img"
+              height="350"
+              title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -140,28 +146,25 @@ export default function BasicGrid() {
                   Mac Miller
                 </Typography>
               </CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button>flibbet</Button>
-                <IconButton aria-label="previous">
-                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-                </IconButton>
-                <IconButton aria-label="play/pause">
-                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                </IconButton>
-                <IconButton aria-label="next">
-                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-                </IconButton>
-              </Box>
             </Box>
           </Card>
         </Grid>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              component="img"
-              sx={{ width: 325 }}
               image="/images/e/A/AEEKk912PZxymMuIR4HV6_HtZFKDfcHykbqqSrNnGE4Z-r_jgEHg4IEF1KnuEhFx6lkKKw-waIIEdT9ZkSagtd1hB4XHOnLCeA.jpg"
-              alt="Live from space album cover"
+              component="img"
+              height="350"
+              title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -172,28 +175,25 @@ export default function BasicGrid() {
                   Mac Miller
                 </Typography>
               </CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button>flibbet</Button>
-                <IconButton aria-label="previous">
-                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-                </IconButton>
-                <IconButton aria-label="play/pause">
-                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                </IconButton>
-                <IconButton aria-label="next">
-                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-                </IconButton>
-              </Box>
             </Box>
           </Card>
         </Grid>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              component="img"
-              sx={{ width: 325 }}
               image="/images/k/g/AEEKk90ZybQCwNsN0R0fvlm0fEpEKxuCmh2G6LTv9TjFlhZIQMIpzpRzDGtjVXVz0StKaIbYQGYlx47qurRXt1e-OT8bbonQkg.jpg"
-              alt="Live from space album cover"
+              component="img"
+              height="350"
+              title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -204,28 +204,25 @@ export default function BasicGrid() {
                   Mac Miller
                 </Typography>
               </CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button>flibbet</Button>
-                <IconButton aria-label="previous">
-                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-                </IconButton>
-                <IconButton aria-label="play/pause">
-                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                </IconButton>
-                <IconButton aria-label="next">
-                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-                </IconButton>
-              </Box>
             </Box>
           </Card>
         </Grid>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              component="img"
-              sx={{ width: 325 }}
               image="/images/test.jpg"
-              alt="Live from space album cover"
+              component="img"
+              height="350"
+              title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -236,28 +233,25 @@ export default function BasicGrid() {
                   Mac Miller
                 </Typography>
               </CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button>flibbet</Button>
-                <IconButton aria-label="previous">
-                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-                </IconButton>
-                <IconButton aria-label="play/pause">
-                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                </IconButton>
-                <IconButton aria-label="next">
-                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-                </IconButton>
-              </Box>
             </Box>
           </Card>
         </Grid>
         <Grid xs={3}>
-          <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: 325,
+              margin: '0 auto',
+              padding: '0.1em',
+            }}
+          >
             <CardMedia
-              component="img"
-              sx={{ width: 325 }}
               image="/images/test.jpg"
-              alt="Live from space album cover"
+              component="img"
+              height="350"
+              title="Live from space album cover"
+              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -268,18 +262,6 @@ export default function BasicGrid() {
                   Mac Miller
                 </Typography>
               </CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                <Button>flibbet</Button>
-                <IconButton aria-label="previous">
-                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-                </IconButton>
-                <IconButton aria-label="play/pause">
-                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                </IconButton>
-                <IconButton aria-label="next">
-                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-                </IconButton>
-              </Box>
             </Box>
           </Card>
         </Grid>
