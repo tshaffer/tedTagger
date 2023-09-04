@@ -3,7 +3,11 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Card, CardContent, Typography, CardActions, Button, CardMedia } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button, CardMedia, IconButton } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,16 +27,49 @@ const bull = (
 );
 
 export default function BasicGrid() {
+
+  const theme = useTheme();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        <Grid xs={8}>
-          <Card sx={{ maxWidth: 345 }}>
+        <Grid xs={6}>
+          <Card sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <CardContent sx={{ flex: '1 0 auto' }}>
+                <Typography component="div" variant="h5">
+                  Live From Space
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                  Mac Miller
+                </Typography>
+              </CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                <IconButton aria-label="previous">
+                  {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+                </IconButton>
+                <IconButton aria-label="play/pause">
+                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                </IconButton>
+                <IconButton aria-label="next">
+                  {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+                </IconButton>
+              </Box>
+            </Box>
             <CardMedia
               component="img"
-              alt="green iguana"
-              height="140"
+              sx={{ width: 151 }}
               image="/images/test.jpg"
+              alt="Live from space album cover"
+            />
+          </Card>
+        </Grid>
+        <Grid xs={6}>
+          <Card sx={{ maxWidth: 345 }}>
+            <CardMedia
+              sx={{ height: 140 }}
+              image="/images/test.jpg"
+              title="green iguana"
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
@@ -48,9 +85,6 @@ export default function BasicGrid() {
               <Button size="small">Learn More</Button>
             </CardActions>
           </Card>
-        </Grid>
-        <Grid xs={4}>
-          <Item>xs=4</Item>
         </Grid>
         <Grid xs={4}>
           <Item>xs=4</Item>
