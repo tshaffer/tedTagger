@@ -49,8 +49,6 @@ const boxStyle = {
 
 export default function BasicGrid() {
 
-  const theme = useTheme();
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -82,106 +80,14 @@ export default function BasicGrid() {
             sx={cardStyle}
           >
             <CardMedia
-              height="350"
+              className='cardMedia'
               image="/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg"
               component="img"
               title="Live from space album cover"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
+              sx={cardMediaStyle}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="body2">
-                  Live From Space
-                </Typography>
-                <Typography variant="caption" color="text.secondary" component="div">
-                  Mac Miller
-                </Typography>
-              </CardContent>
-            </Box>
-          </Card>
-        </Grid>
-        <Grid xs={3}>
-          <Card
-            sx={cardStyle}
-          >
-            <CardMedia
-              image="/images/6/Q/AEEKk90c-DA0Pb0MXE6GGpSZf0xmEReu3AVjQBCJoEjHtXt3mpRufLB2xUFMGR1vMq00HA7wcJ1lrEaMSAA-D8BbEJKFyaMd6Q.jpg"
-              component="img"
-              height="350"
-              title="Live from space album cover"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
-            />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="body2">
-                  Live From Space
-                </Typography>
-                <Typography variant="caption" color="text.secondary" component="div">
-                  Mac Miller
-                </Typography>
-              </CardContent>
-            </Box>
-          </Card>
-        </Grid>
-        <Grid xs={3}>
-          <Card
-            sx={cardStyle}
-          >
-            <CardMedia
-              image="/images/9/Q/AEEKk92TG30_-78TtFuU-L16Cns_wA8J8bWBJ5uytMPqAZzPliMBWSLrXhrS4HjnkpyIW0YGpKLcK1mZpFphZekyt13x8jlK9Q.jpg"
-              component="img"
-              height="350"
-              title="Live from space album cover"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
-            />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="body2">
-                  Live From Space
-                </Typography>
-                <Typography variant="caption" color="text.secondary" component="div">
-                  Mac Miller
-                </Typography>
-              </CardContent>
-            </Box>
-          </Card>
-        </Grid>
-        <Grid xs={3}>
-          <Card
-            sx={cardStyle}
-          >
-            <CardMedia
-              image="/images/e/A/AEEKk912PZxymMuIR4HV6_HtZFKDfcHykbqqSrNnGE4Z-r_jgEHg4IEF1KnuEhFx6lkKKw-waIIEdT9ZkSagtd1hB4XHOnLCeA.jpg"
-              component="img"
-              height="350"
-              title="Live from space album cover"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
-            />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="body2">
-                  Live From Space
-                </Typography>
-                <Typography variant="caption" color="text.secondary" component="div">
-                  Mac Miller
-                </Typography>
-              </CardContent>
-            </Box>
-          </Card>
-        </Grid>
-        <Grid xs={3}>
-          <Card
-            sx={cardStyle}
-          >
-            <CardMedia
-              image="/images/k/g/AEEKk90ZybQCwNsN0R0fvlm0fEpEKxuCmh2G6LTv9TjFlhZIQMIpzpRzDGtjVXVz0StKaIbYQGYlx47qurRXt1e-OT8bbonQkg.jpg"
-              component="img"
-              height="350"
-              title="Live from space album cover"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
-            />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
                 <Typography component="div" variant="body2">
                   Live From Space
                 </Typography>
@@ -198,13 +104,13 @@ export default function BasicGrid() {
           >
             <CardMedia
               className='cardMedia'
+              image="/images/6/Q/AEEKk90c-DA0Pb0MXE6GGpSZf0xmEReu3AVjQBCJoEjHtXt3mpRufLB2xUFMGR1vMq00HA7wcJ1lrEaMSAA-D8BbEJKFyaMd6Q.jpg"
               component="img"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
-              image="/images/test.jpg"
               title="Live from space album cover"
+              sx={cardMediaStyle}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
                 <Typography component="div" variant="body2">
                   Live From Space
                 </Typography>
@@ -220,14 +126,106 @@ export default function BasicGrid() {
             sx={cardStyle}
           >
             <CardMedia
+              className='cardMedia'
+              image="/images/9/Q/AEEKk92TG30_-78TtFuU-L16Cns_wA8J8bWBJ5uytMPqAZzPliMBWSLrXhrS4HjnkpyIW0YGpKLcK1mZpFphZekyt13x8jlK9Q.jpg"
+              component="img"
+              title="Live from space album cover"
+              sx={cardMediaStyle}
+            />
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
+                <Typography component="div" variant="body2">
+                  Live From Space
+                </Typography>
+                <Typography variant="caption" color="text.secondary" component="div">
+                  Mac Miller
+                </Typography>
+              </CardContent>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid xs={3}>
+          <Card
+            sx={cardStyle}
+          >
+            <CardMedia
+              className='cardMedia'
+              image="/images/e/A/AEEKk912PZxymMuIR4HV6_HtZFKDfcHykbqqSrNnGE4Z-r_jgEHg4IEF1KnuEhFx6lkKKw-waIIEdT9ZkSagtd1hB4XHOnLCeA.jpg"
+              component="img"
+              title="Live from space album cover"
+              sx={cardMediaStyle}
+            />
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
+                <Typography component="div" variant="body2">
+                  Live From Space
+                </Typography>
+                <Typography variant="caption" color="text.secondary" component="div">
+                  Mac Miller
+                </Typography>
+              </CardContent>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid xs={3}>
+          <Card
+            sx={cardStyle}
+          >
+            <CardMedia
+              className='cardMedia'
+              image="/images/k/g/AEEKk90ZybQCwNsN0R0fvlm0fEpEKxuCmh2G6LTv9TjFlhZIQMIpzpRzDGtjVXVz0StKaIbYQGYlx47qurRXt1e-OT8bbonQkg.jpg"
+              component="img"
+              title="Live from space album cover"
+              sx={cardMediaStyle}
+            />
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
+                <Typography component="div" variant="body2">
+                  Live From Space
+                </Typography>
+                <Typography variant="caption" color="text.secondary" component="div">
+                  Mac Miller
+                </Typography>
+              </CardContent>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid xs={3}>
+          <Card
+            sx={cardStyle}
+          >
+            <CardMedia
+              className='cardMedia'
               image="/images/test.jpg"
               component="img"
-              height="350"
               title="Live from space album cover"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
+              sx={cardMediaStyle}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
+                <Typography component="div" variant="body2">
+                  Live From Space
+                </Typography>
+                <Typography variant="caption" color="text.secondary" component="div">
+                  Mac Miller
+                </Typography>
+              </CardContent>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid xs={3}>
+          <Card
+            sx={cardStyle}
+          >
+            <CardMedia
+              className='cardMedia'
+              image="/images/test.jpg"
+              component="img"
+              title="Live from space album cover"
+              sx={cardMediaStyle}
+            />
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
                 <Typography component="div" variant="body2">
                   Live From Space
                 </Typography>
