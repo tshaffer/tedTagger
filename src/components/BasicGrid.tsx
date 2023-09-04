@@ -5,9 +5,8 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Card, CardContent, Typography, CardActions, Button, CardMedia, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
+
+import '../styles/TedTagger.css';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,6 +33,20 @@ const cardStyle = {
   padding: '0.1em',
 };
 
+const cardContentStyle = {
+  flex: '1 0 auto'
+};
+
+const cardMediaStyle = {
+  padding: '1em 1em 0 1em',
+  objectFit: 'contain',
+};
+
+const boxStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+};
+
 export default function BasicGrid() {
 
   const theme = useTheme();
@@ -46,14 +59,14 @@ export default function BasicGrid() {
             sx={cardStyle}
           >
             <CardMedia
+              className='cardMedia'
               image="/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg"
               component="img"
-              height="350"
               title="Live from space album cover"
-              sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
+              sx={cardMediaStyle}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
+            <Box sx={boxStyle}>
+              <CardContent sx={cardContentStyle}>
                 <Typography component="div" variant="body2">
                   Live From Space
                 </Typography>
@@ -69,9 +82,9 @@ export default function BasicGrid() {
             sx={cardStyle}
           >
             <CardMedia
+              height="350"
               image="/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg"
               component="img"
-              height="350"
               title="Live from space album cover"
               sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
             />
@@ -184,11 +197,11 @@ export default function BasicGrid() {
             sx={cardStyle}
           >
             <CardMedia
-              image="/images/test.jpg"
+              className='cardMedia'
               component="img"
-              height="350"
-              title="Live from space album cover"
               sx={{ padding: '1em 1em 0 1em', objectFit: 'contain' }}
+              image="/images/test.jpg"
+              title="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
