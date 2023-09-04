@@ -38,7 +38,7 @@ export default function BasicGrid() {
             <CardMedia
               component="img"
               sx={{ width: 325 }}
-              image="/images/test.jpg"
+              image="/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg"
               alt="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -70,7 +70,7 @@ export default function BasicGrid() {
             <CardMedia
               component="img"
               sx={{ width: 325 }}
-              image="/images/test.jpg"
+              image="/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg"
               alt="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -102,7 +102,7 @@ export default function BasicGrid() {
             <CardMedia
               component="img"
               sx={{ width: 325 }}
-              image="/images/test.jpg"
+              image="/images/6/Q/AEEKk90c-DA0Pb0MXE6GGpSZf0xmEReu3AVjQBCJoEjHtXt3mpRufLB2xUFMGR1vMq00HA7wcJ1lrEaMSAA-D8BbEJKFyaMd6Q.jpg"
               alt="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -134,7 +134,7 @@ export default function BasicGrid() {
             <CardMedia
               component="img"
               sx={{ width: 325 }}
-              image="/images/test.jpg"
+              image="/images/9/Q/AEEKk92TG30_-78TtFuU-L16Cns_wA8J8bWBJ5uytMPqAZzPliMBWSLrXhrS4HjnkpyIW0YGpKLcK1mZpFphZekyt13x8jlK9Q.jpg"
               alt="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -166,7 +166,7 @@ export default function BasicGrid() {
             <CardMedia
               component="img"
               sx={{ width: 325 }}
-              image="/images/test.jpg"
+              image="/images/e/A/AEEKk912PZxymMuIR4HV6_HtZFKDfcHykbqqSrNnGE4Z-r_jgEHg4IEF1KnuEhFx6lkKKw-waIIEdT9ZkSagtd1hB4XHOnLCeA.jpg"
               alt="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -198,7 +198,7 @@ export default function BasicGrid() {
             <CardMedia
               component="img"
               sx={{ width: 325 }}
-              image="/images/test.jpg"
+              image="/images/k/g/AEEKk90ZybQCwNsN0R0fvlm0fEpEKxuCmh2G6LTv9TjFlhZIQMIpzpRzDGtjVXVz0StKaIbYQGYlx47qurRXt1e-OT8bbonQkg.jpg"
               alt="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
