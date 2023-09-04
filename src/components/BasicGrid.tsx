@@ -91,16 +91,16 @@ export default function BasicGrid() {
           <Card sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardMedia
               component="img"
-              sx={{ width: 151 }}
+              sx={{ width: 325 }}
               image="/images/test.jpg"
               alt="Live from space album cover"
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="h5">
+                <Typography component="div" variant="body2">
                   Live From Space
                 </Typography>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
+                <Typography variant="caption" color="text.secondary" component="div">
                   Mac Miller
                 </Typography>
               </CardContent>
