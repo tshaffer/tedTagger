@@ -10,7 +10,7 @@ import thunkMiddleware from 'redux-thunk';
 import { rootReducer } from './models';
 
 import Home from './components/Home';
-import Lizard from './components/Lizard';
+import BasicGrid from './components/BasicGrid';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(
@@ -29,7 +29,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Lizard />} />
+        <Route path='/' element={<BasicGrid />} />
       </Routes>
     </BrowserRouter>
   </Provider>,
