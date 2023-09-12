@@ -1,50 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import '../styles/TedTagger.css';
 import Photo from './Photo';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
-
-const cardStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  maxWidth: 325,
-  margin: '0 auto',
-  padding: '0.1em',
-};
-
-const cardContentStyle = {
-  flex: '1 0 auto'
-};
-
-const cardMediaStyle = {
-  padding: '1em 1em 0 1em',
-  objectFit: 'contain',
-};
-
-const boxStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-};
 
 export default function BasicGrid() {
 
