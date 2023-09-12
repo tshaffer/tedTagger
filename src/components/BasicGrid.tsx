@@ -3,10 +3,12 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Card, CardContent, Typography, CardActions, Button, CardMedia, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button, CardMedia, IconButton, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import '../styles/TedTagger.css';
+import { CheckBox } from '@mui/icons-material';
+import Photo from './Photo';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -49,32 +51,13 @@ const boxStyle = {
 
 export default function BasicGrid() {
 
+  const filePath = '/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg';
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        <Grid xs={3}>
-          <Card
-            sx={cardStyle}
-          >
-            <CardMedia
-              className='cardMedia'
-              image="/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg"
-              component="img"
-              title="Live from space album cover"
-              sx={cardMediaStyle}
-            />
-            <Box sx={boxStyle}>
-              <CardContent sx={cardContentStyle}>
-                <Typography component="div" variant="body2">
-                  Live From Space
-                </Typography>
-                <Typography variant="caption" color="text.secondary" component="div">
-                  Mac Miller
-                </Typography>
-              </CardContent>
-            </Box>
-          </Card>
-        </Grid>
+        <Photo
+          filePath={filePath}
+        />
         <Grid xs={3}>
           <Card
             sx={cardStyle}
@@ -232,6 +215,7 @@ export default function BasicGrid() {
                 <Typography variant="caption" color="text.secondary" component="div">
                   Mac Miller
                 </Typography>
+                <CheckBox />
               </CardContent>
             </Box>
           </Card>
