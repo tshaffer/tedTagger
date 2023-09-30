@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch } from '../models';
 import { toggleMediaItemSelectionAction } from '../controllers';
+import { isMediaItemSelected } from '../selectors';
 
 const cardStyle = {
   display: 'flex',
@@ -26,6 +27,7 @@ const boxStyle = {
 
 export interface PhotoProps {
   filePath: string;
+  isSelected: boolean;
   onToggleMediaItemSelection: (fielPath: string) => any;
 }
 
@@ -54,6 +56,7 @@ function Photo(props: PhotoProps) {
           <FormControlLabel control={
             <Checkbox
               onChange={(event) => toggledPhotoSelected(event, props.filePath)}
+              checked={props.isSelected}
             />
           } label="Selected" />
         </FormGroup>
@@ -64,8 +67,9 @@ function Photo(props: PhotoProps) {
 }
 
 // export default Photo;
-function mapStateToProps(state: any) {
+function mapStateToProps(state: any, ownProps: any) {
   return {
+    isSelected: isMediaItemSelected(state, ownProps.filePath),
     // mediaItems: getMediaItems(state),
   };
 }
