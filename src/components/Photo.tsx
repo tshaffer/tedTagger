@@ -1,4 +1,5 @@
-import { Grid, Card, CardMedia, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
+import { Grid, Card, CardMedia, FormGroup, FormControlLabel, Checkbox, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -49,17 +50,26 @@ function Photo(props: PhotoProps) {
           className='cardMedia'
           image={props.filePath}
           component="img"
-          title="Live from space album cover"
+          title={props.filePath}
           sx={cardMediaStyle}
         />
         <FormGroup>
-          <FormControlLabel control={
-            <Checkbox
-              onChange={(event) => toggledPhotoSelected(event, props.filePath)}
-              checked={props.isSelected}
-            />
-          } label="Selected" />
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={(event) => toggledPhotoSelected(event, props.filePath)}
+                checked={props.isSelected}
+              />
+            }
+            label="Selected"
+          />
         </FormGroup>
+        <IconButton
+          className='menuButton'
+          color='inherit'
+        >
+          <MenuIcon />
+        </IconButton>
 
       </Card>
     </Grid>
