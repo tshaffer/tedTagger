@@ -25,6 +25,15 @@ export interface PhotoProps {
 }
 
 function Photo(props: PhotoProps) {
+
+  //     onClick={() => this.setState({isTrue: !this.state.isTrue})}
+
+  const toggledPhotoSelected = (event: React.ChangeEvent<HTMLInputElement>, filePath: string) => {
+    console.log('togglePhotoSelected');
+    console.log(event.target.checked);
+    console.log(filePath);
+  };
+
   return (
     <Grid xs={3}>
       <Card
@@ -38,7 +47,11 @@ function Photo(props: PhotoProps) {
           sx={cardMediaStyle}
         />
         <FormGroup>
-          <FormControlLabel control={<Checkbox defaultChecked />} label="Selected" />
+          <FormControlLabel control={
+            <Checkbox
+              onChange={(event) => toggledPhotoSelected(event, props.filePath)}
+            />
+          } label="Selected" />
         </FormGroup>
 
       </Card>

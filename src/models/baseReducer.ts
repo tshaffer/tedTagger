@@ -5,6 +5,7 @@ import { TedTaggerState } from '../types';
 
 import { appStateReducer } from './appState';
 import { mediaItemsStateReducer } from './mediaItems';
+import { selectedMediaItemsStateReducer } from './selectedMediaItems';
 
 // -----------------------------------------------------------------------
 // Reducers
@@ -12,6 +13,7 @@ import { mediaItemsStateReducer } from './mediaItems';
 export const rootReducer = combineReducers<TedTaggerState>({
   appState: appStateReducer,
   mediaItemsState: mediaItemsStateReducer,
+  selectionsState: selectedMediaItemsStateReducer,
 });
 
 // -----------------------------------------------------------------------
