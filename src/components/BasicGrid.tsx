@@ -5,9 +5,15 @@ import Grid from '@mui/material/Unstable_Grid2';
 import '../styles/TedTagger.css';
 import Photo from './Photo';
 
-import SettingsIcon from '@mui/icons-material/Settings';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import MoreIcon from '@mui/icons-material/MoreVert';
+
+import { styled } from '@mui/material/styles';
+import Fab from '@mui/material/Fab';
 
 export default function BasicGrid() {
 
@@ -62,26 +68,17 @@ export default function BasicGrid() {
   // /images/5/A/AEEKk90KXOH5NHbqqG2Y1C7O_8iDA7-g3dNkDcDo1BUNpsNOFg-bb_Om4mnMUIjFYP2bWEfK0npFkLEdziA_BpZJKoKKMRR55A.JPG
   // /images/W/w/AEEKk90s_ACF8tdJzxVUbhWoLgneLYmwYoAV_juXgXoEDfEe7SzHpipBo4SnQ0HVId0ZiIjncvzsCq-SIHQp5UxZAFi-4Aw3Ww.JPG
 
+  const StyledFab = styled(Fab)({
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+  });
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Ted Tagger
-          </Typography>
-          {/* <Button color="inherit">Login</Button> */}
-        </Toolbar>
-      </AppBar>
-
       <Grid container spacing={2}>
         <Photo
           filePath={filePath0}
@@ -132,6 +129,25 @@ export default function BasicGrid() {
           filePath={filePath15}
         />
       </Grid>
+
+      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar>
+          <IconButton color="inherit" aria-label="open drawer">
+            <MenuIcon />
+          </IconButton>
+          <StyledFab color="secondary" aria-label="add">
+            <AddIcon />
+          </StyledFab>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton color="inherit">
+            <SearchIcon />
+          </IconButton>
+          <IconButton color="inherit">
+            <MoreIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
     </Box>
   );
 }
