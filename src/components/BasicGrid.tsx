@@ -5,17 +5,17 @@ import Grid from '@mui/material/Unstable_Grid2';
 import '../styles/TedTagger.css';
 import Photo from './Photo';
 
-import { AppBar, Toolbar, IconButton } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
 
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 
 import { styled } from '@mui/material/styles';
 import Fab from '@mui/material/Fab';
 
 export default function BasicGrid() {
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   // const filePath0 = '/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg';
   // const filePath1 = '/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg';
@@ -76,7 +76,15 @@ export default function BasicGrid() {
     right: 0,
     margin: '0 auto',
   });
-  
+
+  const handleShowMore = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -132,21 +140,28 @@ export default function BasicGrid() {
 
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer">
-            <MenuIcon />
-          </IconButton>
-          <StyledFab color="secondary" aria-label="add">
-            <AddIcon />
-          </StyledFab>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit">
-            <SearchIcon />
-          </IconButton>
-          <IconButton color="inherit">
+          <IconButton
+            onClick={handleShowMore}
+            color="inherit"
+          >
             <MoreIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleClose}>Tags</MenuItem>
+        <MenuItem onClick={handleClose}>Properties</MenuItem>
+      </Menu>
 
     </Box>
   );

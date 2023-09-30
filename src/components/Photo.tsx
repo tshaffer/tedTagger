@@ -1,5 +1,4 @@
 import { Grid, Card, CardMedia, FormGroup, FormControlLabel, Checkbox, IconButton, Button, Menu, MenuItem } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -20,12 +19,6 @@ const cardMediaStyle = {
   objectFit: 'contain',
 };
 
-const boxStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-};
-
-
 export interface PhotoProps {
   filePath: string;
   isSelected: boolean;
@@ -34,22 +27,11 @@ export interface PhotoProps {
 
 function Photo(props: PhotoProps) {
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
   const toggledPhotoSelected = (event: React.ChangeEvent<HTMLInputElement>, filePath: string) => {
     console.log('togglePhotoSelected');
     console.log(event.target.checked);
     console.log(filePath);
     props.onToggleMediaItemSelection(filePath);
-  };
-
-  const handleShowMore = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   return (
@@ -75,28 +57,6 @@ function Photo(props: PhotoProps) {
             label="Selected"
           />
         </FormGroup>
-        <IconButton
-          id="basic-button"
-          className='menuButton'
-          color='inherit'
-          onClick={handleShowMore}
-        >
-          <MoreVertIcon />
-        </IconButton>
-
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-        >
-          <MenuItem onClick={handleClose}>Tags</MenuItem>
-          <MenuItem onClick={handleClose}>Properties</MenuItem>
-        </Menu>
-
       </Card>
     </Grid>
   );
