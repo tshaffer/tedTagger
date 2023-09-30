@@ -1,5 +1,9 @@
 import { Grid, Card, CardMedia, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { TedTaggerDispatch } from '../models';
+import { toggleMediaItemSelectionAction } from '../controllers';
 
 const cardStyle = {
   display: 'flex',
@@ -22,16 +26,16 @@ const boxStyle = {
 
 export interface PhotoProps {
   filePath: string;
+  onToggleMediaItemSelection: (fielPath: string) => any;
 }
 
 function Photo(props: PhotoProps) {
-
-  //     onClick={() => this.setState({isTrue: !this.state.isTrue})}
 
   const toggledPhotoSelected = (event: React.ChangeEvent<HTMLInputElement>, filePath: string) => {
     console.log('togglePhotoSelected');
     console.log(event.target.checked);
     console.log(filePath);
+    props.onToggleMediaItemSelection(filePath);
   };
 
   return (
@@ -59,4 +63,18 @@ function Photo(props: PhotoProps) {
   );
 }
 
-export default Photo;
+// export default Photo;
+function mapStateToProps(state: any) {
+  return {
+    // mediaItems: getMediaItems(state),
+  };
+}
+
+const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
+  return bindActionCreators({
+    // onLoadMediaItems: loadMediaItems,
+    onToggleMediaItemSelection: toggleMediaItemSelectionAction,
+  }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Photo);
