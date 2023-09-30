@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,10 +9,6 @@ import { getMediaItems } from '../selectors';
 import { isNil } from 'lodash';
 
 import BasicGrid from './BasicGrid';
-
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max);
-}
 
 export interface HomeProps {
   mediaItems: MediaItem[],
@@ -33,23 +28,6 @@ const Home = (props: HomeProps) => {
       <div>Loading...</div>
     );
   }
-
-  const imageIndex = getRandomInt(props.mediaItems.length - 1);
-
-  const prefix = '/Users/tedshaffer/Documents/pgData/GoogleMediaItems/';
-  const prefixLength = prefix.length;
-  const relativePath = props.mediaItems[imageIndex].filePath!.substring(prefixLength);
-  console.log('relativePath: ' + relativePath);
-  const relativeUrl = 'images/' + relativePath;
-  console.log('relative url: ' + relativeUrl);
-
-  const imgStyle = {
-    display: 'block',
-    maxWidth: '1600px',
-    maxHeight: '840px',
-    width: 'auto',
-    height: 'auto'
-  };
 
   return (
     <div>
