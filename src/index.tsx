@@ -29,7 +29,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<BasicGrid />} />
+        <Route path='/' element={<Home />} />
       </Routes>
     </BrowserRouter>
   </Provider>,

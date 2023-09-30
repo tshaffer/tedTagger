@@ -9,6 +9,8 @@ import { TedTaggerDispatch } from '../models';
 import { getMediaItems } from '../selectors';
 import { isNil } from 'lodash';
 
+import BasicGrid from './BasicGrid';
+
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
@@ -51,7 +53,7 @@ const Home = (props: HomeProps) => {
 
   return (
     <div>
-      <img style={imgStyle} src={relativeUrl}></img>
+      <BasicGrid/>
     </div>
   );
 
