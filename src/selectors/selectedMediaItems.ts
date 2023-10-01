@@ -6,6 +6,10 @@ import {
 
 import path from 'path-browserify';
 
+export const getSelectdMediaItems = (state: TedTaggerState): ClientMediaItem[] => {
+  return state.selectionsState.mediaItems;
+};
+
 export const isMediaItemSelected = (state: TedTaggerState, filePath: string): boolean => {
 
   const incomingMediaItemBaseName: string = path.basename(filePath);

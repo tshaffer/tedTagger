@@ -18,6 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 
 import { styled } from '@mui/material/styles';
 import Fab from '@mui/material/Fab';
+import TagsPropertyPanel from './TagsPropertyPanel';
 
 export interface HomeProps {
   mediaItems: ClientMediaItem[],
@@ -75,9 +76,7 @@ const Home = (props: HomeProps) => {
         variant="persistent"
         anchor="right"
       >
-        <div>
-          Hello World
-        </div>
+        <TagsPropertyPanel/>
       </Drawer>
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
