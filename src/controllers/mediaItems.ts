@@ -34,7 +34,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
           if (!isNil(mediaItemEntityFromServer.people)) {
             for (const person of mediaItemEntityFromServer.people) {
-              (clientMediaItem as ClientMediaItem).tags.push(person);
+              (clientMediaItem as ClientMediaItem).tags.push(person.name);
             }
           }
 

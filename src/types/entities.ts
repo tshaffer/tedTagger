@@ -6,6 +6,11 @@ export interface GeoData {
   longitudeSpan: number;
 }
 
+export interface ServerPerson {
+  _id: string;
+  name: string;
+}
+
 export interface ServerMediaItem {
   googleId: string,
   fileName: string,
@@ -20,7 +25,7 @@ export interface ServerMediaItem {
   orientation?: number,
   description?: string,
   geoData?: GeoData,
-  people?: string[],
+  people?: ServerPerson[],
 }
 
 export interface ClientMediaItem {
