@@ -1,6 +1,6 @@
 import { cloneDeep, isNil } from 'lodash';
 
-import { MediaItem, MediaItemsState, SelectedMediaItemsState } from '../types';
+import { ClientMediaItem, MediaItemsState, SelectedMediaItemsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -13,11 +13,11 @@ export const TOGGLE_MEDIA_ITEM_SELECTION = 'TOGGLE_MEDIA_ITEM_SELECTION';
 // ------------------------------------
 
 interface ToggleMediaItemSelectionPayload {
-  mediaItem: MediaItem;
+  mediaItem: ClientMediaItem;
 }
 
 export const toggleMediaItemSelection = (
-  mediaItem: MediaItem,
+  mediaItem: ClientMediaItem,
 ): any => {
   return {
     type: TOGGLE_MEDIA_ITEM_SELECTION,
@@ -43,7 +43,7 @@ export const selectedMediaItemsStateReducer = (
   switch (action.type) {
     case TOGGLE_MEDIA_ITEM_SELECTION: {
       const newState = cloneDeep(state) as SelectedMediaItemsState;
-      const index: number = newState.mediaItems.findIndex((element: MediaItem) => element.googleId === action.payload.mediaItem.googleId);
+      const index: number = newState.mediaItems.findIndex((element: ClientMediaItem) => element.googleId === action.payload.mediaItem.googleId);
       if (index < 0) {
         newState.mediaItems.push(action.payload.mediaItem);
       } else {

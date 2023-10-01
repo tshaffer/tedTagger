@@ -1,4 +1,4 @@
-import { MediaItem } from './entities';
+import { ClientMediaItem } from './entities';
 
 export const serverUrl = 'http://localhost:8000';
 // export const serverUrl = 'https://tsmealwheel.herokuapp.com';
@@ -16,10 +16,10 @@ export interface AppState {
 }
 
 export interface MediaItemsState {
-  mediaItems: MediaItem[];
+  mediaItems: ClientMediaItem[];
 }
 
 export interface SelectedMediaItemsState {
-  mediaItems: MediaItem[];
+  mediaItems: ClientMediaItem[];
 }
 

@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems } from '../models';
-import { serverUrl, apiUrlFragment } from '../types';
+import { serverUrl, apiUrlFragment, ServerMediaItem, ClientMediaItem } from '../types';
+import { cloneDeep, isNil } from 'lodash';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -10,9 +11,40 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
-        const mediaItemEntitiesFromServer: any[] = (mediaItemsResponse as any).data;
+
+        const clientMediaItems: ClientMediaItem[] = [];
+        const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
         console.log(mediaItemEntitiesFromServer);
-        dispatch(addMediaItems(mediaItemEntitiesFromServer));
+
+        // derive clientMediaItems from serverMediaItems
+        for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
+          
+          const clientMediaItem: any = cloneDeep(mediaItemEntityFromServer);
+          (clientMediaItem as ClientMediaItem).tags = [];
+
+          const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
+          if (description.startsWith('TedTag-')) {
+            // mediaItem includes one or more tags
+            const tagsSpec: string = description.substring('TedTag-'.length);
+            const tags: string[] = tagsSpec.split(':');
+            if (tags.length > 0) {
+              (clientMediaItem as ClientMediaItem).tags = tags;
+            }
+          }
+
+          if (!isNil(mediaItemEntityFromServer.people)) {
+            for (const person of mediaItemEntityFromServer.people) {
+              (clientMediaItem as ClientMediaItem).tags.push(person);
+            }
+          }
+
+          clientMediaItems.push(clientMediaItem as ClientMediaItem);
+    
+        }
+
+        dispatch(addMediaItems(clientMediaItems));
+
+        console.log(getState().mediaItemsState.mediaItems);
       });
   };
 };

@@ -1,6 +1,6 @@
 import { cloneDeep, isNil } from 'lodash';
 
-import { MediaItem, MediaItemsState } from '../types';
+import { ClientMediaItem, MediaItemsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -13,11 +13,11 @@ export const ADD_MEDIA_ITEMS = 'ADD_MEDIA_ITEMS';
 // ------------------------------------
 
 interface AddMediaItemsPayload {
-  mediaItems: MediaItem[];
+  mediaItems: ClientMediaItem[];
 }
 
 export const addMediaItems = (
-  mediaItems: MediaItem[],
+  mediaItems: ClientMediaItem[],
 ): any => {
   return {
     type: ADD_MEDIA_ITEMS,

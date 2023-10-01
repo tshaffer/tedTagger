@@ -6,9 +6,9 @@ export interface GeoData {
   longitudeSpan: number;
 }
 
-export interface MediaItem {
+export interface ServerMediaItem {
   googleId: string,
-  fileName:  string,
+  fileName: string,
   albumId: string;
   filePath?: string,
   productUrl?: string,
@@ -21,4 +21,22 @@ export interface MediaItem {
   description?: string,
   geoData?: GeoData,
   people?: string[],
+}
+
+export interface ClientMediaItem {
+  googleId: string,
+  fileName: string,
+  albumId: string;
+  filePath?: string,
+  productUrl?: string,
+  baseUrl?: string,
+  mimeType?: string,
+  creationTime?: string,
+  width?: number,
+  height?: number
+  orientation?: number,
+  description?: string,
+  geoData?: GeoData,
+  people?: string[],
+  tags: string[],
 }

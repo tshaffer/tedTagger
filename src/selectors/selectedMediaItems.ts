@@ -1,5 +1,5 @@
 import {
-  MediaItem,
+  ClientMediaItem,
   SelectedMediaItemsState,
   TedTaggerState
 } from '../types';
@@ -11,7 +11,7 @@ export const isMediaItemSelected = (state: TedTaggerState, filePath: string): bo
   const incomingMediaItemBaseName: string = path.basename(filePath);
 
   const selectedState: SelectedMediaItemsState = state.selectionsState;
-  const selectedMediaItems: MediaItem[] = selectedState.mediaItems;
+  const selectedMediaItems: ClientMediaItem[] = selectedState.mediaItems;
 
   for (const selectedMediaItem of selectedMediaItems) {
     const selectedMediaItemBaseName: string = path.basename(selectedMediaItem.filePath!);
