@@ -8,7 +8,7 @@ import { TedTaggerDispatch } from '../models';
 import { getMediaItems } from '../selectors';
 import { isNil } from 'lodash';
 
-import BasicGrid from './BasicGrid';
+import PhotoGrid from './PhotoGrid';
 
 export interface HomeProps {
   mediaItems: MediaItem[],
@@ -31,7 +31,7 @@ const Home = (props: HomeProps) => {
 
   return (
     <div>
-      <BasicGrid/>
+      <PhotoGrid />
     </div>
   );
 

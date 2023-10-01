@@ -10,7 +10,7 @@ import thunkMiddleware from 'redux-thunk';
 import { rootReducer } from './models';
 
 import Home from './components/Home';
-import BasicGrid from './components/BasicGrid';
+import PhotoGrid from './components/PhotoGrid';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(

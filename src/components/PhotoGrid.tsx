@@ -12,7 +12,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 import Fab from '@mui/material/Fab';
 
-export default function BasicGrid() {
+export default function PhotoGrid() {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
