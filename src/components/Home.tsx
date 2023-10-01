@@ -76,7 +76,10 @@ const Home = (props: HomeProps) => {
         variant="persistent"
         anchor="right"
       >
-        <TagsPropertyPanel/>
+        <TagsPropertyPanel
+          open={sheetOpen}
+          onClose={handleClose}
+        />
       </Drawer>
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>

@@ -7,7 +7,7 @@ import { ClientMediaItem } from '../types';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { Autocomplete, IconButton, TextField } from '@mui/material';
+import { Autocomplete, Button, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { isNil } from 'lodash';
 
@@ -16,7 +16,12 @@ interface TagOption {
   label: string;
 }
 
-export interface TagsPropertyPanelProps {
+export interface TagsPropertyPanelPropsFromParent {
+  open: boolean;
+  onClose: () => void;
+}
+
+export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent {
   selectedMediaItems: ClientMediaItem[],
 }
 
@@ -37,6 +42,11 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
       label: 'Rachel',
     },
   ];
+
+  const handleClose = () => {
+    console.log('onClose');
+    props.onClose();
+  };
 
   const handleDeleteTag = (tag: string | null) => {
     console.log('handleDeleteTag: ', tag);
@@ -161,6 +171,8 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
       <List>
         {renderedListOfTags}
       </List>
+      <Button onClick={handleClose}>Close</Button>
+
     </div>
   );
 };
