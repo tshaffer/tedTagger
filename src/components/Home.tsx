@@ -9,6 +9,15 @@ import { getMediaItems } from '../selectors';
 import { isNil } from 'lodash';
 
 import PhotoGrid from './PhotoGrid';
+import Box from '@mui/material/Box';
+import { Drawer } from '@mui/material';
+
+import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
+
+import MoreIcon from '@mui/icons-material/MoreVert';
+
+import { styled } from '@mui/material/styles';
+import Fab from '@mui/material/Fab';
 
 export interface HomeProps {
   mediaItems: MediaItem[],
@@ -17,6 +26,9 @@ export interface HomeProps {
 
 const Home = (props: HomeProps) => {
 
+  const [sheetOpen, setSheetOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   React.useEffect(() => {
     console.log('React.useEffect');
@@ -29,9 +41,68 @@ const Home = (props: HomeProps) => {
     );
   }
 
+  const StyledFab = styled(Fab)({
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+  });
+
+  const handleShowMore = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setSheetOpen(false);
+    setAnchorEl(null);
+  };
+
+  const handleShowTags = () => {
+    setSheetOpen(true);
+    setAnchorEl(null);
+  };
+
   return (
-    <div>
-      <PhotoGrid />
+    <div style={{ height: '100vh' }}>
+      <div>
+        <PhotoGrid />
+      </div>
+      <Drawer
+        BackdropProps={{ style: { opacity: 0 } }}
+        open={sheetOpen}
+        variant="persistent"
+        anchor="right"
+      >
+        <div>
+          Hello World
+        </div>
+      </Drawer>
+      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton
+            onClick={handleShowMore}
+            color="inherit"
+          >
+            <MoreIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleShowTags}>Tags</MenuItem>
+        <MenuItem onClick={handleClose}>Properties</MenuItem>
+      </Menu>
     </div>
   );
 

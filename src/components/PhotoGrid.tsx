@@ -5,17 +5,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import '../styles/TedTagger.css';
 import Photo from './Photo';
 
-import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
-
-import MoreIcon from '@mui/icons-material/MoreVert';
-
-import { styled } from '@mui/material/styles';
-import Fab from '@mui/material/Fab';
-
 export default function PhotoGrid() {
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
   // const filePath0 = '/images/z/Q/AEEKk93Oefh3SiR5UC607K3zECgYkcbfO6qjDJwNC2UJJz_noM4obDfCy1uh1YkZNIN3XUrWp94LBFLJCWFjPFR7mMhcgA1BzQ.jpeg';
   // const filePath1 = '/images/4/A/AEEKk91Tx4PJKJMmMr3W4-k068eueZaFsIrvVusXNu1UQr2yQSi79vSoNzyZz0V8R7TZlwD_8Y_s-XmluOCL4e0ey7HwqcJn4A.jpg';
@@ -67,23 +58,6 @@ export default function PhotoGrid() {
   // /images/Y/Q/AEEKk93gSoAzQjYIwtrzdw_FNO09I7JeIkYY-HkDb0iRR7vj_jlHghcPVVUvVjlAg8Q7e23z3FJXcRiHGIpxPndN7H-40eAdYQ.jpg
   // /images/5/A/AEEKk90KXOH5NHbqqG2Y1C7O_8iDA7-g3dNkDcDo1BUNpsNOFg-bb_Om4mnMUIjFYP2bWEfK0npFkLEdziA_BpZJKoKKMRR55A.JPG
   // /images/W/w/AEEKk90s_ACF8tdJzxVUbhWoLgneLYmwYoAV_juXgXoEDfEe7SzHpipBo4SnQ0HVId0ZiIjncvzsCq-SIHQp5UxZAFi-4Aw3Ww.JPG
-
-  const StyledFab = styled(Fab)({
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-  });
-
-  const handleShowMore = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -137,32 +111,6 @@ export default function PhotoGrid() {
           filePath={filePath15}
         />
       </Grid>
-
-      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-        <Toolbar>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton
-            onClick={handleShowMore}
-            color="inherit"
-          >
-            <MoreIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={handleClose}>Tags</MenuItem>
-        <MenuItem onClick={handleClose}>Properties</MenuItem>
-      </Menu>
-
     </Box>
   );
 }
