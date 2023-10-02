@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch } from '../models';
+import { TedTaggerDispatch, deleteTag } from '../models';
 import { getSelectdMediaItems as getSelectedMediaItems } from '../selectors';
 import { ClientMediaItem } from '../types';
 
@@ -23,6 +23,7 @@ export interface TagsPropertyPanelPropsFromParent {
 
 export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent {
   selectedMediaItems: ClientMediaItem[],
+  onDeleteTagFromMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
 }
 
 const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
@@ -50,6 +51,7 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
 
   const handleDeleteTag = (tag: string | null) => {
     console.log('handleDeleteTag: ', tag);
+    props.onDeleteTagFromMediaItem(props.selectedMediaItems[0], tag as string);
   };
 
   const getRenderedDeleteIcon = (tag: string | null) => {
@@ -185,6 +187,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onDeleteTagFromMediaItem: deleteTag,
     // onLoadMediaItems: loadMediaItems,
   }, dispatch);
 };
