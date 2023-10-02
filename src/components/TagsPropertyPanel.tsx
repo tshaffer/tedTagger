@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, deleteTag } from '../models';
+import { TedTaggerDispatch, addTag, deleteTag } from '../models';
 import { getSelectdMediaItems as getSelectedMediaItems } from '../selectors';
 import { ClientMediaItem } from '../types';
 
@@ -23,6 +23,7 @@ export interface TagsPropertyPanelPropsFromParent {
 
 export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent {
   selectedMediaItems: ClientMediaItem[],
+  onAddTagToMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
   onDeleteTagFromMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
 }
 
@@ -77,6 +78,7 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
     existingTag: string | null,
   ) => {
     console.log('handleAutoCompleteChange');
+    props.onAddTagToMediaItem(props.selectedMediaItems[0], (selectedTag as TagOption).label);
   };
 
   const handleAutoCompleteInputChange = (
@@ -187,6 +189,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onAddTagToMediaItem: addTag,
     onDeleteTagFromMediaItem: deleteTag,
     // onLoadMediaItems: loadMediaItems,
   }, dispatch);
