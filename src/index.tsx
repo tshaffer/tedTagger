@@ -10,11 +10,12 @@ import thunkMiddleware from 'redux-thunk';
 import { rootReducer } from './models';
 
 import Home from './components/Home';
-import PhotoGrid from './components/PhotoGrid';
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+import {composeWithDevTools} from 'redux-devtools-extension';
+
 export const store = createStore(
-  rootReducer, /* preloadedState, */ composeEnhancers(
+  rootReducer, 
+  composeWithDevTools(
     applyMiddleware(thunkMiddleware)
   ));
 
