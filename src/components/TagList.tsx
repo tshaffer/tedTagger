@@ -3,12 +3,11 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch, addTag, deleteTag } from '../models';
-import { getSelectdMediaItems as getSelectedMediaItems } from '../selectors';
 import { ClientMediaItem } from '../types';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { Autocomplete, Button, IconButton, TextField } from '@mui/material';
+import { Autocomplete, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { isNil } from 'lodash';
 
@@ -19,7 +18,9 @@ interface TagOption {
 
 export interface TagListPropsPropsFromParent {
   mediaItem: ClientMediaItem,
+  tags: string[],
 }
+
 export interface TagListProps extends TagListPropsPropsFromParent {
   onAddTagToMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
   onDeleteTagFromMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
@@ -147,8 +148,7 @@ const TagList = (props: TagListProps) => {
 
     let listOfTags: JSX.Element[] = [];
 
-    const selectedClientMediaItem: ClientMediaItem = props.mediaItem;
-    listOfTags = selectedClientMediaItem.tags.map((tag: string) => {
+    listOfTags = props.tags.map((tag: string) => {
       return getRenderedTagSelect(tag);
     });
 
@@ -160,6 +160,8 @@ const TagList = (props: TagListProps) => {
 
   const renderedListOfTags = getRenderedListOfTags();
 
+  console.log('re-render tagList');
+
   return (
     <List>
       {renderedListOfTags}
@@ -170,14 +172,14 @@ const TagList = (props: TagListProps) => {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
-    // selectedMediaItems: getSelectedMediaItems(state),
+    tags: ownProps.tags,
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    // onAddTagToMediaItem: addTag,
-    // onDeleteTagFromMediaItem: deleteTag,
+    onAddTagToMediaItem: addTag,
+    onDeleteTagFromMediaItem: deleteTag,
   }, dispatch);
 };
 

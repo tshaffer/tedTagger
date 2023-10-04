@@ -2,12 +2,13 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch, addTag, deleteTag } from '../models';
-import { getSelectdMediaItems as getSelectedMediaItems } from '../selectors';
+import { getSelectedMediaItems } from '../selectors';
 import { ClientMediaItem } from '../types';
 
 import TagList from './TagList';
 
 import { Button } from '@mui/material';
+import { isNil } from 'lodash';
 
 export interface TagsPropertyPanelPropsFromParent {
   open: boolean;
@@ -16,8 +17,7 @@ export interface TagsPropertyPanelPropsFromParent {
 
 export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent {
   selectedMediaItems: ClientMediaItem[],
-  onAddTagToMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
-  onDeleteTagFromMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
+  tags: string[],
 }
 
 const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
@@ -30,27 +30,40 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
   if (props.selectedMediaItems.length !== 1) {
     return null;
   }
-  
+
   return (
     <div>
       <TagList
         mediaItem={props.selectedMediaItems[0]}
+        tags={props.tags}
       />
       <Button onClick={handleClose}>Close</Button>
     </div>
   );
 };
 
+const getTags = (mediaItem: ClientMediaItem): string[] => {
+  const tags: string[] = [];
+
+  if (!isNil(mediaItem)) {
+    mediaItem.tags.forEach((tag) => {
+      tags.push(tag);
+    });
+  }
+
+  return tags;
+};
+
 function mapStateToProps(state: any) {
+  const selectedMediaItems: ClientMediaItem[] = getSelectedMediaItems(state);
   return {
-    selectedMediaItems: getSelectedMediaItems(state),
+    selectedMediaItems,
+    tags: (selectedMediaItems.length === 1) ? getTags(selectedMediaItems[0]) : [],
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onAddTagToMediaItem: addTag,
-    onDeleteTagFromMediaItem: deleteTag,
   }, dispatch);
 };
 

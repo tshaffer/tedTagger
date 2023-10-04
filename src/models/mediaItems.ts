@@ -95,12 +95,16 @@ export const mediaItemsStateReducer = (
       return newState;
     }
     case DELETE_TAG: {
+      debugger;
       const newState = cloneDeep(state) as MediaItemsState;
       const specifiedMediaItem: ClientMediaItem = action.payload.mediaItem;
+      let index = 0;
       for (const mediaItem of newState.mediaItems) {
         if (mediaItem.googleId === specifiedMediaItem.googleId) {
           mediaItem.tags = mediaItem.tags.filter((tag) => tag !== action.payload.tag);
+          break;
         }
+        index++;
       }
       return newState;
     }

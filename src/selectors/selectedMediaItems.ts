@@ -6,7 +6,7 @@ import {
 
 import path from 'path-browserify';
 
-export const getSelectdMediaItems = (state: TedTaggerState): ClientMediaItem[] => {
+export const getSelectedMediaItems = (state: TedTaggerState): ClientMediaItem[] => {
   return state.selectionsState.mediaItems;
 };
 
