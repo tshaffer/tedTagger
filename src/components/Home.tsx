@@ -36,6 +36,10 @@ const Home = (props: HomeProps) => {
     props.onLoadMediaItems();
   }, []);
 
+  // return (
+  //   <div>Loading...</div>
+  // );
+
   if (isNil(props.mediaItems) || props.mediaItems.length === 0) {
     return (
       <div>Loading...</div>
