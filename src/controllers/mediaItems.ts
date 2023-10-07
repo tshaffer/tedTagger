@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTag, deleteTag } from '../models';
-import { serverUrl, apiUrlFragment, ServerMediaItem, ClientMediaItem } from '../types';
+import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
@@ -12,15 +12,15 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
 
-        const clientMediaItems: ClientMediaItem[] = [];
+        const mediaItems: MediaItem[] = [];
         const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
         console.log(mediaItemEntitiesFromServer);
 
-        // derive clientMediaItems from serverMediaItems
+        // derive mediaItems from serverMediaItems
         for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
-          
-          const clientMediaItem: any = cloneDeep(mediaItemEntityFromServer);
-          (clientMediaItem as ClientMediaItem).tags = [];
+
+          const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
+          (mediaItem as MediaItem).tags = [];
 
           const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
           if (description.startsWith('TedTag-')) {
@@ -28,34 +28,34 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
             const tagsSpec: string = description.substring('TedTag-'.length);
             const tags: string[] = tagsSpec.split(':');
             if (tags.length > 0) {
-              (clientMediaItem as ClientMediaItem).tags = tags;
+              (mediaItem as MediaItem).tags = tags;
             }
           }
 
           if (!isNil(mediaItemEntityFromServer.people)) {
             for (const person of mediaItemEntityFromServer.people) {
-              (clientMediaItem as ClientMediaItem).tags.push(person.name);
+              (mediaItem as MediaItem).tags.push(person.name);
             }
           }
 
-          clientMediaItems.push(clientMediaItem as ClientMediaItem);
-    
+          mediaItems.push(mediaItem as MediaItem);
+
         }
 
-        dispatch(addMediaItems(clientMediaItems));
+        dispatch(addMediaItems(mediaItems));
 
         console.log(getState().mediaItemsState.mediaItems);
       });
   };
 };
 
-export const addTagToMediaItem = (mediaItem: ClientMediaItem, tag: string): any => {
+export const addTagToMediaItem = (mediaItem: MediaItem, tag: string): any => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
     dispatch(addTag(mediaItem, tag));
   };
 };
 
-export const deleteTagFromMediaItem = (mediaItem: ClientMediaItem, tag: string): any => {
+export const deleteTagFromMediaItem = (mediaItem: MediaItem, tag: string): any => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
     dispatch(deleteTag(mediaItem, tag));
   };

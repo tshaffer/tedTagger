@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { getMediaItem, getSelectedMediaItemIds } from '../selectors';
-import { ClientMediaItem } from '../types';
+import { MediaItem } from '../types';
 
 import TagList from './TagList';
 
@@ -42,7 +42,7 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
   );
 };
 
-const getTags = (mediaItem: ClientMediaItem): string[] => {
+const getTags = (mediaItem: MediaItem): string[] => {
   const tags: string[] = [];
 
   if (!isNil(mediaItem)) {
@@ -56,10 +56,10 @@ const getTags = (mediaItem: ClientMediaItem): string[] => {
 
 function mapStateToProps(state: any) {
   const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
-  const selectedMediaItem: ClientMediaItem | null = selectedMediaItemIds.length === 0 ? null : getMediaItem(state, selectedMediaItemIds[0]);
+  const selectedMediaItem: MediaItem | null = selectedMediaItemIds.length === 0 ? null : getMediaItem(state, selectedMediaItemIds[0]);
   return {
     selectedMediaItemIds,
-    tags: (selectedMediaItemIds.length === 1 || isNil(selectedMediaItem)) ? getTags(selectedMediaItem as ClientMediaItem) : [],
+    tags: (selectedMediaItemIds.length === 1 || isNil(selectedMediaItem)) ? getTags(selectedMediaItem as MediaItem) : [],
   };
 }
 

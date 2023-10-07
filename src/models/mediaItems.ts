@@ -1,6 +1,6 @@
 import { cloneDeep, isNil } from 'lodash';
 
-import { ClientMediaItem, MediaItemsState } from '../types';
+import { MediaItem, MediaItemsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -15,11 +15,11 @@ export const DELETE_TAG = 'DELETE_TAG';
 // ------------------------------------
 
 interface AddMediaItemsPayload {
-  mediaItems: ClientMediaItem[];
+  mediaItems: MediaItem[];
 }
 
 export const addMediaItems = (
-  mediaItems: ClientMediaItem[],
+  mediaItems: MediaItem[],
 ): any => {
   return {
     type: ADD_MEDIA_ITEMS,
@@ -30,12 +30,12 @@ export const addMediaItems = (
 };
 
 interface AddTagPayload {
-  mediaItem: ClientMediaItem;
+  mediaItem: MediaItem;
   tag: string;
 }
 
 export const addTag = (
-  mediaItem: ClientMediaItem,
+  mediaItem: MediaItem,
   tag: string,
 ): any => {
   return {
@@ -48,12 +48,12 @@ export const addTag = (
 };
 
 interface DeleteTagPayload {
-  mediaItem: ClientMediaItem;
+  mediaItem: MediaItem;
   tag: string;
 }
 
 export const deleteTag = (
-  mediaItem: ClientMediaItem,
+  mediaItem: MediaItem,
   tag: string,
 ): any => {
   return {
@@ -86,7 +86,7 @@ export const mediaItemsStateReducer = (
     }
     case ADD_TAG: {
       const newState = cloneDeep(state) as MediaItemsState;
-      const specifiedMediaItem: ClientMediaItem = action.payload.mediaItem;
+      const specifiedMediaItem: MediaItem = action.payload.mediaItem;
       for (const mediaItem of newState.mediaItems) {
         if (mediaItem.googleId === specifiedMediaItem.googleId) {
           mediaItem.tags.push(action.payload.tag);
@@ -96,7 +96,7 @@ export const mediaItemsStateReducer = (
     }
     case DELETE_TAG: {
       const newState = cloneDeep(state) as MediaItemsState;
-      const specifiedMediaItem: ClientMediaItem = action.payload.mediaItem;
+      const specifiedMediaItem: MediaItem = action.payload.mediaItem;
       let index = 0;
       for (const mediaItem of newState.mediaItems) {
         if (mediaItem.googleId === specifiedMediaItem.googleId) {

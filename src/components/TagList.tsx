@@ -3,7 +3,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch, addTag, deleteTag } from '../models';
-import { ClientMediaItem } from '../types';
+import { MediaItem } from '../types';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -23,9 +23,9 @@ export interface TagListPropsPropsFromParent {
 }
 
 export interface TagListProps extends TagListPropsPropsFromParent {
-  mediaItem: ClientMediaItem,
-  onAddTagToMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
-  onDeleteTagFromMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
+  mediaItem: MediaItem,
+  onAddTagToMediaItem: (mediaItem: MediaItem, tag: string) => any;
+  onDeleteTagFromMediaItem: (mediaItem: MediaItem, tag: string) => any;
 }
 
 const TagList = (props: TagListProps) => {
@@ -174,7 +174,7 @@ const TagList = (props: TagListProps) => {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItemId: ownProps.mediaItem,
-    mediaItem: getMediaItem(state, ownProps.mediaItemId),
+    mediaItem: getMediaItem(state, ownProps.mediaItemId) as MediaItem,
     tags: ownProps.tags,
   };
 }

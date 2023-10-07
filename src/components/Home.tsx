@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { ClientMediaItem } from '../types';
+import { MediaItem } from '../types';
 import { loadMediaItems } from '../controllers/mediaItems';
 import { TedTaggerDispatch } from '../models';
 import { getMediaItems } from '../selectors';
@@ -21,7 +21,7 @@ import Fab from '@mui/material/Fab';
 import TagsPropertyPanel from './TagsPropertyPanel';
 
 export interface HomeProps {
-  mediaItems: ClientMediaItem[],
+  mediaItems: MediaItem[],
   onLoadMediaItems: () => any;
 }
 

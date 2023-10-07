@@ -28,7 +28,7 @@ export interface ServerMediaItem {
   people?: ServerPerson[],
 }
 
-export interface ClientMediaItem {
+export interface MediaItem {
   googleId: string,
   fileName: string,
   albumId: string;
