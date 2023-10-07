@@ -19,16 +19,3 @@ export const getMediaItem = (state: TedTaggerState, googleId: string): MediaItem
 
   return null;
 };
-
-export const getMediaItemByFilePath = (state: TedTaggerState, filePath: string): MediaItem | null => {
-
-  const incomingMediaItemBaseName: string = path.basename(filePath);
-
-  for (const mediaItem of state.mediaItemsState.mediaItems) {
-    if (path.basename(mediaItem.filePath!) === incomingMediaItemBaseName) {
-      return mediaItem;
-    }
-  }
-
-  return null;
-};

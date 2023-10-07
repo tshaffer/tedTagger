@@ -1,20 +1,15 @@
 import {
   MediaItem,
-  MediaItemsState,
   TedTaggerState
 } from '../types';
 
-import path from 'path-browserify';
-import { getMediaItem, getMediaItemByFilePath } from './mediaItems';
+import { getMediaItem } from './mediaItems';
 
 export const getSelectedMediaItemIds = (state: TedTaggerState): string[] => {
   return state.selectionsState.selectedMediaItemIds;
 };
 
-export const isMediaItemSelected = (state: TedTaggerState, filePath: string): boolean => {
-
-  const incomingMediaItemBaseName: string = path.basename(filePath);
-  const mediaItem: MediaItem | null = getMediaItemByFilePath(state, filePath);
+export const isMediaItemSelected = (state: TedTaggerState, mediaItem: MediaItem): boolean => {
 
   const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
   for (const selectedMediaItemId of selectedMediaItemIds) {

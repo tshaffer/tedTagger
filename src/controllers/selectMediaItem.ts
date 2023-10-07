@@ -1,26 +1,10 @@
 
-import { isString } from 'lodash';
-import { getMediaItems } from '../selectors';
 import { TedTaggerDispatch, toggleMediaItemSelection } from '../models';
-import { MediaItem, TedTaggerState } from '../types';
+import { MediaItem } from '../types';
 
-import path from 'path-browserify';
 
-export const toggleMediaItemSelectionAction = (mediaItemFilePath: string): any => {
+export const toggleMediaItemSelectionAction = (mediaItem: MediaItem): any => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
-
-    const incomingMediaItemBaseName: string = path.basename(mediaItemFilePath);
-
-    const mediaItems: MediaItem[] = getMediaItems(getState());
-    mediaItems.forEach((mediaItem: MediaItem) => {
-      if (isString(mediaItem.filePath)) {
-        const mediaItemBaseName: string = path.basename(mediaItem.filePath);
-        if (incomingMediaItemBaseName === mediaItemBaseName) {
-          dispatch(toggleMediaItemSelection(mediaItem.googleId));
-          const state: TedTaggerState = getState();
-          console.log(state.selectionsState);
-        }
-      }
-    });
+    dispatch(toggleMediaItemSelection(mediaItem.googleId));
   };
 };

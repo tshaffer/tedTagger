@@ -28,27 +28,29 @@ export interface PhotoPropsFromParent {
 
 export interface PhotoProps extends PhotoPropsFromParent {
   isSelected: boolean;
-  onToggleMediaItemSelection: (fielPath: string) => any;
+  onToggleMediaItemSelection: (mediaItem: MediaItem) => any;
 }
 
 function Photo(props: PhotoProps) {
 
-  const toggledPhotoSelected = (event: React.ChangeEvent<HTMLInputElement>, filePath: string) => {
-    console.log('togglePhotoSelected');
-    console.log(event.target.checked);
-    console.log(filePath);
-    props.onToggleMediaItemSelection(filePath);
+  const getFileUrl = (): string => {
+    const basename: string = path.basename(props.mediaItem.filePath!);
+    const numChars = basename.length;
+    const filePath = path.join(
+      '/images',
+      basename.charAt(numChars - 6),
+      basename.charAt(numChars - 5),
+      basename,
+    );
+    return filePath;
   };
 
-  const basename: string = path.basename(props.mediaItem.filePath!);
-  const numChars = basename.length;
-  const filePath = path.join(
-    '/images',
-    basename.charAt(numChars - 6),
-    basename.charAt(numChars - 5),
-    basename,
-  );
-  
+  const toggledPhotoSelected = () => {
+    props.onToggleMediaItemSelection(props.mediaItem);
+  };
+
+  const filePath = getFileUrl();
+
   return (
     <Grid xs={3}>
       <Card
@@ -65,7 +67,7 @@ function Photo(props: PhotoProps) {
           <FormControlLabel
             control={
               <Checkbox
-                onChange={(event) => toggledPhotoSelected(event, filePath)}
+                onChange={toggledPhotoSelected}
                 checked={props.isSelected}
               />
             }
@@ -81,7 +83,7 @@ function Photo(props: PhotoProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
-    isSelected: isMediaItemSelected(state, ownProps.mediaItem.filePath),
+    isSelected: isMediaItemSelected(state, ownProps.mediaItem),
   };
 }
 
