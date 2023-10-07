@@ -34,7 +34,7 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
   return (
     <div>
       <TagList
-        mediaItem={props.selectedMediaItemIds[0]}
+        mediaItemId={props.selectedMediaItemIds[0]}
         tags={props.tags}
       />
       <Button onClick={handleClose}>Close</Button>

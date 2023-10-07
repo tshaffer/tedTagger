@@ -95,7 +95,6 @@ export const mediaItemsStateReducer = (
       return newState;
     }
     case DELETE_TAG: {
-      debugger;
       const newState = cloneDeep(state) as MediaItemsState;
       const specifiedMediaItem: ClientMediaItem = action.payload.mediaItem;
       let index = 0;

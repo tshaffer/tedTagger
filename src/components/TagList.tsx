@@ -10,6 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import { Autocomplete, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { isNil } from 'lodash';
+import { getMediaItem } from '../selectors';
 
 interface TagOption {
   value: string | null;
@@ -17,11 +18,12 @@ interface TagOption {
 }
 
 export interface TagListPropsPropsFromParent {
-  mediaItem: ClientMediaItem,
+  mediaItemId: string,
   tags: string[],
 }
 
 export interface TagListProps extends TagListPropsPropsFromParent {
+  mediaItem: ClientMediaItem,
   onAddTagToMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
   onDeleteTagFromMediaItem: (mediaItem: ClientMediaItem, tag: string) => any;
 }
@@ -171,7 +173,8 @@ const TagList = (props: TagListProps) => {
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
-    mediaItem: ownProps.mediaItem,
+    mediaItemId: ownProps.mediaItem,
+    mediaItem: getMediaItem(state, ownProps.mediaItemId),
     tags: ownProps.tags,
   };
 }
