@@ -20,6 +20,6 @@ export interface MediaItemsState {
 }
 
 export interface SelectedMediaItemsState {
-  mediaItems: ClientMediaItem[];
+  selectedMediaItemIds: string[];
 }
 

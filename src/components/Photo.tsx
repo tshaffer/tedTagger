@@ -66,13 +66,11 @@ function Photo(props: PhotoProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     isSelected: isMediaItemSelected(state, ownProps.filePath),
-    // mediaItems: getMediaItems(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    // onLoadMediaItems: loadMediaItems,
     onToggleMediaItemSelection: toggleMediaItemSelectionAction,
   }, dispatch);
 };

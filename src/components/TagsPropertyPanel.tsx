@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, addTag, deleteTag } from '../models';
-import { getSelectedMediaItems } from '../selectors';
+import { TedTaggerDispatch } from '../models';
+import { getMediaItem, getSelectedMediaItemIds } from '../selectors';
 import { ClientMediaItem } from '../types';
 
 import TagList from './TagList';
@@ -16,7 +16,7 @@ export interface TagsPropertyPanelPropsFromParent {
 }
 
 export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent {
-  selectedMediaItems: ClientMediaItem[],
+  selectedMediaItemIds: string[],
   tags: string[],
 }
 
@@ -27,14 +27,14 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
     props.onClose();
   };
 
-  if (props.selectedMediaItems.length !== 1) {
+  if (props.selectedMediaItemIds.length !== 1) {
     return null;
   }
 
   return (
     <div>
       <TagList
-        mediaItem={props.selectedMediaItems[0]}
+        mediaItem={props.selectedMediaItemIds[0]}
         tags={props.tags}
       />
       <Button onClick={handleClose}>Close</Button>
@@ -55,10 +55,11 @@ const getTags = (mediaItem: ClientMediaItem): string[] => {
 };
 
 function mapStateToProps(state: any) {
-  const selectedMediaItems: ClientMediaItem[] = getSelectedMediaItems(state);
+  const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
+  const selectedMediaItem: ClientMediaItem | null = selectedMediaItemIds.length === 0 ? null : getMediaItem(state, selectedMediaItemIds[0]);
   return {
-    selectedMediaItems,
-    tags: (selectedMediaItems.length === 1) ? getTags(selectedMediaItems[0]) : [],
+    selectedMediaItemIds,
+    tags: (selectedMediaItemIds.length === 1 || isNil(selectedMediaItem)) ? getTags(selectedMediaItem as ClientMediaItem) : [],
   };
 }
 

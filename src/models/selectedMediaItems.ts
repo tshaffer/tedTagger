@@ -1,6 +1,6 @@
-import { cloneDeep, isNil } from 'lodash';
+import { cloneDeep } from 'lodash';
 
-import { ClientMediaItem, MediaItemsState, SelectedMediaItemsState } from '../types';
+import { SelectedMediaItemsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -13,16 +13,16 @@ export const TOGGLE_MEDIA_ITEM_SELECTION = 'TOGGLE_MEDIA_ITEM_SELECTION';
 // ------------------------------------
 
 interface ToggleMediaItemSelectionPayload {
-  mediaItem: ClientMediaItem;
+  googleId: string;
 }
 
 export const toggleMediaItemSelection = (
-  mediaItem: ClientMediaItem,
+  googleId: string,
 ): any => {
   return {
     type: TOGGLE_MEDIA_ITEM_SELECTION,
     payload: {
-      mediaItem
+      googleId
     }
   };
 };
@@ -33,21 +33,21 @@ export const toggleMediaItemSelection = (
 
 const initialState: SelectedMediaItemsState =
 {
-  mediaItems: [],
+  selectedMediaItemIds: [],
 };
 
 export const selectedMediaItemsStateReducer = (
-  state: MediaItemsState = initialState,
+  state: SelectedMediaItemsState = initialState,
   action: TedTaggerModelBaseAction<ToggleMediaItemSelectionPayload>
-): MediaItemsState => {
+): SelectedMediaItemsState => {
   switch (action.type) {
     case TOGGLE_MEDIA_ITEM_SELECTION: {
       const newState = cloneDeep(state) as SelectedMediaItemsState;
-      const index: number = newState.mediaItems.findIndex((element: ClientMediaItem) => element.googleId === action.payload.mediaItem.googleId);
+      const index: number = newState.selectedMediaItemIds.findIndex((element: string) => element === action.payload.googleId);
       if (index < 0) {
-        newState.mediaItems.push(action.payload.mediaItem);
+        newState.selectedMediaItemIds.push(action.payload.googleId);
       } else {
-        newState.mediaItems.splice(index, 1);
+        newState.selectedMediaItemIds.splice(index, 1);
       }
       return newState;
     }

@@ -16,7 +16,7 @@ export const toggleMediaItemSelectionAction = (mediaItemFilePath: string): any =
       if (isString(mediaItem.filePath)) {
         const mediaItemBaseName: string = path.basename(mediaItem.filePath);
         if (incomingMediaItemBaseName === mediaItemBaseName) {
-          dispatch(toggleMediaItemSelection(mediaItem));
+          dispatch(toggleMediaItemSelection(mediaItem.googleId));
           const state: TedTaggerState = getState();
           console.log(state.selectionsState);
         }
