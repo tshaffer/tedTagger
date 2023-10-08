@@ -16,9 +16,8 @@ import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
 
 import MoreIcon from '@mui/icons-material/MoreVert';
 
-import { styled } from '@mui/material/styles';
-import Fab from '@mui/material/Fab';
 import TagsPropertyPanel from './TagsPropertyPanel';
+import TagManager from './TagManager';
 import { loadTags } from '../controllers';
 
 export interface HomeProps {
@@ -30,6 +29,7 @@ export interface HomeProps {
 const Home = (props: HomeProps) => {
 
   const [sheetOpen, setSheetOpen] = React.useState(false);
+  const [drawerContents, setDrawerContents] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -50,15 +50,6 @@ const Home = (props: HomeProps) => {
     );
   }
 
-  const StyledFab = styled(Fab)({
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-  });
-
   const handleShowMore = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -68,10 +59,38 @@ const Home = (props: HomeProps) => {
     setAnchorEl(null);
   };
 
-  const handleShowTags = () => {
+  const handleShowAssignTags = () => {
+    setDrawerContents('AssignTags');
     setSheetOpen(true);
     setAnchorEl(null);
   };
+
+  const handleShowTagManager = () => {
+    setDrawerContents('TagManager');
+    setSheetOpen(true);
+    setAnchorEl(null);
+  };
+
+  const getDrawerContents = (): JSX.Element => {
+    if (drawerContents === 'AssignTags') {
+      return (
+        <TagsPropertyPanel
+          open={sheetOpen}
+          onClose={handleClose}
+        />
+      );
+      // } else if (drawerContents === 'TagManager') {
+    } else {
+      return (
+        <TagManager
+          open={sheetOpen}
+          onClose={handleClose}
+        />
+      );
+    }
+  };
+
+  const drawerContentElement: JSX.Element = getDrawerContents();
 
   return (
     <div style={{ height: '100vh' }}>
@@ -84,10 +103,7 @@ const Home = (props: HomeProps) => {
         variant="persistent"
         anchor="right"
       >
-        <TagsPropertyPanel
-          open={sheetOpen}
-          onClose={handleClose}
-        />
+        {drawerContentElement}
       </Drawer>
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
@@ -110,7 +126,8 @@ const Home = (props: HomeProps) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleShowTags}>Tags</MenuItem>
+        <MenuItem onClick={handleShowAssignTags}>Edit Tags</MenuItem>
+        <MenuItem onClick={handleShowTagManager}>Tag Manager</MenuItem>
         <MenuItem onClick={handleClose}>Properties</MenuItem>
       </Menu>
     </div>
