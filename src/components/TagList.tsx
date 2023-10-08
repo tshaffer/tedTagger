@@ -3,7 +3,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch, addTagToMediaItem, deleteTag } from '../models';
-import { MediaItem } from '../types';
+import { MediaItem, Tag } from '../types';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -13,51 +13,46 @@ import { isNil } from 'lodash';
 import { getMediaItem } from '../selectors';
 
 interface TagOption {
-  value: string | null;
+  // value: string | null;
+  value: Tag | null;
   label: string;
 }
 
 export interface TagListPropsPropsFromParent {
   mediaItemId: string,
-  tags: string[],
+  tags: Tag[],
 }
 
 export interface TagListProps extends TagListPropsPropsFromParent {
   mediaItem: MediaItem,
-  onAddTagToMediaItem: (mediaItem: MediaItem, tag: string) => any;
-  onDeleteTagFromMediaItem: (mediaItem: MediaItem, tag: string) => any;
+  onAddTagToMediaItem: (mediaItem: MediaItem, tag: Tag) => any;
+  onDeleteTagFromMediaItem: (mediaItem: MediaItem, tag: Tag) => any;
 }
 
 const TagList = (props: TagListProps) => {
 
-  let tagOptions: TagOption[] = [];
-  tagOptions = [
-    {
-      value: 'Sam',
-      label: 'Sam',
-    },
-    {
-      value: 'Joel',
-      label: 'Joel',
-    },
-    {
-      value: 'Rachel',
-      label: 'Rachel',
-    },
-  ];
+  const tagOptions: TagOption[] = [];
+  props.tags.forEach((tag: Tag) => {
+    tagOptions.push({
+      value: tag,
+      label: tag.label,
+    });
+  });
 
-  const handleDeleteTag = (tag: string | null) => {
+  const handleDeleteTag = (tag: Tag | null) => {
     console.log('handleDeleteTag: ', tag);
-    props.onDeleteTagFromMediaItem(props.mediaItem, tag as string);
+    if (!isNil(tag)) {
+      props.onDeleteTagFromMediaItem(props.mediaItem, tag);
+    }
   };
 
-  const getRenderedDeleteIcon = (tag: string | null) => {
+  const getRenderedDeleteIcon = (tag: Tag | null) => {
     if (isNil(tag)) {
       return null;
     }
     return (
       <IconButton
-        id={tag}
+        id={tag.id}
         onClick={() => handleDeleteTag(tag)}
       >
         <DeleteIcon />
@@ -71,10 +66,12 @@ const TagList = (props: TagListProps) => {
 
   const handleAutoCompleteChange = (
     selectedTag: TagOption | string | null,
-    existingTag: string | null,
+    existingTag: Tag | string | null,
   ) => {
     console.log('handleAutoCompleteChange');
-    props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).label);
+    console.log(selectedTag);
+    console.log(existingTag);
+    // props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).label);
   };
 
   const handleAutoCompleteInputChange = (
@@ -107,7 +104,7 @@ const TagList = (props: TagListProps) => {
     return option.value.id === value.value.id;
   };
 
-  const getTagListItem = (tagOption: TagOption, id: string, tag: string | null) => {
+  const getTagListItem = (tagOption: TagOption, id: string, tag: Tag | null) => {
     const renderedDeleteIcon = getRenderedDeleteIcon(tag);
     return (
       <ListItem key={id}>
@@ -136,9 +133,9 @@ const TagList = (props: TagListProps) => {
     );
   };
 
-  const getRenderedTagSelect = (tag: string): JSX.Element => {
-    const ingredientOption: TagOption = { value: tag, label: tag };
-    return getTagListItem(ingredientOption, tag, tag);
+  const getRenderedTagSelect = (tag: Tag): JSX.Element => {
+    const ingredientOption: TagOption = { value: tag, label: tag.label };
+    return getTagListItem(ingredientOption, tag.id, tag);
   };
 
   const getPlaceholderSelect = (): JSX.Element => {
@@ -146,11 +143,11 @@ const TagList = (props: TagListProps) => {
     return getTagListItem(tagOption, 'placeholder', null);
   };
 
-  const getRenderedListOfTags = () => {
+  const getRenderedListOfTags = (): JSX.Element[] => {
 
     let listOfTags: JSX.Element[] = [];
 
-    listOfTags = props.tags.map((tag: string) => {
+    listOfTags = props.tags.map((tag: Tag) => {
       return getRenderedTagSelect(tag);
     });
 

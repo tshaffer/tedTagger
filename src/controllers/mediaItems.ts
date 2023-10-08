@@ -1,12 +1,16 @@
 import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItem, deleteTag } from '../models';
-import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem } from '../types';
+import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState } from '../types';
 import { cloneDeep, isNil } from 'lodash';
+import { getTableBodyUtilityClass } from '@mui/material';
+import { getTagByLabel } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
+    const state: TedTaggerState = getState();
+    
     const path = serverUrl + apiUrlFragment + 'mediaItems';
 
     return axios.get(path)
@@ -25,15 +29,21 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
           if (description.startsWith('TedTag-')) {
             // mediaItem includes one or more tags
             const tagsSpec: string = description.substring('TedTag-'.length);
-            const tags: string[] = tagsSpec.split(':');
-            if (tags.length > 0) {
-              (mediaItem as MediaItem).tags = tags;
-            }
+            const tagLabels: string[] = tagsSpec.split(':');
+            tagLabels.forEach((tagLabel: string) => {
+              const tag: Tag | null = getTagByLabel(state, tagLabel);
+              if (!isNil(tag)) {
+                (mediaItem as MediaItem).tags.push(tag);
+              }
+            });
           }
 
           if (!isNil(mediaItemEntityFromServer.people)) {
             for (const person of mediaItemEntityFromServer.people) {
-              (mediaItem as MediaItem).tags.push(person.name);
+              const tag: Tag | null = getTagByLabel(state, person.name);
+              if (!isNil(tag)) {
+                (mediaItem as MediaItem).tags.push(tag);
+              }
             }
           }
 
@@ -47,7 +57,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   };
 };
 
-export const deleteTagFromMediaItem = (mediaItem: MediaItem, tag: string): any => {
+export const deleteTagFromMediaItem = (mediaItem: MediaItem, tag: Tag): any => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
     dispatch(deleteTag(mediaItem, tag));
   };

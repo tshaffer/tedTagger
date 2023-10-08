@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { getMediaItem, getSelectedMediaItemIds } from '../selectors';
-import { MediaItem } from '../types';
+import { MediaItem, Tag } from '../types';
 
 import TagList from './TagList';
 
@@ -17,7 +17,7 @@ export interface TagsPropertyPanelPropsFromParent {
 
 export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent {
   selectedMediaItemIds: string[],
-  tags: string[],
+  tags: Tag[],
 }
 
 const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
@@ -42,8 +42,8 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
   );
 };
 
-const getTags = (mediaItem: MediaItem): string[] => {
-  const tags: string[] = [];
+const getTags = (mediaItem: MediaItem): Tag[] => {
+  const tags: Tag[] = [];
 
   if (!isNil(mediaItem)) {
     mediaItem.tags.forEach((tag) => {

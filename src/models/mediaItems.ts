@@ -1,6 +1,6 @@
 import { cloneDeep, isNil } from 'lodash';
 
-import { MediaItem, MediaItemsState } from '../types';
+import { MediaItem, MediaItemsState, Tag } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -31,12 +31,12 @@ export const addMediaItems = (
 
 interface AddTagToMediaItemPayload {
   mediaItem: MediaItem;
-  tag: string;
+  tag: Tag;
 }
 
 export const addTagToMediaItem = (
   mediaItem: MediaItem,
-  tag: string,
+  tag: Tag,
 ): any => {
   return {
     type: ADD_TAG_TO_MEDIA_ITEM,
@@ -49,12 +49,12 @@ export const addTagToMediaItem = (
 
 interface DeleteTagPayload {
   mediaItem: MediaItem;
-  tag: string;
+  tag: Tag;
 }
 
 export const deleteTag = (
   mediaItem: MediaItem,
-  tag: string,
+  tag: Tag,
 ): any => {
   return {
     type: DELETE_TAG,
@@ -100,7 +100,7 @@ export const mediaItemsStateReducer = (
       let index = 0;
       for (const mediaItem of newState.mediaItems) {
         if (mediaItem.googleId === specifiedMediaItem.googleId) {
-          mediaItem.tags = mediaItem.tags.filter((tag) => tag !== action.payload.tag);
+          mediaItem.tags = mediaItem.tags.filter((tag) => tag.id !== action.payload.tag.id);
           break;
         }
         index++;
