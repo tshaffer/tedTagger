@@ -1,4 +1,10 @@
 import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
@@ -16,8 +22,28 @@ export interface TagManagerProps extends TagManagerPropsFromParent {
 
 const TagManager = (props: TagManagerProps) => {
 
+  const getListItems = (): JSX.Element[] => {
+    const listItems = props.tags.map((tag: Tag) => {
+      return (
+        <ListItem key={tag.id}>
+          <ListItemText id={tag.id} primary={tag.label}/>
+        </ListItem>
+      );
+    });
+
+    return listItems;
+  };
+
+  if (props.tags.length === 0) {
+    return null;
+  }
+
+  const listItems: JSX.Element[] = getListItems();
+
   return (
-    <div>pizza</div>
+    <div>
+      {listItems}
+    </div>
   );
 };
 
@@ -34,3 +60,66 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(TagManager);
 
+/*
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import Switch from '@mui/material/Switch';
+import WifiIcon from '@mui/icons-material/Wifi';
+import BluetoothIcon from '@mui/icons-material/Bluetooth';
+
+export default function SwitchListSecondary() {
+  const [checked, setChecked] = React.useState(['wifi']);
+
+  const handleToggle = (value: string) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
+
+  return (
+    <List
+      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+      subheader={<ListSubheader>Settings</ListSubheader>}
+    >
+      <ListItem>
+        <ListItemIcon>
+          <WifiIcon />
+        </ListItemIcon>
+        <ListItemText id="switch-list-label-wifi" primary="Wi-Fi" />
+        <Switch
+          edge="end"
+          onChange={handleToggle('wifi')}
+          checked={checked.indexOf('wifi') !== -1}
+          inputProps={{
+            'aria-labelledby': 'switch-list-label-wifi',
+          }}
+        />
+      </ListItem>
+      <ListItem>
+        <ListItemIcon>
+          <BluetoothIcon />
+        </ListItemIcon>
+        <ListItemText id="switch-list-label-bluetooth" primary="Bluetooth" />
+        <Switch
+          edge="end"
+          onChange={handleToggle('bluetooth')}
+          checked={checked.indexOf('bluetooth') !== -1}
+          inputProps={{
+            'aria-labelledby': 'switch-list-label-bluetooth',
+          }}
+        />
+      </ListItem>
+    </List>
+  );
+}*/
