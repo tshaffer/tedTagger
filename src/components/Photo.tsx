@@ -52,7 +52,7 @@ function Photo(props: PhotoProps) {
   const filePath = getFileUrl();
 
   return (
-    <Grid xs={3}>
+    <Grid item xs={3}>
       <Card
         sx={cardStyle}
       >

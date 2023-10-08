@@ -10,12 +10,8 @@ export const loadTags = (): TedTaggerAnyPromiseThunkAction => {
 
     return axios.get(path)
       .then((tagsResponse: any) => {
-
         const tags: Tag[] = (tagsResponse as any).data;
-        console.log(tags);
         dispatch(addTags(tags));
-
-        console.log(getState().tagsState.tags);
       });
   };
 };

@@ -34,7 +34,6 @@ const Home = (props: HomeProps) => {
   const open = Boolean(anchorEl);
 
   React.useEffect(() => {
-    console.log('React.useEffect');
     props.onLoadMediaItems();
     props.onLoadTags();
   }, []);

@@ -14,7 +14,6 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
         const mediaItems: MediaItem[] = [];
         const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
-        console.log(mediaItemEntitiesFromServer);
 
         // derive mediaItems from serverMediaItems
         for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
@@ -44,7 +43,6 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
         dispatch(addMediaItems(mediaItems));
 
-        console.log(getState().mediaItemsState.mediaItems);
       });
   };
 };
