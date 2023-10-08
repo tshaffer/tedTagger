@@ -19,10 +19,12 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 import Fab from '@mui/material/Fab';
 import TagsPropertyPanel from './TagsPropertyPanel';
+import { loadTags } from '../controllers';
 
 export interface HomeProps {
   mediaItems: MediaItem[],
   onLoadMediaItems: () => any;
+  onLoadTags: () => any;
 }
 
 const Home = (props: HomeProps) => {
@@ -34,6 +36,7 @@ const Home = (props: HomeProps) => {
   React.useEffect(() => {
     console.log('React.useEffect');
     props.onLoadMediaItems();
+    props.onLoadTags();
   }, []);
 
   // return (
@@ -123,6 +126,7 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onLoadMediaItems: loadMediaItems,
+    onLoadTags: loadTags,
   }, dispatch);
 };
 

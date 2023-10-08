@@ -8,7 +8,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const ADD_TAGS = 'ADD_TAGS';
 export const ADD_TAG = 'ADD_TAG';
-export const DELETE_TAG = 'DELETE_TAG';
+// export const DELETE_TAG = 'DELETE_TAG';
 
 // ------------------------------------
 // Actions
@@ -44,20 +44,20 @@ export const addTag = (
   };
 };
 
-interface DeleteTagPayload {
-  tag: Tag;
-}
+// interface DeleteTagPayload {
+//   tag: Tag;
+// }
 
-export const deleteTag = (
-  tag: Tag,
-): any => {
-  return {
-    type: DELETE_TAG,
-    payload: {
-      tag,
-    }
-  };
-};
+// export const deleteTag = (
+//   tag: Tag,
+// ): any => {
+//   return {
+//     type: DELETE_TAG,
+//     payload: {
+//       tag,
+//     }
+//   };
+// };
 
 // ------------------------------------
 // Reducer
@@ -70,12 +70,13 @@ const initialState: TagsState =
 
 export const tagsStateReducer = (
   state: TagsState = initialState,
-  action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload & DeleteTagPayload>
+  // action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload & DeleteTagPayload>
+  action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload>
 ): TagsState => {
   switch (action.type) {
     case ADD_TAGS: {
       const newState = cloneDeep(state) as TagsState;
-      newState.tags = newState.tags.concat(action.payload.tag);
+      newState.tags = newState.tags.concat(action.payload.tags);
       return newState;
     }
     case ADD_TAG: {
@@ -83,11 +84,11 @@ export const tagsStateReducer = (
       newState.tags.push(action.payload.tag);
       return newState;
     }
-    case DELETE_TAG: {
-      const newState = cloneDeep(state) as TagsState;
-      debugger;
-      return newState;
-    }
+    // case DELETE_TAG: {
+    //   const newState = cloneDeep(state) as TagsState;
+    //   debugger;
+    //   return newState;
+    // }
 
     default:
       return state;
