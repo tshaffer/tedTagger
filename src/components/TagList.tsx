@@ -10,7 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import { Autocomplete, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { isNil } from 'lodash';
-import { getMediaItem } from '../selectors';
+import { getAllTags, getMediaItem } from '../selectors';
 
 interface TagOption {
   // value: string | null;
@@ -24,6 +24,7 @@ export interface TagListPropsPropsFromParent {
 }
 
 export interface TagListProps extends TagListPropsPropsFromParent {
+  allTags: Tag[],
   mediaItem: MediaItem,
   onAddTagToMediaItem: (mediaItem: MediaItem, tag: Tag) => any;
   onDeleteTagFromMediaItem: (mediaItem: MediaItem, tag: Tag) => any;
@@ -32,7 +33,7 @@ export interface TagListProps extends TagListPropsPropsFromParent {
 const TagList = (props: TagListProps) => {
 
   const tagOptions: TagOption[] = [];
-  props.tags.forEach((tag: Tag) => {
+  props.allTags.forEach((tag: Tag) => {
     tagOptions.push({
       value: tag,
       label: tag.label,
@@ -71,7 +72,7 @@ const TagList = (props: TagListProps) => {
     console.log('handleAutoCompleteChange');
     console.log(selectedTag);
     console.log(existingTag);
-    // props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).label);
+    props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).value as Tag);
   };
 
   const handleAutoCompleteInputChange = (
@@ -170,6 +171,7 @@ const TagList = (props: TagListProps) => {
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
+    allTags: getAllTags(state),
     mediaItemId: ownProps.mediaItem,
     mediaItem: getMediaItem(state, ownProps.mediaItemId) as MediaItem,
     tags: ownProps.tags,

@@ -3,7 +3,7 @@ import {
   TedTaggerState
 } from '../types';
 
-export const getTags = (state: TedTaggerState): Tag[] => {
+export const getAllTags = (state: TedTaggerState): Tag[] => {
   return state.tagsState.tags;
 };
 
