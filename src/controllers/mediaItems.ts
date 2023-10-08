@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTag, deleteTag } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItem, deleteTag } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 
@@ -46,12 +46,6 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
         console.log(getState().mediaItemsState.mediaItems);
       });
-  };
-};
-
-export const addTagToMediaItem = (mediaItem: MediaItem, tag: string): any => {
-  return (dispatch: TedTaggerDispatch, getState: any) => {
-    dispatch(addTag(mediaItem, tag));
   };
 };
 

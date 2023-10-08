@@ -7,7 +7,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // Constants
 // ------------------------------------
 export const ADD_MEDIA_ITEMS = 'ADD_MEDIA_ITEMS';
-export const ADD_TAG = 'ADD_TAG';
+export const ADD_TAG_TO_MEDIA_ITEM = 'ADD_TAG_TO_MEDIA_ITEM';
 export const DELETE_TAG = 'DELETE_TAG';
 
 // ------------------------------------
@@ -29,17 +29,17 @@ export const addMediaItems = (
   };
 };
 
-interface AddTagPayload {
+interface AddTagToMediaItemPayload {
   mediaItem: MediaItem;
   tag: string;
 }
 
-export const addTag = (
+export const addTagToMediaItem = (
   mediaItem: MediaItem,
   tag: string,
 ): any => {
   return {
-    type: ADD_TAG,
+    type: ADD_TAG_TO_MEDIA_ITEM,
     payload: {
       mediaItem,
       tag,
@@ -76,7 +76,7 @@ const initialState: MediaItemsState =
 
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
-  action: TedTaggerModelBaseAction<AddMediaItemsPayload & AddTagPayload & DeleteTagPayload>
+  action: TedTaggerModelBaseAction<AddMediaItemsPayload & AddTagToMediaItemPayload & DeleteTagPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case ADD_MEDIA_ITEMS: {
@@ -84,7 +84,7 @@ export const mediaItemsStateReducer = (
       newState.mediaItems = newState.mediaItems.concat(action.payload.mediaItems);
       return newState;
     }
-    case ADD_TAG: {
+    case ADD_TAG_TO_MEDIA_ITEM: {
       const newState = cloneDeep(state) as MediaItemsState;
       const specifiedMediaItem: MediaItem = action.payload.mediaItem;
       for (const mediaItem of newState.mediaItems) {

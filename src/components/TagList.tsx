@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, addTag, deleteTag } from '../models';
+import { TedTaggerDispatch, addTagToMediaItem, deleteTag } from '../models';
 import { MediaItem } from '../types';
 
 import List from '@mui/material/List';
@@ -181,7 +181,7 @@ function mapStateToProps(state: any, ownProps: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onAddTagToMediaItem: addTag,
+    onAddTagToMediaItem: addTagToMediaItem,
     onDeleteTagFromMediaItem: deleteTag,
   }, dispatch);
 };

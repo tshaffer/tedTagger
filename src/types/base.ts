@@ -1,4 +1,4 @@
-import { MediaItem } from './entities';
+import { MediaItem, Tag } from './entities';
 
 export const serverUrl = 'http://localhost:8000';
 // export const serverUrl = 'https://tsmealwheel.herokuapp.com';
@@ -9,6 +9,7 @@ export interface TedTaggerState {
   appState: AppState;
   mediaItemsState: MediaItemsState;
   selectionsState: SelectedMediaItemsState;
+  tagsState: TagsState;
 }
 
 export interface AppState {
@@ -23,3 +24,6 @@ export interface SelectedMediaItemsState {
   selectedMediaItemIds: string[];
 }
 
+export interface TagsState {
+  tags: Tag[];
+}

@@ -45,3 +45,8 @@ export interface MediaItem {
   people?: string[],
   tags: string[],
 }
+
+export interface Tag {
+  id: string,
+  label: string,
+}

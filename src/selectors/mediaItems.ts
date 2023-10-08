@@ -3,8 +3,6 @@ import {
   TedTaggerState
 } from '../types';
 
-import path from 'path-browserify';
-
 export const getMediaItems = (state: TedTaggerState): MediaItem[] => {
   return state.mediaItemsState.mediaItems;
 };
