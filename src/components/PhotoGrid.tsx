@@ -18,6 +18,7 @@ const PhotoGrid = (props: PhotoGridProps) => {
   const getPhotoComponent = (mediaItem: MediaItem): JSX.Element => {
     return (
       <Photo
+        key={mediaItem.googleId}
         mediaItem={mediaItem}
       />
     );
