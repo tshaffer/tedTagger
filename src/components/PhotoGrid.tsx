@@ -28,7 +28,7 @@ const PhotoGrid = (props: PhotoGridProps) => {
     return null;
   }
 
-  const maxMediaItemsForNow = 24;
+  const maxMediaItemsForNow = 40;
   const mediaItemCount = props.mediaItems.length > maxMediaItemsForNow ? maxMediaItemsForNow : props.mediaItems.length;
 
   const photoComponents: JSX.Element[] = [];

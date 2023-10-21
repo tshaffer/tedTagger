@@ -25,7 +25,8 @@
     "react-select": "^5.4.0",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.182",
@@ -35,6 +36,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-modal": "^3.13.1",
     "@types/react-select": "^5.0.1",
+    "@types/uuidv4": "^5.0.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "copy-webpack-plugin": "^4.2.3",
     "css-loader": "^6.5.1",
