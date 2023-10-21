@@ -1,7 +1,6 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 
@@ -10,6 +9,8 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { Tag } from '../types';
 import { getAllTags } from '../selectors';
+import { Box, IconButton, TextField, Tooltip } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
 
 export interface TagManagerPropsFromParent {
   open: boolean;
@@ -22,11 +23,13 @@ export interface TagManagerProps extends TagManagerPropsFromParent {
 
 const TagManager = (props: TagManagerProps) => {
 
+  const [newTag, setNewTag] = React.useState('');
+
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
       return (
         <ListItem key={tag.id}>
-          <ListItemText id={tag.id} primary={tag.label}/>
+          <ListItemText id={tag.id} primary={tag.label} />
         </ListItem>
       );
     });
@@ -34,16 +37,40 @@ const TagManager = (props: TagManagerProps) => {
     return listItems;
   };
 
-  if (props.tags.length === 0) {
-    return null;
-  }
+  const handleChange = (text: any) => {
+    setNewTag(text);
+  };
+
+  const handleSave = () => {
+    console.log('handleSave');
+  };
 
   const listItems: JSX.Element[] = getListItems();
 
   return (
-    <div>
-      {listItems}
-    </div>
+    <Box sx={{ width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List
+        sx={{ width: '100%' }}
+        subheader={<ListSubheader>Tags</ListSubheader>}
+      >
+        {listItems}
+      </List>
+      <div>
+        <TextField
+          value={newTag}
+          onChange={(e: any) => handleChange(e.target.value)}
+        >
+        </TextField>
+        <Tooltip title="Save">
+          <IconButton
+            onClick={() => handleSave()}
+          >
+            <SaveIcon />
+          </IconButton>
+        </Tooltip>
+
+      </div>
+    </Box>
   );
 };
 
