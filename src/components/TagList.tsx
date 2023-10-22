@@ -2,15 +2,16 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, addTagToMediaItem, deleteTag } from '../models';
+import { TedTaggerDispatch, addTagToMediaItemRedux, deleteTag } from '../models';
 import { MediaItem, Tag } from '../types';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Autocomplete, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { isNil } from 'lodash';
+import { isNil, isObject, isString } from 'lodash';
 import { getAllTags, getMediaItem } from '../selectors';
+import { addTagToMediaItem } from '../controllers';
 
 interface TagOption {
   // value: string | null;
@@ -62,7 +63,7 @@ const TagList = (props: TagListProps) => {
   };
 
   const handleOpenAutoComplete = () => {
-    console.log('autocomplete open');
+    // console.log('autocomplete open');
   };
 
   const handleAutoCompleteChange = (
@@ -72,22 +73,50 @@ const TagList = (props: TagListProps) => {
     console.log('handleAutoCompleteChange');
     console.log(selectedTag);
     console.log(existingTag);
-    props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).value as Tag);
+
+    if (isString(selectedTag)) {
+      // debugger;
+      // Occurs when clicking enter on previously entered tag without changing anything
+      return;
+    }
+    if (isString(existingTag)) {
+      debugger;
+    }
+
+    if (!isObject(selectedTag)) {
+      return;
+    }
+
+    // if (isString(existingTag)){
+    //   debugger;
+    // }
+
+    if (isNil(existingTag)) {
+      // add tag to media item
+      // props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).value as Tag);
+      console.log('add tag: ' + selectedTag.label); // selectedTag is object - verified
+      props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).value as Tag);
+    } else {
+      // replace tag in media item
+      console.log('replace tag:', existingTag, selectedTag.label); // existingTag is object - verified
+      debugger;
+    }
+
   };
 
   const handleAutoCompleteInputChange = (
     newValue: any,
   ) => {
-    console.log('handleAutoCompleteInputChange open');
-    console.log(newValue);
+    // console.log('handleAutoCompleteInputChange open');
+    // console.log(newValue);
   };
 
   const handleCloseAutoComplete = () => {
-    console.log('autocomplete close');
+    // console.log('autocomplete close');
   };
 
   const handleAutoCompleteKeyDown = () => {
-    console.log('handleAutoCompleteKeyDown');
+    // console.log('handleAutoCompleteKeyDown');
   };
 
   const myIsOptionEqualToValue = (option: any, value: any) => {

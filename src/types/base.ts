@@ -27,3 +27,11 @@ export interface SelectedMediaItemsState {
 export interface TagsState {
   tags: Tag[];
 }
+
+export type StringToStringLUT = {
+  [key: string]: string;
+}
+
+export type StringToTagLUT = {
+  [key: string]: Tag;
+}

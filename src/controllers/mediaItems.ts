@@ -1,16 +1,22 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItem, deleteTag } from '../models';
-import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState } from '../types';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemRedux, deleteTag } from '../models';
+import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToStringLUT, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
-import { getTableBodyUtilityClass } from '@mui/material';
 import { getTagByLabel } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
     const state: TedTaggerState = getState();
-    
+    console.log('Tags on entry to loadMediaItems');
+    console.log(state.tagsState.tags);
+
+    const tagsByTagId: StringToTagLUT = {};
+    state.tagsState.tags.forEach((tag) => {
+      tagsByTagId[tag.id] = tag;
+    });
+
     const path = serverUrl + apiUrlFragment + 'mediaItems';
 
     return axios.get(path)
@@ -23,7 +29,18 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
 
           const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
-          (mediaItem as MediaItem).tags = [];
+
+          // convert from server tagIds[] to client tags[]
+          mediaItem.tags = [];
+          mediaItemEntityFromServer.tagIds.forEach((tagId: string) => {
+            if (Object.prototype.hasOwnProperty.call(tagsByTagId, tagId)) {
+              mediaItem.tags.push(tagsByTagId[tagId]);
+            }
+          });
+          // remove tagIds key from mediaItem
+          delete mediaItem.tagIds;
+
+          // (mediaItem as MediaItem).tags = [];
 
           const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
           if (description.startsWith('TedTag-')) {
@@ -62,3 +79,12 @@ export const deleteTagFromMediaItem = (mediaItem: MediaItem, tag: Tag): any => {
     dispatch(deleteTag(mediaItem, tag));
   };
 };
+
+// export const addTagToMediaItem = (
+//   mediaItem: MediaItem,
+//   tag: Tag,
+// ) => {
+//   return (dispatch: TedTaggerDispatch, getState: any) => {
+//     dispatch(addTagToMediaItemRedux(mediaItem, tag));
+//   };
+// };

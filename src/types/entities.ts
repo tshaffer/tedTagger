@@ -26,6 +26,7 @@ export interface ServerMediaItem {
   description?: string,
   geoData?: GeoData,
   people?: ServerPerson[],
+  tagIds: string[],
 }
 
 export interface MediaItem {
@@ -49,4 +50,5 @@ export interface MediaItem {
 export interface Tag {
   id: string,
   label: string,
+  type: string,
 }

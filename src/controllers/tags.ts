@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags } from '../models';
-import { serverUrl, apiUrlFragment, Tag } from '../types';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTagToMediaItemRedux, addTags } from '../models';
+import { serverUrl, apiUrlFragment, Tag, MediaItem } from '../types';
 
 export const loadTags = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -27,6 +27,7 @@ export const addTagToDb = (
     const tagBody = {
       id: uuidv4(),
       label,
+      type: 'user',
     };
 
     return axios.post(
@@ -45,3 +46,32 @@ export const addTagToDb = (
   };
 };
 
+export const addTagToMediaItem = (
+  mediaItem: MediaItem,
+  tag: Tag,
+): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'addTagToMediaItem';
+
+    const addTagToMediaItemBody = {
+      mediaItemId: mediaItem.googleId,
+      tagId: tag.id,
+    };
+
+    return axios.post(
+      path,
+      addTagToMediaItemBody
+    ).then((response) => {
+      console.log('addTagToMediaItemBody response');
+      console.log(response);
+      dispatch(addTag(addTagToMediaItemRedux(mediaItem, tag)));
+      return mediaItem.googleId;
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
+  };
+
+};

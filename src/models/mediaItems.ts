@@ -8,6 +8,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const ADD_MEDIA_ITEMS = 'ADD_MEDIA_ITEMS';
 export const ADD_TAG_TO_MEDIA_ITEM = 'ADD_TAG_TO_MEDIA_ITEM';
+export const REPLACE_TAG_IN_MEDIA_ITEM = 'REPLACE_TAG_IN_MEDIA_ITEM';
 export const DELETE_TAG = 'DELETE_TAG';
 
 // ------------------------------------
@@ -34,7 +35,7 @@ interface AddTagToMediaItemPayload {
   tag: Tag;
 }
 
-export const addTagToMediaItem = (
+export const addTagToMediaItemRedux = (
   mediaItem: MediaItem,
   tag: Tag,
 ): any => {
@@ -43,6 +44,21 @@ export const addTagToMediaItem = (
     payload: {
       mediaItem,
       tag,
+    }
+  };
+};
+
+export const replaceTagInMediaItemRedux = (
+  mediaItem: MediaItem,
+  existingTag: Tag,
+  newTag: Tag,
+): any => {
+  return {
+    type: REPLACE_TAG_IN_MEDIA_ITEM,
+    payload: {
+      mediaItem,
+      existingTag,
+      newTag,
     }
   };
 };
