@@ -30,18 +30,6 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
           const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
 
-          // convert from server tagIds[] to client tags[]
-          // mediaItem.tags = [];
-          // mediaItemEntityFromServer.tagIds.forEach((tagId: string) => {
-          //   if (Object.prototype.hasOwnProperty.call(tagsByTagId, tagId)) {
-          //     mediaItem.tags.push(tagsByTagId[tagId]);
-          //   }
-          // });
-          // remove tagIds key from mediaItem
-          // delete mediaItem.tagIds;
-
-          // (mediaItem as MediaItem).tags = [];
-
           const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
           if (description.startsWith('TedTag-')) {
             // mediaItem includes one or more tags
@@ -54,15 +42,6 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
               }
             });
           }
-
-          // if (!isNil(mediaItemEntityFromServer.people)) {
-          //   for (const person of mediaItemEntityFromServer.people) {
-          //     const tag: Tag | null = getTagByLabel(state, person.name);
-          //     if (!isNil(tag)) {
-          //       (mediaItem as MediaItem).tags.push(tag);
-          //     }
-          //   }
-          // }
 
           mediaItems.push(mediaItem as MediaItem);
 
