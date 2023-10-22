@@ -31,14 +31,14 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
           const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
 
           // convert from server tagIds[] to client tags[]
-          mediaItem.tags = [];
-          mediaItemEntityFromServer.tagIds.forEach((tagId: string) => {
-            if (Object.prototype.hasOwnProperty.call(tagsByTagId, tagId)) {
-              mediaItem.tags.push(tagsByTagId[tagId]);
-            }
-          });
+          // mediaItem.tags = [];
+          // mediaItemEntityFromServer.tagIds.forEach((tagId: string) => {
+          //   if (Object.prototype.hasOwnProperty.call(tagsByTagId, tagId)) {
+          //     mediaItem.tags.push(tagsByTagId[tagId]);
+          //   }
+          // });
           // remove tagIds key from mediaItem
-          delete mediaItem.tagIds;
+          // delete mediaItem.tagIds;
 
           // (mediaItem as MediaItem).tags = [];
 
@@ -50,19 +50,19 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
             tagLabels.forEach((tagLabel: string) => {
               const tag: Tag | null = getTagByLabel(state, tagLabel);
               if (!isNil(tag)) {
-                (mediaItem as MediaItem).tags.push(tag);
+                (mediaItem as MediaItem).tagIds.push(tag.id);
               }
             });
           }
 
-          if (!isNil(mediaItemEntityFromServer.people)) {
-            for (const person of mediaItemEntityFromServer.people) {
-              const tag: Tag | null = getTagByLabel(state, person.name);
-              if (!isNil(tag)) {
-                (mediaItem as MediaItem).tags.push(tag);
-              }
-            }
-          }
+          // if (!isNil(mediaItemEntityFromServer.people)) {
+          //   for (const person of mediaItemEntityFromServer.people) {
+          //     const tag: Tag | null = getTagByLabel(state, person.name);
+          //     if (!isNil(tag)) {
+          //       (mediaItem as MediaItem).tags.push(tag);
+          //     }
+          //   }
+          // }
 
           mediaItems.push(mediaItem as MediaItem);
 
@@ -76,7 +76,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
 export const deleteTagFromMediaItem = (mediaItem: MediaItem, tag: Tag): any => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
-    dispatch(deleteTag(mediaItem, tag));
+    dispatch(deleteTag(mediaItem, tag.id));
   };
 };
 

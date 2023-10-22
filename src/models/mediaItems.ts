@@ -32,51 +32,51 @@ export const addMediaItems = (
 
 interface AddTagToMediaItemPayload {
   mediaItem: MediaItem;
-  tag: Tag;
+  tagId: string;
 }
 
 export const addTagToMediaItemRedux = (
   mediaItem: MediaItem,
-  tag: Tag,
+  tagId: string,
 ): any => {
   return {
     type: ADD_TAG_TO_MEDIA_ITEM,
     payload: {
       mediaItem,
-      tag,
+      tagId,
     }
   };
 };
 
 export const replaceTagInMediaItemRedux = (
   mediaItem: MediaItem,
-  existingTag: Tag,
-  newTag: Tag,
+  existingTagId: string,
+  newTagId: string,
 ): any => {
   return {
     type: REPLACE_TAG_IN_MEDIA_ITEM,
     payload: {
       mediaItem,
-      existingTag,
-      newTag,
+      existingTagId,
+      newTagId,
     }
   };
 };
 
 interface DeleteTagPayload {
   mediaItem: MediaItem;
-  tag: Tag;
+  tagId: string;
 }
 
 export const deleteTag = (
   mediaItem: MediaItem,
-  tag: Tag,
+  tagId: string,
 ): any => {
   return {
     type: DELETE_TAG,
     payload: {
       mediaItem,
-      tag,
+      tagId,
     }
   };
 };
@@ -105,7 +105,7 @@ export const mediaItemsStateReducer = (
       const specifiedMediaItem: MediaItem = action.payload.mediaItem;
       for (const mediaItem of newState.mediaItems) {
         if (mediaItem.googleId === specifiedMediaItem.googleId) {
-          mediaItem.tags.push(action.payload.tag);
+          mediaItem.tagIds.push(action.payload.tagId);
         }
       }
       return newState;
@@ -116,7 +116,7 @@ export const mediaItemsStateReducer = (
       let index = 0;
       for (const mediaItem of newState.mediaItems) {
         if (mediaItem.googleId === specifiedMediaItem.googleId) {
-          mediaItem.tags = mediaItem.tags.filter((tag) => tag.id !== action.payload.tag.id);
+          mediaItem.tagIds = mediaItem.tagIds.filter((tagId) => tagId !== action.payload.tagId);
           break;
         }
         index++;

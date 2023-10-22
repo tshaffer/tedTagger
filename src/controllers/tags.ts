@@ -65,7 +65,7 @@ export const addTagToMediaItem = (
     ).then((response) => {
       console.log('addTagToMediaItemBody response');
       console.log(response);
-      dispatch(addTag(addTagToMediaItemRedux(mediaItem, tag)));
+      dispatch(addTag(addTagToMediaItemRedux(mediaItem, tag.id)));
       return mediaItem.googleId;
     }).catch((error) => {
       console.log('error');

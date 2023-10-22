@@ -2,8 +2,8 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
-import { getMediaItem, getSelectedMediaItemIds } from '../selectors';
-import { MediaItem, Tag } from '../types';
+import { getMediaItem, getSelectedMediaItemIds, getTagById } from '../selectors';
+import { MediaItem, Tag, TedTaggerState } from '../types';
 
 import TagList from './TagList';
 
@@ -42,15 +42,16 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
   );
 };
 
-const getTags = (mediaItem: MediaItem): Tag[] => {
+const getTags = (state: TedTaggerState, mediaItem: MediaItem): Tag[] => {
   const tags: Tag[] = [];
-
   if (!isNil(mediaItem)) {
-    mediaItem.tags.forEach((tag) => {
-      tags.push(tag);
+    mediaItem.tagIds.forEach((tagId) => {
+      const tag: Tag | null = getTagById(state, tagId);
+      if (!isNil(tag)) {
+        tags.push(tag);
+      }
     });
   }
-
   return tags;
 };
 
@@ -59,7 +60,7 @@ function mapStateToProps(state: any) {
   const selectedMediaItem: MediaItem | null = selectedMediaItemIds.length === 0 ? null : getMediaItem(state, selectedMediaItemIds[0]);
   return {
     selectedMediaItemIds,
-    tags: (selectedMediaItemIds.length === 1 || isNil(selectedMediaItem)) ? getTags(selectedMediaItem as MediaItem) : [],
+    tags: (selectedMediaItemIds.length === 1 || isNil(selectedMediaItem)) ? getTags(state, selectedMediaItem as MediaItem) : [],
   };
 }
 

@@ -28,7 +28,7 @@ export interface TagListProps extends TagListPropsPropsFromParent {
   allTags: Tag[],
   mediaItem: MediaItem,
   onAddTagToMediaItem: (mediaItem: MediaItem, tag: Tag) => any;
-  onDeleteTagFromMediaItem: (mediaItem: MediaItem, tag: Tag) => any;
+  onDeleteTagFromMediaItem: (mediaItem: MediaItem, tagId: string) => any;
 }
 
 const TagList = (props: TagListProps) => {
@@ -44,7 +44,7 @@ const TagList = (props: TagListProps) => {
   const handleDeleteTag = (tag: Tag | null) => {
     console.log('handleDeleteTag: ', tag);
     if (!isNil(tag)) {
-      props.onDeleteTagFromMediaItem(props.mediaItem, tag);
+      props.onDeleteTagFromMediaItem(props.mediaItem, tag.id);
     }
   };
 
