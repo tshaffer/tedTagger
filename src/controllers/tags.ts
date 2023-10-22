@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTagToMediaItemRedux, addTags } from '../models';
 import { serverUrl, apiUrlFragment, Tag, MediaItem } from '../types';
+import { cloneDeep } from 'lodash';
 
 export const loadTags = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -52,20 +53,23 @@ export const addTagToMediaItem = (
 ): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const path = serverUrl + apiUrlFragment + 'addTagToMediaItem';
+    const path = serverUrl + apiUrlFragment + 'updateTagsInMediaItem';
 
-    const addTagToMediaItemBody = {
+    const tagIds: string[] = cloneDeep(mediaItem.tagIds);
+    tagIds.push(tag.id);
+
+    const updateTagsInMediaItemBody = {
       mediaItemId: mediaItem.googleId,
-      tagId: tag.id,
+      tagIds
     };
 
     return axios.post(
       path,
-      addTagToMediaItemBody
+      updateTagsInMediaItemBody
     ).then((response) => {
-      console.log('addTagToMediaItemBody response');
+      console.log('updateTagsInMediaItemBody response');
       console.log(response);
-      dispatch(addTag(addTagToMediaItemRedux(mediaItem, tag.id)));
+      dispatch(addTagToMediaItemRedux(mediaItem, tag.id));
       return mediaItem.googleId;
     }).catch((error) => {
       console.log('error');
