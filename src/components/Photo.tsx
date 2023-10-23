@@ -13,13 +13,21 @@ const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
   maxWidth: 325,
-  margin: '0 auto',
-  padding: '0.1em',
+  margin: 2,
 };
 
-const cardMediaStyle = {
-  padding: '1em 1em 0 1em',
+const selectedCardMediaStyle = {
   objectFit: 'contain',
+  border: 4,
+  borderColor: 'red',
+  width: '97%',
+};
+
+const unselectedCardMediaStyle = {
+  objectFit: 'contain',
+  border: 4,
+  borderColor: 'white',
+  width: '97%',
 };
 
 export interface PhotoPropsFromParent {
@@ -49,7 +57,15 @@ function Photo(props: PhotoProps) {
     props.onToggleMediaItemSelection(props.mediaItem);
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    console.log('handleClick: ', (e.target as any).id);
+    toggledPhotoSelected();
+  };
+
   const filePath = getFileUrl();
+
+  const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
+  const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
   return (
     <Grid item xs={3}>
@@ -57,11 +73,13 @@ function Photo(props: PhotoProps) {
         sx={cardStyle}
       >
         <CardMedia
-          className='cardMedia'
+          id={props.mediaItem.googleId}
+          className={cardMediaClassName}
           image={filePath}
           component="img"
           title={filePath}
           sx={cardMediaStyle}
+          onClick={(e) => handleClick(e)}
         />
         <FormGroup>
           <FormControlLabel
