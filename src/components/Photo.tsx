@@ -41,6 +41,14 @@ export interface PhotoProps extends PhotoPropsFromParent {
 
 function Photo(props: PhotoProps) {
 
+  const getJoelUrl = (): string => {
+    const filePath = path.join(
+      '/images',
+      'joel.png'
+    );
+    return filePath;
+  };
+
   const getFileUrl = (): string => {
     const basename: string = path.basename(props.mediaItem.filePath!);
     const numChars = basename.length;
@@ -63,6 +71,7 @@ function Photo(props: PhotoProps) {
   };
 
   const filePath = getFileUrl();
+  const joelFilePath = getJoelUrl();
 
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
@@ -81,16 +90,21 @@ function Photo(props: PhotoProps) {
           sx={cardMediaStyle}
           onClick={(e) => handleClick(e)}
         />
-        <FormGroup>
-          <FormLabel>
-            Tags
-          </FormLabel>
-        </FormGroup>
+        <div>
+          <img src={joelFilePath} alt="Joel" width="30" height="30"/>
+        </div>
       </Card>
     </Grid>
   );
 }
 
+/*
+        <FormGroup>
+          <FormLabel>
+            Tags
+          </FormLabel>
+        </FormGroup>
+*/
 // export default Photo;
 function mapStateToProps(state: any, ownProps: any) {
   return {
