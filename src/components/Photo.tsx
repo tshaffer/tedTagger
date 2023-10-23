@@ -1,4 +1,4 @@
-import { Grid, Card, CardMedia, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
+import { Grid, Card, CardMedia, FormGroup, FormLabel } from '@mui/material';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -82,15 +82,9 @@ function Photo(props: PhotoProps) {
           onClick={(e) => handleClick(e)}
         />
         <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={toggledPhotoSelected}
-                checked={props.isSelected}
-              />
-            }
-            label="Selected"
-          />
+          <FormLabel>
+            Tags
+          </FormLabel>
         </FormGroup>
       </Card>
     </Grid>
