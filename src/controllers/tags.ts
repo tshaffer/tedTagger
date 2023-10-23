@@ -53,14 +53,11 @@ export const addTagToMediaItem = (
 ): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const path = serverUrl + apiUrlFragment + 'updateTagsInMediaItem';
-
-    const tagIds: string[] = cloneDeep(mediaItem.tagIds);
-    tagIds.push(tag.id);
+    const path = serverUrl + apiUrlFragment + 'addTagToMediaItem';
 
     const updateTagsInMediaItemBody = {
       mediaItemId: mediaItem.googleId,
-      tagIds
+      tagId: tag.id,
     };
 
     return axios.post(
