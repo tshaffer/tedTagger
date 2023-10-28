@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { Tag } from '../types';
 import { getAllTags } from '../selectors';
-import { Box, Button, IconButton, ListItemButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
+import { Box, Button, IconButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb, uploadTagIconFile } from '../controllers';
@@ -34,12 +34,10 @@ const TagManager = (props: TagManagerProps) => {
   const hiddenFileInput = React.useRef(null);
 
   const handleClose = () => {
-    console.log('onClose');
     props.onClose();
   };
 
   const handleClickTag = (tag: Tag) => {
-    console.log('handleClick', tag);
     setSelectedTag(tag);
     if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
       (hiddenFileInput.current as any).click();
@@ -47,13 +45,10 @@ const TagManager = (props: TagManagerProps) => {
   };
 
   const handleSelectFile = (event: any) => {
-    const selectedFile = event.target.files[0];
-    console.log('handleChange');
-    console.log(selectedFile);
-    console.log(selectedTag);
-    const data = new FormData();
-    data.append('file', selectedFile);
     if (!isNil(selectedTag)) {
+      const selectedFile = event.target.files[0];
+      const data = new FormData();
+      data.append('file', selectedFile);
       props.onUploadTagIconFile(selectedTag, data);
     }
   };
@@ -84,13 +79,7 @@ const TagManager = (props: TagManagerProps) => {
     return listItems;
   };
 
-  // const handleChange = (text: any) => {
-  //   setNewTag(text);
-  // };
-
   const handleSave = () => {
-    console.log('handleSave');
-    console.log(newTag);
     props.onAddTag(newTag);
     setNewTag('');
   };

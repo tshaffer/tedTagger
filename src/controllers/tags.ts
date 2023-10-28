@@ -82,15 +82,40 @@ export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
 
     const path = serverUrl + apiUrlFragment + 'uploadTagIconFile';
 
+
     axios.post(path, formData, {
     }).then((response) => {
       console.log(response);
       console.log(response.statusText);
-      // const guesses: string[] = response.data.guesses.guesses;
-      // dispatch(setGuesses(guesses));
       const file = response.data.file;
-      const pathOnServer = file.path;
-      // dispatch(setPathOnServer(pathOnServer));
+      /*
+          filename: 'old morgan.png'
+          originalname: 'old morgan.png'
+          path: 'public/tagIconImages/old morgan.png'
+      */
+      dispatch(assignTagIconToTag(file.filename, tag));
+    });
+  };
+};
+
+export const assignTagIconToTag = (tagFileName: string, tag: Tag): any => {
+
+  return (dispatch: any, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'assignTagIconToTag';
+
+    const assignTagIconToTagBody = {
+      tagId: tag.id,
+      tagFileName,
+    };
+
+    axios.post(
+      path,
+      assignTagIconToTagBody,
+    ).then((response) => {
+      console.log('return from assignTagIconToTag');
+      console.log(response);
+      // dispatch??
     });
   };
 };
