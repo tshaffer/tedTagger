@@ -14,7 +14,6 @@ import { getAllTags, getMediaItem } from '../selectors';
 import { addTagToMediaItem } from '../controllers';
 
 interface TagOption {
-  // value: string | null;
   value: Tag | null;
   label: string;
 }

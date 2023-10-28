@@ -9,12 +9,11 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { Tag } from '../types';
 import { getAllTags } from '../selectors';
-import { Box, IconButton, TextField, Tooltip } from '@mui/material';
+import { Box, Button, IconButton, TextField, Tooltip } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb } from '../controllers';
 
 export interface TagManagerPropsFromParent {
-  open: boolean;
   onClose: () => void;
 }
 
@@ -26,6 +25,11 @@ export interface TagManagerProps extends TagManagerPropsFromParent {
 const TagManager = (props: TagManagerProps) => {
 
   const [newTag, setNewTag] = React.useState('');
+
+  const handleClose = () => {
+    console.log('onClose');
+    props.onClose();
+  };
 
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
@@ -75,6 +79,7 @@ const TagManager = (props: TagManagerProps) => {
         </Tooltip>
 
       </div>
+      <Button onClick={handleClose}>Close</Button>
     </Box>
   );
 };

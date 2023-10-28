@@ -11,7 +11,6 @@ import { Button } from '@mui/material';
 import { isNil } from 'lodash';
 
 export interface TagsPropertyPanelPropsFromParent {
-  open: boolean;
   onClose: () => void;
 }
 
