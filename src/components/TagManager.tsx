@@ -26,6 +26,8 @@ export interface TagManagerProps extends TagManagerPropsFromParent {
 
 const TagManager = (props: TagManagerProps) => {
 
+  const [selectedTag, setSelectedTag] = React.useState<Tag | null>();
+
   const [newTag, setNewTag] = React.useState('');
 
   const hiddenFileInput = React.useRef(null);
@@ -35,21 +37,19 @@ const TagManager = (props: TagManagerProps) => {
     props.onClose();
   };
 
-  const handleClickTag = (tag: any) => {
-    console.log('handleClickTag');
-    console.log(tag);
-  };
-
-
-  const handleClick = () => {
+  const handleClickTag = (tag: Tag) => {
+    console.log('handleClick', tag);
+    setSelectedTag(tag);
     if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
       (hiddenFileInput.current as any).click();
     }
   };
 
-  const handleChange = (event: any) => {
+  const handleSelectFile = (event: any) => {
     const fileUploaded = event.target.files[0];
-    console.log('handleChange', fileUploaded);
+    console.log('handleChange');
+    console.log(fileUploaded);
+    console.log(selectedTag);
     // handleFile(fileUploaded);
   };
 
@@ -60,12 +60,14 @@ const TagManager = (props: TagManagerProps) => {
         <ListItem
           key={tag.id}
         >
-          <ListItemButton onClick={handleClick}>
-            Select
-          </ListItemButton>
+          <ListItemIcon
+            onClick={() => handleClickTag(tag)}
+          >
+            <AssignmentIndIcon />
+          </ListItemIcon>
           <input
             type="file"
-            onChange={handleChange}
+            onChange={(e) => handleSelectFile(e)}
             ref={hiddenFileInput}
             style={{ display: 'none' }} // Make the file input element invisible
           />
@@ -101,7 +103,7 @@ const TagManager = (props: TagManagerProps) => {
       <div>
         <TextField
           value={newTag}
-          onChange={(e: any) => handleChange(e.target.value)}
+          onChange={(e: any) => handleSelectFile(e.target.value)}
         >
         </TextField>
         <Tooltip title="Save">
