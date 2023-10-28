@@ -9,10 +9,11 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { Tag } from '../types';
 import { getAllTags } from '../selectors';
-import { Box, Button, IconButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
+import { Box, Button, IconButton, ListItemButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb } from '../controllers';
+import { isNil } from 'lodash';
 
 export interface TagManagerPropsFromParent {
   onClose: () => void;
@@ -27,6 +28,8 @@ const TagManager = (props: TagManagerProps) => {
 
   const [newTag, setNewTag] = React.useState('');
 
+  const hiddenFileInput = React.useRef(null);
+
   const handleClose = () => {
     console.log('onClose');
     props.onClose();
@@ -37,15 +40,35 @@ const TagManager = (props: TagManagerProps) => {
     console.log(tag);
   };
 
+
+  const handleClick = () => {
+    if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
+      (hiddenFileInput.current as any).click();
+    }
+  };
+
+  const handleChange = (event: any) => {
+    const fileUploaded = event.target.files[0];
+    console.log('handleChange', fileUploaded);
+    // handleFile(fileUploaded);
+  };
+
+
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
       return (
         <ListItem
           key={tag.id}
-          onClick={() => { handleClickTag(tag); }}>
-          <ListItemIcon>
-            <AssignmentIndIcon />
-          </ListItemIcon>
+        >
+          <ListItemButton onClick={handleClick}>
+            Select
+          </ListItemButton>
+          <input
+            type="file"
+            onChange={handleChange}
+            ref={hiddenFileInput}
+            style={{ display: 'none' }} // Make the file input element invisible
+          />
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem>
       );
@@ -54,9 +77,9 @@ const TagManager = (props: TagManagerProps) => {
     return listItems;
   };
 
-  const handleChange = (text: any) => {
-    setNewTag(text);
-  };
+  // const handleChange = (text: any) => {
+  //   setNewTag(text);
+  // };
 
   const handleSave = () => {
     console.log('handleSave');
