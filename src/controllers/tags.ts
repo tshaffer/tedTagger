@@ -76,3 +76,21 @@ export const addTagToMediaItem = (
   };
 
 };
+
+export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
+  return (dispatch: any, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'uploadTagIconFile';
+
+    axios.post(path, formData, {
+    }).then((response) => {
+      console.log(response);
+      console.log(response.statusText);
+      // const guesses: string[] = response.data.guesses.guesses;
+      // dispatch(setGuesses(guesses));
+      const file = response.data.file;
+      const pathOnServer = file.path;
+      // dispatch(setPathOnServer(pathOnServer));
+    });
+  };
+};

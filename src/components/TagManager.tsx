@@ -12,7 +12,7 @@ import { getAllTags } from '../selectors';
 import { Box, Button, IconButton, ListItemButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
-import { addTagToDb } from '../controllers';
+import { addTagToDb, uploadTagIconFile } from '../controllers';
 import { isNil } from 'lodash';
 
 export interface TagManagerPropsFromParent {
@@ -22,6 +22,7 @@ export interface TagManagerPropsFromParent {
 export interface TagManagerProps extends TagManagerPropsFromParent {
   tags: Tag[],
   onAddTag: (label: string) => void;
+  onUploadTagIconFile: (tag: Tag, formData: FormData) => any;
 }
 
 const TagManager = (props: TagManagerProps) => {
@@ -46,11 +47,15 @@ const TagManager = (props: TagManagerProps) => {
   };
 
   const handleSelectFile = (event: any) => {
-    const fileUploaded = event.target.files[0];
+    const selectedFile = event.target.files[0];
     console.log('handleChange');
-    console.log(fileUploaded);
+    console.log(selectedFile);
     console.log(selectedTag);
-    // handleFile(fileUploaded);
+    const data = new FormData();
+    data.append('file', selectedFile);
+    if (!isNil(selectedTag)) {
+      props.onUploadTagIconFile(selectedTag, data);
+    }
   };
 
 
@@ -129,6 +134,7 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddTag: addTagToDb,
+    onUploadTagIconFile: uploadTagIconFile,
   }, dispatch);
 };
 
