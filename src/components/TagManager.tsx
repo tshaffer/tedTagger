@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { Tag } from '../types';
 import { getAllTags } from '../selectors';
-import { Box, Button, IconButton, TextField, Tooltip } from '@mui/material';
+import { Box, Button, IconButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb } from '../controllers';
 
@@ -31,10 +32,20 @@ const TagManager = (props: TagManagerProps) => {
     props.onClose();
   };
 
+  const handleClickTag = (tag: any) => {
+    console.log('handleClickTag');
+    console.log(tag);
+  };
+
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
       return (
-        <ListItem key={tag.id}>
+        <ListItem
+          key={tag.id}
+          onClick={() => { handleClickTag(tag); }}>
+          <ListItemIcon>
+            <AssignmentIndIcon />
+          </ListItemIcon>
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem>
       );
