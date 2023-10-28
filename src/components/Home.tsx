@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
@@ -9,14 +12,30 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
+import { MediaItem } from '../types';
+import { loadMediaItems, loadTags } from '../controllers';
+import { TedTaggerDispatch } from '../models';
+import { getMediaItems } from '../selectors';
 
 const drawerWidth = 240;
 
-export default function ClippedDrawer() {
+export interface HomeProps {
+  mediaItems: MediaItem[],
+  onLoadMediaItems: () => any;
+  onLoadTags: () => any;
+}
+
+const Home = (props: HomeProps) => {
+
+  React.useEffect(() => {
+    props.onLoadTags()
+      .then(() => {
+        props.onLoadMediaItems();
+      });
+  }, []);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -88,7 +107,7 @@ export default function ClippedDrawer() {
       </Box>
     </Box>
   );
-}
+};
 
 
 
@@ -229,17 +248,17 @@ export default function ClippedDrawer() {
 
 // };
 
-// function mapStateToProps(state: any) {
-//   return {
-//     mediaItems: getMediaItems(state),
-//   };
-// }
+function mapStateToProps(state: any) {
+  return {
+    mediaItems: getMediaItems(state),
+  };
+}
 
-// const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
-//   return bindActionCreators({
-//     onLoadMediaItems: loadMediaItems,
-//     onLoadTags: loadTags,
-//   }, dispatch);
-// };
+const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
+  return bindActionCreators({
+    onLoadMediaItems: loadMediaItems,
+    onLoadTags: loadTags,
+  }, dispatch);
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
