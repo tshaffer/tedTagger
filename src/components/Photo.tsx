@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch } from '../models';
 import { toggleMediaItemSelectionAction } from '../controllers';
-import { isMediaItemSelected } from '../selectors';
-import { MediaItem } from '../types';
+import { getTagsLUT, isMediaItemSelected } from '../selectors';
+import { MediaItem, StringToTagLUT, Tag } from '../types';
 
 import path from 'path-browserify';
+import { isNil } from 'lodash';
 
 const cardStyle = {
   display: 'flex',
@@ -35,19 +36,12 @@ export interface PhotoPropsFromParent {
 }
 
 export interface PhotoProps extends PhotoPropsFromParent {
+  tagsLUT: StringToTagLUT;
   isSelected: boolean;
   onToggleMediaItemSelection: (mediaItem: MediaItem) => any;
 }
 
 function Photo(props: PhotoProps) {
-
-  const getJoelUrl = (): string => {
-    const filePath = path.join(
-      '/images',
-      'joel.png'
-    );
-    return filePath;
-  };
 
   const getFileUrl = (): string => {
     const basename: string = path.basename(props.mediaItem.filePath!);
@@ -61,6 +55,32 @@ function Photo(props: PhotoProps) {
     return filePath;
   };
 
+  const getTagIcon = (photoTag: Tag) : JSX.Element => {
+    if (isNil(photoTag.iconFileName)) {
+      return (
+        <span></span>
+      );
+    }
+    const filePath = path.join(
+      '/tagIconImages',
+      photoTag.iconFileName);
+    return (
+      <img src={filePath} alt={photoTag.label} width="30" height="30"/>
+    );
+  };
+  
+  const getTagIcons = (photoTags: Tag[]) : JSX.Element => {
+    const photoTagImages: JSX.Element[] = photoTags.map((photoTag: Tag) => {
+      return getTagIcon(photoTag);
+    });
+    
+    return (
+      <div>
+        {photoTagImages}
+      </div>
+    );
+  };
+
   const toggledPhotoSelected = () => {
     props.onToggleMediaItemSelection(props.mediaItem);
   };
@@ -70,8 +90,15 @@ function Photo(props: PhotoProps) {
     toggledPhotoSelected();
   };
 
+  const photoTags: Tag[] = [];
+  props.mediaItem.tagIds.forEach((tagId: string) => {
+    const tag: Tag = props.tagsLUT[tagId];
+    photoTags.push(tag);
+  });
+
   const filePath = getFileUrl();
-  const joelFilePath = getJoelUrl();
+
+  const tagIcons = getTagIcons(photoTags);
 
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
@@ -90,25 +117,16 @@ function Photo(props: PhotoProps) {
           sx={cardMediaStyle}
           onClick={(e) => handleClick(e)}
         />
-        <div>
-          <img src={joelFilePath} alt="Joel" width="30" height="30"/>
-        </div>
+        {tagIcons}
       </Card>
     </Grid>
   );
 }
 
-/*
-        <FormGroup>
-          <FormLabel>
-            Tags
-          </FormLabel>
-        </FormGroup>
-*/
-// export default Photo;
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
+    tagsLUT: getTagsLUT(state),
     isSelected: isMediaItemSelected(state, ownProps.mediaItem),
   };
 }

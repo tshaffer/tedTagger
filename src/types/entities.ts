@@ -51,4 +51,5 @@ export interface Tag {
   id: string,
   label: string,
   type: string,
+  iconFileName?: string;
 }
