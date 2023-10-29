@@ -58,14 +58,14 @@ function Photo(props: PhotoProps) {
   const getTagIcon = (photoTag: Tag) : JSX.Element => {
     if (isNil(photoTag.iconFileName)) {
       return (
-        <span></span>
+        <span key={photoTag.id}></span>
       );
     }
     const filePath = path.join(
       '/tagIconImages',
       photoTag.iconFileName);
     return (
-      <img src={filePath} alt={photoTag.label}/>
+      <img key={photoTag.id} src={filePath} alt={photoTag.label}/>
     );
   };
   
