@@ -65,7 +65,7 @@ function Photo(props: PhotoProps) {
       '/tagIconImages',
       photoTag.iconFileName);
     return (
-      <img src={filePath} alt={photoTag.label} width="30" height="30"/>
+      <img src={filePath} alt={photoTag.label}/>
     );
   };
   

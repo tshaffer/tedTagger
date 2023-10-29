@@ -14,6 +14,7 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb, uploadTagIconFile } from '../controllers';
 import { isNil } from 'lodash';
+import path from 'path-browserify';
 
 export interface TagManagerPropsFromParent {
   onClose: () => void;
@@ -54,6 +55,21 @@ const TagManager = (props: TagManagerProps) => {
   };
 
 
+  const getTagIcon = (tag: Tag) : JSX.Element => {
+    if (isNil(tag.iconFileName)) {
+      return (
+        <span></span>
+      );
+    }
+    const filePath = path.join(
+      '/tagIconImages',
+      tag.iconFileName);
+    return (
+      <img src={filePath} alt={tag.label}/>
+    );
+  };
+  
+
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
       return (
@@ -71,6 +87,7 @@ const TagManager = (props: TagManagerProps) => {
             ref={hiddenFileInput}
             style={{ display: 'none' }} // Make the file input element invisible
           />
+          {getTagIcon(tag)}
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem>
       );
