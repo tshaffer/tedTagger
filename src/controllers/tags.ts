@@ -98,7 +98,7 @@ export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
   };
 };
 
-export const assignTagIconToTag = (tagFileName: string, tag: Tag): any => {
+export const assignTagIconToTag = (iconFileName: string, tag: Tag): any => {
 
   return (dispatch: any, getState: any) => {
 
@@ -106,7 +106,7 @@ export const assignTagIconToTag = (tagFileName: string, tag: Tag): any => {
 
     const assignTagIconToTagBody = {
       tagId: tag.id,
-      tagFileName,
+      iconFileName,
     };
 
     axios.post(
