@@ -87,13 +87,7 @@ export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
     }).then((response) => {
       console.log(response);
       console.log(response.statusText);
-      const file = response.data.file;
-      /*
-          filename: 'old morgan.png'
-          originalname: 'old morgan.png'
-          path: 'public/tagIconImages/old morgan.png'
-      */
-      dispatch(assignTagIconToTag(file.filename, tag));
+      dispatch(assignTagIconToTag(response.data.iconFileName, tag));
     });
   };
 };
@@ -115,7 +109,6 @@ export const assignTagIconToTag = (iconFileName: string, tag: Tag): any => {
     ).then((response) => {
       console.log('return from assignTagIconToTag');
       console.log(response);
-      // dispatch??
     });
   };
 };
