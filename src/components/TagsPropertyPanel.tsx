@@ -26,14 +26,18 @@ const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
     props.onClose();
   };
 
-  if (props.selectedMediaItemIds.length !== 1) {
+  if (props.selectedMediaItemIds.length === 0) {
     return null;
   }
 
+  /*
+  mediaItemIds: string[],
+  tags: Tag[],
+  */
   return (
     <div>
       <TagList
-        mediaItemId={props.selectedMediaItemIds[0]}
+        mediaItemIds={props.selectedMediaItemIds}
         tags={props.tags}
       />
       <Button onClick={handleClose}>Close</Button>

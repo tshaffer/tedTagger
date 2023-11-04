@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTagToMediaItemRedux, addTags } from '../models';
-import { serverUrl, apiUrlFragment, Tag, MediaItem } from '../types';
-import { cloneDeep } from 'lodash';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags } from '../models';
+import { serverUrl, apiUrlFragment, Tag } from '../types';
 
 export const loadTags = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -45,36 +44,6 @@ export const addTagToDb = (
       return '';
     });
   };
-};
-
-export const addTagToMediaItem = (
-  mediaItem: MediaItem,
-  tag: Tag,
-): TedTaggerAnyPromiseThunkAction => {
-  return (dispatch: TedTaggerDispatch, getState: any) => {
-
-    const path = serverUrl + apiUrlFragment + 'addTagToMediaItem';
-
-    const updateTagsInMediaItemBody = {
-      mediaItemId: mediaItem.googleId,
-      tagId: tag.id,
-    };
-
-    return axios.post(
-      path,
-      updateTagsInMediaItemBody
-    ).then((response) => {
-      console.log('updateTagsInMediaItemBody response');
-      console.log(response);
-      dispatch(addTagToMediaItemRedux(mediaItem, tag.id));
-      return mediaItem.googleId;
-    }).catch((error) => {
-      console.log('error');
-      console.log(error);
-      return '';
-    });
-  };
-
 };
 
 export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {

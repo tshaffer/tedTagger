@@ -8,8 +8,10 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const ADD_MEDIA_ITEMS = 'ADD_MEDIA_ITEMS';
 export const ADD_TAG_TO_MEDIA_ITEM = 'ADD_TAG_TO_MEDIA_ITEM';
+export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
 export const REPLACE_TAG_IN_MEDIA_ITEM = 'REPLACE_TAG_IN_MEDIA_ITEM';
 export const DELETE_TAG = 'DELETE_TAG';
+export const DELETE_TAG_FROM_MEDIA_ITEMS = 'DELETE_TAG_FROM_MEDIA_ITEMS';
 
 // ------------------------------------
 // Actions
@@ -48,6 +50,24 @@ export const addTagToMediaItemRedux = (
   };
 };
 
+interface AddTagToMediaItemsPayload {
+  mediaItem: MediaItem[];
+  tagId: string;
+}
+
+export const addTagToMediaItemsRedux = (
+  mediaItems: MediaItem[],
+  tagId: string,
+): any => {
+  return {
+    type: ADD_TAG_TO_MEDIA_ITEMS,
+    payload: {
+      mediaItems,
+      tagId,
+    }
+  };
+};
+
 export const replaceTagInMediaItemRedux = (
   mediaItem: MediaItem,
   existingTagId: string,
@@ -62,6 +82,25 @@ export const replaceTagInMediaItemRedux = (
     }
   };
 };
+
+interface DeleteTagFromMediaItemsPayload {
+  mediaItems: MediaItem[];
+  tagId: string;
+}
+
+export const deleteTagFromMediaItemsRedux = (
+  mediaItems: MediaItem[],
+  tagId: string,
+): any => {
+  return {
+    type: DELETE_TAG_FROM_MEDIA_ITEMS,
+    payload: {
+      mediaItems,
+      tagId,
+    }
+  };
+};
+
 
 interface DeleteTagPayload {
   mediaItem: MediaItem;
@@ -92,7 +131,7 @@ const initialState: MediaItemsState =
 
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
-  action: TedTaggerModelBaseAction<AddMediaItemsPayload & AddTagToMediaItemPayload & DeleteTagPayload>
+  action: TedTaggerModelBaseAction<AddMediaItemsPayload & AddTagToMediaItemPayload & AddTagToMediaItemsPayload& DeleteTagPayload & DeleteTagFromMediaItemsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case ADD_MEDIA_ITEMS: {
@@ -110,6 +149,10 @@ export const mediaItemsStateReducer = (
       }
       return newState;
     }
+    case ADD_TAG_TO_MEDIA_ITEMS: {
+      const newState = cloneDeep(state) as MediaItemsState;
+      return newState;
+    }
     case DELETE_TAG: {
       const newState = cloneDeep(state) as MediaItemsState;
       const specifiedMediaItem: MediaItem = action.payload.mediaItem;
@@ -121,6 +164,10 @@ export const mediaItemsStateReducer = (
         }
         index++;
       }
+      return newState;
+    }
+    case DELETE_TAG_FROM_MEDIA_ITEMS: {
+      const newState = cloneDeep(state) as MediaItemsState;
       return newState;
     }
     default:

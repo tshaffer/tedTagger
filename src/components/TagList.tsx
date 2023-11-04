@@ -2,16 +2,17 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, addTagToMediaItemRedux, deleteTag } from '../models';
-import { MediaItem, Tag } from '../types';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Autocomplete, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+
+import { TedTaggerDispatch, deleteTagFromMediaItemsRedux } from '../models';
+import { MediaItem, Tag } from '../types';
 import { isNil, isObject, isString } from 'lodash';
 import { getAllTags, getMediaItem } from '../selectors';
-import { addTagToMediaItem } from '../controllers';
+import { addTagToMediaItems} from '../controllers';
 
 interface TagOption {
   value: Tag | null;
@@ -19,15 +20,15 @@ interface TagOption {
 }
 
 export interface TagListPropsPropsFromParent {
-  mediaItemId: string,
+  mediaItemIds: string[],
   tags: Tag[],
 }
 
 export interface TagListProps extends TagListPropsPropsFromParent {
   allTags: Tag[],
-  mediaItem: MediaItem,
-  onAddTagToMediaItem: (mediaItem: MediaItem, tag: Tag) => any;
-  onDeleteTagFromMediaItem: (mediaItem: MediaItem, tagId: string) => any;
+  mediaItems: MediaItem[],
+  onAddTagToMediaItems: (mediaItems: MediaItem[], tag: Tag) => any;
+  onDeleteTagFromMediaItems: (mediaItems: MediaItem[], tagId: string) => any;
 }
 
 const TagList = (props: TagListProps) => {
@@ -43,7 +44,7 @@ const TagList = (props: TagListProps) => {
   const handleDeleteTag = (tag: Tag | null) => {
     console.log('handleDeleteTag: ', tag);
     if (!isNil(tag)) {
-      props.onDeleteTagFromMediaItem(props.mediaItem, tag.id);
+      props.onDeleteTagFromMediaItems(props.mediaItems, tag.id);
     }
   };
 
@@ -91,12 +92,11 @@ const TagList = (props: TagListProps) => {
     // }
 
     if (isNil(existingTag)) {
-      // add tag to media item
-      // props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).value as Tag);
+      // add tags to media items
       console.log('add tag: ' + selectedTag.label); // selectedTag is object - verified
-      props.onAddTagToMediaItem(props.mediaItem, (selectedTag as TagOption).value as Tag);
+      props.onAddTagToMediaItems(props.mediaItems, (selectedTag as TagOption).value as Tag);
     } else {
-      // replace tag in media item
+      // replace tag in media items
       console.log('replace tag:', existingTag, selectedTag.label); // existingTag is object - verified
       debugger;
     }
@@ -163,8 +163,8 @@ const TagList = (props: TagListProps) => {
   };
 
   const getRenderedTagSelect = (tag: Tag): JSX.Element => {
-    const ingredientOption: TagOption = { value: tag, label: tag.label };
-    return getTagListItem(ingredientOption, tag.id, tag);
+    const tagOption: TagOption = { value: tag, label: tag.label };
+    return getTagListItem(tagOption, tag.id, tag);
   };
 
   const getPlaceholderSelect = (): JSX.Element => {
@@ -197,19 +197,30 @@ const TagList = (props: TagListProps) => {
   );
 };
 
+const getMediaItems = (state: any, mediaItemIds: string[]): MediaItem[] => {
+  const mediaItems: MediaItem[] = [];
+  mediaItemIds.forEach((mediaItemId: string) => {
+    const mediaItem: MediaItem | null = getMediaItem(state, mediaItemId);
+    if (!isNil(mediaItem)) {
+      mediaItems.push(mediaItem);
+    }
+  });
+  return mediaItems;
+};
+
 function mapStateToProps(state: any, ownProps: any) {
   return {
     allTags: getAllTags(state),
-    mediaItemId: ownProps.mediaItem,
-    mediaItem: getMediaItem(state, ownProps.mediaItemId) as MediaItem,
+    mediaItemIds: ownProps.mediaItemIds,
+    mediaItems: getMediaItems(state, ownProps.mediaItemIds),
     tags: ownProps.tags,
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onAddTagToMediaItem: addTagToMediaItem,
-    onDeleteTagFromMediaItem: deleteTag,
+    onAddTagToMediaItems: addTagToMediaItems,
+    onDeleteTagFromMediaItems: deleteTagFromMediaItemsRedux,
   }, dispatch);
 };
 
