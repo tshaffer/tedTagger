@@ -11,8 +11,8 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { TedTaggerDispatch, deleteTagFromMediaItemsRedux } from '../models';
 import { MediaItem, Tag } from '../types';
 import { isNil, isObject, isString } from 'lodash';
-import { getAllTags, getMediaItem } from '../selectors';
-import { addTagToMediaItems} from '../controllers';
+import { getAllTags, getMediaItem, getTagById } from '../selectors';
+import { addTagToMediaItems } from '../controllers';
 
 interface TagOption {
   value: Tag | null;
@@ -21,10 +21,10 @@ interface TagOption {
 
 export interface TagListPropsPropsFromParent {
   mediaItemIds: string[],
-  tags: Tag[],
 }
 
 export interface TagListProps extends TagListPropsPropsFromParent {
+  commonTags: Tag[],
   allTags: Tag[],
   mediaItems: MediaItem[],
   onAddTagToMediaItems: (mediaItems: MediaItem[], tag: Tag) => any;
@@ -176,7 +176,7 @@ const TagList = (props: TagListProps) => {
 
     let listOfTags: JSX.Element[] = [];
 
-    listOfTags = props.tags.map((tag: Tag) => {
+    listOfTags = props.commonTags.map((tag: Tag) => {
       return getRenderedTagSelect(tag);
     });
 
@@ -208,12 +208,52 @@ const getMediaItems = (state: any, mediaItemIds: string[]): MediaItem[] => {
   return mediaItems;
 };
 
+// should be much easier if I knew how to use filter.
+const getCommonTags = (state: any, mediaItems: MediaItem[]): Tag[] => {
+
+  const commonTagsIds: string[] = mediaItems[0].tagIds;
+
+  const commonTagIdIndicesToRemove: number[] = [];
+
+  for (let j = 1; j < mediaItems.length; j++) {
+    const mediaItem: MediaItem = mediaItems[j];
+    const tagIdsInMediaItem: string[] = mediaItem.tagIds;
+    commonTagsIds.forEach((commonTagId: string, index: number) => {
+      if (!tagIdsInMediaItem.includes(commonTagId)) {
+        commonTagIdIndicesToRemove.push(index);
+      }
+    });
+    // commonTagsIds = commonTagsIds.filter((commonTagId: string) => {
+    //   mediaItem.tagIds.includes(commonTagId);
+    // });
+  }
+
+  for (let i = commonTagIdIndicesToRemove.length - 1; i >= 0; i--) {
+    const indexOfTagIdToRemove = commonTagIdIndicesToRemove[i];
+    commonTagsIds.splice(indexOfTagIdToRemove, 1);
+  }
+
+  const commonTags: Tag[] = [];
+  commonTagsIds.forEach((commonTagId: string) => {
+    const tag: Tag | null = getTagById(state, commonTagId);
+    if (!isNil(tag)) {
+      commonTags.push(tag);
+    }
+  });
+
+  return commonTags;
+};
+
 function mapStateToProps(state: any, ownProps: any) {
+
+  const mediaItems: MediaItem[] = getMediaItems(state, ownProps.mediaItemIds);
+  const commonTags: Tag[] = getCommonTags(state, mediaItems);
+
   return {
-    allTags: getAllTags(state),
     mediaItemIds: ownProps.mediaItemIds,
-    mediaItems: getMediaItems(state, ownProps.mediaItemIds),
-    tags: ownProps.tags,
+    allTags: getAllTags(state),
+    mediaItems,
+    commonTags,
   };
 }
 
