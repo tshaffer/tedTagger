@@ -21,6 +21,7 @@ import { getMediaItems } from '../selectors';
 import PhotoGrid from './PhotoGrid';
 import TagsPropertyPanel from './TagsPropertyPanel';
 import TagManager from './TagManager';
+import ViewSpec from './ViewSpec';
 
 const drawerWidth = 240;
 
@@ -46,7 +47,13 @@ const Home = (props: HomeProps) => {
   };
 
   const getDrawerContents = (): JSX.Element | null => {
-    if (drawerContents === 'assignTags') {
+    if (drawerContents === 'viewSpec') {
+      return (
+        <ViewSpec
+          onClose={handleClose}
+        />
+      );
+    } else if (drawerContents === 'assignTags') {
       return (
         <TagsPropertyPanel
           onClose={handleClose}
@@ -87,6 +94,13 @@ const Home = (props: HomeProps) => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
+            <ListItem key={2} disablePadding>
+              <ListItemButton onClick={() => setDrawerContents('viewSpec')}>
+                <ListItemText>
+                  View Spec
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
             <ListItem key={0} disablePadding>
               <ListItemButton onClick={() => setDrawerContents('assignTags')}>
                 <ListItemText>
