@@ -151,6 +151,14 @@ export const mediaItemsStateReducer = (
     }
     case ADD_TAG_TO_MEDIA_ITEMS: {
       const newState = cloneDeep(state) as MediaItemsState;
+      const specifiedMediaItems: MediaItem[] = action.payload.mediaItems;
+      specifiedMediaItems.forEach((specifiedMediaItem: MediaItem) => {
+        for (const mediaItem of newState.mediaItems) {
+          if (mediaItem.googleId === specifiedMediaItem.googleId) {
+            mediaItem.tagIds.push(action.payload.tagId);
+          }
+        }  
+      });
       return newState;
     }
     case DELETE_TAG: {
@@ -167,6 +175,7 @@ export const mediaItemsStateReducer = (
       return newState;
     }
     case DELETE_TAG_FROM_MEDIA_ITEMS: {
+      debugger;
       const newState = cloneDeep(state) as MediaItemsState;
       return newState;
     }

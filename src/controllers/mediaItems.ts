@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemRedux, deleteTag } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemRedux, addTagToMediaItemsRedux, deleteTag } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToStringLUT, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 import { getTagByLabel } from '../selectors';
@@ -88,38 +88,42 @@ export const addTagToMediaItems = (
   tag: Tag,
 ): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
-
+    
     console.log('addTagToMediaItems');
     console.log(mediaItems);
     console.log(tag);
 
     const path = serverUrl + apiUrlFragment + 'addTagToMediaItems';
 
-    // const updateTagsInMediaItemBody = {
-    //   mediaItemId: mediaItems.googleId,
-    //   tagId: tag.id,
-    // };
+    const googleMediaItemIds: string[] = mediaItems.map((mediaItem: MediaItem) => {
+      return mediaItem.googleId;
+    });
 
-    // return axios.post(
-    //   path,
-    //   updateTagsInMediaItemBody
-    // ).then((response) => {
-    //   console.log('updateTagsInMediaItemBody response');
-    //   console.log(response);
-    //   dispatch(addTagToMediaItemRedux(mediaItems, tag.id));
-    //   return mediaItems.googleId;
-    // }).catch((error) => {
-    //   console.log('error');
-    //   console.log(error);
-    //   return '';
-    // });
-    return Promise.resolve();
+    const updateTagsInMediaItemsBody = {
+      mediaItemIds: googleMediaItemIds,
+      tagId: tag.id,
+    };
+
+    return axios.post(
+      path,
+      updateTagsInMediaItemsBody
+    ).then((response) => {
+      console.log('updateTagsInMediaItemsBody response');
+      console.log(response);
+      dispatch(addTagToMediaItemsRedux(mediaItems, tag.id));
+      // return mediaItems.googleId;
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
   };
 
 };
 
 export const deleteTagFromMediaItems = (mediaItems: MediaItem[], tag: Tag): any => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
+    debugger;
     console.log('deleteTagFromMediaItems');
     console.log(mediaItems);
     console.log(tag);

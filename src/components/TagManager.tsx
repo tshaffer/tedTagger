@@ -45,6 +45,10 @@ const TagManager = (props: TagManagerProps) => {
     }
   };
 
+  const handleSetNewTag = (text: any) => {
+    setNewTag(text);
+  };
+
   const handleSelectFile = (event: any) => {
     if (!isNil(selectedTag)) {
       const selectedFile = event.target.files[0];
@@ -114,7 +118,7 @@ const TagManager = (props: TagManagerProps) => {
       <div>
         <TextField
           value={newTag}
-          onChange={(e: any) => handleSelectFile(e.target.value)}
+          onChange={(e: any) => handleSetNewTag(e.target.value)}
         >
         </TextField>
         <Tooltip title="Save">
