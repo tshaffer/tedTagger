@@ -12,6 +12,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { isNil } from 'lodash';
 
 export interface ViewSpecPropsFromParent {
   onClose: () => void;
@@ -22,7 +23,26 @@ export interface ViewSpecProps extends ViewSpecPropsFromParent {
 
 const ViewSpec = (props: ViewSpecProps) => {
 
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+  const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs('2010-01-01'));
+  const [endDate, setEndDate] = React.useState<Dayjs | null>(dayjs('2023-11-01'));
+
+  const handleSetStartDate = (startDateDayJs: Dayjs | null) => {
+    console.log('handleSetStartDate');
+    if (!isNil(startDateDayJs)) {
+      const startDate: Date = startDateDayJs.toDate();
+      console.log(startDate);
+    }
+  };
+
+  const handleSetEndDate = (endDateDayJs: Dayjs | null) => {
+  
+    console.log('handleSetEndDate');
+    if (!isNil(endDateDayJs)) {
+      const endDate: Date = endDateDayJs.toDate();
+      console.log(endDate);
+      console.log(endDate.toISOString());
+    }
+  };
 
   const handleClose = () => {
     props.onClose();
@@ -34,9 +54,16 @@ const ViewSpec = (props: ViewSpecProps) => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={['DatePicker']}>
           <DatePicker
-            label="Controlled picker"
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            label="Start date"
+            value={startDate}
+            onChange={(newValue) => handleSetStartDate(newValue)}
+          />
+        </DemoContainer>
+        <DemoContainer components={['DatePicker']}>
+          <DatePicker
+            label="End date"
+            value={endDate}
+            onChange={(newValue) => handleSetEndDate(newValue)}
           />
         </DemoContainer>
       </LocalizationProvider>

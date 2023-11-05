@@ -10,6 +10,7 @@ export interface TedTaggerState {
   mediaItemsState: MediaItemsState;
   selectionsState: SelectedMediaItemsState;
   tagsState: TagsState;
+  viewSpecState: ViewSpecState;
 }
 
 export interface AppState {
@@ -26,6 +27,11 @@ export interface SelectedMediaItemsState {
 
 export interface TagsState {
   tags: Tag[];
+}
+
+export interface ViewSpecState {
+  startDate: string;
+  endDate: string;
 }
 
 export type StringToStringLUT = {
