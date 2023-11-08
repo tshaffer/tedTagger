@@ -29,7 +29,13 @@ export interface TagsState {
   tags: Tag[];
 }
 
+export enum ViewSpecType {
+  All,
+  ByDateRange,
+}
+
 export interface ViewSpecState {
+  viewSpecType: ViewSpecType;
   startDate: string;
   endDate: string;
 }
