@@ -1,15 +1,16 @@
 import {
-  ViewSpecState, ViewSpecType
+  TedTaggerState,
+  ViewSpecType
 } from '../types';
 
-export const getViewSpecType = (state: ViewSpecState): ViewSpecType => {
-  return state.viewSpecType;
+export const getViewSpecType = (state: TedTaggerState): ViewSpecType => {
+  return state.viewSpecState.viewSpecType;
 };
 
-export const getStartDate = (state: ViewSpecState): string => {
-  return state.startDate;
+export const getStartDate = (state: TedTaggerState): string => {
+  return state.viewSpecState.startDate;
 };
 
-export const getEndDate = (state: ViewSpecState): string => {
-  return state.endDate;
+export const getEndDate = (state: TedTaggerState): string => {
+  return state.viewSpecState.endDate;
 };

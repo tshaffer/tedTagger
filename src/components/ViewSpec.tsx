@@ -32,7 +32,6 @@ export interface ViewSpecProps extends ViewSpecPropsFromParent {
 const ViewSpec = (props: ViewSpecProps) => {
 
   const handleViewSpecChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    debugger;
     const newValue: string = (event.target as HTMLInputElement).value;
     console.log('handleViewSpecChange');
     console.log(newValue);
