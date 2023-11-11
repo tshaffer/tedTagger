@@ -1,4 +1,4 @@
-import { Grid, Card, CardMedia, FormGroup, FormLabel } from '@mui/material';
+import { Grid, Card, CardMedia, FormGroup, FormLabel, Tooltip } from '@mui/material';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -55,7 +55,7 @@ function Photo(props: PhotoProps) {
     return filePath;
   };
 
-  const getTagIcon = (photoTag: Tag) : JSX.Element => {
+  const getTagIcon = (photoTag: Tag): JSX.Element => {
     if (isNil(photoTag.iconFileName)) {
       return (
         <span key={photoTag.id}></span>
@@ -65,15 +65,17 @@ function Photo(props: PhotoProps) {
       '/tagIconImages',
       photoTag.iconFileName);
     return (
-      <img key={photoTag.id} src={filePath} alt={photoTag.label}/>
+      <Tooltip title={photoTag.label}>
+        <img key={photoTag.id} src={filePath} alt={photoTag.label} />
+      </Tooltip>
     );
   };
-  
-  const getTagIcons = (photoTags: Tag[]) : JSX.Element => {
+
+  const getTagIcons = (photoTags: Tag[]): JSX.Element => {
     const photoTagImages: JSX.Element[] = photoTags.map((photoTag: Tag) => {
       return getTagIcon(photoTag);
     });
-    
+
     return (
       <div>
         {photoTagImages}
