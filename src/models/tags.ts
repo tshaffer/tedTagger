@@ -70,7 +70,6 @@ const initialState: TagsState =
 
 export const tagsStateReducer = (
   state: TagsState = initialState,
-  // action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload & DeleteTagPayload>
   action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload>
 ): TagsState => {
   switch (action.type) {

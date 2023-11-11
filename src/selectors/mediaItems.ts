@@ -7,6 +7,10 @@ export const getMediaItems = (state: TedTaggerState): MediaItem[] => {
   return state.mediaItemsState.mediaItems;
 };
 
+export const getDisplayedMediaItems = (state: TedTaggerState): MediaItem[] => {
+  return state.mediaItemsState.displayedMediaItems;
+};
+
 export const getMediaItem = (state: TedTaggerState, googleId: string): MediaItem | null => {
 
   for (const mediaItem of state.mediaItemsState.mediaItems) {

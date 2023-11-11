@@ -50,15 +50,16 @@ const ViewSpec = (props: ViewSpecProps) => {
   };
 
   const handleSetStartDate = (startDateDayJs: Dayjs | null) => {
-    console.log('handleSetStartDate');
     if (!isNil(startDateDayJs)) {
       const startDate: Date = startDateDayJs.toDate();
+      props.onSetStartDate(startDate.toISOString());
     }
   };
 
   const handleSetEndDate = (endDateDayJs: Dayjs | null) => {
     if (!isNil(endDateDayJs)) {
       const endDate: Date = endDateDayJs.toDate();
+      props.onSetEndDate(endDate.toISOString());
     }
   };
 

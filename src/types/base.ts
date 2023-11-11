@@ -19,6 +19,7 @@ export interface AppState {
 
 export interface MediaItemsState {
   mediaItems: MediaItem[];
+  displayedMediaItems: MediaItem[];
 }
 
 export interface SelectedMediaItemsState {

@@ -6,7 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 import '../styles/TedTagger.css';
 import Photo from './Photo';
-import { getMediaItems } from '../selectors';
+import { getDisplayedMediaItems, getMediaItems } from '../selectors';
 import { MediaItem } from '../types';
 
 export interface PhotoGridProps {
@@ -47,7 +47,7 @@ const PhotoGrid = (props: PhotoGridProps) => {
 
 function mapStateToProps(state: any) {
   return {
-    mediaItems: getMediaItems(state),
+    mediaItems: getDisplayedMediaItems(state),
   };
 }
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemRedux, addTagToMediaItemsRedux, deleteTag } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemRedux, addTagToMediaItemsRedux, deleteTag, setDisplayedMediaItems } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToStringLUT, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 import { getTagByLabel } from '../selectors';
@@ -48,7 +48,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         }
 
         dispatch(addMediaItems(mediaItems));
-
+        dispatch(setDisplayedMediaItems(mediaItems));
       });
   };
 };
