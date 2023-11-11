@@ -56,14 +56,15 @@ function Photo(props: PhotoProps) {
   };
 
   const getTagIcon = (photoTag: Tag): JSX.Element => {
+    let filePath;
     if (isNil(photoTag.iconFileName)) {
-      return (
-        <span key={photoTag.id}></span>
-      );
+      filePath =
+        '/tagIconImages/defaultIcon.jpg';
+    } else {
+      filePath = path.join(
+        '/tagIconImages',
+        photoTag.iconFileName);
     }
-    const filePath = path.join(
-      '/tagIconImages',
-      photoTag.iconFileName);
     return (
       <Tooltip title={photoTag.label}>
         <img key={photoTag.id} src={filePath} alt={photoTag.label} />
