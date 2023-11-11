@@ -5,12 +5,6 @@ import {
 
 export const getMediaItems = (state: TedTaggerState): MediaItem[] => {
   return state.mediaItemsState.mediaItems;
-  // return state.mediaItemsState.displayedMediaItems;
-};
-
-export const getMediaItemsToDisplay = (state: TedTaggerState): MediaItem[] => {
-  return state.mediaItemsState.mediaItems;
-  // return state.mediaItemsState.displayedMediaItems;
 };
 
 export const getMediaItem = (state: TedTaggerState, googleId: string): MediaItem | null => {

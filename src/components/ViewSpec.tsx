@@ -14,7 +14,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { isNil } from 'lodash';
 import { getEndDate, getStartDate, getViewSpecType } from '../selectors';
 import { ViewSpecType } from '../types';
-import { getMediaItemsToDisplayFromServer, setEndDate, setStartDate, setViewSpecType } from '../controllers';
+import { loadMediaItems, setEndDate, setStartDate, setViewSpecType } from '../controllers';
 
 export interface ViewSpecPropsFromParent {
   onClose: () => void;
@@ -27,7 +27,7 @@ export interface ViewSpecProps extends ViewSpecPropsFromParent {
   onSetViewSpec: (viewSpec: ViewSpecType) => void;
   onSetStartDate: (startDate: string) => void;
   onSetEndDate: (endDate: string) => void;
-  onUpdateMediaItemsToDisplay: () => void;
+  onReloadMediaItems: () => void;
 }
 
 const ViewSpec = (props: ViewSpecProps) => {
@@ -65,7 +65,7 @@ const ViewSpec = (props: ViewSpecProps) => {
   };
 
   const handleSearch = () => {
-    props.onUpdateMediaItemsToDisplay();
+    props.onReloadMediaItems();
   };
 
   const handleClose = () => {
@@ -127,7 +127,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onUpdateMediaItemsToDisplay: getMediaItemsToDisplayFromServer,
+    onReloadMediaItems: loadMediaItems,
     onSetViewSpec: setViewSpecType,
     onSetStartDate: setStartDate,
     onSetEndDate: setEndDate,

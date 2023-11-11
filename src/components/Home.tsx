@@ -28,7 +28,6 @@ const drawerWidth = 240;
 
 export interface HomeProps {
   onLoadMediaItems: () => any;
-  // onGetMediaItemsToDisplayFromServer: () => any;
   onLoadTags: () => any;
 }
 
@@ -137,7 +136,6 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onLoadMediaItems: loadMediaItems,
-    // onGetMediaItemsToDisplayFromServer: getMediaItemsToDisplayFromServer,
     onLoadTags: loadTags,
   }, dispatch);
 };

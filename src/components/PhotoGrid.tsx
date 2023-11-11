@@ -6,10 +6,9 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 import '../styles/TedTagger.css';
 import Photo from './Photo';
-import { 
-  // getMediaItemsToDisplay, 
+import {
   getMediaItems
- } from '../selectors';
+} from '../selectors';
 import { MediaItem } from '../types';
 
 export interface PhotoGridProps {
