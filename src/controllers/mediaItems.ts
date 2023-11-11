@@ -8,6 +8,8 @@ import { getEndDate, getStartDate, getTagByLabel, getViewSpecType } from '../sel
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
+    debugger;
+
     const state: TedTaggerState = getState();
     console.log('Tags on entry to loadMediaItems');
     console.log(state.tagsState.tags);
@@ -22,7 +24,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
     const endDate = getEndDate(state);
 
     // const path = serverUrl + apiUrlFragment + 'mediaItems';
-    const path = serverUrl + apiUrlFragment + 'mediaItemsToDisplay?viewSpec' + viewSpec + '&startDate' + startDate + '&endDate' + endDate;
+    const path = serverUrl + apiUrlFragment + 'mediaItemsToDisplay?viewSpec=' + viewSpec + '&startDate=' + startDate + '&endDate=' + endDate;
 
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
@@ -53,48 +55,48 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         }
 
         dispatch(addMediaItems(mediaItems));
-        dispatch(setDisplayedMediaItems(mediaItems));
+        // dispatch(setDisplayedMediaItems(mediaItems));
       });
   };
 };
 
 export const getMediaItemsToDisplayFromServer = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
+    return dispatch(loadMediaItems());
+    // const state = getState();
+    // const viewSpec = getViewSpecType(state);
+    // const startDate = getStartDate(state);
+    // const endDate = getEndDate(state);
 
-    const state = getState();
-    const viewSpec = getViewSpecType(state);
-    const startDate = getStartDate(state);
-    const endDate = getEndDate(state);
+    // const path = serverUrl + apiUrlFragment + 'mediaItemsToDisplay?viewSpec' + viewSpec + '&startDate' + startDate + '&endDate' + endDate;
 
-    const path = serverUrl + apiUrlFragment + 'mediaItemsToDisplay?viewSpec' + viewSpec + '&startDate' + startDate + '&endDate' + endDate;
+    // return axios.get(path)
+    //   .then((mediaItemsResponse: any) => {
 
-    return axios.get(path)
-      .then((mediaItemsResponse: any) => {
+    //     const mediaItems: MediaItem[] = [];
+    //     const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
 
-        const mediaItems: MediaItem[] = [];
-        const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
+    //     // derive mediaItems from serverMediaItems
+    //     for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
 
-        // derive mediaItems from serverMediaItems
-        for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
+    //       const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
 
-          const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
-
-          const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
-          if (description.startsWith('TedTag-')) {
-            // mediaItem includes one or more tags
-            const tagsSpec: string = description.substring('TedTag-'.length);
-            const tagLabels: string[] = tagsSpec.split(':');
-            tagLabels.forEach((tagLabel: string) => {
-              const tag: Tag | null = getTagByLabel(state, tagLabel);
-              if (!isNil(tag)) {
-                (mediaItem as MediaItem).tagIds.push(tag.id);
-              }
-            });
-          }
-          mediaItems.push(mediaItem as MediaItem);
-        }
-        dispatch(setDisplayedMediaItems(mediaItems));
-      });
+    //       const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
+    //       if (description.startsWith('TedTag-')) {
+    //         // mediaItem includes one or more tags
+    //         const tagsSpec: string = description.substring('TedTag-'.length);
+    //         const tagLabels: string[] = tagsSpec.split(':');
+    //         tagLabels.forEach((tagLabel: string) => {
+    //           const tag: Tag | null = getTagByLabel(state, tagLabel);
+    //           if (!isNil(tag)) {
+    //             (mediaItem as MediaItem).tagIds.push(tag.id);
+    //           }
+    //         });
+    //       }
+    //       mediaItems.push(mediaItem as MediaItem);
+    //     }
+    //     dispatch(setDisplayedMediaItems(mediaItems));
+    //   });
   };
 };
 

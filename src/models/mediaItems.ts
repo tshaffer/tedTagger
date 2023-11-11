@@ -149,10 +149,12 @@ export const mediaItemsStateReducer = (
   switch (action.type) {
     case ADD_MEDIA_ITEMS: {
       const newState = cloneDeep(state) as MediaItemsState;
-      newState.mediaItems = newState.mediaItems.concat(action.payload.mediaItems);
+      // newState.mediaItems = newState.mediaItems.concat(action.payload.mediaItems);
+      newState.mediaItems = action.payload.mediaItems;
       return newState;
     }
     case SET_DISPLAYED_MEDIA_ITEMS: {
+      debugger;
       const newState = cloneDeep(state) as MediaItemsState;
       newState.displayedMediaItems = newState.mediaItems.concat(action.payload.mediaItems);
       return newState;
