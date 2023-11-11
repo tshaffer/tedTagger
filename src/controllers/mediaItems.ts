@@ -3,7 +3,7 @@ import axios from 'axios';
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemRedux, addTagToMediaItemsRedux, deleteTag, setDisplayedMediaItems } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToStringLUT, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
-import { getTagByLabel } from '../selectors';
+import { getEndDate, getStartDate, getTagByLabel, getViewSpecType } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -17,7 +17,12 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
       tagsByTagId[tag.id] = tag;
     });
 
-    const path = serverUrl + apiUrlFragment + 'mediaItems';
+    const viewSpec = getViewSpecType(state);
+    const startDate = getStartDate(state);
+    const endDate = getEndDate(state);
+
+    // const path = serverUrl + apiUrlFragment + 'mediaItems';
+    const path = serverUrl + apiUrlFragment + 'mediaItemsToDisplay?viewSpec' + viewSpec + '&startDate' + startDate + '&endDate' + endDate;
 
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
@@ -48,6 +53,46 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         }
 
         dispatch(addMediaItems(mediaItems));
+        dispatch(setDisplayedMediaItems(mediaItems));
+      });
+  };
+};
+
+export const getMediaItemsToDisplayFromServer = (): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const state = getState();
+    const viewSpec = getViewSpecType(state);
+    const startDate = getStartDate(state);
+    const endDate = getEndDate(state);
+
+    const path = serverUrl + apiUrlFragment + 'mediaItemsToDisplay?viewSpec' + viewSpec + '&startDate' + startDate + '&endDate' + endDate;
+
+    return axios.get(path)
+      .then((mediaItemsResponse: any) => {
+
+        const mediaItems: MediaItem[] = [];
+        const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
+
+        // derive mediaItems from serverMediaItems
+        for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
+
+          const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
+
+          const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
+          if (description.startsWith('TedTag-')) {
+            // mediaItem includes one or more tags
+            const tagsSpec: string = description.substring('TedTag-'.length);
+            const tagLabels: string[] = tagsSpec.split(':');
+            tagLabels.forEach((tagLabel: string) => {
+              const tag: Tag | null = getTagByLabel(state, tagLabel);
+              if (!isNil(tag)) {
+                (mediaItem as MediaItem).tagIds.push(tag.id);
+              }
+            });
+          }
+          mediaItems.push(mediaItem as MediaItem);
+        }
         dispatch(setDisplayedMediaItems(mediaItems));
       });
   };
@@ -88,7 +133,7 @@ export const addTagToMediaItems = (
   tag: Tag,
 ): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
-    
+
     console.log('addTagToMediaItems');
     console.log(mediaItems);
     console.log(tag);

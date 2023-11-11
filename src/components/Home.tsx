@@ -14,10 +14,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { MediaItem } from '../types';
-import { loadMediaItems, loadTags } from '../controllers';
+import {
+  loadMediaItems,
+  loadTags
+} from '../controllers';
 import { TedTaggerDispatch } from '../models';
-import { getMediaItems } from '../selectors';
 import PhotoGrid from './PhotoGrid';
 import TagsPropertyPanel from './TagsPropertyPanel';
 import TagManager from './TagManager';
@@ -26,8 +27,8 @@ import ViewSpec from './ViewSpec';
 const drawerWidth = 240;
 
 export interface HomeProps {
-  mediaItems: MediaItem[],
   onLoadMediaItems: () => any;
+  // onGetMediaItemsToDisplayFromServer: () => any;
   onLoadTags: () => any;
 }
 
@@ -130,13 +131,13 @@ const Home = (props: HomeProps) => {
 
 function mapStateToProps(state: any) {
   return {
-    mediaItems: getMediaItems(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onLoadMediaItems: loadMediaItems,
+    // onGetMediaItemsToDisplayFromServer: getMediaItemsToDisplayFromServer,
     onLoadTags: loadTags,
   }, dispatch);
 };
