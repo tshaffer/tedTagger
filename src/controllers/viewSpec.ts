@@ -1,12 +1,25 @@
 import axios from 'axios';
 
-import { TedTaggerDispatch, setViewSpecTypeRedux } from '../models';
-import { serverUrl, apiUrlFragment, ViewSpecType } from '../types';
+import { TedTaggerDispatch, setViewSpecStateRedux, setViewSpecTypeRedux } from '../models';
+import { serverUrl, apiUrlFragment, ViewSpecType, ViewSpecState } from '../types';
 
 import {
   setStartDateRedux,
   setEndDateRedux
 } from '../models';
+
+export const loadViewSpec = () => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'viewSpec';
+
+    return axios.get(path)
+      .then((viewSpecResponse: any) => {
+        const viewSpec: ViewSpecState = (viewSpecResponse as any).data;
+        dispatch(setViewSpecStateRedux(viewSpec));
+      });
+  };
+};
 
 export const setViewSpecType = (viewSpecType: ViewSpecType) => {
 

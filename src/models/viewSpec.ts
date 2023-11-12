@@ -5,6 +5,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 // Constants
 // ------------------------------------
+export const SET_VIEW_SPEC_STATE = 'SET_VIEW_SPEC_STATE';
 export const SET_VIEW_SPEC_TYPE = 'SET_VIEW_SPEC_TYPE';
 export const SET_START_DATE = 'SET_START_DATE';
 export const SET_END_DATE = 'SET_END_DATE';
@@ -12,6 +13,13 @@ export const SET_END_DATE = 'SET_END_DATE';
 // ------------------------------------
 // Actions
 // ------------------------------------
+
+export const setViewSpecStateRedux = (viewSpecState: ViewSpecState): any => {
+  return {
+    type: SET_VIEW_SPEC_STATE,
+    viewSpecState,
+  };
+}
 
 export const setViewSpecTypeRedux = (viewSpec: ViewSpecType): any => {
   return {
@@ -49,6 +57,9 @@ export const viewSpecStateReducer = (
   action: TedTaggerModelBaseAction<any>
 ): ViewSpecState => {
   switch (action.type) {
+    case SET_VIEW_SPEC_STATE: {
+      return (action as any).viewSpecState;
+    }
     case SET_VIEW_SPEC_TYPE: {
       const newState = cloneDeep(state);
       newState.viewSpecType = (action as any).viewSpec;

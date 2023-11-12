@@ -16,7 +16,8 @@ import ListItemText from '@mui/material/ListItemText';
 
 import {
   loadMediaItems,
-  loadTags
+  loadTags,
+  loadViewSpec,
 } from '../controllers';
 import { TedTaggerDispatch } from '../models';
 import PhotoGrid from './PhotoGrid';
@@ -29,6 +30,7 @@ const drawerWidth = 240;
 export interface HomeProps {
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
+  onLoadViewSpec: () => any;
 }
 
 const Home = (props: HomeProps) => {
@@ -36,9 +38,12 @@ const Home = (props: HomeProps) => {
   const [drawerContents, setDrawerContents] = React.useState('');
 
   React.useEffect(() => {
-    props.onLoadTags()
+    props.onLoadViewSpec()
       .then(() => {
-        props.onLoadMediaItems();
+        props.onLoadTags()
+          .then(() => {
+            props.onLoadMediaItems();
+          });
       });
   }, []);
 
@@ -137,6 +142,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onLoadMediaItems: loadMediaItems,
     onLoadTags: loadTags,
+    onLoadViewSpec: loadViewSpec,
   }, dispatch);
 };
 
