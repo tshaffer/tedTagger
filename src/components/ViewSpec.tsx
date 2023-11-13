@@ -32,6 +32,16 @@ export interface ViewSpecProps extends ViewSpecPropsFromParent {
 
 const ViewSpec = (props: ViewSpecProps) => {
 
+  const getViewSpecTypeAsString = (): string => {
+    switch (props.viewSpec) {
+      case ViewSpecType.All:
+      default:
+        return 'all';
+      case ViewSpecType.ByDateRange:
+        return 'byDateRange';
+    }
+  };
+
   const handleViewSpecChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue: string = (event.target as HTMLInputElement).value;
     console.log('handleViewSpecChange');
@@ -79,7 +89,7 @@ const ViewSpec = (props: ViewSpecProps) => {
           <FormLabel id="demo-radio-buttons-group-label">View Spec</FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="all"
+            value={getViewSpecTypeAsString()}
             name="radio-buttons-group"
             onChange={handleViewSpecChange}
           >
