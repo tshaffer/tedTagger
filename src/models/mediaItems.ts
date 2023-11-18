@@ -116,18 +116,14 @@ export const mediaItemsStateReducer = (
 ): MediaItemsState => {
   switch (action.type) {
     case SET_MEDIA_ITEMS: {
-      const newState = cloneDeep(state) as MediaItemsState;
-      newState.mediaItems = action.payload.mediaItems;
-      return newState;
+      return { ...state, mediaItems: action.payload.mediaItems };
     }
     case ADD_TAG_TO_MEDIA_ITEMS: {
       const newState = cloneDeep(state) as MediaItemsState;
-      const specifiedMediaItems: MediaItem[] = action.payload.mediaItems;
-      specifiedMediaItems.forEach((specifiedMediaItem: MediaItem) => {
-        for (const mediaItem of newState.mediaItems) {
-          if (mediaItem.googleId === specifiedMediaItem.googleId) {
-            mediaItem.tagIds.push(action.payload.tagId);
-          }
+      newState.mediaItems.forEach((item) => {
+        const matchingInputItem = action.payload.mediaItems.find((inputItem) => inputItem.googleId === item.googleId);
+        if (matchingInputItem) {
+          item.tagIds.push(action.payload.tagId);
         }
       });
       return newState;
