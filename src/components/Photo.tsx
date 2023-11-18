@@ -66,7 +66,7 @@ function Photo(props: PhotoProps) {
         photoTag.iconFileName);
     }
     return (
-      <Tooltip title={photoTag.label}>
+      <Tooltip title={photoTag.label} key={photoTag.id + '::' + props.mediaItem.googleId} >
         <img key={photoTag.id} src={filePath} alt={photoTag.label} />
       </Tooltip>
     );
