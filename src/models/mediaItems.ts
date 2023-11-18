@@ -1,13 +1,12 @@
-import { cloneDeep, isNil } from 'lodash';
+import { cloneDeep } from 'lodash';
 
-import { MediaItem, MediaItemsState, Tag } from '../types';
+import { MediaItem, MediaItemsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const SET_MEDIA_ITEMS = 'SET_MEDIA_ITEMS';
-export const ADD_TAG_TO_MEDIA_ITEM = 'ADD_TAG_TO_MEDIA_ITEM';
 export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
 export const REPLACE_TAG_IN_MEDIA_ITEM = 'REPLACE_TAG_IN_MEDIA_ITEM';
 export const DELETE_TAG = 'DELETE_TAG';
@@ -28,24 +27,6 @@ export const setMediaItems = (
     type: SET_MEDIA_ITEMS,
     payload: {
       mediaItems
-    }
-  };
-};
-
-interface AddTagToMediaItemPayload {
-  mediaItem: MediaItem;
-  tagId: string;
-}
-
-export const addTagToMediaItemRedux = (
-  mediaItem: MediaItem,
-  tagId: string,
-): any => {
-  return {
-    type: ADD_TAG_TO_MEDIA_ITEM,
-    payload: {
-      mediaItem,
-      tagId,
     }
   };
 };
@@ -131,22 +112,12 @@ const initialState: MediaItemsState =
 
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemPayload & AddTagToMediaItemsPayload & DeleteTagPayload & DeleteTagFromMediaItemsPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagPayload & DeleteTagFromMediaItemsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case SET_MEDIA_ITEMS: {
       const newState = cloneDeep(state) as MediaItemsState;
       newState.mediaItems = action.payload.mediaItems;
-      return newState;
-    }
-    case ADD_TAG_TO_MEDIA_ITEM: {
-      const newState = cloneDeep(state) as MediaItemsState;
-      const specifiedMediaItem: MediaItem = action.payload.mediaItem;
-      for (const mediaItem of newState.mediaItems) {
-        if (mediaItem.googleId === specifiedMediaItem.googleId) {
-          mediaItem.tagIds.push(action.payload.tagId);
-        }
-      }
       return newState;
     }
     case ADD_TAG_TO_MEDIA_ITEMS: {

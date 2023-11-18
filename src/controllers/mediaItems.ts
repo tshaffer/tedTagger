@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemRedux, addTagToMediaItemsRedux } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 import { getEndDate, getStartDate, getTagByLabel, getViewSpecType } from '../selectors';
@@ -54,36 +54,6 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         dispatch(setMediaItems(mediaItems));
       });
   };
-};
-
-export const addTagToMediaItem = (
-  mediaItem: MediaItem,
-  tag: Tag,
-): TedTaggerAnyPromiseThunkAction => {
-  return (dispatch: TedTaggerDispatch, getState: any) => {
-
-    const path = serverUrl + apiUrlFragment + 'addTagToMediaItem';
-
-    const updateTagsInMediaItemBody = {
-      mediaItemId: mediaItem.googleId,
-      tagId: tag.id,
-    };
-
-    return axios.post(
-      path,
-      updateTagsInMediaItemBody
-    ).then((response) => {
-      console.log('updateTagsInMediaItemBody response');
-      console.log(response);
-      dispatch(addTagToMediaItemRedux(mediaItem, tag.id));
-      return mediaItem.googleId;
-    }).catch((error) => {
-      console.log('error');
-      console.log(error);
-      return '';
-    });
-  };
-
 };
 
 export const addTagToMediaItems = (
