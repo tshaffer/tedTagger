@@ -19,7 +19,7 @@ export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent
   tags: Tag[],
 }
 
-const TagsPropertyPanel = (props: TagsPropertyPanelProps) => {
+const AssignTags = (props: TagsPropertyPanelProps) => {
 
   const handleClose = () => {
     console.log('onClose');
@@ -72,4 +72,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TagsPropertyPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(AssignTags);

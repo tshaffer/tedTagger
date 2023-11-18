@@ -21,7 +21,7 @@ import {
 } from '../controllers';
 import { TedTaggerDispatch } from '../models';
 import PhotoGrid from './PhotoGrid';
-import TagsPropertyPanel from './TagsPropertyPanel';
+import AssignTags from './AssignTags';
 import TagManager from './TagManager';
 import ViewSpec from './ViewSpec';
 
@@ -60,7 +60,7 @@ const Home = (props: HomeProps) => {
       );
     } else if (drawerContents === 'assignTags') {
       return (
-        <TagsPropertyPanel
+        <AssignTags
           onClose={handleClose}
         />
       );
