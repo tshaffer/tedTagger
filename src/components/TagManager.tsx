@@ -59,7 +59,7 @@ const TagManager = (props: TagManagerProps) => {
   };
 
 
-  const getTagIcon = (tag: Tag) : JSX.Element => {
+  const getTagIcon = (tag: Tag): JSX.Element => {
     if (isNil(tag.iconFileName)) {
       return (
         <span></span>
@@ -69,10 +69,9 @@ const TagManager = (props: TagManagerProps) => {
       '/tagIconImages',
       tag.iconFileName);
     return (
-      <img src={filePath} alt={tag.label}/>
+      <img src={filePath} alt={tag.label} />
     );
   };
-  
 
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
@@ -80,11 +79,14 @@ const TagManager = (props: TagManagerProps) => {
         <ListItem
           key={tag.id}
         >
-          <ListItemIcon
-            onClick={() => handleClickTag(tag)}
-          >
-            <AssignmentIndIcon />
-          </ListItemIcon>
+          <Tooltip title="Select avatar">
+            <ListItemIcon
+              onClick={() => handleClickTag(tag)}
+              style={{ cursor: 'pointer' }}
+            >
+              <AssignmentIndIcon />
+            </ListItemIcon>
+          </Tooltip>
           <input
             type="file"
             onChange={(e) => handleSelectFile(e)}
@@ -93,7 +95,7 @@ const TagManager = (props: TagManagerProps) => {
           />
           {getTagIcon(tag)}
           <ListItemText id={tag.id} primary={tag.label} />
-        </ListItem>
+        </ListItem >
       );
     });
 
