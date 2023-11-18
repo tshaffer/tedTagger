@@ -78,6 +78,49 @@ const Home = (props: HomeProps) => {
 
   const drawerContentsJSX = getDrawerContents();
 
+  /*
+    <ListItemText    style={ this.state.checkboxState ? { fontWeight: 'normal' } : { fontWeight: 'bold' } }
+
+    <ListItemText
+      disableTypography
+      style={{ fontWeight: 'bold' }}
+    >
+
+    const text = {
+      color: "red"
+    };
+    <ListItemText primaryTypographyProps={{ style: text }} primary="MyText">
+  */
+  const
+    selectedPropertyPanelText = {
+      fontWeight: 'bold',
+      color: 'red',
+    };
+  const unselectedPropertyPanelText = {
+    fontWeight: 'normal',
+    color: 'black',
+  };
+
+  let viewSpecTextStyle: any = unselectedPropertyPanelText;
+  let assignTagsTextStyle: any = unselectedPropertyPanelText;
+  let tagManagerTextStyle: any = unselectedPropertyPanelText;
+
+  switch (drawerContents) {
+    case 'viewSpec':
+    case '':
+      viewSpecTextStyle = selectedPropertyPanelText;
+      break;
+    case 'assignTags':
+      assignTagsTextStyle = selectedPropertyPanelText;
+      break;
+    case 'tagManager':
+      tagManagerTextStyle = selectedPropertyPanelText;
+      break;
+    default:
+      debugger;
+      break;
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -101,21 +144,28 @@ const Home = (props: HomeProps) => {
           <List>
             <ListItem key={2} disablePadding>
               <ListItemButton onClick={() => setDrawerContents('viewSpec')}>
-                <ListItemText>
+                {/* <ListItemText primaryTypographyProps={{ style: text }} primary="MyText"> */}
+                <ListItemText
+                  primaryTypographyProps={{ style: viewSpecTextStyle }}
+                >
                   View Spec
                 </ListItemText>
               </ListItemButton>
             </ListItem>
             <ListItem key={0} disablePadding>
               <ListItemButton onClick={() => setDrawerContents('assignTags')}>
-                <ListItemText>
+                <ListItemText
+                  primaryTypographyProps={{ style: assignTagsTextStyle }}
+                >
                   Assign Tags
                 </ListItemText>
               </ListItemButton>
             </ListItem>
             <ListItem key={1} disablePadding>
               <ListItemButton onClick={() => setDrawerContents('tagManager')}>
-                <ListItemText>
+                <ListItemText
+                  primaryTypographyProps={{ style: tagManagerTextStyle }}
+                >
                   Tag Manager
                 </ListItemText>
               </ListItemButton>
@@ -124,12 +174,12 @@ const Home = (props: HomeProps) => {
           <Divider />
           {drawerContentsJSX}
         </Box>
-      </Drawer>
+      </Drawer >
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <PhotoGrid />
       </Box>
-    </Box>
+    </Box >
   );
 };
 

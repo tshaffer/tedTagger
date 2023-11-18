@@ -111,7 +111,6 @@ const TagManager = (props: TagManagerProps) => {
     <Box sx={{ width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
       <List
         sx={{ width: '100%' }}
-        subheader={<ListSubheader>Tags</ListSubheader>}
       >
         {listItems}
       </List>

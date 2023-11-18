@@ -86,7 +86,6 @@ const ViewSpec = (props: ViewSpecProps) => {
     <Box sx={{ width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
       <div>
         <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">View Spec</FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             value={getViewSpecTypeAsString()}
