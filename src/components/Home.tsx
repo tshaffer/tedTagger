@@ -35,7 +35,7 @@ export interface HomeProps {
 
 const Home = (props: HomeProps) => {
 
-  const [drawerContents, setDrawerContents] = React.useState('');
+  const [drawerContents, setDrawerContents] = React.useState('viewSpec');
 
   React.useEffect(() => {
     props.onLoadViewSpec()
