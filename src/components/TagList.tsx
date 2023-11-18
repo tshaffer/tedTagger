@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 import { TedTaggerDispatch, deleteTagFromMediaItemsRedux } from '../models';
 import { MediaItem, Tag } from '../types';
-import { isNil, isObject, isString } from 'lodash';
+import { cloneDeep, isNil, isObject, isString } from 'lodash';
 import { getAllTags, getMediaItem, getTagById } from '../selectors';
 import { addTagToMediaItems } from '../controllers';
 
@@ -36,6 +36,14 @@ const TagList = (props: TagListProps) => {
   const tagOptions: TagOption[] = [];
   props.allTags.forEach((tag: Tag) => {
     tagOptions.push({
+      value: tag,
+      label: tag.label,
+    });
+  });
+
+  const commonTagOptions: TagOption[] = [];
+  props.commonTags.forEach((tag: Tag) => {
+    commonTagOptions.push({
       value: tag,
       label: tag.label,
     });
@@ -133,13 +141,31 @@ const TagList = (props: TagListProps) => {
     return option.value.id === value.value.id;
   };
 
+  function filterTags(allTags: TagOption[], commonTags: TagOption[], selectedTagOption: TagOption): TagOption[] {
+    // Create a set of common tag IDs for efficient lookup
+    const commonTagIds = new Set(commonTags.map(tag => tag.value));
+  
+    // Filter the allTags array based on the conditions
+    const filteredTags = allTags.filter(tag => {
+      // Include the selectedTagOption regardless of commonTags
+      if (tag.value === selectedTagOption.value) {
+        return true;
+      }
+      // Exclude tags present in commonTags
+      return !commonTagIds.has(tag.value);
+    });
+  
+    return filteredTags;
+  }
+
   const getTagListItem = (tagOption: TagOption, id: string, tag: Tag | null) => {
+    const tagOptionsFiltered = filterTags(tagOptions, commonTagOptions, tagOption);
     const renderedDeleteIcon = getRenderedDeleteIcon(tag);
     return (
       <ListItem key={id}>
         <Autocomplete
           freeSolo
-          options={tagOptions}
+          options={tagOptionsFiltered}
           value={tagOption}
           autoHighlight={true}
           disablePortal

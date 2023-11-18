@@ -10,16 +10,16 @@ import TagList from './TagList';
 import { Button } from '@mui/material';
 import { isNil } from 'lodash';
 
-export interface TagsPropertyPanelPropsFromParent {
+export interface AssignTagsPropsFromParent {
   onClose: () => void;
 }
 
-export interface TagsPropertyPanelProps extends TagsPropertyPanelPropsFromParent {
+export interface AssignTagsProps extends AssignTagsPropsFromParent {
   selectedMediaItemIds: string[],
   tags: Tag[],
 }
 
-const AssignTags = (props: TagsPropertyPanelProps) => {
+const AssignTags = (props: AssignTagsProps) => {
 
   const handleClose = () => {
     console.log('onClose');
