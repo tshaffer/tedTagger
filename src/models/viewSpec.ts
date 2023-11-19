@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { ViewSpecState, ViewSpecType } from '../types';
+import { ViewSpecState, ViewSpecTagType, ViewSpecType } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -7,6 +7,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const SET_VIEW_SPEC_STATE = 'SET_VIEW_SPEC_STATE';
 export const SET_VIEW_SPEC_TYPE = 'SET_VIEW_SPEC_TYPE';
+export const SET_VIEW_SPEC_TAG_SPEC = 'SET_VIEW_SPEC_TAG_SPEC';
 export const SET_START_DATE = 'SET_START_DATE';
 export const SET_END_DATE = 'SET_END_DATE';
 
@@ -19,12 +20,20 @@ export const setViewSpecStateRedux = (viewSpecState: ViewSpecState): any => {
     type: SET_VIEW_SPEC_STATE,
     viewSpecState,
   };
-}
+};
 
 export const setViewSpecTypeRedux = (viewSpec: ViewSpecType): any => {
   return {
     type: SET_VIEW_SPEC_TYPE,
     viewSpec,
+  };
+};
+
+
+export const setViewSpecTagSpecRedux = (tagSpec: ViewSpecTagType): any => {
+  return {
+    type: SET_VIEW_SPEC_TAG_SPEC,
+    tagSpec,
   };
 };
 
@@ -48,6 +57,7 @@ export const setEndDateRedux = (endDate: string): any => {
 
 const initialState: ViewSpecState = {
   viewSpecType: ViewSpecType.All,
+  tagSpec: ViewSpecTagType.Any,
   startDate: '2000-01-01',
   endDate: '2024-01-01',
 };
@@ -61,13 +71,16 @@ export const viewSpecStateReducer = (
       return (action as any).viewSpecState;
     }
     case SET_VIEW_SPEC_TYPE: {
-      const newState = cloneDeep(state);
-      newState.viewSpecType = (action as any).viewSpec;
-      return newState;
-      // return {
-      //   ...state,
-      //   viewSpecType: (action as any).viewSpec
-      // };
+      return {
+        ...state,
+        viewSpecType: (action as any).viewSpec
+      };
+    }
+    case SET_VIEW_SPEC_TAG_SPEC: {
+      return {
+        ...state,
+        tagSpec: (action as any).tagSpec
+      };
     }
     case SET_START_DATE: {
       return { ...state, startDate: (action as any).startDate };

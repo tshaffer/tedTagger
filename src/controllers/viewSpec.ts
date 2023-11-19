@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { TedTaggerDispatch, setViewSpecStateRedux, setViewSpecTypeRedux } from '../models';
-import { serverUrl, apiUrlFragment, ViewSpecType, ViewSpecState } from '../types';
+import { TedTaggerDispatch, setViewSpecStateRedux, setViewSpecTagSpecRedux, setViewSpecTypeRedux } from '../models';
+import { serverUrl, apiUrlFragment, ViewSpecType, ViewSpecState, ViewSpecTagType } from '../types';
 
 import {
   setStartDateRedux,
@@ -16,6 +16,7 @@ export const loadViewSpec = () => {
     return axios.get(path)
       .then((viewSpecResponse: any) => {
         const viewSpec: ViewSpecState = (viewSpecResponse as any).data;
+        viewSpec.tagSpec = ViewSpecTagType.Any;
         dispatch(setViewSpecStateRedux(viewSpec));
       });
   };
@@ -39,6 +40,33 @@ export const setViewSpecType = (viewSpecType: ViewSpecType) => {
       console.log(response);
       dispatch(setViewSpecTypeRedux(viewSpecType));
       return viewSpecType;
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
+  };
+
+};
+
+export const setViewSpecTagSpec = (viewSpecTagSpec: ViewSpecTagType) => {
+
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'setViewSpecTagSpec';
+
+    const setViewSpecTagSpecBody = {
+      viewSpecTagSpec,
+    };
+
+    return axios.post(
+      path,
+      setViewSpecTagSpecBody
+    ).then((response) => {
+      console.log('setViewSpecTagSpec response');
+      console.log(response);
+      dispatch(setViewSpecTagSpecRedux(viewSpecTagSpec));
+      return viewSpecTagSpec;
     }).catch((error) => {
       console.log('error');
       console.log(error);
