@@ -30,12 +30,9 @@ const AssignTags = (props: AssignTagsProps) => {
     return null;
   }
 
-  /*
-  mediaItemIds: string[],
-  tags: Tag[],
-  */
+  // TEDTODO - this is a hack to get the height of the drawer to be correct
   return (
-    <div>
+    <div style={{ height: '600px' }}>
       <TagList
         mediaItemIds={props.selectedMediaItemIds}
         tags={props.tags}

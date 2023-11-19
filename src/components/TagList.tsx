@@ -176,6 +176,15 @@ const TagList = (props: TagListProps) => {
           onKeyDown={handleAutoCompleteKeyDown}
           key={id}
           isOptionEqualToValue={myIsOptionEqualToValue}
+          // TEDTODO - this is a hack to set the height of the autocomplete popup - not sure what I really want here!!
+          ListboxProps={
+            {
+              style: {
+                maxHeight: '300px',
+                border: '1px solid red'
+              }
+            }
+          }
         />
         {renderedDeleteIcon}
 
