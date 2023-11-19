@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 import { getEndDate, getStartDate, getTagByLabel, getViewSpecType } from '../selectors';
@@ -94,13 +94,9 @@ export const addTagToMediaItems = (
 
 };
 
-export const deleteTagFromMediaItems = (mediaItems: MediaItem[], tag: Tag): any => {
+export const deleteTagFromMediaItems = ( tagId: string, mediaItems: MediaItem[]): any => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
-    debugger;
-    console.log('deleteTagFromMediaItems');
-    console.log(mediaItems);
-    console.log(tag);
-    // dispatch(deleteTag(mediaItem, tag.id));
+    dispatch(deleteTagFromMediaItemsRedux( mediaItems, tagId));
   };
 };
 

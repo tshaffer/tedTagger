@@ -9,7 +9,6 @@ import { TedTaggerModelBaseAction } from './baseAction';
 export const SET_MEDIA_ITEMS = 'SET_MEDIA_ITEMS';
 export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
 export const REPLACE_TAG_IN_MEDIA_ITEM = 'REPLACE_TAG_IN_MEDIA_ITEM';
-export const DELETE_TAG = 'DELETE_TAG';
 export const DELETE_TAG_FROM_MEDIA_ITEMS = 'DELETE_TAG_FROM_MEDIA_ITEMS';
 
 // ------------------------------------
@@ -82,25 +81,6 @@ export const deleteTagFromMediaItemsRedux = (
   };
 };
 
-
-interface DeleteTagPayload {
-  mediaItem: MediaItem;
-  tagId: string;
-}
-
-export const deleteTag = (
-  mediaItem: MediaItem,
-  tagId: string,
-): any => {
-  return {
-    type: DELETE_TAG,
-    payload: {
-      mediaItem,
-      tagId,
-    }
-  };
-};
-
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -112,7 +92,7 @@ const initialState: MediaItemsState =
 
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagPayload & DeleteTagFromMediaItemsPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case SET_MEDIA_ITEMS: {
@@ -123,27 +103,26 @@ export const mediaItemsStateReducer = (
       newState.mediaItems.forEach((item) => {
         const matchingInputItem = action.payload.mediaItems.find((inputItem) => inputItem.googleId === item.googleId);
         if (matchingInputItem) {
-          item.tagIds.push(action.payload.tagId);
+          const tagIndex = item.tagIds.indexOf(action.payload.tagId);
+          if (tagIndex === -1) {
+            item.tagIds.push(action.payload.tagId);
+          }
         }
       });
       return newState;
     }
-    case DELETE_TAG: {
-      const newState = cloneDeep(state) as MediaItemsState;
-      const specifiedMediaItem: MediaItem = action.payload.mediaItem;
-      let index = 0;
-      for (const mediaItem of newState.mediaItems) {
-        if (mediaItem.googleId === specifiedMediaItem.googleId) {
-          mediaItem.tagIds = mediaItem.tagIds.filter((tagId) => tagId !== action.payload.tagId);
-          break;
-        }
-        index++;
-      }
-      return newState;
-    }
     case DELETE_TAG_FROM_MEDIA_ITEMS: {
-      debugger;
       const newState = cloneDeep(state) as MediaItemsState;
+      newState.mediaItems.forEach((item) => {
+        const matchingInputItem = action.payload.mediaItems.find((inputItem) => inputItem.googleId === item.googleId);
+        if (matchingInputItem) {
+          const tagIndex = item.tagIds.indexOf(action.payload.tagId);
+          if (tagIndex !== -1) {
+            item.tagIds.splice(tagIndex, 1);
+          }
+        }
+      }); 
+      console.log(newState);
       return newState;
     }
     default:

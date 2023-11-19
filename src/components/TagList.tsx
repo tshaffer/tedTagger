@@ -8,11 +8,11 @@ import ListItem from '@mui/material/ListItem';
 import { Autocomplete, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
-import { TedTaggerDispatch, deleteTagFromMediaItemsRedux } from '../models';
+import { TedTaggerDispatch } from '../models';
 import { MediaItem, Tag } from '../types';
 import { cloneDeep, isNil, isObject, isString } from 'lodash';
 import { getAllTags, getMediaItem, getTagById } from '../selectors';
-import { addTagToMediaItems } from '../controllers';
+import { addTagToMediaItems, deleteTagFromMediaItems } from '../controllers';
 
 interface TagOption {
   value: Tag | null;
@@ -28,7 +28,7 @@ export interface TagListProps extends TagListPropsPropsFromParent {
   allTags: Tag[],
   mediaItems: MediaItem[],
   onAddTagToMediaItems: (mediaItems: MediaItem[], tag: Tag) => any;
-  onDeleteTagFromMediaItems: (mediaItems: MediaItem[], tagId: string) => any;
+  onDeleteTagFromMediaItems: (tagId: string, mediaItems: MediaItem[]) => any;
 }
 
 const TagList = (props: TagListProps) => {
@@ -50,9 +50,8 @@ const TagList = (props: TagListProps) => {
   });
 
   const handleDeleteTag = (tag: Tag | null) => {
-    console.log('handleDeleteTag: ', tag);
     if (!isNil(tag)) {
-      props.onDeleteTagFromMediaItems(props.mediaItems, tag.id);
+      props.onDeleteTagFromMediaItems(tag.id, props.mediaItems);
     }
   };
 
@@ -94,10 +93,6 @@ const TagList = (props: TagListProps) => {
     if (!isObject(selectedTag)) {
       return;
     }
-
-    // if (isString(existingTag)){
-    //   debugger;
-    // }
 
     if (isNil(existingTag)) {
       // add tags to media items
@@ -144,7 +139,7 @@ const TagList = (props: TagListProps) => {
   function filterTags(allTags: TagOption[], commonTags: TagOption[], selectedTagOption: TagOption): TagOption[] {
     // Create a set of common tag IDs for efficient lookup
     const commonTagIds = new Set(commonTags.map(tag => tag.value));
-  
+
     // Filter the allTags array based on the conditions
     const filteredTags = allTags.filter(tag => {
       // Include the selectedTagOption regardless of commonTags
@@ -154,7 +149,7 @@ const TagList = (props: TagListProps) => {
       // Exclude tags present in commonTags
       return !commonTagIds.has(tag.value);
     });
-  
+
     return filteredTags;
   }
 
@@ -237,7 +232,7 @@ const getMediaItems = (state: any, mediaItemIds: string[]): MediaItem[] => {
 // should be much easier if I knew how to use filter.
 const getCommonTags = (state: any, mediaItems: MediaItem[]): Tag[] => {
 
-  const commonTagsIds: string[] = mediaItems[0].tagIds;
+  const commonTagsIds: string[] = cloneDeep(mediaItems[0].tagIds);
 
   const commonTagIdIndicesToRemove: number[] = [];
 
@@ -286,7 +281,7 @@ function mapStateToProps(state: any, ownProps: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddTagToMediaItems: addTagToMediaItems,
-    onDeleteTagFromMediaItems: deleteTagFromMediaItemsRedux,
+    onDeleteTagFromMediaItems: deleteTagFromMediaItems,
   }, dispatch);
 };
 
