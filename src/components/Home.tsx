@@ -28,7 +28,11 @@ import ViewSpec from './ViewSpec';
 import { styled, useTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 
-const drawerWidth = 240;
+const drawerWidth = 100;
+const rightSideDrawerWidth = 25;
+
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MenuIcon from '@mui/icons-material/Menu';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -136,14 +140,54 @@ const Home = (props: HomeProps) => {
       break;
   }
 
+  interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+  }
+
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+  })<AppBarProps>(({ theme, open }) => ({
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      width: `calc(100% - ${rightSideDrawerWidth}px)`,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginRight: rightSideDrawerWidth,
+    }),
+  }));
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar position="fixed" open={open}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Ted Tagger
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
+            Persistent drawer
           </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerOpen}
+            sx={{ ...(open && { display: 'none' }) }}
+          >
+            <MenuIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -192,29 +236,23 @@ const Home = (props: HomeProps) => {
       </Drawer >
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: rightSideDrawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: rightSideDrawerWidth,
           },
         }}
         variant="persistent"
         anchor="right"
-        open={true}
+        open={open}
       >
         <DrawerHeader>
-          <IconButton>
-            {<ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <div>
-          <IconButton>
+          <IconButton onClick={handleDrawerClose}>
             {<ChevronRightIcon />}
           </IconButton>
-        </div>
+        </DrawerHeader>
         <Divider />
         <p>eat more pizza</p>
-
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
