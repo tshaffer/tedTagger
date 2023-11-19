@@ -29,6 +29,7 @@ import PhotoGrid from './PhotoGrid';
 import AssignTags from './AssignTags';
 import TagManager from './TagManager';
 import ViewSpec from './ViewSpec';
+import PhotoProperties from './PhotoProperties';
 
 const leftSideDrawerWidth = 240;
 const rightSideDrawerWidth = 200;
@@ -153,7 +154,7 @@ const Home = (props: HomeProps) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar sx={{width: appBarWidth, marginRight: marginRightWidth}}>
+      <AppBar sx={{ width: appBarWidth, marginRight: marginRightWidth }}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
             Ted Tagger
@@ -220,6 +221,8 @@ const Home = (props: HomeProps) => {
           '& .MuiDrawer-paper': {
             width: rightSideDrawerWidth,
           },
+          // display: open ? 'block' : 'none',
+          // display: 'none',
         }}
         variant="persistent"
         anchor="right"
@@ -231,7 +234,7 @@ const Home = (props: HomeProps) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <p>eat more pizza</p>
+        <PhotoProperties/>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
