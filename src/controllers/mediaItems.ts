@@ -3,7 +3,7 @@ import axios from 'axios';
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
-import { getEndDate, getStartDate, getTagByLabel, getViewSpecType } from '../selectors';
+import { getEndDate, getStartDate, getTagByLabel, getViewSpecTagSpec, getViewSpecType } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -18,10 +18,17 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
     });
 
     const viewSpec = getViewSpecType(state);
+    const tagSpec = getViewSpecTagSpec(state);
     const startDate = getStartDate(state);
     const endDate = getEndDate(state);
 
-    const path = serverUrl + apiUrlFragment + 'mediaItemsToDisplay?viewSpec=' + viewSpec + '&startDate=' + startDate + '&endDate=' + endDate;
+    const path = serverUrl
+      + apiUrlFragment
+      + 'mediaItemsToDisplay'
+      + '?viewSpec=' + viewSpec 
+      + '&tagSpec=' + tagSpec 
+      + '&startDate=' + startDate 
+      + '&endDate=' + endDate;
 
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
@@ -94,7 +101,7 @@ export const addTagToMediaItems = (
 
 };
 
-export const deleteTagFromMediaItems = ( tagId: string, mediaItems: MediaItem[]): any => {
+export const deleteTagFromMediaItems = (tagId: string, mediaItems: MediaItem[]): any => {
 
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
@@ -115,7 +122,7 @@ export const deleteTagFromMediaItems = ( tagId: string, mediaItems: MediaItem[])
     ).then((response) => {
       console.log('deleteTagFromMediaItems response');
       console.log(response);
-      dispatch(deleteTagFromMediaItemsRedux( mediaItems, tagId));
+      dispatch(deleteTagFromMediaItemsRedux(mediaItems, tagId));
       // return mediaItems.googleId;
     }).catch((error) => {
       console.log('error');

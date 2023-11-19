@@ -16,7 +16,6 @@ export const loadViewSpec = () => {
     return axios.get(path)
       .then((viewSpecResponse: any) => {
         const viewSpec: ViewSpecState = (viewSpecResponse as any).data;
-        viewSpec.tagSpec = ViewSpecTagType.Any;
         dispatch(setViewSpecStateRedux(viewSpec));
       });
   };
