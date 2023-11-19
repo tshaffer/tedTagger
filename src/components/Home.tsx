@@ -214,6 +214,10 @@ const Home = (props: HomeProps) => {
           {drawerContentsJSX}
         </Box>
       </Drawer >
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        <PhotoGrid />
+      </Box>
       <Drawer
         sx={{
           width: rightSideDrawerWidth,
@@ -234,12 +238,8 @@ const Home = (props: HomeProps) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <PhotoProperties/>
+        <PhotoProperties />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        <PhotoGrid />
-      </Box>
     </Box >
   );
 };
