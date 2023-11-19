@@ -95,8 +95,35 @@ export const addTagToMediaItems = (
 };
 
 export const deleteTagFromMediaItems = ( tagId: string, mediaItems: MediaItem[]): any => {
+
   return (dispatch: TedTaggerDispatch, getState: any) => {
-    dispatch(deleteTagFromMediaItemsRedux( mediaItems, tagId));
+
+    const path = serverUrl + apiUrlFragment + 'deleteTagFromMediaItems';
+
+    const googleMediaItemIds: string[] = mediaItems.map((mediaItem: MediaItem) => {
+      return mediaItem.googleId;
+    });
+
+    const deleteTagsInMediaItemsBody = {
+      tagId,
+      mediaItemIds: googleMediaItemIds,
+    };
+
+    return axios.post(
+      path,
+      deleteTagsInMediaItemsBody
+    ).then((response) => {
+      console.log('deleteTagFromMediaItems response');
+      console.log(response);
+      dispatch(deleteTagFromMediaItemsRedux( mediaItems, tagId));
+      // return mediaItems.googleId;
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
   };
+
+
 };
 
