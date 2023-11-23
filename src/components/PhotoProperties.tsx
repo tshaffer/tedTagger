@@ -41,7 +41,7 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
 
   return (
     <Box sx={{ marginLeft: '8px', width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <EventOutlinedIcon />
           <span style={{ marginLeft: '10px' }}>
