@@ -32,7 +32,7 @@ import ViewSpec from './ViewSpec';
 import PhotoProperties from './PhotoProperties';
 
 const leftSideDrawerWidth = 240;
-const rightSideDrawerWidth = 200;
+const rightSideDrawerWidth = 240;
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -214,28 +214,29 @@ const Home = (props: HomeProps) => {
           {drawerContentsJSX}
         </Box>
       </Drawer >
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: 'lightgray', width: '1450px' }}>
         <Toolbar />
         <PhotoGrid />
       </Box>
       <Drawer
         sx={{
-          width: rightSideDrawerWidth,
+          width: open ? rightSideDrawerWidth : 0,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: rightSideDrawerWidth,
           },
-          // display: open ? 'block' : 'none',
-          // display: 'none',
         }}
         variant="persistent"
         anchor="right"
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {<ChevronRightIcon />}
-          </IconButton>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronRightIcon />
+            </IconButton>
+            <span style={{ marginLeft: '8px' }}>Properties</span>
+          </div>
         </DrawerHeader>
         <Divider />
         <PhotoProperties />
