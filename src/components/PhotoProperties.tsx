@@ -33,24 +33,9 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
     const formattedDate = formatISOString(props.selectedMediaItem!.creationTime);
 
     return (
-      <div>
-        <EventOutlinedIcon />
+      <React.Fragment>
         {formattedDate}
-      </div>
-    );
-  };
-
-  const renderFileName = (): JSX.Element | null => {
-
-    if (isNil(props.selectedMediaItem!.fileName)) {
-      return null;
-    }
-
-    return (
-      <div>
-        <ImageOutlinedIcon />
-        {props.selectedMediaItem!.fileName}
-      </div>
+      </React.Fragment>
     );
   };
 
@@ -59,11 +44,15 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <EventOutlinedIcon />
-          <span style={{ marginLeft: '10px' }}>6/21/20033, 4:51 PM</span>
+          <span style={{ marginLeft: '10px' }}>
+            {renderCreationTime()}
+          </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <ImageOutlinedIcon />
-          <span style={{ marginLeft: '10px' }}>{props.selectedMediaItem?.fileName}</span>
+          <span style={{ marginLeft: '10px' }}>
+            {props.selectedMediaItem?.fileName}
+          </span>
         </div>
       </div>
     </Box>
