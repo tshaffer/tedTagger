@@ -5,11 +5,15 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { Box } from '@mui/material';
 
+import EventIcon from '@mui/icons-material/Event';
+import PanoramaOutlinedIcon from '@mui/icons-material/PanoramaOutlined';
+
 import { MediaItem } from '../types';
 import { getMediaItem, getSelectedMediaItemIds } from '../selectors';
 import { isNil } from 'lodash';
+import { formatISOString } from '../utilities';
 
-export interface PhotoPropertiesProps  {
+export interface PhotoPropertiesProps {
   selectedMediaItem: MediaItem | null,
   selectedMediaItemIds: string[],
 }
@@ -20,10 +24,41 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
     return null;
   }
 
+  const renderCreationTime = (): JSX.Element | null => {
+
+    if (isNil(props.selectedMediaItem!.creationTime)) {
+      return null;
+    }
+
+    const formattedDate = formatISOString(props.selectedMediaItem!.creationTime);
+
+    return (
+      <div>
+        <EventIcon />
+        {formattedDate}
+      </div>
+    );
+  };
+
+  const renderFileName = (): JSX.Element | null => {
+
+    if (isNil(props.selectedMediaItem!.fileName)) {
+      return null;
+    }
+
+    return (
+      <div>
+        <PanoramaOutlinedIcon />
+        {props.selectedMediaItem!.fileName}
+      </div>
+    );
+  };
+
   return (
     <Box sx={{ marginLeft: '8px', width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
       <div>
-        {props.selectedMediaItem!.googleId}
+        {renderCreationTime()}
+        {renderFileName()}
       </div>
     </Box>
   );
