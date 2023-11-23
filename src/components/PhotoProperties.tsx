@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
 import { Box } from '@mui/material';
 
-import EventIcon from '@mui/icons-material/Event';
-import PanoramaOutlinedIcon from '@mui/icons-material/PanoramaOutlined';
+import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 
 import { MediaItem } from '../types';
 import { getMediaItem, getSelectedMediaItemIds } from '../selectors';
@@ -34,7 +34,7 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
 
     return (
       <div>
-        <EventIcon />
+        <EventOutlinedIcon />
         {formattedDate}
       </div>
     );
@@ -48,7 +48,7 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
 
     return (
       <div>
-        <PanoramaOutlinedIcon />
+        <ImageOutlinedIcon />
         {props.selectedMediaItem!.fileName}
       </div>
     );
