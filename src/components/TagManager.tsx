@@ -15,6 +15,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb, uploadTagIconFile } from '../controllers';
 import { isNil } from 'lodash';
 import path from 'path-browserify';
+import SelectAvatarDialog from './SelectAvatarDialog';
 
 export interface TagManagerPropsFromParent {
   onClose: () => void;
@@ -34,15 +35,18 @@ const TagManager = (props: TagManagerProps) => {
 
   const hiddenFileInput = React.useRef(null);
 
+  const [showSelectAvatarDialog, setShowSelectAvatarDialog] = React.useState(false);
+
   const handleClose = () => {
     props.onClose();
   };
 
   const handleClickTag = (tag: Tag) => {
-    setSelectedTag(tag);
-    if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
-      (hiddenFileInput.current as any).click();
-    }
+    setShowSelectAvatarDialog(true);
+    // setSelectedTag(tag);
+    // if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
+    //   (hiddenFileInput.current as any).click();
+    // }
   };
 
   const handleSetNewTag = (text: any) => {
@@ -102,6 +106,15 @@ const TagManager = (props: TagManagerProps) => {
     return listItems;
   };
 
+  const handleShowSelectAvatar = () => {
+    setShowSelectAvatarDialog(true);
+  };
+
+  const handleCloseSelectAvatar = () => {
+    setShowSelectAvatarDialog(false);
+  };
+
+
   const handleSave = () => {
     props.onAddTag(newTag);
     setNewTag('');
@@ -111,6 +124,13 @@ const TagManager = (props: TagManagerProps) => {
 
   return (
     <Box sx={{ width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
+      <div>
+        <SelectAvatarDialog
+          open={showSelectAvatarDialog}
+          onClose={handleCloseSelectAvatar}
+        />
+      </div>
+
       <List
         sx={{ width: '100%' }}
       >
