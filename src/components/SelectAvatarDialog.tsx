@@ -8,13 +8,19 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { DialogContent, Stack } from '@mui/material';
 import { isNil } from 'lodash';
+import { Tag } from '../types';
+import { bindActionCreators } from 'redux';
+import { uploadTagIconFile } from '../controllers';
+import { TedTaggerDispatch } from '../models';
 
 export interface SelectAvatarDialogPropsFromParent {
+  tag: Tag;
   open: boolean;
   onClose: () => void;
 }
 
 export interface SelectAvatarDialogProps extends SelectAvatarDialogPropsFromParent {
+  onUploadTagIconFile: (tag: Tag, formData: FormData) => any;
 }
 
 function SelectAvatarDialog(props: SelectAvatarDialogProps) {
@@ -25,24 +31,21 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
     props.onClose();
   };
 
-  const handleClickTag = () => {
-    // setSelectedTag(tag);
+  const handleSelectAvatarFile = () => {
     if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
       (hiddenFileInput.current as any).click();
     }
   };
 
-
-  const handleSelectAvatarFile = (event: any) => {
+  const handleAvatarFileSelected = (event: any) => {
     console.log('handleSelectFile', event.target.files[0]);
-    // if (!isNil(selectedTag)) {
-    //   const selectedFile = event.target.files[0];
-    //   const data = new FormData();
-    //   data.append('file', selectedFile);
-    //   props.onUploadTagIconFile(selectedTag, data);
-    // }
+    if (!isNil(props.tag)) {
+      const selectedFile = event.target.files[0];
+      const data = new FormData();
+      data.append('file', selectedFile);
+      props.onUploadTagIconFile(props.tag, data);
+    }
   };
-
 
   return (
     <Dialog onClose={handleClose} open={props.open}>
@@ -51,13 +54,13 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
         <Stack spacing={1} direction="row">
           <input
             type="file"
-            onChange={(e) => handleSelectAvatarFile(e)}
+            onChange={(e) => handleAvatarFileSelected(e)}
             ref={hiddenFileInput}
             style={{ display: 'none' }} // Make the file input element invisible
           />
           <Button
             variant="outlined"
-            onClick={() => handleClickTag()}
+            onClick={() => handleSelectAvatarFile()}
           >
             Select file
           </Button>
@@ -96,7 +99,14 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default connect(mapStateToProps)(SelectAvatarDialog);
+const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
+  return bindActionCreators({
+    onUploadTagIconFile: uploadTagIconFile,
+  }, dispatch);
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectAvatarDialog);
 
 
 

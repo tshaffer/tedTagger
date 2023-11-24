@@ -33,8 +33,6 @@ const TagManager = (props: TagManagerProps) => {
 
   const [newTag, setNewTag] = React.useState('');
 
-  const hiddenFileInput = React.useRef(null);
-
   const [showSelectAvatarDialog, setShowSelectAvatarDialog] = React.useState(false);
 
   const handleClose = () => {
@@ -42,26 +40,13 @@ const TagManager = (props: TagManagerProps) => {
   };
 
   const handleClickTag = (tag: Tag) => {
+    setSelectedTag(tag);
     setShowSelectAvatarDialog(true);
-    // setSelectedTag(tag);
-    // if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
-    //   (hiddenFileInput.current as any).click();
-    // }
   };
 
   const handleSetNewTag = (text: any) => {
     setNewTag(text);
   };
-
-  const handleSelectFile = (event: any) => {
-    if (!isNil(selectedTag)) {
-      const selectedFile = event.target.files[0];
-      const data = new FormData();
-      data.append('file', selectedFile);
-      props.onUploadTagIconFile(selectedTag, data);
-    }
-  };
-
 
   const getTagIcon = (tag: Tag): JSX.Element => {
     if (isNil(tag.iconFileName)) {
@@ -91,12 +76,6 @@ const TagManager = (props: TagManagerProps) => {
               <AssignmentIndIcon />
             </ListItemIcon>
           </Tooltip>
-          <input
-            type="file"
-            onChange={(e) => handleSelectFile(e)}
-            ref={hiddenFileInput}
-            style={{ display: 'none' }} // Make the file input element invisible
-          />
           {getTagIcon(tag)}
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem >
@@ -104,10 +83,6 @@ const TagManager = (props: TagManagerProps) => {
     });
 
     return listItems;
-  };
-
-  const handleShowSelectAvatar = () => {
-    setShowSelectAvatarDialog(true);
   };
 
   const handleCloseSelectAvatar = () => {
@@ -126,6 +101,7 @@ const TagManager = (props: TagManagerProps) => {
     <Box sx={{ width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
       <div>
         <SelectAvatarDialog
+          tag={selectedTag!}
           open={showSelectAvatarDialog}
           onClose={handleCloseSelectAvatar}
         />
