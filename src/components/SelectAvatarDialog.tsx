@@ -44,49 +44,11 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
   };
 
 
-  /*
-          <Stack spacing={2} direction="row">
-            <Button variant="outlined">
-              <img
-                src={'/builtinAvatars/snoopyWalksLikeAnEgyption.PNG'}
-              />
-            </Button>
-            <input
-              type="file"
-              onChange={(e) => handleSelectFile(e)}
-              ref={hiddenFileInput}
-              style={{ display: 'none' }} // Make the file input element invisible
-            />
-            <Button variant="outlined">
-              Select avatar from file system
-            </Button>
-            <Button variant="text">Text</Button>
-            <Button variant="contained">Contained</Button>
-            <Button variant="outlined">Outlined</Button>
-          </Stack>
-
-
-      <DialogContent>
-        <input
-          type="file"
-          onChange={(e) => handleSelectAvatarFile(e)}
-          ref={hiddenFileInput}
-          style={{ display: 'none' }} // Make the file input element invisible
-        />
-        <Button
-          variant="outlined"
-          onClick={() => handleClickTag()}
-        >
-          Select avatar from file system
-        </Button>
-      </DialogContent>
-
-  */
   return (
     <Dialog onClose={handleClose} open={props.open}>
       <DialogTitle>Select Avatar</DialogTitle>
       <DialogContent>
-        <Stack spacing={2} direction="row">
+        <Stack spacing={1} direction="row">
           <input
             type="file"
             onChange={(e) => handleSelectAvatarFile(e)}
@@ -99,19 +61,31 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
           >
             Select file
           </Button>
-          <Button variant="outlined">
+          <Button>
             <img
               src={'/builtinAvatars/snoopyWalksLikeAnEgyption.PNG'}
             />
           </Button>
-          <Button variant="text">Text</Button>
-          <Button variant="contained">Contained</Button>
-          <Button variant="outlined">Outlined</Button>
+          <Button>
+            <img
+              src={'/builtinAvatars/snoopyStarryNight.PNG'}
+            />
+          </Button>
+          <Button>
+            <img
+              src={'/builtinAvatars/snoopyBiggestHugEver.PNG'}
+            />
+          </Button>
+          <Button>
+            <img
+              src={'/builtinAvatars/snoopyTheSailor.PNG'}
+            />
+          </Button>
         </Stack>
 
       </DialogContent>
       <DialogActions>
-        <Button>Eat Pizza</Button>
+        <Button onClick={handleClose}>Close</Button>
       </DialogActions>
     </Dialog>
   );
