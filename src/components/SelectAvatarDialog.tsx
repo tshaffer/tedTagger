@@ -42,6 +42,8 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
 
   const handleAvatarFileSelected = (event: any) => {
     console.log('handleSelectFile', event.target.files[0]);
+    console.log(props.tag);
+    debugger;
     if (!isNil(props.tag)) {
       const selectedFile = event.target.files[0];
       const data = new FormData();

@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch } from '../models';
 import { toggleMediaItemSelectionAction } from '../controllers';
-import { getTagsLUT, isMediaItemSelected } from '../selectors';
-import { MediaItem, StringToTagLUT, Tag } from '../types';
+import { getAllAppTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
+import { AppTagAvatar, MediaItem, StringToTagLUT, Tag } from '../types';
 
 import path from 'path-browserify';
-import { isNil } from 'lodash';
+import { getTagAvatarUrl } from '../utilities';
 
 const cardStyle = {
   display: 'flex',
@@ -36,6 +36,7 @@ export interface PhotoPropsFromParent {
 }
 
 export interface PhotoProps extends PhotoPropsFromParent {
+  appTagAvatars: AppTagAvatar[];
   tagsLUT: StringToTagLUT;
   isSelected: boolean;
   onToggleMediaItemSelection: (mediaItem: MediaItem) => any;
@@ -43,38 +44,31 @@ export interface PhotoProps extends PhotoPropsFromParent {
 
 function Photo(props: PhotoProps) {
 
-  const getFileUrl = (): string => {
+  const getPhotoUrl = (): string => {
     const basename: string = path.basename(props.mediaItem.filePath!);
     const numChars = basename.length;
-    const filePath = path.join(
+    const photoUrl = path.join(
       '/images',
       basename.charAt(numChars - 6),
       basename.charAt(numChars - 5),
       basename,
     );
-    return filePath;
+    return photoUrl;
   };
 
-  const getTagIcon = (photoTag: Tag): JSX.Element => {
-    let filePath;
-    if (isNil(photoTag.iconFileName)) {
-      filePath =
-        '/tagIconImages/defaultIcon.jpg';
-    } else {
-      filePath = path.join(
-        '/tagIconImages',
-        photoTag.iconFileName);
-    }
+  const getTagAvatar = (photoTag: Tag): JSX.Element => {
+
+    const url: string = getTagAvatarUrl(photoTag, props.appTagAvatars);
     return (
       <Tooltip title={photoTag.label} key={photoTag.id + '::' + props.mediaItem.googleId} >
-        <img key={photoTag.id} src={filePath} alt={photoTag.label} />
+        <img key={photoTag.id} src={url} alt={photoTag.label} />
       </Tooltip>
     );
   };
 
-  const getTagIcons = (photoTags: Tag[]): JSX.Element => {
+  const getTagAvatars = (photoTags: Tag[]): JSX.Element => {
     const photoTagImages: JSX.Element[] = photoTags.map((photoTag: Tag) => {
-      return getTagIcon(photoTag);
+      return getTagAvatar(photoTag);
     });
 
     return (
@@ -99,9 +93,9 @@ function Photo(props: PhotoProps) {
     photoTags.push(tag);
   });
 
-  const filePath = getFileUrl();
+  const photoUrl = getPhotoUrl();
 
-  const tagIcons = getTagIcons(photoTags);
+  const tagAvatars = getTagAvatars(photoTags);
 
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
@@ -114,13 +108,13 @@ function Photo(props: PhotoProps) {
         <CardMedia
           id={props.mediaItem.googleId}
           className={cardMediaClassName}
-          image={filePath}
+          image={photoUrl}
           component="img"
-          title={filePath}
+          title={photoUrl}
           sx={cardMediaStyle}
           onClick={(e) => handleClick(e)}
         />
-        {tagIcons}
+        {tagAvatars}
       </Card>
     </Grid>
   );
@@ -129,6 +123,7 @@ function Photo(props: PhotoProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
+    appTagAvatars: getAllAppTagAvatars(state),
     tagsLUT: getTagsLUT(state),
     isSelected: isMediaItemSelected(state, ownProps.mediaItem),
   };

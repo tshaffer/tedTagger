@@ -2,20 +2,18 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
-import { Tag } from '../types';
-import { getAllTags } from '../selectors';
+import { AppTagAvatar, Tag } from '../types';
+import { getAllAppTagAvatars, getAllTags } from '../selectors';
 import { Box, Button, IconButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
-import { addTagToDb, uploadTagIconFile } from '../controllers';
-import { isNil } from 'lodash';
-import path from 'path-browserify';
+import { addTagToDb } from '../controllers';
 import SelectAvatarDialog from './SelectAvatarDialog';
+import { getTagAvatarUrl } from '../utilities';
 
 export interface TagManagerPropsFromParent {
   onClose: () => void;
@@ -23,8 +21,8 @@ export interface TagManagerPropsFromParent {
 
 export interface TagManagerProps extends TagManagerPropsFromParent {
   tags: Tag[],
+  appTagAvatars: AppTagAvatar[];
   onAddTag: (label: string) => void;
-  onUploadTagIconFile: (tag: Tag, formData: FormData) => any;
 }
 
 const TagManager = (props: TagManagerProps) => {
@@ -48,17 +46,12 @@ const TagManager = (props: TagManagerProps) => {
     setNewTag(text);
   };
 
-  const getTagIcon = (tag: Tag): JSX.Element => {
-    if (isNil(tag.iconFileName)) {
-      return (
-        <span></span>
-      );
-    }
-    const filePath = path.join(
-      '/tagIconImages',
-      tag.iconFileName);
+  const getTagAvatar = (tag: Tag): JSX.Element => {
+
+    const url = getTagAvatarUrl(tag, props.appTagAvatars);
+
     return (
-      <img src={filePath} alt={tag.label} />
+      <img src={url} alt={tag.label} />
     );
   };
 
@@ -76,7 +69,7 @@ const TagManager = (props: TagManagerProps) => {
               <AssignmentIndIcon />
             </ListItemIcon>
           </Tooltip>
-          {getTagIcon(tag)}
+          {getTagAvatar(tag)}
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem >
       );
@@ -135,13 +128,13 @@ const TagManager = (props: TagManagerProps) => {
 function mapStateToProps(state: any) {
   return {
     tags: getAllTags(state),
+    appTagAvatars: getAllAppTagAvatars(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddTag: addTagToDb,
-    onUploadTagIconFile: uploadTagIconFile,
   }, dispatch);
 };
 

@@ -48,10 +48,11 @@ export interface MediaItem {
 }
 
 export interface Tag {
-  id: string,
-  label: string,
-  type: string,
-  iconFileName?: string;
+  id: string;
+  label: string;
+  type: string;
+  avatarType: string;
+  avatarId: string;
 }
 
 export interface AppTagAvatar {
