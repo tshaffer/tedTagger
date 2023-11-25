@@ -44,6 +44,7 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
       const data = new FormData();
       data.append('file', selectedFile);
       props.onUploadTagIconFile(props.tag, data);
+      handleClose();
     }
   };
 

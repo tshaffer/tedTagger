@@ -51,7 +51,6 @@ export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
 
     const path = serverUrl + apiUrlFragment + 'uploadTagIconFile';
 
-
     axios.post(path, formData, {
     }).then((response) => {
       console.log(response);
@@ -61,7 +60,7 @@ export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
   };
 };
 
-export const assignTagIconToTag = (iconFileName: string, tag: Tag): any => {
+const assignTagIconToTag = (iconFileName: string, tag: Tag): any => {
 
   return (dispatch: any, getState: any) => {
 
