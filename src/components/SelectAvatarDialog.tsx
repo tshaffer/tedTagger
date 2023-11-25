@@ -50,45 +50,6 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
     }
   };
 
-  const old_getDialogContents = () => {
-    return (
-      <Stack spacing={1} direction="row">
-        <input
-          type="file"
-          onChange={(e) => handleAvatarFileSelected(e)}
-          ref={hiddenFileInput}
-          style={{ display: 'none' }} // Make the file input element invisible
-        />
-        <Button
-          variant="outlined"
-          onClick={() => handleSelectAvatarFile()}
-        >
-          Select file
-        </Button>
-        <Button>
-          <img
-            src={'/builtinAvatars/snoopyWalksLikeAnEgyption.PNG'}
-          />
-        </Button>
-        <Button>
-          <img
-            src={'/builtinAvatars/snoopyStarryNight.PNG'}
-          />
-        </Button>
-        <Button>
-          <img
-            src={'/builtinAvatars/snoopyBiggestHugEver.PNG'}
-          />
-        </Button>
-        <Button>
-          <img
-            src={'/builtinAvatars/snoopyTheSailor.PNG'}
-          />
-        </Button>
-      </Stack>
-    );
-  };
-
   const getAppTagAvatarElements = () => {
     const appTagAvatarElements = props.appTagAvatars.map((appTagAvatar: AppTagAvatar, index) => {
       return (
@@ -107,6 +68,18 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
     return (
       // <Box sx={{ width: 900 }}>
       <Stack spacing={1} direction="row">
+        <input
+          type="file"
+          onChange={(e) => handleAvatarFileSelected(e)}
+          ref={hiddenFileInput}
+          style={{ display: 'none' }} // Make the file input element invisible
+        />
+        <Button
+          variant="outlined"
+          onClick={() => handleSelectAvatarFile()}
+        >
+          Select file
+        </Button>
         {appTagAvatarElements}
       </Stack>
       // </Box>
