@@ -43,6 +43,8 @@ export const addTagToDb = (
       id: uuidv4(),
       label,
       type: 'user',
+      avatarType: 'app',
+      avatarId: '',
     };
 
     return axios.post(
@@ -91,6 +93,28 @@ const assignTagIconToTag = (iconFileName: string, tag: Tag): any => {
       assignTagIconToTagBody,
     ).then((response) => {
       console.log('return from assignTagIconToTag');
+      console.log(response);
+    });
+  };
+};
+
+export const assignTagAvatarToTag = (tagId: string, avatarType: string, avatarId: string): any => {
+
+  return (dispatch: any, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'assignTagAvatarToTag';
+
+    const assignTagAvatarToTagBody = {
+      tagId,
+      avatarType,
+      avatarId,
+    };
+
+    axios.post(
+      path,
+      assignTagAvatarToTagBody,
+    ).then((response) => {
+      console.log('return from assignTagAvatarToTag');
       console.log(response);
     });
   };

@@ -10,7 +10,7 @@ import { Box, DialogContent, Stack } from '@mui/material';
 import { isNil } from 'lodash';
 import { AppTagAvatar, Tag } from '../types';
 import { bindActionCreators } from 'redux';
-import { uploadTagIconFile } from '../controllers';
+import { assignTagAvatarToTag, uploadTagIconFile } from '../controllers';
 import { TedTaggerDispatch } from '../models';
 import { getAllAppTagAvatars } from '../selectors';
 
@@ -23,6 +23,7 @@ export interface SelectAvatarDialogPropsFromParent {
 export interface SelectAvatarDialogProps extends SelectAvatarDialogPropsFromParent {
   appTagAvatars: AppTagAvatar[];
   onUploadTagIconFile: (tag: Tag, formData: FormData) => any;
+  onAssignTagAvatarToTag: (tagId: string, avatarType: string, avatarId: string) => any;
 }
 
 function SelectAvatarDialog(props: SelectAvatarDialogProps) {
@@ -50,23 +51,29 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
     }
   };
 
+  const handleAppAvatarSelected = (event: any, appTagAvatar: AppTagAvatar) => {
+    console.log('handleAppAvatarSelected', appTagAvatar);
+    props.onAssignTagAvatarToTag(props.tag.id, 'app', appTagAvatar.id);
+  };
+
   const getAppTagAvatarElements = () => {
     const appTagAvatarElements = props.appTagAvatars.map((appTagAvatar: AppTagAvatar, index) => {
       return (
-        <Button key={index.toString()}>
-          <img
-            src={'/appAvatars/' + appTagAvatar.pathToLarge}
-          />
+        <Button
+          onClick={(e) => handleAppAvatarSelected(e, appTagAvatar)}
+          key={index.toString()}
+        >
+          <img src={'/appAvatars/' + appTagAvatar.pathToLarge} />
+
         </Button>
       );
     });
     return appTagAvatarElements;
-  }
+  };
 
   const getDialogContents = () => {
     const appTagAvatarElements = getAppTagAvatarElements();
     return (
-      // <Box sx={{ width: 900 }}>
       <Stack spacing={1} direction="row">
         <input
           type="file"
@@ -114,6 +121,7 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onUploadTagIconFile: uploadTagIconFile,
+    onAssignTagAvatarToTag: assignTagAvatarToTag,
   }, dispatch);
 };
 
