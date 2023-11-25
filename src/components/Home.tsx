@@ -20,6 +20,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import {
+  loadAppTagAvatars,
   loadMediaItems,
   loadTags,
   loadViewSpec,
@@ -44,6 +45,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export interface HomeProps {
+  onLoadAppTagAvatars: () => any;
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
   onLoadViewSpec: () => any;
@@ -58,9 +60,12 @@ const Home = (props: HomeProps) => {
   React.useEffect(() => {
     props.onLoadViewSpec()
       .then(() => {
-        props.onLoadTags()
+        props.onLoadAppTagAvatars()
           .then(() => {
-            props.onLoadMediaItems();
+            props.onLoadTags()
+              .then(() => {
+                props.onLoadMediaItems();
+              });
           });
       });
   }, []);
@@ -98,12 +103,12 @@ const Home = (props: HomeProps) => {
 
   /*
     <ListItemText    style={ this.state.checkboxState ? { fontWeight: 'normal' } : { fontWeight: 'bold' } }
-
+  
     <ListItemText
       disableTypography
       style={{ fontWeight: 'bold' }}
     >
-
+  
     const text = {
       color: "red"
     };
@@ -252,6 +257,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onLoadAppTagAvatars: loadAppTagAvatars,
     onLoadMediaItems: loadMediaItems,
     onLoadTags: loadTags,
     onLoadViewSpec: loadViewSpec,

@@ -2,7 +2,22 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags } from '../models';
-import { serverUrl, apiUrlFragment, Tag } from '../types';
+import { serverUrl, apiUrlFragment, Tag, AppTagAvatar } from '../types';
+import { addAppTagAvatars } from '../models/appTagAvatars';
+
+export const loadAppTagAvatars = (): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'appTagAvatars';
+
+    return axios.get(path)
+      .then((appTagAvatarsResponse: any) => {
+        const appTagAvatars: AppTagAvatar[] = (appTagAvatarsResponse as any).data;
+        dispatch(addAppTagAvatars(appTagAvatars));
+      });
+  };
+};
+
 
 export const loadTags = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {

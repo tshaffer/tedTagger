@@ -1,4 +1,5 @@
 export * from './appState';
+export * from './appTagAvatars';
 export * from './baseAction';
 export * from './baseReducer';
 export * from './mediaItems';

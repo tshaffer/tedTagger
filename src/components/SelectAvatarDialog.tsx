@@ -6,12 +6,13 @@ import Dialog from '@mui/material/Dialog';
 
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import { DialogContent, Stack } from '@mui/material';
+import { Box, DialogContent, Stack } from '@mui/material';
 import { isNil } from 'lodash';
-import { Tag } from '../types';
+import { AppTagAvatar, Tag } from '../types';
 import { bindActionCreators } from 'redux';
 import { uploadTagIconFile } from '../controllers';
 import { TedTaggerDispatch } from '../models';
+import { getAllAppTagAvatars } from '../selectors';
 
 export interface SelectAvatarDialogPropsFromParent {
   tag: Tag;
@@ -20,6 +21,7 @@ export interface SelectAvatarDialogPropsFromParent {
 }
 
 export interface SelectAvatarDialogProps extends SelectAvatarDialogPropsFromParent {
+  appTagAvatars: AppTagAvatar[];
   onUploadTagIconFile: (tag: Tag, formData: FormData) => any;
 }
 
@@ -48,45 +50,80 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
     }
   };
 
+  const old_getDialogContents = () => {
+    return (
+      <Stack spacing={1} direction="row">
+        <input
+          type="file"
+          onChange={(e) => handleAvatarFileSelected(e)}
+          ref={hiddenFileInput}
+          style={{ display: 'none' }} // Make the file input element invisible
+        />
+        <Button
+          variant="outlined"
+          onClick={() => handleSelectAvatarFile()}
+        >
+          Select file
+        </Button>
+        <Button>
+          <img
+            src={'/builtinAvatars/snoopyWalksLikeAnEgyption.PNG'}
+          />
+        </Button>
+        <Button>
+          <img
+            src={'/builtinAvatars/snoopyStarryNight.PNG'}
+          />
+        </Button>
+        <Button>
+          <img
+            src={'/builtinAvatars/snoopyBiggestHugEver.PNG'}
+          />
+        </Button>
+        <Button>
+          <img
+            src={'/builtinAvatars/snoopyTheSailor.PNG'}
+          />
+        </Button>
+      </Stack>
+    );
+  };
+
+  const getAppTagAvatarElements = () => {
+    const appTagAvatarElements = props.appTagAvatars.map((appTagAvatar: AppTagAvatar, index) => {
+      return (
+        <Button key={index.toString()}>
+          <img
+            src={'/appAvatars/' + appTagAvatar.pathToLarge}
+          />
+        </Button>
+      );
+    });
+    return appTagAvatarElements;
+  }
+
+  const getDialogContents = () => {
+    const appTagAvatarElements = getAppTagAvatarElements();
+    return (
+      // <Box sx={{ width: 900 }}>
+      <Stack spacing={1} direction="row">
+        {appTagAvatarElements}
+      </Stack>
+      // </Box>
+    );
+  };
+
+  const dialogContents = getDialogContents();
   return (
-    <Dialog onClose={handleClose} open={props.open}>
+    <Dialog
+      onClose={handleClose}
+      open={props.open}
+      fullWidth
+      maxWidth="xl"
+    >
       <DialogTitle>Select Avatar</DialogTitle>
       <DialogContent>
-        <Stack spacing={1} direction="row">
-          <input
-            type="file"
-            onChange={(e) => handleAvatarFileSelected(e)}
-            ref={hiddenFileInput}
-            style={{ display: 'none' }} // Make the file input element invisible
-          />
-          <Button
-            variant="outlined"
-            onClick={() => handleSelectAvatarFile()}
-          >
-            Select file
-          </Button>
-          <Button>
-            <img
-              src={'/builtinAvatars/snoopyWalksLikeAnEgyption.PNG'}
-            />
-          </Button>
-          <Button>
-            <img
-              src={'/builtinAvatars/snoopyStarryNight.PNG'}
-            />
-          </Button>
-          <Button>
-            <img
-              src={'/builtinAvatars/snoopyBiggestHugEver.PNG'}
-            />
-          </Button>
-          <Button>
-            <img
-              src={'/builtinAvatars/snoopyTheSailor.PNG'}
-            />
-          </Button>
-        </Stack>
-
+        {dialogContents}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Close</Button>
@@ -97,6 +134,7 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
 
 function mapStateToProps(state: any) {
   return {
+    appTagAvatars: getAllAppTagAvatars(state),
   };
 }
 

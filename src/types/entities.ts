@@ -53,3 +53,10 @@ export interface Tag {
   type: string,
   iconFileName?: string;
 }
+
+export interface AppTagAvatar {
+  id: string;
+  label: string;
+  pathToLarge: string;
+  path: string;
+}
