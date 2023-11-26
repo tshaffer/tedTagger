@@ -5,5 +5,5 @@ export * from './PhotoProperties';
 export * from './TagList';
 export * from './TagManager';
 export * from './AssignTags';
-export * from './ViewSpec';
+export * from './PhotoToDisplaySpec';
 

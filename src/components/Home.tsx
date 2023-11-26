@@ -24,13 +24,13 @@ import {
   loadMediaItems,
   loadTags,
   loadUserTagAvatars,
-  loadViewSpec,
+  loadPhotosToDisplaySpec,
 } from '../controllers';
 import { TedTaggerDispatch } from '../models';
 import PhotoGrid from './PhotoGrid';
 import AssignTags from './AssignTags';
 import TagManager from './TagManager';
-import ViewSpec from './ViewSpec';
+import PhotoToDisplaySpec from './PhotoToDisplaySpec';
 import PhotoProperties from './PhotoProperties';
 
 const leftSideDrawerWidth = 240;
@@ -50,17 +50,17 @@ export interface HomeProps {
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
   onLoadUserTagAvatars: () => any;
-  onLoadViewSpec: () => any;
+  onLoadPhotosToDisplay: () => any;
 }
 
 const Home = (props: HomeProps) => {
 
   // TEDTODO - rename
-  const [drawerContents, setDrawerContents] = React.useState('viewSpec');
+  const [drawerContents, setDrawerContents] = React.useState('photoToDisplaySpec');
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    props.onLoadViewSpec()
+    props.onLoadPhotosToDisplay()
       .then(() => {
         props.onLoadAppTagAvatars()
           .then(() => {
@@ -80,9 +80,9 @@ const Home = (props: HomeProps) => {
   };
 
   const getDrawerContents = (): JSX.Element | null => {
-    if (drawerContents === 'viewSpec') {
+    if (drawerContents === 'photoToDisplaySpec') {
       return (
-        <ViewSpec
+        <PhotoToDisplaySpec
           onClose={handleClose}
         />
       );
@@ -129,14 +129,14 @@ const Home = (props: HomeProps) => {
     color: 'black',
   };
 
-  let viewSpecTextStyle: any = unselectedPropertyPanelText;
+  let photoToDisplaySpecTextStyle: any = unselectedPropertyPanelText;
   let assignTagsTextStyle: any = unselectedPropertyPanelText;
   let tagManagerTextStyle: any = unselectedPropertyPanelText;
 
   switch (drawerContents) {
-    case 'viewSpec':
+    case 'photoToDisplaySpec':
     case '':
-      viewSpecTextStyle = selectedPropertyPanelText;
+      photoToDisplaySpecTextStyle = selectedPropertyPanelText;
       break;
     case 'assignTags':
       assignTagsTextStyle = selectedPropertyPanelText;
@@ -192,10 +192,10 @@ const Home = (props: HomeProps) => {
         <Box sx={{ overflow: 'auto' }}>
           <List>
             <ListItem key={2} disablePadding>
-              <ListItemButton onClick={() => setDrawerContents('viewSpec')}>
+              <ListItemButton onClick={() => setDrawerContents('photoToDisplaySpec')}>
                 {/* <ListItemText primaryTypographyProps={{ style: text }} primary="MyText"> */}
                 <ListItemText
-                  primaryTypographyProps={{ style: viewSpecTextStyle }}
+                  primaryTypographyProps={{ style: photoToDisplaySpecTextStyle }}
                 >
                   View Spec
                 </ListItemText>
@@ -266,7 +266,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadMediaItems: loadMediaItems,
     onLoadTags: loadTags,
     onLoadUserTagAvatars: loadUserTagAvatars,
-    onLoadViewSpec: loadViewSpec,
+    onLoadPhotosToDisplay: loadPhotosToDisplaySpec,
   }, dispatch);
 };
 

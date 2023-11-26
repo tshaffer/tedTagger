@@ -3,7 +3,7 @@ import axios from 'axios';
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
-import { getEndDate, getStartDate, getTagByLabel, getViewSpecTagSpec, getViewSpecType } from '../selectors';
+import { getEndDate, getStartDate, getTagByLabel, getPhotosToDisplayDateTagSelector, getPhotosToDisplayDateSelector as getPhotosToDisplayDateSelector } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -17,17 +17,17 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
       tagsByTagId[tag.id] = tag;
     });
 
-    const viewSpec = getViewSpecType(state);
-    const tagSpec = getViewSpecTagSpec(state);
+    const dateSelectorType = getPhotosToDisplayDateSelector(state);
+    const tagSelector = getPhotosToDisplayDateTagSelector(state);
     const startDate = getStartDate(state);
     const endDate = getEndDate(state);
 
     const path = serverUrl
       + apiUrlFragment
       + 'mediaItemsToDisplay'
-      + '?viewSpec=' + viewSpec 
-      + '&tagSpec=' + tagSpec 
-      + '&startDate=' + startDate 
+      + '?dateSelector=' + dateSelectorType
+      + '&tagSelector=' + tagSelector
+      + '&startDate=' + startDate
       + '&endDate=' + endDate;
 
     return axios.get(path)

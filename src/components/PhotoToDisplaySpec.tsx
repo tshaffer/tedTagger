@@ -12,76 +12,76 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { isNil } from 'lodash';
-import { getEndDate, getStartDate, getViewSpecTagSpec, getViewSpecType } from '../selectors';
-import { ViewSpecTagType, ViewSpecType } from '../types';
-import { loadMediaItems, setEndDate, setStartDate, setViewSpecType, setViewSpecTagSpec } from '../controllers';
+import { getEndDate, getStartDate, getPhotosToDisplayDateTagSelector, getPhotosToDisplayDateSelector } from '../selectors';
+import { TagSelectorType, DateSelectorType } from '../types';
+import { loadMediaItems, setEndDate, setStartDate, setDateSelector, setTagSelector } from '../controllers';
 
-export interface ViewSpecPropsFromParent {
+export interface PhotosToDisplaySpecPropsFromParent {
   onClose: () => void;
 }
 
-export interface ViewSpecProps extends ViewSpecPropsFromParent {
-  viewSpec: ViewSpecType;
-  viewSpecTagSpec: ViewSpecTagType;
+export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromParent {
+  dateSelector: DateSelectorType;
+  tagSelector: TagSelectorType;
   startDate: string;
   endDate: string;
-  onSetViewSpec: (viewSpec: ViewSpecType) => void;
-  onSetViewSpecTagSpec: (tagSpec: ViewSpecTagType) => void;
+  onSetPhotosToDisplaySpec: (dateSelector: DateSelectorType) => void;
+  onSetPhotosToDisplaySpecTagSpec: (tagSpec: TagSelectorType) => void;
   onSetStartDate: (startDate: string) => void;
   onSetEndDate: (endDate: string) => void;
   onReloadMediaItems: () => void;
 }
 
-const ViewSpec = (props: ViewSpecProps) => {
+const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
 
-  const getViewSpecTypeAsString = (): string => {
-    switch (props.viewSpec) {
-      case ViewSpecType.All:
+  const getPhotosToDisplaySpecTypeAsString = (): string => {
+    switch (props.dateSelector) {
+      case DateSelectorType.All:
       default:
         return 'all';
-      case ViewSpecType.ByDateRange:
+      case DateSelectorType.ByDateRange:
         return 'byDateRange';
     }
   };
 
-  const getViewSpecTagSpec = (): ViewSpecTagType => {
-    return props.viewSpecTagSpec;
+  const getPhotosToDisplaySpecTagSpec = (): TagSelectorType => {
+    return props.tagSelector;
   };
 
-  const handleViewSpecChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotosToDisplaySpecChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue: string = (event.target as HTMLInputElement).value;
-    console.log('handleViewSpecChange');
+    console.log('handlePhotosToDisplaySpecChange');
     console.log(newValue);
 
-    let newViewSpec: ViewSpecType;
+    let newPhotosToDisplaySpec: DateSelectorType;
     switch (newValue.toLowerCase()) {
       case 'all':
       default:
-        newViewSpec = ViewSpecType.All;
+        newPhotosToDisplaySpec = DateSelectorType.All;
         break;
       case 'bydaterange':
-        newViewSpec = ViewSpecType.ByDateRange;
+        newPhotosToDisplaySpec = DateSelectorType.ByDateRange;
         break;
     }
-    props.onSetViewSpec(newViewSpec);
+    props.onSetPhotosToDisplaySpec(newPhotosToDisplaySpec);
   };
 
-  const handleViewSpecTagTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotosToDisplaySpecTagTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue: string = (event.target as HTMLInputElement).value;
-    console.log('handleViewSpecTagTypeChange');
+    console.log('handlePhotosToDisplaySpecTagTypeChange');
     console.log(newValue);
 
-    let newViewSpec: ViewSpecTagType;
+    let newPhotosToDisplaySpec: TagSelectorType;
     switch (newValue.toLowerCase()) {
       case 'any':
       default:
-        newViewSpec = ViewSpecTagType.Any;
+        newPhotosToDisplaySpec = TagSelectorType.Any;
         break;
       case 'untagged':
-        newViewSpec = ViewSpecTagType.Untagged;
+        newPhotosToDisplaySpec = TagSelectorType.Untagged;
         break;
     }
-    props.onSetViewSpecTagSpec(newViewSpec);
+    props.onSetPhotosToDisplaySpecTagSpec(newPhotosToDisplaySpec);
   };
 
   const handleSetStartDate = (startDateDayJs: Dayjs | null) => {
@@ -112,9 +112,9 @@ const ViewSpec = (props: ViewSpecProps) => {
         <FormLabel id="dateRangeFormControl">Date Range</FormLabel>
         <RadioGroup
           aria-labelledby="dateRangeFormControl"
-          value={getViewSpecTypeAsString()}
+          value={getPhotosToDisplaySpecTypeAsString()}
           name="radio-buttons-group"
-          onChange={handleViewSpecChange}
+          onChange={handlePhotosToDisplaySpecChange}
         >
           <FormControlLabel value="all" control={<Radio />} label="All" />
           <FormControl>
@@ -125,7 +125,7 @@ const ViewSpec = (props: ViewSpecProps) => {
                   label="Start date"
                   value={dayjs(props.startDate)}
                   onChange={(newValue) => handleSetStartDate(newValue)}
-                  disabled={props.viewSpec !== ViewSpecType.ByDateRange}
+                  disabled={props.dateSelector !== DateSelectorType.ByDateRange}
                 />
               </DemoContainer>
               <DemoContainer components={['DatePicker']}>
@@ -133,7 +133,7 @@ const ViewSpec = (props: ViewSpecProps) => {
                   label="End date"
                   value={dayjs(props.endDate)}
                   onChange={(newValue) => handleSetEndDate(newValue)}
-                  disabled={props.viewSpec !== ViewSpecType.ByDateRange}
+                  disabled={props.dateSelector !== DateSelectorType.ByDateRange}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -148,13 +148,13 @@ const ViewSpec = (props: ViewSpecProps) => {
 
   const getTagSpecification = (): JSX.Element => {
     return (
-      <FormControl style={ { marginTop: '32px'}}>
+      <FormControl style={{ marginTop: '32px' }}>
         <FormLabel id="tagSpecFormControl">Tags</FormLabel>
         <RadioGroup
           aria-labelledby="tagSpecFormControl"
-          value={getViewSpecTagSpec()}
+          value={getPhotosToDisplaySpecTagSpec()}
           name="radio-buttons-group"
-          onChange={handleViewSpecTagTypeChange}
+          onChange={handlePhotosToDisplaySpecTagTypeChange}
         >
           <FormControlLabel value="any" control={<Radio />} label="Any" />
           <FormControlLabel value="untagged" control={<Radio />} label="Untagged" />
@@ -184,8 +184,8 @@ const ViewSpec = (props: ViewSpecProps) => {
 
 function mapStateToProps(state: any) {
   return {
-    viewSpec: getViewSpecType(state),
-    viewSpecTagSpec: getViewSpecTagSpec(state),
+    dateSelector: getPhotosToDisplayDateSelector(state),
+    tagSelector: getPhotosToDisplayDateTagSelector(state),
     startDate: getStartDate(state),
     endDate: getEndDate(state),
   };
@@ -194,11 +194,11 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onReloadMediaItems: loadMediaItems,
-    onSetViewSpec: setViewSpecType,
-    onSetViewSpecTagSpec: setViewSpecTagSpec,
+    onSetPhotosToDisplaySpec: setDateSelector,
+    onSetPhotosToDisplaySpecTagSpec: setTagSelector,
     onSetStartDate: setStartDate,
     onSetEndDate: setEndDate,
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewSpec);
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoToDisplaySpec);

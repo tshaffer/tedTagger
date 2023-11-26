@@ -1,44 +1,42 @@
 import axios from 'axios';
 
-import { TedTaggerDispatch, setViewSpecStateRedux, setViewSpecTagSpecRedux, setViewSpecTypeRedux } from '../models';
-import { serverUrl, apiUrlFragment, ViewSpecType, ViewSpecState, ViewSpecTagType } from '../types';
+import { TedTaggerDispatch, setPhotosToDisplaySpecRedux, setTagSelectorRedux, setDateSelectorRedux } from '../models';
+import { serverUrl, apiUrlFragment, DateSelectorType, PhotosToDisplaySpec, TagSelectorType } from '../types';
 
 import {
   setStartDateRedux,
   setEndDateRedux
 } from '../models';
 
-export const loadViewSpec = () => {
+export const loadPhotosToDisplaySpec = () => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const path = serverUrl + apiUrlFragment + 'viewSpec';
+    const path = serverUrl + apiUrlFragment + 'photosToDisplaySpec';
 
     return axios.get(path)
-      .then((viewSpecResponse: any) => {
-        const viewSpec: ViewSpecState = (viewSpecResponse as any).data;
-        dispatch(setViewSpecStateRedux(viewSpec));
+      .then((photosToDisplaySpecResponse: any) => {
+        const photosToDisplaySpec: PhotosToDisplaySpec = (photosToDisplaySpecResponse as any).data;
+        dispatch(setPhotosToDisplaySpecRedux(photosToDisplaySpec));
       });
   };
 };
 
-export const setViewSpecType = (viewSpecType: ViewSpecType) => {
+export const setDateSelector = (dateSelector: DateSelectorType) => {
 
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const path = serverUrl + apiUrlFragment + 'setViewSpecType';
+    const path = serverUrl + apiUrlFragment + 'setDateSelector';
 
-    const setViewSpecTypeBody = {
-      viewSpecType,
+    const setDateSelectorBody = {
+      dateSelector,
     };
 
     return axios.post(
       path,
-      setViewSpecTypeBody
+      setDateSelectorBody
     ).then((response) => {
-      console.log('setViewSpecType response');
-      console.log(response);
-      dispatch(setViewSpecTypeRedux(viewSpecType));
-      return viewSpecType;
+      dispatch(setDateSelectorRedux(dateSelector));
+      return dateSelector;
     }).catch((error) => {
       console.log('error');
       console.log(error);
@@ -48,24 +46,22 @@ export const setViewSpecType = (viewSpecType: ViewSpecType) => {
 
 };
 
-export const setViewSpecTagSpec = (viewSpecTagSpec: ViewSpecTagType) => {
+export const setTagSelector = (tagSelector: TagSelectorType) => {
 
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const path = serverUrl + apiUrlFragment + 'setViewSpecTagSpec';
+    const path = serverUrl + apiUrlFragment + 'setTagSelector';
 
-    const setViewSpecTagSpecBody = {
-      viewSpecTagSpec,
+    const setTagSelectorBody = {
+      tagSelector,
     };
 
     return axios.post(
       path,
-      setViewSpecTagSpecBody
+      setTagSelectorBody
     ).then((response) => {
-      console.log('setViewSpecTagSpec response');
-      console.log(response);
-      dispatch(setViewSpecTagSpecRedux(viewSpecTagSpec));
-      return viewSpecTagSpec;
+      dispatch(setTagSelectorRedux(tagSelector));
+      return tagSelector;
     }).catch((error) => {
       console.log('error');
       console.log(error);

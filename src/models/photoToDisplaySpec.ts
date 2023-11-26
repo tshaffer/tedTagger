@@ -1,13 +1,13 @@
 import { cloneDeep } from 'lodash';
-import { ViewSpecState, ViewSpecTagType, ViewSpecType } from '../types';
+import { PhotosToDisplaySpec, TagSelectorType, DateSelectorType } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SET_VIEW_SPEC_STATE = 'SET_VIEW_SPEC_STATE';
-export const SET_VIEW_SPEC_TYPE = 'SET_VIEW_SPEC_TYPE';
-export const SET_VIEW_SPEC_TAG_SPEC = 'SET_VIEW_SPEC_TAG_SPEC';
+export const SET_PHOTOS_TO_DISPLAY_SPEC_STATE = 'SET_PHOTOS_TO_DISPLAY_SPEC_STATE';
+export const SET_DATE_SELECTOR = 'SET_DATE_SELECTOR';
+export const SET_TAG_SELECTOR = 'SET_TAG_SELECTOR';
 export const SET_START_DATE = 'SET_START_DATE';
 export const SET_END_DATE = 'SET_END_DATE';
 
@@ -15,24 +15,24 @@ export const SET_END_DATE = 'SET_END_DATE';
 // Actions
 // ------------------------------------
 
-export const setViewSpecStateRedux = (viewSpecState: ViewSpecState): any => {
+export const setPhotosToDisplaySpecRedux = (photosToDisplaySpec: PhotosToDisplaySpec): any => {
   return {
-    type: SET_VIEW_SPEC_STATE,
-    viewSpecState,
+    type: SET_PHOTOS_TO_DISPLAY_SPEC_STATE,
+    photosToDisplaySpec,
   };
 };
 
-export const setViewSpecTypeRedux = (viewSpec: ViewSpecType): any => {
+export const setDateSelectorRedux = (dateSelector: DateSelectorType): any => {
   return {
-    type: SET_VIEW_SPEC_TYPE,
-    viewSpec,
+    type: SET_DATE_SELECTOR,
+    dateSelector,
   };
 };
 
 
-export const setViewSpecTagSpecRedux = (tagSpec: ViewSpecTagType): any => {
+export const setTagSelectorRedux = (tagSpec: TagSelectorType): any => {
   return {
-    type: SET_VIEW_SPEC_TAG_SPEC,
+    type: SET_TAG_SELECTOR,
     tagSpec,
   };
 };
@@ -55,31 +55,31 @@ export const setEndDateRedux = (endDate: string): any => {
 // Reducer
 // ------------------------------------
 
-const initialState: ViewSpecState = {
-  viewSpecType: ViewSpecType.All,
-  tagSpec: ViewSpecTagType.Any,
+const initialState: PhotosToDisplaySpec = {
+  dateSelector: DateSelectorType.All,
+  tagSelector: TagSelectorType.Any,
   startDate: '2000-01-01',
   endDate: '2024-01-01',
 };
 
-export const viewSpecStateReducer = (
-  state: ViewSpecState = initialState,
+export const photosToDisplaySpecReducer = (
+  state: PhotosToDisplaySpec = initialState,
   action: TedTaggerModelBaseAction<any>
-): ViewSpecState => {
+): PhotosToDisplaySpec => {
   switch (action.type) {
-    case SET_VIEW_SPEC_STATE: {
-      return (action as any).viewSpecState;
+    case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
+      return (action as any).photosToDisplaySpec;
     }
-    case SET_VIEW_SPEC_TYPE: {
+    case SET_DATE_SELECTOR: {
       return {
         ...state,
-        viewSpecType: (action as any).viewSpec
+        dateSelector: (action as any).dateSelector
       };
     }
-    case SET_VIEW_SPEC_TAG_SPEC: {
+    case SET_TAG_SELECTOR: {
       return {
         ...state,
-        tagSpec: (action as any).tagSpec
+        tagSelector: (action as any).tagSpec
       };
     }
     case SET_START_DATE: {

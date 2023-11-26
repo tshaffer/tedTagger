@@ -12,7 +12,7 @@ export interface TedTaggerState {
   tagsState: TagsState;
   appTagAvatarsState: AppTagAvatarsState;
   userTagAvatarsState: UserTagAvatarsState;
-  viewSpecState: ViewSpecState;
+  photosToDisplaySpec: PhotosToDisplaySpec;
 }
 
 export interface AppState {
@@ -39,19 +39,19 @@ export interface UserTagAvatarsState {
   userTagAvatars: UserTagAvatar[];
 }
 
-export enum ViewSpecType {
-  All,
-  ByDateRange,
+export enum DateSelectorType {
+  All = 'all',
+  ByDateRange = 'byDateRange',
 }
 
-export enum ViewSpecTagType {
+export enum TagSelectorType {
   Any = 'any',
   Untagged = 'untagged',
 }
 
-export interface ViewSpecState {
-  viewSpecType: ViewSpecType;
-  tagSpec: ViewSpecTagType;
+export interface PhotosToDisplaySpec {
+  dateSelector: DateSelectorType;
+  tagSelector: TagSelectorType;
   startDate: string;
   endDate: string;
 }
