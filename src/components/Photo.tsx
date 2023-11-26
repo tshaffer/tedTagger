@@ -8,7 +8,6 @@ import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelec
 import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../types';
 
 import path from 'path-browserify';
-import { getTagAvatarUrl } from '../utilities';
 import TagAvatar from './TagAvatar';
 
 const cardStyle = {
@@ -61,7 +60,7 @@ function Photo(props: PhotoProps) {
   const getTagAvatar = (photoTag: Tag): JSX.Element => {
     return (
       <Tooltip title={photoTag.label} key={photoTag.id + '::' + props.mediaItem.googleId} >
-        <TagAvatar tagId={photoTag.id} avatarId={photoTag.avatarId} />
+        <TagAvatar avatarType={photoTag.avatarType} avatarId={photoTag.avatarId} />
       </Tooltip>
     );
   };

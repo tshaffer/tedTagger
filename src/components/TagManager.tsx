@@ -13,7 +13,6 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb } from '../controllers';
 import SelectAvatarDialog from './SelectAvatarDialog';
-import { getTagAvatarUrl } from '../utilities';
 import TagAvatar from './TagAvatar';
 
 export interface TagManagerPropsFromParent {
@@ -62,7 +61,7 @@ const TagManager = (props: TagManagerProps) => {
               <AssignmentIndIcon />
             </ListItemIcon>
           </Tooltip>
-          <TagAvatar tagId={tag.id} avatarId={tag.avatarId} />
+          <TagAvatar avatarType={tag.avatarType} avatarId={tag.avatarId} />
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem >
       );
