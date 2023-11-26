@@ -1,14 +1,14 @@
 import path from 'path-browserify';
 import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
 
-export const getTagAvatarUrl = (tag: Tag, appTagAvatars: AppTagAvatar[], userTagAvatars: UserTagAvatar[]): string => {
+export const getTagAvatarUrl = (avatarId: string, tag: Tag, appTagAvatars: AppTagAvatar[], userTagAvatars: UserTagAvatar[]): string => {
 
   let tagAvatarUrl = '';
 
   if (tag.avatarType === 'app') {
     let appTagAvatarPath = '';
     for (const appTagAvatar of appTagAvatars) {
-      if (appTagAvatar.id === tag.avatarId) {
+      if (appTagAvatar.id === avatarId) {
         appTagAvatarPath = appTagAvatar.path;
         break;
       }
@@ -21,7 +21,7 @@ export const getTagAvatarUrl = (tag: Tag, appTagAvatars: AppTagAvatar[], userTag
   } else {
     let userTagAvatarPath = '';
     for (const userTagAvatar of userTagAvatars) {
-      if (userTagAvatar.id === tag.avatarId) {
+      if (userTagAvatar.id === avatarId) {
         userTagAvatarPath = userTagAvatar.path;
         break;
       }

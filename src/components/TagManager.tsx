@@ -62,7 +62,7 @@ const TagManager = (props: TagManagerProps) => {
               <AssignmentIndIcon />
             </ListItemIcon>
           </Tooltip>
-          <TagAvatar tagId={tag.id} />
+          <TagAvatar tagId={tag.id} avatarId={tag.avatarId} />
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem >
       );
