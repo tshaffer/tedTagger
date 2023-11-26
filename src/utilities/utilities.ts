@@ -30,7 +30,7 @@ export const getTagAvatarUrl = (tag: Tag, appTagAvatars: AppTagAvatar[], userTag
       debugger;
       throw new Error('userTagAvatarPath is empty');
     }
-    tagAvatarUrl = path.join('tagIconImages', userTagAvatarPath);
+    tagAvatarUrl = path.join('userAvatars', userTagAvatarPath);
   }
 
   return tagAvatarUrl;
