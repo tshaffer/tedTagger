@@ -8,6 +8,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const ADD_TAGS = 'ADD_TAGS';
 export const ADD_TAG = 'ADD_TAG';
+export const UPDATE_TAG = 'UPDATE_TAG';
 // export const DELETE_TAG = 'DELETE_TAG';
 
 // ------------------------------------
@@ -44,6 +45,24 @@ export const addTag = (
   };
 };
 
+interface UpdateTagPayload {
+  tagId: string;
+  tag: Tag;
+}
+
+export const updateTag = (
+  tagId: string,
+  tag: Tag,
+): any => {
+  return {
+    type: UPDATE_TAG,
+    payload: {
+      tagId,
+      tag,
+    }
+  };
+};
+
 // interface DeleteTagPayload {
 //   tag: Tag;
 // }
@@ -70,7 +89,7 @@ const initialState: TagsState =
 
 export const tagsStateReducer = (
   state: TagsState = initialState,
-  action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload>
+  action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload & UpdateTagPayload>
 ): TagsState => {
   switch (action.type) {
     case ADD_TAGS: {
@@ -81,6 +100,18 @@ export const tagsStateReducer = (
     case ADD_TAG: {
       const newState = cloneDeep(state) as TagsState;
       newState.tags.push(action.payload.tag);
+      return newState;
+    }
+    case UPDATE_TAG: {
+      const newState = cloneDeep(state) as TagsState;
+      for (const tag of newState.tags) {
+        if (tag.id === action.payload.tagId) {
+          tag.label = action.payload.tag.label;
+          tag.avatarId = action.payload.tag.avatarId;
+          tag.avatarType = action.payload.tag.avatarType;
+          break;
+        }
+      }
       return newState;
     }
     // case DELETE_TAG: {

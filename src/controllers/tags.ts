@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatars } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatars, updateTag } from '../models';
 import { serverUrl, apiUrlFragment, Tag, AppTagAvatar, UserTagAvatar } from '../types';
 import { addAppTagAvatars } from '../models/appTagAvatars';
+import { getTagById } from '../selectors';
 
 export const loadAppTagAvatars = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -132,6 +133,11 @@ export const assignTagAvatarToTag = (tagId: string, avatarType: string, avatarId
       assignTagAvatarToTagBody,
     ).then((response) => {
       console.log('return from assignTagAvatarToTag');
+      console.log(response);
+      const tag: Tag = getTagById(getState(), tagId)!;
+      tag.avatarType = avatarType;
+      tag.avatarId = avatarId;
+      dispatch(updateTag(tagId, tag));
       console.log(response);
     });
   };
