@@ -55,6 +55,7 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
   const handleAppAvatarSelected = (event: any, appTagAvatar: AppTagAvatar) => {
     console.log('handleAppAvatarSelected', appTagAvatar);
     props.onAssignTagAvatarToTag(props.tag.id, 'app', appTagAvatar.id);
+    handleClose();
   };
 
   const getAppTagAvatarElements = () => {

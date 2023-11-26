@@ -1,4 +1,4 @@
-import { Grid, Card, CardMedia, FormGroup, FormLabel, Tooltip } from '@mui/material';
+import { Grid, Card, CardMedia, Tooltip } from '@mui/material';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -9,6 +9,7 @@ import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../
 
 import path from 'path-browserify';
 import { getTagAvatarUrl } from '../utilities';
+import TagAvatar from './TagAvatar';
 
 const cardStyle = {
   display: 'flex',
@@ -62,7 +63,7 @@ function Photo(props: PhotoProps) {
     const url: string = getTagAvatarUrl(photoTag, props.appTagAvatars, props.userTagAvatars);
     return (
       <Tooltip title={photoTag.label} key={photoTag.id + '::' + props.mediaItem.googleId} >
-        <img key={photoTag.id} src={url} alt={photoTag.label} />
+        <TagAvatar tagId={photoTag.id} />
       </Tooltip>
     );
   };

@@ -14,6 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb } from '../controllers';
 import SelectAvatarDialog from './SelectAvatarDialog';
 import { getTagAvatarUrl } from '../utilities';
+import TagAvatar from './TagAvatar';
 
 export interface TagManagerPropsFromParent {
   onClose: () => void;
@@ -47,15 +48,6 @@ const TagManager = (props: TagManagerProps) => {
     setNewTag(text);
   };
 
-  const getTagAvatar = (tag: Tag): JSX.Element => {
-
-    const url: string = getTagAvatarUrl(tag, props.appTagAvatars, props.userTagAvatars);
-
-    return (
-      <img src={url} alt={tag.label} />
-    );
-  };
-
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
       return (
@@ -70,7 +62,7 @@ const TagManager = (props: TagManagerProps) => {
               <AssignmentIndIcon />
             </ListItemIcon>
           </Tooltip>
-          {getTagAvatar(tag)}
+          <TagAvatar tagId={tag.id} />
           <ListItemText id={tag.id} primary={tag.label} />
         </ListItem >
       );
