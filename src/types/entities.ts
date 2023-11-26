@@ -61,3 +61,9 @@ export interface AppTagAvatar {
   pathToLarge: string;
   path: string;
 }
+
+export interface UserTagAvatar {
+  id: string;
+  label: string;
+  path: string;
+}

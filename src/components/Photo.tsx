@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch } from '../models';
 import { toggleMediaItemSelectionAction } from '../controllers';
-import { getAllAppTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
-import { AppTagAvatar, MediaItem, StringToTagLUT, Tag } from '../types';
+import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
+import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../types';
 
 import path from 'path-browserify';
 import { getTagAvatarUrl } from '../utilities';
@@ -37,6 +37,7 @@ export interface PhotoPropsFromParent {
 
 export interface PhotoProps extends PhotoPropsFromParent {
   appTagAvatars: AppTagAvatar[];
+  userTagAvatars: UserTagAvatar[];
   tagsLUT: StringToTagLUT;
   isSelected: boolean;
   onToggleMediaItemSelection: (mediaItem: MediaItem) => any;
@@ -58,7 +59,7 @@ function Photo(props: PhotoProps) {
 
   const getTagAvatar = (photoTag: Tag): JSX.Element => {
 
-    const url: string = getTagAvatarUrl(photoTag, props.appTagAvatars);
+    const url: string = getTagAvatarUrl(photoTag, props.appTagAvatars, props.userTagAvatars);
     return (
       <Tooltip title={photoTag.label} key={photoTag.id + '::' + props.mediaItem.googleId} >
         <img key={photoTag.id} src={url} alt={photoTag.label} />
@@ -67,6 +68,7 @@ function Photo(props: PhotoProps) {
   };
 
   const getTagAvatars = (photoTags: Tag[]): JSX.Element => {
+
     const photoTagImages: JSX.Element[] = photoTags.map((photoTag: Tag) => {
       return getTagAvatar(photoTag);
     });
@@ -124,6 +126,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
     appTagAvatars: getAllAppTagAvatars(state),
+    userTagAvatars: getAllUserTagAvatars(state),
     tagsLUT: getTagsLUT(state),
     isSelected: isMediaItemSelected(state, ownProps.mediaItem),
   };

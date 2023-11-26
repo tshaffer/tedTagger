@@ -1,7 +1,7 @@
 import path from 'path-browserify';
-import { AppTagAvatar, Tag } from '../types';
+import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
 
-export const getTagAvatarUrl = (tag: Tag, appTagAvatars: AppTagAvatar[]): string => {
+export const getTagAvatarUrl = (tag: Tag, appTagAvatars: AppTagAvatar[], userTagAvatars: UserTagAvatar[]): string => {
 
   let tagAvatarUrl = '';
 
@@ -19,8 +19,18 @@ export const getTagAvatarUrl = (tag: Tag, appTagAvatars: AppTagAvatar[]): string
     }
     tagAvatarUrl = path.join('appAvatars', appTagAvatarPath);
   } else {
-    debugger;
-    tagAvatarUrl = path.join('userAvatars', tag.avatarId);
+    let userTagAvatarPath = '';
+    for (const userTagAvatar of userTagAvatars) {
+      if (userTagAvatar.id === tag.avatarId) {
+        userTagAvatarPath = userTagAvatar.path;
+        break;
+      }
+    }
+    if (userTagAvatarPath === '') {
+      debugger;
+      throw new Error('userTagAvatarPath is empty');
+    }
+    tagAvatarUrl = path.join('tagIconImages', userTagAvatarPath);
   }
 
   return tagAvatarUrl;

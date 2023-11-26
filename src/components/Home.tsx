@@ -23,6 +23,7 @@ import {
   loadAppTagAvatars,
   loadMediaItems,
   loadTags,
+  loadUserTagAvatars,
   loadViewSpec,
 } from '../controllers';
 import { TedTaggerDispatch } from '../models';
@@ -48,6 +49,7 @@ export interface HomeProps {
   onLoadAppTagAvatars: () => any;
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
+  onLoadUserTagAvatars: () => any;
   onLoadViewSpec: () => any;
 }
 
@@ -62,9 +64,12 @@ const Home = (props: HomeProps) => {
       .then(() => {
         props.onLoadAppTagAvatars()
           .then(() => {
-            props.onLoadTags()
+            props.onLoadUserTagAvatars()
               .then(() => {
-                props.onLoadMediaItems();
+                props.onLoadTags()
+                  .then(() => {
+                    props.onLoadMediaItems();
+                  });
               });
           });
       });
@@ -260,6 +265,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadAppTagAvatars: loadAppTagAvatars,
     onLoadMediaItems: loadMediaItems,
     onLoadTags: loadTags,
+    onLoadUserTagAvatars: loadUserTagAvatars,
     onLoadViewSpec: loadViewSpec,
   }, dispatch);
 };

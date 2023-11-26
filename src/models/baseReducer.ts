@@ -9,6 +9,8 @@ import { selectedMediaItemsStateReducer } from './selectedMediaItems';
 import { tagsStateReducer } from './tags';
 import { viewSpecStateReducer } from './viewSpec';
 import { appTagAvatarsStateReducer } from './appTagAvatars';
+import { userTagAvatarsStateReducer } from './userTagAvatars';
+
 // -----------------------------------------------------------------------
 // Reducers
 // -----------------------------------------------------------------------
@@ -18,6 +20,7 @@ export const rootReducer = combineReducers<TedTaggerState>({
   selectionsState: selectedMediaItemsStateReducer,
   tagsState: tagsStateReducer,
   appTagAvatarsState: appTagAvatarsStateReducer,
+  userTagAvatarsState: userTagAvatarsStateReducer,
   viewSpecState: viewSpecStateReducer,
 });
 

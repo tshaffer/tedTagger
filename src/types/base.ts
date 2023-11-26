@@ -1,4 +1,4 @@
-import { AppTagAvatar, MediaItem, Tag } from './entities';
+import { AppTagAvatar, MediaItem, Tag, UserTagAvatar } from './entities';
 
 export const serverUrl = 'http://localhost:8000';
 // export const serverUrl = 'https://tsmealwheel.herokuapp.com';
@@ -11,6 +11,7 @@ export interface TedTaggerState {
   selectionsState: SelectedMediaItemsState;
   tagsState: TagsState;
   appTagAvatarsState: AppTagAvatarsState;
+  userTagAvatarsState: UserTagAvatarsState;
   viewSpecState: ViewSpecState;
 }
 
@@ -32,6 +33,10 @@ export interface TagsState {
 
 export interface AppTagAvatarsState {
   appTagAvatars: AppTagAvatar[];
+}
+
+export interface UserTagAvatarsState {
+  userTagAvatars: UserTagAvatar[];
 }
 
 export enum ViewSpecType {

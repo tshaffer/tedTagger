@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags } from '../models';
-import { serverUrl, apiUrlFragment, Tag, AppTagAvatar } from '../types';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatars } from '../models';
+import { serverUrl, apiUrlFragment, Tag, AppTagAvatar, UserTagAvatar } from '../types';
 import { addAppTagAvatars } from '../models/appTagAvatars';
 
 export const loadAppTagAvatars = (): TedTaggerAnyPromiseThunkAction => {
@@ -14,6 +14,19 @@ export const loadAppTagAvatars = (): TedTaggerAnyPromiseThunkAction => {
       .then((appTagAvatarsResponse: any) => {
         const appTagAvatars: AppTagAvatar[] = (appTagAvatarsResponse as any).data;
         dispatch(addAppTagAvatars(appTagAvatars));
+      });
+  };
+};
+
+export const loadUserTagAvatars = (): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'userTagAvatars';
+
+    return axios.get(path)
+      .then((userTagAvatarsResponse: any) => {
+        const userTagAvatars: UserTagAvatar[] = (userTagAvatarsResponse as any).data;
+        dispatch(addUserTagAvatars(userTagAvatars));
       });
   };
 };
@@ -63,8 +76,13 @@ export const addTagToDb = (
   };
 };
 
-export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
+export const setTagUserAvatarFromFile = (tag: Tag, formData: FormData): any => {
   return (dispatch: any, getState: any) => {
+
+    // upload the specified file to the server
+    // the server will return the avatar path
+    // create a new avatar object with this information, getting the avatar id
+    // update the tag with this information (assignTagAvatarToTag)
 
     const path = serverUrl + apiUrlFragment + 'uploadTagIconFile';
 
@@ -72,28 +90,27 @@ export const uploadTagIconFile = (tag: Tag, formData: FormData): any => {
     }).then((response) => {
       console.log(response);
       console.log(response.statusText);
-      dispatch(assignTagIconToTag(response.data.iconFileName, tag));
-    });
-  };
-};
 
-const assignTagIconToTag = (iconFileName: string, tag: Tag): any => {
+      const avatarPath = response.data.iconFileName;
 
-  return (dispatch: any, getState: any) => {
+      const nextPath = serverUrl + apiUrlFragment + 'addUserAvatar';
+      const addUserAvatarBody = { 
+        id: uuidv4(),
+        label: tag.label,
+        path: avatarPath,
+      };
 
-    const path = serverUrl + apiUrlFragment + 'assignTagIconToTag';
+      axios.post(
+        nextPath,
+        addUserAvatarBody,
+      ).then((response) => {
+        console.log('return from addUserAvatar');
+        console.log(response);
 
-    const assignTagIconToTagBody = {
-      tagId: tag.id,
-      iconFileName,
-    };
+        const newAvatarId: string = response.data;
 
-    axios.post(
-      path,
-      assignTagIconToTagBody,
-    ).then((response) => {
-      console.log('return from assignTagIconToTag');
-      console.log(response);
+        dispatch(assignTagAvatarToTag(tag.id, 'user', newAvatarId));
+      });
     });
   };
 };

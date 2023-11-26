@@ -10,7 +10,7 @@ import { Box, DialogContent, Stack } from '@mui/material';
 import { isNil } from 'lodash';
 import { AppTagAvatar, Tag } from '../types';
 import { bindActionCreators } from 'redux';
-import { assignTagAvatarToTag, uploadTagIconFile } from '../controllers';
+import { assignTagAvatarToTag, setTagUserAvatarFromFile } from '../controllers';
 import { TedTaggerDispatch } from '../models';
 import { getAllAppTagAvatars } from '../selectors';
 
@@ -22,7 +22,7 @@ export interface SelectAvatarDialogPropsFromParent {
 
 export interface SelectAvatarDialogProps extends SelectAvatarDialogPropsFromParent {
   appTagAvatars: AppTagAvatar[];
-  onUploadTagIconFile: (tag: Tag, formData: FormData) => any;
+  onSetTagUserAvatarFromFile: (tag: Tag, formData: FormData) => any;
   onAssignTagAvatarToTag: (tagId: string, avatarType: string, avatarId: string) => any;
 }
 
@@ -43,12 +43,11 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
   const handleAvatarFileSelected = (event: any) => {
     console.log('handleSelectFile', event.target.files[0]);
     console.log(props.tag);
-    debugger;
     if (!isNil(props.tag)) {
       const selectedFile = event.target.files[0];
       const data = new FormData();
       data.append('file', selectedFile);
-      props.onUploadTagIconFile(props.tag, data);
+      props.onSetTagUserAvatarFromFile(props.tag, data);
       handleClose();
     }
   };
@@ -122,7 +121,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onUploadTagIconFile: uploadTagIconFile,
+    onSetTagUserAvatarFromFile: setTagUserAvatarFromFile,
     onAssignTagAvatarToTag: assignTagAvatarToTag,
   }, dispatch);
 };

@@ -6,8 +6,8 @@ import ListItemText from '@mui/material/ListItemText';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
-import { AppTagAvatar, Tag } from '../types';
-import { getAllAppTagAvatars, getAllTags } from '../selectors';
+import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
+import { getAllAppTagAvatars, getAllTags, getAllUserTagAvatars } from '../selectors';
 import { Box, Button, IconButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
@@ -22,6 +22,7 @@ export interface TagManagerPropsFromParent {
 export interface TagManagerProps extends TagManagerPropsFromParent {
   tags: Tag[],
   appTagAvatars: AppTagAvatar[];
+  userTagAvatars: UserTagAvatar[];
   onAddTag: (label: string) => void;
 }
 
@@ -48,7 +49,7 @@ const TagManager = (props: TagManagerProps) => {
 
   const getTagAvatar = (tag: Tag): JSX.Element => {
 
-    const url = getTagAvatarUrl(tag, props.appTagAvatars);
+    const url: string = getTagAvatarUrl(tag, props.appTagAvatars, props.userTagAvatars);
 
     return (
       <img src={url} alt={tag.label} />
@@ -129,6 +130,7 @@ function mapStateToProps(state: any) {
   return {
     tags: getAllTags(state),
     appTagAvatars: getAllAppTagAvatars(state),
+    userTagAvatars: getAllUserTagAvatars(state),
   };
 }
 
