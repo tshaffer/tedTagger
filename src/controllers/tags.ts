@@ -84,14 +84,14 @@ export const setTagUserAvatarFromFile = (tag: Tag, formData: FormData): any => {
     // create a new avatar object with this information, getting the avatar id
     // update the tag with this information (assignTagAvatarToTag)
 
-    const path = serverUrl + apiUrlFragment + 'uploadTagIconFile';
+    const path = serverUrl + apiUrlFragment + 'uploadUserAvatarFile';
 
     axios.post(path, formData, {
     }).then((response) => {
       console.log(response);
       console.log(response.statusText);
 
-      const avatarPath = response.data.iconFileName;
+      const avatarPath = response.data.avatarFileName;
 
       const nextPath = serverUrl + apiUrlFragment + 'addUserAvatar';
       const addUserAvatarBody = { 
