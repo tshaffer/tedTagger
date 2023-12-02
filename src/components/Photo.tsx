@@ -60,6 +60,7 @@ function Photo(props: PhotoProps) {
   const getTagAvatar = (photoTag: Tag): JSX.Element => {
     return (
       <TagAvatar
+        key={props.mediaItem.googleId + photoTag.id}
         googleId={props.mediaItem.googleId}
         photoTag={photoTag}
         avatarType={photoTag.avatarType}
