@@ -142,3 +142,28 @@ export const assignTagAvatarToTag = (tagId: string, avatarType: string, avatarId
     });
   };
 };
+
+export const updateTagLabel = (tagId: string, tagLabel: string): any => {
+
+  return (dispatch: any, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'updateTagLabel';
+
+    const updateTagLabelBody = {
+      tagId,
+      tagLabel,
+    };
+
+    axios.post(
+      path,
+      updateTagLabelBody,
+    ).then((response) => {
+      console.log('return from updateTagLabel');
+      console.log(response);
+      const tag: Tag = getTagById(getState(), tagId)!;
+      tag.label = tagLabel;
+      dispatch(updateTag(tagId, tag));
+      console.log(response);
+    });
+  };
+};

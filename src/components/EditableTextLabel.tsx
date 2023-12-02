@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch } from '../models';
+import { ListItemText } from '@mui/material';
 
 export interface EditableTextLabelProps {
   text: string;
+  onBlur: (text: string) => void;
 }
 
 const EditableTextLabel = (props: EditableTextLabelProps) => {
@@ -22,7 +24,7 @@ const EditableTextLabel = (props: EditableTextLabelProps) => {
 
   const handleBlur = () => {
     setEditing(false);
-    // You can handle saving the edited value here, e.g., call an API or update state
+    props.onBlur(value);
   };
 
   return (
@@ -36,7 +38,7 @@ const EditableTextLabel = (props: EditableTextLabelProps) => {
           autoFocus
         />
       ) : (
-        <span onDoubleClick={handleDoubleClick}>{props.text}</span>
+        <ListItemText primary={props.text} onDoubleClick={handleDoubleClick}/>
       )}
     </div>
   );

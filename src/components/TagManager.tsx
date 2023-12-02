@@ -11,7 +11,7 @@ import { getAllAppTagAvatars, getAllTags, getAllUserTagAvatars } from '../select
 import { Box, Button, IconButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
-import { addTagToDb } from '../controllers';
+import { addTagToDb, updateTagLabel } from '../controllers';
 import SelectAvatarDialog from './SelectAvatarDialog';
 import TagAvatar from './TagAvatar';
 import EditableTextLabel from './EditableTextLabel';
@@ -25,6 +25,7 @@ export interface TagManagerProps extends TagManagerPropsFromParent {
   appTagAvatars: AppTagAvatar[];
   userTagAvatars: UserTagAvatar[];
   onAddTag: (label: string) => void;
+  onUpdateTagLabel: (tagId: string, label: string) => void;
 }
 
 const TagManager = (props: TagManagerProps) => {
@@ -44,8 +45,13 @@ const TagManager = (props: TagManagerProps) => {
     setShowSelectAvatarDialog(true);
   };
 
-  const handleSetNewTag = (text: any) => {
+  const handleSetNewTag = (text: string) => {
     setNewTag(text);
+  };
+
+  const handleBlur = (tagId: string, text: string) => {
+    console.log(text);
+    props.onUpdateTagLabel(tagId, text);
   };
 
   const getListItems = (): JSX.Element[] => {
@@ -63,10 +69,10 @@ const TagManager = (props: TagManagerProps) => {
             </ListItemIcon>
           </Tooltip>
           <TagAvatar avatarType={tag.avatarType} avatarId={tag.avatarId} />
-          {/* <ListItemText id={tag.id} primary={tag.label} /> */}
           <EditableTextLabel
             key={tag.id}
             text={tag.label}
+            onBlur={(text: string) => handleBlur(tag.id, text)}
           />
         </ListItem >
       );
@@ -133,6 +139,7 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddTag: addTagToDb,
+    onUpdateTagLabel: updateTagLabel,
   }, dispatch);
 };
 
