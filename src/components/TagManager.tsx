@@ -14,6 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { addTagToDb } from '../controllers';
 import SelectAvatarDialog from './SelectAvatarDialog';
 import TagAvatar from './TagAvatar';
+import EditableTextLabel from './EditableTextLabel';
 
 export interface TagManagerPropsFromParent {
   onClose: () => void;
@@ -62,7 +63,11 @@ const TagManager = (props: TagManagerProps) => {
             </ListItemIcon>
           </Tooltip>
           <TagAvatar avatarType={tag.avatarType} avatarId={tag.avatarId} />
-          <ListItemText id={tag.id} primary={tag.label} />
+          {/* <ListItemText id={tag.id} primary={tag.label} /> */}
+          <EditableTextLabel
+            key={tag.id}
+            text={tag.label}
+          />
         </ListItem >
       );
     });
