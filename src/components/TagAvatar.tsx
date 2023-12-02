@@ -1,11 +1,14 @@
 import * as React from 'react';
 
 import { connect } from 'react-redux';
-import { AppTagAvatar, UserTagAvatar } from '../types';
+import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
 import { getAllAppTagAvatars, getAllUserTagAvatars } from '../selectors';
 import path from 'path-browserify';
+import { Tooltip } from '@mui/material';
 
 export interface TagAvatarPropsFromParent {
+  googleId: string;
+  photoTag: Tag;
   avatarType: string,
   avatarId: string
 }
@@ -54,12 +57,16 @@ const TagAvatar = (props: TagAvatarProps) => {
   const url: string = getTagAvatarUrl(props.avatarType, props.avatarId);
 
   return (
-    <img src={url} />
+    <Tooltip title={props.photoTag.label} key={props.photoTag.id + '::' + props.googleId}>
+      <img src={url} />
+    </Tooltip>
   );
 };
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
+    googleId: ownProps.googleId,
+    photoTag: ownProps.photoTag,
     avatarId: ownProps.avatarId,
     appTagAvatars: getAllAppTagAvatars(state),
     userTagAvatars: getAllUserTagAvatars(state),

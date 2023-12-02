@@ -59,9 +59,12 @@ function Photo(props: PhotoProps) {
 
   const getTagAvatar = (photoTag: Tag): JSX.Element => {
     return (
-      <Tooltip title={photoTag.label} key={photoTag.id + '::' + props.mediaItem.googleId} >
-        <TagAvatar avatarType={photoTag.avatarType} avatarId={photoTag.avatarId} />
-      </Tooltip>
+      <TagAvatar
+        googleId={props.mediaItem.googleId}
+        photoTag={photoTag}
+        avatarType={photoTag.avatarType}
+        avatarId={photoTag.avatarId}
+      />
     );
   };
 
