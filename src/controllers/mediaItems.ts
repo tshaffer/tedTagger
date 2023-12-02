@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux } from '../models';
 import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 import { getEndDate, getStartDate, getTagByLabel, getPhotosToDisplayDateTagSelector, getPhotosToDisplayDateSelector as getPhotosToDisplayDateSelector } from '../selectors';
@@ -91,6 +91,47 @@ export const addTagToMediaItems = (
       console.log('updateTagsInMediaItemsBody response');
       console.log(response);
       dispatch(addTagToMediaItemsRedux(mediaItems, tag.id));
+      // return mediaItems.googleId;
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
+  };
+
+};
+
+export const replaceTagInMediaItems = (
+  mediaItems: MediaItem[],
+  existingTag: Tag,
+  newTag: Tag,
+): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    console.log('replaceTagInMediaItems');
+    console.log(mediaItems);
+    console.log('existingTag: ', existingTag);
+    console.log('newTag: ', newTag);
+
+    const path = serverUrl + apiUrlFragment + 'replaceTagInMediaItems';
+
+    const googleMediaItemIds: string[] = mediaItems.map((mediaItem: MediaItem) => {
+      return mediaItem.googleId;
+    });
+
+    const replaceTagsInMediaItemsBody = {
+      mediaItemIds: googleMediaItemIds,
+      existingTagId: existingTag.id,
+      newTagId: newTag.id,
+    };
+
+    return axios.post(
+      path,
+      replaceTagsInMediaItemsBody
+    ).then((response) => {
+      console.log('replaceTagsInMediaItemsBody response');
+      console.log(response);
+      dispatch(replaceTagInMediaItemsRedux(mediaItems, existingTag.id, newTag.id ));
       // return mediaItems.googleId;
     }).catch((error) => {
       console.log('error');

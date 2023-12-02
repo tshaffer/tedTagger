@@ -12,7 +12,7 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem, Tag } from '../types';
 import { cloneDeep, isNil, isObject, isString } from 'lodash';
 import { getAllTags, getMediaItem, getTagById } from '../selectors';
-import { addTagToMediaItems, deleteTagFromMediaItems } from '../controllers';
+import { addTagToMediaItems, deleteTagFromMediaItems, replaceTagInMediaItems } from '../controllers';
 
 interface TagOption {
   value: Tag | null;
@@ -28,6 +28,7 @@ export interface TagListProps extends TagListPropsPropsFromParent {
   allTags: Tag[],
   mediaItems: MediaItem[],
   onAddTagToMediaItems: (mediaItems: MediaItem[], tag: Tag) => any;
+  onReplaceTagInMediaItems: (mediaItems: MediaItem[], oldTag: Tag, newTag: Tag) => any;
   onDeleteTagFromMediaItems: (tagId: string, mediaItems: MediaItem[]) => any;
 }
 
@@ -101,7 +102,7 @@ const TagList = (props: TagListProps) => {
     } else {
       // replace tag in media items
       console.log('replace tag:', existingTag, selectedTag.label); // existingTag is object - verified
-      debugger;
+      props.onReplaceTagInMediaItems(props.mediaItems, existingTag as Tag, (selectedTag as TagOption).value as Tag);
     }
 
   };
@@ -290,6 +291,7 @@ function mapStateToProps(state: any, ownProps: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddTagToMediaItems: addTagToMediaItems,
+    onReplaceTagInMediaItems: replaceTagInMediaItems,
     onDeleteTagFromMediaItems: deleteTagFromMediaItems,
   }, dispatch);
 };

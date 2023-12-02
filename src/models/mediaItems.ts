@@ -8,7 +8,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const SET_MEDIA_ITEMS = 'SET_MEDIA_ITEMS';
 export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
-export const REPLACE_TAG_IN_MEDIA_ITEM = 'REPLACE_TAG_IN_MEDIA_ITEM';
+export const REPLACE_TAG_IN_MEDIA_ITEMS = 'REPLACE_TAG_IN_MEDIA_ITEMS';
 export const DELETE_TAG_FROM_MEDIA_ITEMS = 'DELETE_TAG_FROM_MEDIA_ITEMS';
 
 // ------------------------------------
@@ -48,15 +48,21 @@ export const addTagToMediaItemsRedux = (
   };
 };
 
-export const replaceTagInMediaItemRedux = (
-  mediaItem: MediaItem,
+interface ReplaceTagInMediaItemsPayload {
+  mediaItem: MediaItem[];
+  existingTagId: string,
+  newTagId: string,
+}
+
+export const replaceTagInMediaItemsRedux = (
+  mediaItems: MediaItem[],
   existingTagId: string,
   newTagId: string,
 ): any => {
   return {
-    type: REPLACE_TAG_IN_MEDIA_ITEM,
+    type: REPLACE_TAG_IN_MEDIA_ITEMS,
     payload: {
-      mediaItem,
+      mediaItems,
       existingTagId,
       newTagId,
     }
@@ -92,7 +98,7 @@ const initialState: MediaItemsState =
 
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload & ReplaceTagInMediaItemsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case SET_MEDIA_ITEMS: {
@@ -106,6 +112,19 @@ export const mediaItemsStateReducer = (
           const tagIndex = item.tagIds.indexOf(action.payload.tagId);
           if (tagIndex === -1) {
             item.tagIds.push(action.payload.tagId);
+          }
+        }
+      });
+      return newState;
+    }
+    case REPLACE_TAG_IN_MEDIA_ITEMS: {
+      const newState = cloneDeep(state) as MediaItemsState;
+      newState.mediaItems.forEach((item) => {
+        const matchingInputItem = action.payload.mediaItems.find((inputItem) => inputItem.googleId === item.googleId);
+        if (matchingInputItem) {
+          const tagIndex = item.tagIds.indexOf(action.payload.existingTagId);
+          if (tagIndex >= 0) {
+            item.tagIds[tagIndex] = action.payload.newTagId;
           }
         }
       });
