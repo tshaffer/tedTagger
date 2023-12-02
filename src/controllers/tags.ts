@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatars, updateTag } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatar, addUserTagAvatars, updateTag } from '../models';
 import { serverUrl, apiUrlFragment, Tag, AppTagAvatar, UserTagAvatar } from '../types';
 import { addAppTagAvatars } from '../models/appTagAvatars';
 import { getTagById } from '../selectors';
@@ -110,6 +110,12 @@ export const setTagUserAvatarFromFile = (tag: Tag, formData: FormData): any => {
 
         const newAvatarId: string = response.data;
 
+        const userTagAvatar: UserTagAvatar = {
+          id: newAvatarId,
+          label: tag.label,
+          path: avatarPath,
+        };
+        dispatch(addUserTagAvatar(userTagAvatar));
         dispatch(assignTagAvatarToTag(tag.id, 'user', newAvatarId));
       });
     });
