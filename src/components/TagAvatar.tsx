@@ -5,6 +5,7 @@ import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
 import { getAllAppTagAvatars, getAllUserTagAvatars } from '../selectors';
 import path from 'path-browserify';
 import { Tooltip } from '@mui/material';
+import { isNil } from 'lodash';
 
 export interface TagAvatarPropsFromParent {
   googleId: string;
@@ -56,11 +57,17 @@ const TagAvatar = (props: TagAvatarProps) => {
   };
   const url: string = getTagAvatarUrl(props.avatarType, props.avatarId);
 
-  return (
-    <Tooltip title={props.photoTag.label} key={props.photoTag.id + '::' + props.googleId}>
+  if (isNil(props.photoTag) || isNil(props.googleId)) {
+    return (
       <img src={url} />
-    </Tooltip>
-  );
+    );
+  } else {
+    return (
+      <Tooltip title={props.photoTag.label} key={props.photoTag.id + '::' + props.googleId}>
+        <img src={url} />
+      </Tooltip>
+    );
+  }
 };
 
 function mapStateToProps(state: any, ownProps: any) {
