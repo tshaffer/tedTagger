@@ -33,6 +33,7 @@ import AssignTags from './AssignTags';
 import TagManager from './TagManager';
 import PhotoToDisplaySpec from './PhotoToDisplaySpec';
 import PhotoProperties from './PhotoProperties';
+import { getSelectedMediaItemIds } from '../selectors';
 
 const leftSideDrawerWidth = 240;
 const rightSideDrawerWidth = 240;
@@ -47,6 +48,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export interface HomeProps {
+  selectedMediaItemIds: string[];
   onLoadAppTagAvatars: () => any;
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
@@ -191,13 +193,15 @@ const Home = (props: HomeProps) => {
         }}
       >
         <Toolbar>
-          <Button onClick={props.onDeselectAllPhotos}>Deselect All Photos</Button>
+          {props.selectedMediaItemIds.length === 0
+            ? null
+            : <Button onClick={props.onDeselectAllPhotos}>Deselect All Photos</Button>
+          }
         </Toolbar>
         <Box sx={{ overflow: 'auto' }}>
           <List>
             <ListItem key={2} disablePadding>
               <ListItemButton onClick={() => setDrawerContents('photoToDisplaySpec')}>
-                {/* <ListItemText primaryTypographyProps={{ style: text }} primary="MyText"> */}
                 <ListItemText
                   primaryTypographyProps={{ style: photoToDisplaySpecTextStyle }}
                 >
@@ -261,6 +265,7 @@ const Home = (props: HomeProps) => {
 
 function mapStateToProps(state: any) {
   return {
+    selectedMediaItemIds: getSelectedMediaItemIds(state),
   };
 }
 
