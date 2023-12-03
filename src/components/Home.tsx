@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { IconButton } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -25,6 +25,7 @@ import {
   loadTags,
   loadUserTagAvatars,
   loadPhotosToDisplaySpec,
+  deselectAllPhotos,
 } from '../controllers';
 import { TedTaggerDispatch } from '../models';
 import PhotoGrid from './PhotoGrid';
@@ -51,6 +52,7 @@ export interface HomeProps {
   onLoadTags: () => any;
   onLoadUserTagAvatars: () => any;
   onLoadPhotosToDisplay: () => any;
+  onDeselectAllPhotos: () => any;
 }
 
 const Home = (props: HomeProps) => {
@@ -188,7 +190,9 @@ const Home = (props: HomeProps) => {
           [`& .MuiDrawer-paper`]: { width: leftSideDrawerWidth, boxSizing: 'border-box' },
         }}
       >
-        <Toolbar />
+        <Toolbar>
+          <Button onClick={props.onDeselectAllPhotos}>Deselect All Photos</Button>
+        </Toolbar>
         <Box sx={{ overflow: 'auto' }}>
           <List>
             <ListItem key={2} disablePadding>
@@ -267,6 +271,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadTags: loadTags,
     onLoadUserTagAvatars: loadUserTagAvatars,
     onLoadPhotosToDisplay: loadPhotosToDisplaySpec,
+    onDeselectAllPhotos: deselectAllPhotos,
   }, dispatch);
 };
 

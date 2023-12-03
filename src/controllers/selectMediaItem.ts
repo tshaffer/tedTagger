@@ -7,6 +7,11 @@ export const handleClickPhoto = (id: string, commandKey: boolean, shiftKey: bool
 
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
+    if (commandKey) {
+      // Ignore the click if the command key is held down
+      return;
+    }
+
     const mediaItems: MediaItem[] = getMediaItems(getState());
     const selectedMediaItemIds: string[] = getSelectedMediaItemIds(getState());
 
@@ -19,20 +24,10 @@ export const handleClickPhoto = (id: string, commandKey: boolean, shiftKey: bool
 
     if (shiftKey) {
       dispatch(handleShiftClick(index, mediaItems, selectedMediaItemIds));
-    } else if (commandKey) {
-      dispatch(handleToggleSelection(id, selectedMediaItemIds));
     } else {
-      dispatch(handleRegularClick(index, mediaItems));
+      dispatch(handleToggleSelection(id, selectedMediaItemIds));
     }
 
-  };
-};
-
-const handleRegularClick = (index: number, mediaItems: MediaItem[]) => {
-  return (dispatch: TedTaggerDispatch, getState: any) => {
-    dispatch(deselectAll());
-    const selectedMediaItemIds: string[] = getSelectedMediaItemIds(getState());
-    dispatch(handleToggleSelection(mediaItems[index].googleId, selectedMediaItemIds));
   };
 };
 
@@ -74,7 +69,7 @@ const handleShiftClick = (index: number, mediaItems: MediaItem[], selectedMediaI
 };
 
 
-const deselectAll = () => {
+export const deselectAllPhotos = () => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
     dispatch(clearMediaItemSelection());
     dispatch(setLastClickedId(null));
