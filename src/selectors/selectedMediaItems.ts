@@ -21,3 +21,7 @@ export const isMediaItemSelected = (state: TedTaggerState, mediaItem: MediaItem)
 
   return false;
 };
+
+export const getLastClickedId = (state: TedTaggerState): string | null => {
+  return state.selectionsState.lastClickedId;
+};

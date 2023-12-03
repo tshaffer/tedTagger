@@ -24,6 +24,7 @@ export interface MediaItemsState {
 }
 
 export interface SelectedMediaItemsState {
+  lastClickedId: string | null;
   selectedMediaItemIds: string[];
 }
 

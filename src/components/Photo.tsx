@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch } from '../models';
-import { toggleMediaItemSelectionAction } from '../controllers';
+import { handleClickPhoto } from '../controllers';
 import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
 import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../types';
 
@@ -40,7 +40,7 @@ export interface PhotoProps extends PhotoPropsFromParent {
   userTagAvatars: UserTagAvatar[];
   tagsLUT: StringToTagLUT;
   isSelected: boolean;
-  onToggleMediaItemSelection: (mediaItem: MediaItem) => any;
+  onClickPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
 }
 
 function Photo(props: PhotoProps) {
@@ -82,13 +82,14 @@ function Photo(props: PhotoProps) {
     );
   };
 
-  const toggledPhotoSelected = () => {
-    props.onToggleMediaItemSelection(props.mediaItem);
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+  const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     console.log('handleClick: ', (e.target as any).id);
-    toggledPhotoSelected();
+    console.log('shiftKey: ', e.shiftKey);
+    console.log('ctrlKey: ', e.ctrlKey);
+    console.log('altKey: ', e.altKey);
+    console.log('metaKey: ', e.metaKey);
+
+    props.onClickPhoto((e.target as any).id, e.metaKey, e.shiftKey);
   };
 
   const photoTags: Tag[] = [];
@@ -116,7 +117,7 @@ function Photo(props: PhotoProps) {
           component="img"
           title={photoUrl}
           sx={cardMediaStyle}
-          onClick={(e) => handleClick(e)}
+          onClick={(e) => handleClickPhoto(e)}
         />
         {tagAvatars}
       </Card>
@@ -136,7 +137,7 @@ function mapStateToProps(state: any, ownProps: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onToggleMediaItemSelection: toggleMediaItemSelectionAction,
+    onClickPhoto: handleClickPhoto,
   }, dispatch);
 };
 
