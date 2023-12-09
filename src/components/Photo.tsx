@@ -9,6 +9,7 @@ import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../
 
 import path from 'path-browserify';
 import TagAvatar from './TagAvatar';
+import { isNil } from 'lodash';
 
 const cardStyle = {
   display: 'flex',
@@ -58,6 +59,9 @@ function Photo(props: PhotoProps) {
   };
 
   const getTagAvatar = (photoTag: Tag): JSX.Element => {
+    if (isNil(photoTag.avatarId) || isNil(photoTag.avatarType)) {
+      debugger;
+    }
     return (
       <TagAvatar
         key={props.mediaItem.googleId + photoTag.id}
