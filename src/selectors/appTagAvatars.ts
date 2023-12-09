@@ -3,6 +3,10 @@ import {
   TedTaggerState
 } from '../types';
 
+export const getDefaultAvatarId = (state: TedTaggerState): string => {
+  return state.appTagAvatarsState.defaultAvatarId;
+};
+
 export const getAllAppTagAvatars = (state: TedTaggerState): AppTagAvatar[] => {
   return state.appTagAvatarsState.appTagAvatars;
 };

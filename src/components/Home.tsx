@@ -26,6 +26,7 @@ import {
   loadUserTagAvatars,
   loadPhotosToDisplaySpec,
   deselectAllPhotos,
+  loadDefaultTagAvatarId,
 } from '../controllers';
 import { TedTaggerDispatch } from '../models';
 import PhotoGrid from './PhotoGrid';
@@ -49,6 +50,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export interface HomeProps {
   selectedMediaItemIds: string[];
+  onLoadDefaultTagAvatarId: () => any;
   onLoadAppTagAvatars: () => any;
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
@@ -66,13 +68,16 @@ const Home = (props: HomeProps) => {
   React.useEffect(() => {
     props.onLoadPhotosToDisplay()
       .then(() => {
-        props.onLoadAppTagAvatars()
+        props.onLoadDefaultTagAvatarId()
           .then(() => {
-            props.onLoadUserTagAvatars()
+            props.onLoadAppTagAvatars()
               .then(() => {
-                props.onLoadTags()
+                props.onLoadUserTagAvatars()
                   .then(() => {
-                    props.onLoadMediaItems();
+                    props.onLoadTags()
+                      .then(() => {
+                        props.onLoadMediaItems();
+                      });
                   });
               });
           });
@@ -271,6 +276,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onLoadDefaultTagAvatarId: loadDefaultTagAvatarId,
     onLoadAppTagAvatars: loadAppTagAvatars,
     onLoadMediaItems: loadMediaItems,
     onLoadTags: loadTags,

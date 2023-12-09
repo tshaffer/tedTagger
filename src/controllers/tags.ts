@@ -3,8 +3,22 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatar, addUserTagAvatars, updateTag } from '../models';
 import { serverUrl, apiUrlFragment, Tag, AppTagAvatar, UserTagAvatar } from '../types';
-import { addAppTagAvatars } from '../models/appTagAvatars';
-import { getTagById } from '../selectors';
+import { addAppTagAvatars, setDefaultAvatarId } from '../models/appTagAvatars';
+import { getDefaultAvatarId, getTagById } from '../selectors';
+
+export const loadDefaultTagAvatarId = (): TedTaggerAnyPromiseThunkAction => {
+  
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'defaultAvatarId';
+
+    return axios.get(path)
+      .then((defaultAvatarIdResponse: any) => {
+        const defaultAvatarId: string = (defaultAvatarIdResponse as any).data;
+        dispatch(setDefaultAvatarId(defaultAvatarId));
+      });
+  };
+};
 
 export const loadAppTagAvatars = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -58,7 +72,7 @@ export const addTagToDb = (
       label,
       type: 'user',
       avatarType: 'app',
-      avatarId: '',
+      avatarId: getDefaultAvatarId(getState()),
     };
 
     return axios.post(

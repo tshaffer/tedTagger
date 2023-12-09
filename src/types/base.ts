@@ -33,6 +33,7 @@ export interface TagsState {
 }
 
 export interface AppTagAvatarsState {
+  defaultAvatarId: string;
   appTagAvatars: AppTagAvatar[];
 }
 
