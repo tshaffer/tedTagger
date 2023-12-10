@@ -10,7 +10,7 @@ const LazilyLoadedImage = (props: LazilyLoadedImageProps) => (
   <div>
     <LazyLoadImage
       alt={props.imageUrl}
-      height={430}
+      // height={430}
       src={props.imageUrl} // use normal <img> attributes as props
       width={325}
     />

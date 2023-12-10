@@ -111,6 +111,9 @@ function Photo(props: PhotoProps) {
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
   /*
+    <CardMedia key={cardIndex} component="img" loading="lazy" image="{(cardItem)} />
+  */
+  /*
       <Card
         sx={cardStyle}
       >
@@ -126,16 +129,32 @@ function Photo(props: PhotoProps) {
         {tagAvatars}
       </Card>
   */
-
-  return (
-    <Grid item xs={3}>
+  /*
       <Card
         sx={cardStyle}
       >
         <LazilyLoadedImage
           imageUrl={photoUrl}
         />
-        {/* <img src={photoUrl} /> */}
+        {tagAvatars}
+      </Card>
+  */
+
+  return (
+    <Grid item xs={3}>
+      <Card
+        sx={cardStyle}
+      >
+        <CardMedia
+          id={props.mediaItem.googleId}
+          className={cardMediaClassName}
+          image={photoUrl}
+          loading="lazy"
+          component="img"
+          title={photoUrl}
+          sx={cardMediaStyle}
+          onClick={(e) => handleClickPhoto(e)}
+        />
         {tagAvatars}
       </Card>
     </Grid>
