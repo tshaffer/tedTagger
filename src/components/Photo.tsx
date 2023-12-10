@@ -10,6 +10,7 @@ import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../
 import path from 'path-browserify';
 import TagAvatar from './TagAvatar';
 import { isNil } from 'lodash';
+import LazilyLoadedImage from './LazyLoadImage';
 
 const cardStyle = {
   display: 'flex',
@@ -109,8 +110,7 @@ function Photo(props: PhotoProps) {
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
-  return (
-    <Grid item xs={3}>
+  /*
       <Card
         sx={cardStyle}
       >
@@ -123,6 +123,19 @@ function Photo(props: PhotoProps) {
           sx={cardMediaStyle}
           onClick={(e) => handleClickPhoto(e)}
         />
+        {tagAvatars}
+      </Card>
+  */
+
+  return (
+    <Grid item xs={3}>
+      <Card
+        sx={cardStyle}
+      >
+        <LazilyLoadedImage
+          imageUrl={photoUrl}
+        />
+        {/* <img src={photoUrl} /> */}
         {tagAvatars}
       </Card>
     </Grid>
