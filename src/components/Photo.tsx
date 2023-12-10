@@ -119,6 +119,7 @@ function Photo(props: PhotoProps) {
           className={cardMediaClassName}
           image={photoUrl}
           component="img"
+          loading="lazy"
           title={photoUrl}
           sx={cardMediaStyle}
           onClick={(e) => handleClickPhoto(e)}
