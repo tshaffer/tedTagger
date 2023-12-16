@@ -3,7 +3,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -108,56 +108,44 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
 
   const getDateRangeSpecification = (): JSX.Element => {
     return (
-      <FormControl>
-        <FormLabel id="dateRangeFormControl">Date Range</FormLabel>
-        <RadioGroup
-          aria-labelledby="dateRangeFormControl"
-          value={getPhotosToDisplaySpecTypeAsString()}
-          name="radio-buttons-group"
-          onChange={handlePhotosToDisplaySpecChange}
-        >
-          <FormControlLabel value="all" control={<Radio />} label="All" />
-          <FormControl>
-            <FormControlLabel value="byDateRange" control={<Radio />} label="By Date" />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DatePicker']}>
-                <DatePicker
-                  label="Start date"
-                  value={dayjs(props.startDate)}
-                  onChange={(newValue) => handleSetStartDate(newValue)}
-                  disabled={props.dateSelector !== DateSelectorType.ByDateRange}
-                />
-              </DemoContainer>
-              <DemoContainer components={['DatePicker']}>
-                <DatePicker
-                  label="End date"
-                  value={dayjs(props.endDate)}
-                  onChange={(newValue) => handleSetEndDate(newValue)}
-                  disabled={props.dateSelector !== DateSelectorType.ByDateRange}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-          </FormControl>
-        </RadioGroup>
+      <FormControl style={{ marginLeft: '16px' }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={['DatePicker']}>
+            <DatePicker
+              label="Start date"
+              value={dayjs(props.startDate)}
+              onChange={(newValue) => handleSetStartDate(newValue)}
+              disabled={props.dateSelector !== DateSelectorType.ByDateRange}
+            />
+          </DemoContainer>
+          <DemoContainer components={['DatePicker']}>
+            <DatePicker
+              label="End date"
+              value={dayjs(props.endDate)}
+              onChange={(newValue) => handleSetEndDate(newValue)}
+              disabled={props.dateSelector !== DateSelectorType.ByDateRange}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
       </FormControl>
     );
   };
+
 
   // TEDTODO
   // <FormLabel id="tagSpecFormControl" style={{ fontWeight: 'bold'}}>Tags</FormLabel>
 
   const getTagSpecification = (): JSX.Element => {
     return (
-      <FormControl style={{ marginTop: '32px' }}>
-        <FormLabel id="tagSpecFormControl">Tags</FormLabel>
+      <FormControl style={{ marginLeft: '16px' }}>
         <RadioGroup
           aria-labelledby="tagSpecFormControl"
           value={getPhotosToDisplaySpecTagSpec()}
           name="radio-buttons-group"
           onChange={handlePhotosToDisplaySpecTagTypeChange}
         >
-          <FormControlLabel value="any" control={<Radio />} label="Any" />
           <FormControlLabel value="untagged" control={<Radio />} label="Untagged" />
+          <FormControlLabel value="tagged" control={<Radio />} label="Tagged" />
         </RadioGroup>
       </FormControl>
     );
@@ -167,13 +155,28 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   const dateRangeSpecification: JSX.Element = getDateRangeSpecification();
   const tagSpecification: JSX.Element = getTagSpecification();
 
+  // return (
+  //   <Box sx={{ marginLeft: '8px', width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
+  //     <div>
+  //       {dateRangeSpecification}
+  //       {tagSpecification}
+  //     </div>
+  //     <br />
+  //     <Button onClick={handleSearch}>Search</Button>
+  //     <br />
+  //     <Button onClick={handleClose}>Close</Button>
+  //   </Box>
+  // );
+
   return (
     <Box sx={{ marginLeft: '8px', width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
-      <div>
+      <FormGroup>
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Specify date range" />
         {dateRangeSpecification}
+        <FormControlLabel control={<Checkbox />} label="Specify tag existence" />
         {tagSpecification}
-      </div>
-      <br />
+        <FormControlLabel control={<Checkbox />} label="Specify tag(s)" />
+      </FormGroup>
       <Button onClick={handleSearch}>Search</Button>
       <br />
       <Button onClick={handleClose}>Close</Button>
