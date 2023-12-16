@@ -109,14 +109,14 @@ export const photosToDisplaySpecReducer = (
     case SET_TAG_EXISTENCE: {
       return {
         ...state,
-        specifyTagExistence: (action as any).specifyTagExistence,
-        tagSelector: (action as any).tagSelector
+        specifyTagExistence: (action.payload as any).specifyTagExistence,
+        tagSelector: (action.payload as any).tagSelector
       };
     }
     case SET_TAGS: {
       return {
         ...state,
-        specifyTags: (action as any).specifyTags
+        specifyTags: (action.payload as any).specifyTags
       };
     }
     // case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {

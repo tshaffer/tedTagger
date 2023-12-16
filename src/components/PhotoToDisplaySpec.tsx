@@ -28,80 +28,29 @@ export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromPa
   onSetDateRangeSpecification: (specifyDateRange: boolean, startDate?: string, endDate?: string) => void;
   onSetTagExistenceSpecification: (specifyTagExistence: boolean, tagExistence?: TagSelectorType) => void;
   onSetTagsSpecification: (specifyTags: boolean) => void;
-  // dateSelector: DateSelectorType;
-  // tagSelector: TagSelectorType;
-  // startDate: string;
-  // endDate: string;
-  // onSetPhotosToDisplaySpec: (dateSelector: DateSelectorType) => void;
-  // onSetPhotosToDisplaySpecTagSpec: (tagSpec: TagSelectorType) => void;
-  // onSetStartDate: (startDate: string) => void;
-  // onSetEndDate: (endDate: string) => void;
   onReloadMediaItems: () => void;
 }
 
 const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
 
-  // const getPhotosToDisplaySpecTypeAsString = (): string => {
-  //   switch (props.dateSelector) {
-  //     case DateSelectorType.All:
-  //     default:
-  //       return 'all';
-  //     case DateSelectorType.ByDateRange:
-  //       return 'byDateRange';
-  //   }
-  // };
-
-  // const getPhotosToDisplaySpecTagSpec = (): TagSelectorType => {
-  //   return props.tagSelector;
-  // };
-
-  // const handlePhotosToDisplaySpecChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newValue: string = (event.target as HTMLInputElement).value;
-  //   console.log('handlePhotosToDisplaySpecChange');
-  //   console.log(newValue);
-
-  //   let newPhotosToDisplaySpec: DateSelectorType;
-  //   switch (newValue.toLowerCase()) {
-  //     case 'all':
-  //     default:
-  //       newPhotosToDisplaySpec = DateSelectorType.All;
-  //       break;
-  //     case 'bydaterange':
-  //       newPhotosToDisplaySpec = DateSelectorType.ByDateRange;
-  //       break;
-  //   }
-  //   props.onSetPhotosToDisplaySpec(newPhotosToDisplaySpec);
-  // };
-
   const handlePhotosToDisplaySpecTagTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue: string = (event.target as HTMLInputElement).value;
     console.log('handlePhotosToDisplaySpecTagTypeChange');
     console.log(newValue);
-
-    // let newPhotosToDisplaySpec: TagSelectorType;
-    // switch (newValue.toLowerCase()) {
-    //   case 'any':
-    //   default:
-    //     newPhotosToDisplaySpec = TagSelectorType.Any;
-    //     break;
-    //   case 'untagged':
-    //     newPhotosToDisplaySpec = TagSelectorType.Untagged;
-    //     break;
-    // }
-    // props.onSetPhotosToDisplaySpecTagSpec(newPhotosToDisplaySpec);
+    props.onSetTagExistenceSpecification(props.tagExistenceSpecification.specifyTagExistence, newValue as TagSelectorType);
   };
 
   const handleSetStartDate = (startDateDayJs: Dayjs | null) => {
     if (!isNil(startDateDayJs)) {
       const startDate: Date = startDateDayJs.toDate();
-      // props.onSetStartDate(startDate.toISOString());
+      props.onSetDateRangeSpecification(props.dateRangeSpecification.specifyDateRange, startDate.toISOString(), props.dateRangeSpecification.endDate);
     }
   };
 
   const handleSetEndDate = (endDateDayJs: Dayjs | null) => {
     if (!isNil(endDateDayJs)) {
       const endDate: Date = endDateDayJs.toDate();
-      // props.onSetEndDate(endDate.toISOString());
+      props.onSetDateRangeSpecification(props.dateRangeSpecification.specifyDateRange, props.dateRangeSpecification.startDate, endDate.toISOString());
     }
   };
 
@@ -142,11 +91,12 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   // <FormLabel id="tagSpecFormControl" style={{ fontWeight: 'bold'}}>Tags</FormLabel>
 
   const getTagSpecification = (): JSX.Element => {
+    const display: string = props.tagExistenceSpecification.specifyTagExistence ? 'block' : 'none';
     return (
-      <FormControl style={{ marginLeft: '6px' }}>
+      <FormControl style={{ marginLeft: '6px', display }}>
         <RadioGroup
           aria-labelledby="tagSpecFormControl"
-          value={props.tagExistenceSpecification.specifyTagExistence}
+          value={props.tagExistenceSpecification.tagSelector ? props.tagExistenceSpecification.tagSelector : 'untagged'}
           name="radio-buttons-group"
           onChange={handlePhotosToDisplaySpecTagTypeChange}
         >
@@ -164,7 +114,6 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   function handleSpecifyDateRangeChanged(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
     console.log('handleSpecifyDateRangeChanged', event.target.checked);
     props.onSetDateRangeSpecification(event.target.checked, props.dateRangeSpecification.startDate, props.dateRangeSpecification.endDate);
-
   }
 
   function handleSpecifyTagExistenceChanged(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
@@ -189,7 +138,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
         {dateRangeSpecification}
         <FormControlLabel control={
           <Checkbox
-            checked={props.tagExistenceSpecification.specifyTagExistence}
+            checked={props.tagExistenceSpecification.specifyTagExistence ? true : false}
             onChange={handleSpecifyTagExistenceChanged}
           />
         } label="Specify tag existence" />
@@ -214,21 +163,12 @@ function mapStateToProps(state: any) {
     dateRangeSpecification: getDateRangeSpecification(state),
     tagExistenceSpecification: getTagExistenceSpecification(state),
     tagsSpecification: getTagsSpecification(state),
-
-    // dateSelector: getPhotosToDisplayDateSelector(state),
-    // tagSelector: getPhotosToDisplayDateTagSelector(state),
-    // startDate: getStartDate(state),
-    // endDate: getEndDate(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onReloadMediaItems: loadMediaItems,
-    // onSetPhotosToDisplaySpec: setDateSelector,
-    // onSetPhotosToDisplaySpecTagSpec: setTagSelector,
-    // onSetStartDate: setStartDate,
-    // onSetEndDate: setEndDate,
     onSetDateRangeSpecification: setDateRangeSpecification,
     onSetTagExistenceSpecification: setTagExistenceSpecification,
     onSetTagsSpecification: setTagsSpecification,
