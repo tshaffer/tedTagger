@@ -18,7 +18,7 @@ export const SET_TAGS = 'SET_TAGS';
 // Actions
 // ------------------------------------
 
-export const setDateRangeSpecification = (specifyDateRange: boolean, startDate?: string, endDate?: string): any => {
+export const setDateRangeSpecificationRedux = (specifyDateRange: boolean, startDate?: string, endDate?: string): any => {
   return {
     type: SET_DATE_RANGE,
     payload: {

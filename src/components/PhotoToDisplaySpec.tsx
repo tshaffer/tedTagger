@@ -13,8 +13,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { isNil } from 'lodash';
 import { TagSelectorType, TagExistenceSpecification, DateRangeSpecification } from '../types';
-import { loadMediaItems } from '../controllers';
-import { setDateRangeSpecification, setTagExistenceSpecification, setTagsSpecification } from '../models/';
+import { loadMediaItems, setDateRangeSpecification } from '../controllers';
+import { setTagExistenceSpecification, setTagsSpecification } from '../models/';
 import { getDateRangeSpecification, getTagExistenceSpecification, getTagsSpecification } from '../selectors';
 import { ChangeEvent } from 'react';
 export interface PhotosToDisplaySpecPropsFromParent {
