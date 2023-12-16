@@ -10,18 +10,19 @@ import { serverUrl, apiUrlFragment, PhotosToDisplaySpec, TagSelectorType } from 
 //   setEndDateRedux
 // } from '../models';
 
-// export const loadPhotosToDisplaySpec = () => {
-//   return (dispatch: TedTaggerDispatch, getState: any) => {
+export const loadPhotosToDisplaySpec = () => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
 
-//     const path = serverUrl + apiUrlFragment + 'photosToDisplaySpec';
+    const path = serverUrl + apiUrlFragment + 'photosToDisplaySpec';
 
-//     return axios.get(path)
-//       .then((photosToDisplaySpecResponse: any) => {
-//         const photosToDisplaySpec: PhotosToDisplaySpec = (photosToDisplaySpecResponse as any).data;
-//         // dispatch(setPhotosToDisplaySpecRedux(photosToDisplaySpec));
-//       });
-//   };
-// };
+    return axios.get(path)
+      .then((photosToDisplaySpecResponse: any) => {
+        const photosToDisplaySpec: PhotosToDisplaySpec = (photosToDisplaySpecResponse as any).data;
+        console.log('photosToDisplaySpec', photosToDisplaySpec);
+        // dispatch(setPhotosToDisplaySpecRedux(photosToDisplaySpec));
+      });
+  };
+};
 
 // export const setDateSelector = (dateSelector: DateSelectorType) => {
 
