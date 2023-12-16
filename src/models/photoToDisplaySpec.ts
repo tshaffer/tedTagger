@@ -4,19 +4,24 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 // Constants
 // ------------------------------------
+export const SET_PHOTOS_TO_DISPLAY_SPEC_STATE = 'SET_PHOTOS_TO_DISPLAY_SPEC_STATE';
 export const SET_DATE_RANGE = 'SET_DATE_RANGE';
 export const SET_TAG_EXISTENCE = 'SET_TAG_EXISTENCE';
 export const SET_TAGS = 'SET_TAGS';
 
-// export const SET_PHOTOS_TO_DISPLAY_SPEC_STATE = 'SET_PHOTOS_TO_DISPLAY_SPEC_STATE';
-// export const SET_DATE_SELECTOR = 'SET_DATE_SELECTOR';
-// export const SET_TAG_SELECTOR = 'SET_TAG_SELECTOR';
-// export const SET_START_DATE = 'SET_START_DATE';
-// export const SET_END_DATE = 'SET_END_DATE';
-
 // ------------------------------------
 // Actions
 // ------------------------------------
+
+export const setPhotosToDisplaySpecRedux = (photosToDisplaySpec: PhotosToDisplaySpec): any => {
+  return {
+    type: SET_PHOTOS_TO_DISPLAY_SPEC_STATE,
+    payload: {
+      photosToDisplaySpec,
+    },
+  };
+};
+
 
 export const setDateRangeSpecificationRedux = (specifyDateRange: boolean, startDate?: string, endDate?: string): any => {
   return {
@@ -29,7 +34,7 @@ export const setDateRangeSpecificationRedux = (specifyDateRange: boolean, startD
   };
 };
 
-export const setTagExistenceSpecification = (specifyTagExistence: boolean, tagSelector?: TagSelectorType): any => {
+export const setTagExistenceSpecificationRedux = (specifyTagExistence: boolean, tagSelector?: TagSelectorType): any => {
   return {
     type: SET_TAG_EXISTENCE,
     payload: {
@@ -48,41 +53,6 @@ export const setTagsSpecification = (specifyTags: boolean): any => {
   };
 };
 
-// export const setPhotosToDisplaySpecRedux = (photosToDisplaySpec: PhotosToDisplaySpec): any => {
-//   return {
-//     type: SET_PHOTOS_TO_DISPLAY_SPEC_STATE,
-//     photosToDisplaySpec,
-//   };
-// };
-
-// export const setDateSelectorRedux = (dateSelector: DateSelectorType): any => {
-//   return {
-//     type: SET_DATE_SELECTOR,
-//     dateSelector,
-//   };
-// };
-
-// export const setTagSelectorRedux = (tagSpec: TagSelectorType): any => {
-//   return {
-//     type: SET_TAG_SELECTOR,
-//     tagSpec,
-//   };
-// };
-
-// export const setStartDateRedux = (startDate: string): any => {
-//   return {
-//     type: SET_START_DATE,
-//     startDate,
-//   };
-// };
-
-// export const setEndDateRedux = (endDate: string): any => {
-//   return {
-//     type: SET_END_DATE,
-//     endDate,
-//   };
-// };
-
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -98,6 +68,9 @@ export const photosToDisplaySpecReducer = (
   action: TedTaggerModelBaseAction<any>
 ): PhotosToDisplaySpec => {
   switch (action.type) {
+    case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
+      return (action.payload as any).photosToDisplaySpec;
+    }
     case SET_DATE_RANGE: {
       return {
         ...state,
@@ -119,27 +92,6 @@ export const photosToDisplaySpecReducer = (
         specifyTags: (action.payload as any).specifyTags
       };
     }
-    // case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
-    //   return (action as any).photosToDisplaySpec;
-    // }
-    // case SET_DATE_SELECTOR: {
-    //   return {
-    //     ...state,
-    //     dateSelector: (action as any).dateSelector
-    //   };
-    // }
-    // case SET_TAG_SELECTOR: {
-    //   return {
-    //     ...state,
-    //     tagSelector: (action as any).tagSpec
-    //   };
-    // }
-    // case SET_START_DATE: {
-    //   return { ...state, startDate: (action as any).startDate };
-    // }
-    // case SET_END_DATE: {
-    //   return { ...state, endDate: (action as any).endDate };
-    // }
     default:
       return state;
   }

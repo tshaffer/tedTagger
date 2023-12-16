@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux } from '../models';
-import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT } from '../types';
+import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, DateRangeSpecification, TagExistenceSpecification } from '../types';
 import { cloneDeep, isNil } from 'lodash';
-import { getTagByLabel } from '../selectors';
+import { getDateRangeSpecification, getTagByLabel, getTagExistenceSpecification, getTagsSpecification } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -17,18 +17,26 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
       tagsByTagId[tag.id] = tag;
     });
 
-    // const dateSelectorType = getPhotosToDisplayDateSelector(state);
-    // const tagSelector = getPhotosToDisplayDateTagSelector(state);
-    // const startDate = getStartDate(state);
-    // const endDate = getEndDate(state);
+    const dateRangeSpecification: DateRangeSpecification = getDateRangeSpecification(state);
+    const tagExistenceSpecification: TagExistenceSpecification = getTagExistenceSpecification(state);
+    const tagsSpecification: boolean = getTagsSpecification(state);
 
-    const path = serverUrl
+    let path = serverUrl
       + apiUrlFragment
       + 'mediaItemsToDisplay';
-      // + '?dateSelector=' + dateSelectorType
-      // + '&tagSelector=' + tagSelector
-      // + '&startDate=' + startDate
-      // + '&endDate=' + endDate;
+
+    path += '?specifyDateRange=' + dateRangeSpecification.specifyDateRange;
+    if (dateRangeSpecification.startDate) {
+      path += '&startDate=' + dateRangeSpecification.startDate;
+    }
+    if (dateRangeSpecification.endDate) {
+      path += '&endDate=' + dateRangeSpecification.endDate;
+    }
+    path += '&specifyTagExistence=' + tagExistenceSpecification.specifyTagExistence;
+    if (tagExistenceSpecification.tagSelector) {
+      path += '&tagSelector=' + tagExistenceSpecification.tagSelector;
+    }
+    path += '&specifyTags=' + tagsSpecification;
 
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
@@ -131,7 +139,7 @@ export const replaceTagInMediaItems = (
     ).then((response) => {
       console.log('replaceTagsInMediaItemsBody response');
       console.log(response);
-      dispatch(replaceTagInMediaItemsRedux(mediaItems, existingTag.id, newTag.id ));
+      dispatch(replaceTagInMediaItemsRedux(mediaItems, existingTag.id, newTag.id));
       // return mediaItems.googleId;
     }).catch((error) => {
       console.log('error');
