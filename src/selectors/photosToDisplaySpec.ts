@@ -3,6 +3,7 @@ import {
   TagSelectorType,
   DateRangeSpecification,
   TagExistenceSpecification,
+  TagsSpecification,
   // DateSelectorType
 } from '../types';
 
@@ -16,23 +17,8 @@ export const getTagExistenceSpecification = (state: TedTaggerState): TagExistenc
   return { specifyTagExistence, tagSelector };
 };
 
-export const getTagsSpecification = (state: TedTaggerState): boolean => {
-  const { specifyTags } = state.photosToDisplaySpec;
-  return specifyTags;
+export const getTagsSpecification = (state: TedTaggerState): TagsSpecification => {
+  const { specifySearchWithTags, tagIds } = state.photosToDisplaySpec;
+  return { specifySearchWithTags, tagIds };
 };
 
-// export const getPhotosToDisplayDateSelector = (state: TedTaggerState): DateSelectorType => {
-//   return state.photosToDisplaySpec.dateSelector;
-// };
-
-// export const getPhotosToDisplayDateTagSelector = (state: TedTaggerState): TagSelectorType => {
-//   return state.photosToDisplaySpec.tagSelector;
-// };
-
-// export const getStartDate = (state: TedTaggerState): string => {
-//   return state.photosToDisplaySpec.startDate;
-// };
-
-// export const getEndDate = (state: TedTaggerState): string => {
-//   return state.photosToDisplaySpec.endDate;
-// };

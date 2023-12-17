@@ -7,11 +7,15 @@ import { TedTaggerModelBaseAction } from './baseAction';
 export const SET_PHOTOS_TO_DISPLAY_SPEC_STATE = 'SET_PHOTOS_TO_DISPLAY_SPEC_STATE';
 export const SET_DATE_RANGE = 'SET_DATE_RANGE';
 export const SET_TAG_EXISTENCE = 'SET_TAG_EXISTENCE';
-export const SET_TAGS = 'SET_TAGS';
+export const SET_TAGS_SPECIFICATION = 'SET_TAGS_SPECIFICATION';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
+
+interface SetPhotosToDisplaySpecPayload {
+  photosToDisplaySpec: PhotosToDisplaySpec
+}
 
 export const setPhotosToDisplaySpecRedux = (photosToDisplaySpec: PhotosToDisplaySpec): any => {
   return {
@@ -22,6 +26,11 @@ export const setPhotosToDisplaySpecRedux = (photosToDisplaySpec: PhotosToDisplay
   };
 };
 
+interface SetDateRangeSpecificationPayload {
+  specifyDateRange: boolean,
+  startDate?: string,
+  endDate?: string
+}
 
 export const setDateRangeSpecificationRedux = (specifyDateRange: boolean, startDate?: string, endDate?: string): any => {
   return {
@@ -34,6 +43,11 @@ export const setDateRangeSpecificationRedux = (specifyDateRange: boolean, startD
   };
 };
 
+interface SetTagExistenceSpecificationPayload {
+  specifyTagExistence: boolean,
+  tagSelector?: TagSelectorType
+}
+
 export const setTagExistenceSpecificationRedux = (specifyTagExistence: boolean, tagSelector?: TagSelectorType): any => {
   return {
     type: SET_TAG_EXISTENCE,
@@ -44,11 +58,17 @@ export const setTagExistenceSpecificationRedux = (specifyTagExistence: boolean, 
   };
 };
 
-export const setTagsSpecification = (specifyTags: boolean): any => {
+interface SetTagsSpecificationPayload {
+  specifySearchWithTags: boolean,
+  tagIds: string[],
+}
+
+export const setTagsSpecificationRedux = (specifySearchWithTags: boolean, tagIds: string[]): any => {
   return {
-    type: SET_TAGS,
+    type: SET_TAGS_SPECIFICATION,
     payload: {
-      specifyTags,
+      specifySearchWithTags,
+      tagIds,
     },
   };
 };
@@ -60,12 +80,13 @@ export const setTagsSpecification = (specifyTags: boolean): any => {
 const initialState: PhotosToDisplaySpec = {
   specifyDateRange: false,
   specifyTagExistence: false,
-  specifyTags: false
+  specifySearchWithTags: false,
+  tagIds: [],
 };
 
 export const photosToDisplaySpecReducer = (
   state: PhotosToDisplaySpec = initialState,
-  action: TedTaggerModelBaseAction<any>
+  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload>
 ): PhotosToDisplaySpec => {
   switch (action.type) {
     case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
@@ -86,10 +107,11 @@ export const photosToDisplaySpecReducer = (
         tagSelector: (action.payload as any).tagSelector
       };
     }
-    case SET_TAGS: {
+    case SET_TAGS_SPECIFICATION: {
       return {
         ...state,
-        specifyTags: (action.payload as any).specifyTags
+        specifySearchWithTags: (action.payload as any).specifySearchWithTags,
+        tagIds: (action.payload as any).tagIds,
       };
     }
     default:

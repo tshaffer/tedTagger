@@ -43,7 +43,8 @@ export interface PhotosToDisplaySpec {
   endDate?: string;
   specifyTagExistence: boolean;
   tagSelector?: TagSelectorType;
-  specifyTags: boolean;
+  specifySearchWithTags: boolean;
+  tagIds: string[];
 }
 
 export interface DateRangeSpecification {
@@ -55,4 +56,9 @@ export interface DateRangeSpecification {
 export interface TagExistenceSpecification {
   specifyTagExistence: boolean;
   tagSelector?: TagSelectorType;
+}
+
+export interface TagsSpecification {
+  specifySearchWithTags: boolean;
+  tagIds: string[];
 }

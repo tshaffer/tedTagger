@@ -12,9 +12,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { isNil } from 'lodash';
-import { TagSelectorType, TagExistenceSpecification, DateRangeSpecification } from '../types';
+import { TagSelectorType, TagExistenceSpecification, DateRangeSpecification, TagsSpecification } from '../types';
 import { loadMediaItems, setDateRangeSpecification, setTagExistenceSpecification } from '../controllers';
-import { setTagsSpecification } from '../models/';
+import { setTagsSpecificationRedux } from '../models/';
 import { getDateRangeSpecification, getTagExistenceSpecification, getTagsSpecification } from '../selectors';
 import { ChangeEvent } from 'react';
 export interface PhotosToDisplaySpecPropsFromParent {
@@ -24,10 +24,10 @@ export interface PhotosToDisplaySpecPropsFromParent {
 export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromParent {
   dateRangeSpecification: DateRangeSpecification;
   tagExistenceSpecification: TagExistenceSpecification;
-  tagsSpecification: boolean;
+  tagsSpecification: TagsSpecification;
   onSetDateRangeSpecification: (specifyDateRange: boolean, startDate?: string, endDate?: string) => void;
   onSetTagExistenceSpecification: (specifyTagExistence: boolean, tagExistence?: TagSelectorType) => void;
-  onSetTagsSpecification: (specifyTags: boolean) => void;
+  onSetTagsSpecification: (specifySearchWithTags: boolean, tagIds: string[]) => void;
   onReloadMediaItems: () => void;
 }
 
@@ -123,7 +123,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
 
   function handleSpecifyTagsChanged(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
     console.log('handleSpecifyTagsChanged', event.target.checked);
-    props.onSetTagsSpecification(event.target.checked);
+    props.onSetTagsSpecification(event.target.checked, props.tagsSpecification.tagIds);
   }
 
   return (
@@ -145,7 +145,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
         {tagSpecification}
         <FormControlLabel control={
           <Checkbox
-            checked={props.tagsSpecification}
+            checked={props.tagsSpecification.specifySearchWithTags ? true : false}
             onChange={handleSpecifyTagsChanged}
           />
         } label="Specify tag(s)" />
@@ -171,7 +171,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onReloadMediaItems: loadMediaItems,
     onSetDateRangeSpecification: setDateRangeSpecification,
     onSetTagExistenceSpecification: setTagExistenceSpecification,
-    onSetTagsSpecification: setTagsSpecification,
+    onSetTagsSpecification: setTagsSpecificationRedux,
   }, dispatch);
 };
 
