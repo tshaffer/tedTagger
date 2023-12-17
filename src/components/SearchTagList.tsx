@@ -130,7 +130,7 @@ const SearchTagList = (props: SearchTagListProps) => {
   };
 
   const getTagListItem = (tagOption: TagOption, id: string, tag: Tag | null) => {
-    const renderedDeleteIcon = getRenderedRemoveIcon(tag);
+    const renderedRemoveIcon = getRenderedRemoveIcon(tag);
     return (
       <ListItem key={id}>
         <Autocomplete
@@ -161,7 +161,7 @@ const SearchTagList = (props: SearchTagListProps) => {
             }
           }
         />
-        {renderedDeleteIcon}
+        {renderedRemoveIcon}
 
       </ListItem>
     );
@@ -196,7 +196,7 @@ const SearchTagList = (props: SearchTagListProps) => {
   console.log('re-render tagList');
 
   return (
-    <List>
+    <List style={{ maxWidth: '225px'}}>
       {renderedListOfTags}
     </List>
   );
