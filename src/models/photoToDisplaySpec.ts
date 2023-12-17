@@ -10,6 +10,7 @@ export const SET_TAG_EXISTENCE = 'SET_TAG_EXISTENCE';
 export const SET_TAGS_SPECIFICATION = 'SET_TAGS_SPECIFICATION';
 export const ADD_SEARCH_TAG = 'ADD_SEARCH_TAG';
 export const REMOVE_SEARCH_TAG = 'REMOVE_SEARCH_TAG';
+export const REPLACE_SEARCH_TAG = 'REPLACE_SEARCH_TAG';
 
 // ------------------------------------
 // Actions
@@ -79,7 +80,6 @@ interface AddRemoveSearchTagPayload {
   tagId: string[],
 }
 
-
 export const addSearchTagRedux = (tagId: string): any => {
   return {
     type: ADD_SEARCH_TAG,
@@ -98,6 +98,24 @@ export const removeSearchTagRedux = (tagId: string): any => {
   };
 };
 
+interface ReplaceSearchTagPayload {
+  existingTagId: string,
+  newTagId: string,
+}
+
+export const replaceSearchTagRedux = (
+  existingTagId: string,
+  newTagId: string,
+): any => {
+  return {
+    type: REPLACE_SEARCH_TAG,
+    payload: {
+      existingTagId,
+      newTagId,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -111,7 +129,7 @@ const initialState: PhotosToDisplaySpec = {
 
 export const photosToDisplaySpecReducer = (
   state: PhotosToDisplaySpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload & AddRemoveSearchTagPayload>
+  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload & AddRemoveSearchTagPayload & ReplaceSearchTagPayload>
 ): PhotosToDisplaySpec => {
   switch (action.type) {
     case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
@@ -149,6 +167,12 @@ export const photosToDisplaySpecReducer = (
       return {
         ...state,
         tagIds: state.tagIds.filter((tagId: string) => tagId !== (action.payload as any).tagId),
+      };
+    }
+    case REPLACE_SEARCH_TAG: {
+      return {
+        ...state,
+        tagIds: state.tagIds.map((tagId: string) => tagId === (action.payload as any).existingTagId ? (action.payload as any).newTagId : tagId),
       };
     }
     default:
