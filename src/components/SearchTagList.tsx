@@ -8,10 +8,10 @@ import ListItem from '@mui/material/ListItem';
 import { Autocomplete, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
-import { TedTaggerDispatch, setTagsSpecificationRedux } from '../models';
+import { TedTaggerDispatch, setTagsSpecificationRedux, addSearchTagRedux, removeSearchTagRedux } from '../models';
 import { MediaItem, Tag } from '../types';
 import { cloneDeep, isNil, isObject, isString } from 'lodash';
-import { getAllTags, getMediaItem, getTagById } from '../selectors';
+import { getAllTags, getMediaItem, getSearchTags, getTagById } from '../selectors';
 import { addTagToMediaItems, deleteTagFromMediaItems, replaceTagInMediaItems } from '../controllers';
 
 interface TagOption {
@@ -20,10 +20,12 @@ interface TagOption {
 }
 
 export interface SearchTagListProps {
-  tagIds: string[];
+  searchTags: Tag[];
   // commonTags: Tag[],
   allTags: Tag[],
-  onSetTagsSpecificationRedux: (specifySearchWithTags: boolean, tagIds: string[]) => any;
+  onAddSearchTag: (tagId: string) => any;
+  onRemoveSearchTag: (tagId: string) => any;
+  // onSetTagsSpecificationRedux: (specifySearchWithTags: boolean, tagIds: string[]) => any;
   // mediaItems: MediaItem[],
   // onAddTagToMediaItems: (mediaItems: MediaItem[], tag: Tag) => any;
   // onReplaceTagInMediaItems: (mediaItems: MediaItem[], oldTag: Tag, newTag: Tag) => any;
@@ -75,6 +77,7 @@ const SearchTagList = (props: SearchTagListProps) => {
 
     if (isString(selectedTag)) {
       // debugger;
+      // TEDTODO
       // Occurs when clicking enter on previously entered tag without changing anything
       return;
     }
@@ -87,13 +90,11 @@ const SearchTagList = (props: SearchTagListProps) => {
     }
 
     if (isNil(existingTag)) {
-      // add tags to media items
       console.log('add tag: ' + selectedTag.label); // selectedTag is object - verified
-      // props.onAddTagToMediaItems(props.mediaItems, (selectedTag as TagOption).value as Tag);
+      props.onAddSearchTag((selectedTag as TagOption).value!.id);
     } else {
-      // replace tag in media items
       console.log('replace tag:', existingTag, selectedTag.label); // existingTag is object - verified
-      // props.onReplaceTagInMediaItems(props.mediaItems, existingTag as Tag, (selectedTag as TagOption).value as Tag);
+      props.onRemoveSearchTag((selectedTag as TagOption).value!.id);
     }
 
   };
@@ -180,7 +181,7 @@ const SearchTagList = (props: SearchTagListProps) => {
 
     let listOfTags: JSX.Element[] = [];
 
-    listOfTags = props.allTags.map((tag: Tag) => {
+    listOfTags = props.searchTags.map((tag: Tag) => {
       return getRenderedTagSelect(tag);
     });
 
@@ -204,14 +205,16 @@ const SearchTagList = (props: SearchTagListProps) => {
 function mapStateToProps(state: any, ownProps: any) {
 
   return {
-    tagIds: [],
+    searchTags: getSearchTags(state),
     allTags: getAllTags(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onSetTagsSpecificationRedux: setTagsSpecificationRedux,
+    onAddSearchTag: addSearchTagRedux,
+    onRemoveSearchTag: removeSearchTagRedux,
+    // onSetTagsSpecificationRedux: setTagsSpecificationRedux,
   }, dispatch);
 };
 

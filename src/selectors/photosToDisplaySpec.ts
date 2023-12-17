@@ -4,8 +4,10 @@ import {
   DateRangeSpecification,
   TagExistenceSpecification,
   TagsSpecification,
+  Tag,
   // DateSelectorType
 } from '../types';
+import { getAllTags } from './tags';
 
 export const getDateRangeSpecification = (state: TedTaggerState): DateRangeSpecification => {
   const { specifyDateRange, startDate, endDate } = state.photosToDisplaySpec;
@@ -20,5 +22,17 @@ export const getTagExistenceSpecification = (state: TedTaggerState): TagExistenc
 export const getTagsSpecification = (state: TedTaggerState): TagsSpecification => {
   const { specifySearchWithTags, tagIds } = state.photosToDisplaySpec;
   return { specifySearchWithTags, tagIds };
+};
+
+export const getSearchTags = (state: TedTaggerState): Tag[] => {
+  const tags: Tag[] = getAllTags(state);
+  const tagIds: string[] = state.photosToDisplaySpec.tagIds;
+  const searchTags: Tag[] = [];
+  for (const tag of tags) {
+    if (tagIds.includes(tag.id)) {
+      searchTags.push(tag);
+    }
+  }
+  return searchTags;
 };
 

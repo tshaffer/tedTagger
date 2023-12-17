@@ -8,6 +8,8 @@ export const SET_PHOTOS_TO_DISPLAY_SPEC_STATE = 'SET_PHOTOS_TO_DISPLAY_SPEC_STAT
 export const SET_DATE_RANGE = 'SET_DATE_RANGE';
 export const SET_TAG_EXISTENCE = 'SET_TAG_EXISTENCE';
 export const SET_TAGS_SPECIFICATION = 'SET_TAGS_SPECIFICATION';
+export const ADD_SEARCH_TAG = 'ADD_SEARCH_TAG';
+export const REMOVE_SEARCH_TAG = 'REMOVE_SEARCH_TAG';
 
 // ------------------------------------
 // Actions
@@ -73,6 +75,29 @@ export const setTagsSpecificationRedux = (specifySearchWithTags: boolean, tagIds
   };
 };
 
+interface AddRemoveSearchTagPayload {
+  tagId: string[],
+}
+
+
+export const addSearchTagRedux = (tagId: string): any => {
+  return {
+    type: ADD_SEARCH_TAG,
+    payload: {
+      tagId,
+    },
+  };
+};
+
+export const removeSearchTagRedux = (tagId: string): any => {
+  return {
+    type: REMOVE_SEARCH_TAG,
+    payload: {
+      tagId,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -86,7 +111,7 @@ const initialState: PhotosToDisplaySpec = {
 
 export const photosToDisplaySpecReducer = (
   state: PhotosToDisplaySpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload>
+  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload & AddRemoveSearchTagPayload>
 ): PhotosToDisplaySpec => {
   switch (action.type) {
     case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
@@ -112,6 +137,18 @@ export const photosToDisplaySpecReducer = (
         ...state,
         specifySearchWithTags: (action.payload as any).specifySearchWithTags,
         tagIds: (action.payload as any).tagIds,
+      };
+    }
+    case ADD_SEARCH_TAG: {
+      return {
+        ...state,
+        tagIds: [...state.tagIds, (action.payload as any).tagId],
+      };
+    }
+    case REMOVE_SEARCH_TAG: {
+      return {
+        ...state,
+        tagIds: state.tagIds.filter((tagId: string) => tagId !== (action.payload as any).tagId),
       };
     }
     default:
