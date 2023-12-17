@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ChangeEvent } from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -12,11 +13,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { isNil } from 'lodash';
+
 import { TagSelectorType, TagExistenceSpecification, DateRangeSpecification, TagsSpecification } from '../types';
 import { loadMediaItems, setDateRangeSpecification, setTagExistenceSpecification } from '../controllers';
 import { setTagsSpecificationRedux } from '../models/';
 import { getDateRangeSpecification, getTagExistenceSpecification, getTagsSpecification } from '../selectors';
-import { ChangeEvent } from 'react';
+import SearchTagList from './SearchTagList';
+
 export interface PhotosToDisplaySpecPropsFromParent {
   onClose: () => void;
 }
@@ -90,7 +93,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   // TEDTODO
   // <FormLabel id="tagSpecFormControl" style={{ fontWeight: 'bold'}}>Tags</FormLabel>
 
-  const getTagSpecification = (): JSX.Element => {
+  const getTagsExistenceSpecification = (): JSX.Element => {
     const display: string = props.tagExistenceSpecification.specifyTagExistence ? 'block' : 'none';
     return (
       <FormControl style={{ marginLeft: '6px', display }}>
@@ -107,9 +110,19 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
     );
   };
 
+  const getTagsSpecification = (): JSX.Element | null => {
+    if (!props.tagsSpecification.specifySearchWithTags) {
+      return null;
+    }
+
+    return (
+      <SearchTagList />
+    );
+  };
 
   const dateRangeSpecification: JSX.Element = getDateRangeSpecification();
-  const tagSpecification: JSX.Element = getTagSpecification();
+  const tagsExistenceSpecification: JSX.Element = getTagsExistenceSpecification();
+  const tagsSpecification: JSX.Element | null = getTagsSpecification();
 
   function handleSpecifyDateRangeChanged(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
     console.log('handleSpecifyDateRangeChanged', event.target.checked);
@@ -142,13 +155,14 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
             onChange={handleSpecifyTagExistenceChanged}
           />
         } label="Specify tag existence" />
-        {tagSpecification}
+        {tagsExistenceSpecification}
         <FormControlLabel control={
           <Checkbox
             checked={props.tagsSpecification.specifySearchWithTags ? true : false}
             onChange={handleSpecifyTagsChanged}
           />
         } label="Specify tag(s)" />
+        {tagsSpecification}
       </FormGroup>
       <Button onClick={handleSearch}>Search</Button>
       <br />
