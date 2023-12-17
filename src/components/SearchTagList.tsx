@@ -134,7 +134,7 @@ const SearchTagList = (props: SearchTagListProps) => {
           autoHighlight={true}
           disablePortal
           id="combo-box-demo"
-          sx={{ width: 300 }}
+          sx={{ width: 176 }}
           renderInput={(params) => <TextField {...params} label="Tag" />}
           onChange={(event: any, newValue: string | TagOption | null) => {
             handleAutoCompleteChange(newValue as TagOption, tag);
@@ -190,7 +190,7 @@ const SearchTagList = (props: SearchTagListProps) => {
   console.log('re-render tagList');
 
   return (
-    <List style={{ maxWidth: '225px'}}>
+    <List>
       {renderedListOfTags}
     </List>
   );

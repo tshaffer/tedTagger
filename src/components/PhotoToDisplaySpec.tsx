@@ -68,7 +68,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   const getDateRangeSpecification = (): JSX.Element => {
     const display: string = props.dateRangeSpecification.specifyDateRange ? 'block' : 'none';
     return (
-      <FormControl style={{ maxWidth: '225px', marginLeft: '6px', display }}>
+      <FormControl style={{ marginLeft: '6px', display }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={['DatePicker']}>
             <DatePicker
@@ -96,7 +96,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   const getTagsExistenceSpecification = (): JSX.Element => {
     const display: string = props.tagExistenceSpecification.specifyTagExistence ? 'block' : 'none';
     return (
-      <FormControl style={{ maxWidth: '225px', marginLeft: '6px', display }}>
+      <FormControl style={{ marginLeft: '6px', display }}>
         <RadioGroup
           aria-labelledby="tagSpecFormControl"
           value={props.tagExistenceSpecification.tagSelector ? props.tagExistenceSpecification.tagSelector : 'untagged'}
@@ -139,13 +139,10 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
     props.onSetTagsSpecification(event.target.checked, props.tagsSpecification.tagIds);
   }
 
-  // <Box sx={{ height: '600px', marginLeft: '8px', width: '100%', minWidth: 300, maxWidth: 360, bgcolor: 'background.paper' }}>
-
   return (
     <Box id='photosToDisplaySpecBox' sx={{ marginLeft: '8px', height: '600px', bgcolor: 'background.paper' }}>
       <FormGroup id='photosToDisplaySpecFormGroup' >
         <FormControlLabel
-          style={{ maxWidth: '231px' }}
           control={
             <Checkbox
               checked={props.dateRangeSpecification.specifyDateRange ? true : false}
@@ -155,7 +152,6 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
           label="Specify date range" />
         {dateRangeSpecification}
         <FormControlLabel
-          style={{ maxWidth: '231px' }}
           control={
             <Checkbox
               checked={props.tagExistenceSpecification.specifyTagExistence ? true : false}
@@ -165,7 +161,6 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
           label="Specify tag existence" />
         {tagsExistenceSpecification}
         <FormControlLabel
-          style={{ maxWidth: '231px' }}
           control={
             <Checkbox
               checked={props.tagsSpecification.specifySearchWithTags ? true : false}
