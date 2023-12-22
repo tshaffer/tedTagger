@@ -198,19 +198,18 @@ const SearchTagList = (props: SearchTagListProps) => {
     // const display: string = props.tagExistenceSpecification.specifyTagExistence ? 'block' : 'none';
     const display = 'block';
     return (
-      <div>
-        <FormControl style={{ marginLeft: '6px', display }}>
-          <RadioGroup
-            aria-labelledby="tagSpecFormControl"
-            value={props.tagsSpecification.tagSearchOperator ? props.tagsSpecification.tagSearchOperator : 'or'}
-            name="radio-buttons-group"
-            onChange={handleTagSearchOperatorChange}
-          >
-            <FormControlLabel value={TagSearchOperator.OR} control={<Radio />} label="Or" />
-            <FormControlLabel value={TagSearchOperator.AND} control={<Radio />} label="And" />
-          </RadioGroup>
-        </FormControl>
-      </div>
+      <FormControl style={{ marginLeft: '31px', display }}>
+        <span>Tag search operator</span>
+        <RadioGroup
+          aria-labelledby="tagSpecFormControl"
+          value={props.tagsSpecification.tagSearchOperator ? props.tagsSpecification.tagSearchOperator : 'or'}
+          name="radio-buttons-group"
+          onChange={handleTagSearchOperatorChange}
+        >
+          <FormControlLabel value={TagSearchOperator.OR} control={<Radio />} label="Or" />
+          <FormControlLabel value={TagSearchOperator.AND} control={<Radio />} label="And" />
+        </RadioGroup>
+      </FormControl>
     );
   };
 
@@ -222,10 +221,13 @@ const SearchTagList = (props: SearchTagListProps) => {
 
   return (
     <div>
-      <List>
-        {renderedSearchTagOperator}
-        {renderedListOfTags}
-      </List>
+      {renderedSearchTagOperator}
+      <span style={{ marginLeft: '31px', marginTop: '8px' }}>Tag list</span>
+      <div style={{ marginLeft: '14px' }}>
+        <List>
+          {renderedListOfTags}
+        </List>
+      </div>
     </div>
   );
 };
