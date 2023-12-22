@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { Autocomplete, IconButton, TextField } from '@mui/material';
+import { Autocomplete, FormControl, FormControlLabel, IconButton, Radio, RadioGroup, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
-import { TedTaggerDispatch, addSearchTagRedux, removeSearchTagRedux, replaceSearchTagRedux } from '../models';
-import { Tag } from '../types';
+import { TedTaggerDispatch, addSearchTagRedux, removeSearchTagRedux, replaceSearchTagRedux, setTagSearchOperatorRedux } from '../models';
+import { Tag, TagSearchOperator, TagSelectorType, TagsSpecification } from '../types';
 import { isNil, isObject, isString } from 'lodash';
-import { getAllTags, getSearchTags } from '../selectors';
+import { getAllTags, getSearchTags, getTagsSpecification } from '../selectors';
 
 interface TagOption {
   value: Tag | null;
@@ -19,11 +19,13 @@ interface TagOption {
 }
 
 export interface SearchTagListProps {
+  tagsSpecification: TagsSpecification;
   searchTags: Tag[];
   allTags: Tag[],
   onAddSearchTag: (tagId: string) => any;
   onRemoveSearchTag: (tagId: string) => any;
   onReplaceSearchTag: (existingTagId: string, newTagId: string) => any;
+  onSetTagSearchOperatorRedux: (tagSearchOperator: TagSearchOperator) => any;
 }
 
 const SearchTagList = (props: SearchTagListProps) => {
@@ -55,6 +57,13 @@ const SearchTagList = (props: SearchTagListProps) => {
         <DeleteIcon />
       </IconButton>
     );
+  };
+
+  const handleTagSearchOperatorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue: string = (event.target as HTMLInputElement).value;
+    console.log('handleTagSearchOperatorChange');
+    console.log(newValue);
+    props.onSetTagSearchOperatorRedux(newValue as TagSearchOperator);
   };
 
   const handleOpenAutoComplete = () => {
@@ -185,20 +194,46 @@ const SearchTagList = (props: SearchTagListProps) => {
     return listOfTags;
   };
 
-  const renderedListOfTags = getRenderedListOfTags();
+  const getSearchTagOperator = (): JSX.Element => {
+    // const display: string = props.tagExistenceSpecification.specifyTagExistence ? 'block' : 'none';
+    const display = 'block';
+    return (
+      <div>
+        <FormControl style={{ marginLeft: '6px', display }}>
+          <RadioGroup
+            aria-labelledby="tagSpecFormControl"
+            value={props.tagsSpecification.tagSearchOperator ? props.tagsSpecification.tagSearchOperator : 'or'}
+            name="radio-buttons-group"
+            onChange={handleTagSearchOperatorChange}
+          >
+            <FormControlLabel value="or" control={<Radio />} label="Or" />
+            <FormControlLabel value="and" control={<Radio />} label="And" />
+          </RadioGroup>
+        </FormControl>
+      </div>
+    );
+  };
+
+  const renderedSearchTagOperator: JSX.Element = getSearchTagOperator();
+  const renderedListOfTags: JSX.Element[] = getRenderedListOfTags();
+
 
   console.log('re-render tagList');
 
   return (
-    <List>
-      {renderedListOfTags}
-    </List>
+    <div>
+      <List>
+        {renderedSearchTagOperator}
+        {renderedListOfTags}
+      </List>
+    </div>
   );
 };
 
 function mapStateToProps(state: any, ownProps: any) {
 
   return {
+    tagsSpecification: getTagsSpecification(state),
     searchTags: getSearchTags(state),
     allTags: getAllTags(state),
   };
@@ -208,7 +243,8 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddSearchTag: addSearchTagRedux,
     onRemoveSearchTag: removeSearchTagRedux,
-    onReplaceSearchTag: replaceSearchTagRedux
+    onReplaceSearchTag: replaceSearchTagRedux,
+    onSetTagSearchOperatorRedux: setTagSearchOperatorRedux,
   }, dispatch);
 };
 

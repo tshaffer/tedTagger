@@ -3,3 +3,7 @@ export enum TagSelectorType {
   Tagged = 'tagged',
 }
 
+export enum TagSearchOperator {
+  AND = 'AND',
+  OR = 'OR',
+}

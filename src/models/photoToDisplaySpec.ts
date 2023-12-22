@@ -1,4 +1,4 @@
-import { PhotosToDisplaySpec, TagSelectorType } from '../types';
+import { PhotosToDisplaySpec, TagSearchOperator, TagSelectorType } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -11,6 +11,7 @@ export const SET_TAGS_SPECIFICATION = 'SET_TAGS_SPECIFICATION';
 export const ADD_SEARCH_TAG = 'ADD_SEARCH_TAG';
 export const REMOVE_SEARCH_TAG = 'REMOVE_SEARCH_TAG';
 export const REPLACE_SEARCH_TAG = 'REPLACE_SEARCH_TAG';
+export const SET_TAG_SEARCH_OPERATOR = 'SET_TAG_SEARCH_OPERATOR';
 
 // ------------------------------------
 // Actions
@@ -116,6 +117,19 @@ export const replaceSearchTagRedux = (
   };
 };
 
+interface SetTagSearchOperatorPayload {
+  tagSearchOperator: TagSearchOperator,
+}
+
+export const setTagSearchOperatorRedux = (tagSearchOperator: TagSearchOperator): any => {
+  return {
+    type: SET_TAG_SEARCH_OPERATOR,
+    payload: {
+      tagSearchOperator,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -129,7 +143,9 @@ const initialState: PhotosToDisplaySpec = {
 
 export const photosToDisplaySpecReducer = (
   state: PhotosToDisplaySpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload & AddRemoveSearchTagPayload & ReplaceSearchTagPayload>
+  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload 
+  & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload & AddRemoveSearchTagPayload & ReplaceSearchTagPayload
+  & SetTagSearchOperatorPayload>
 ): PhotosToDisplaySpec => {
   switch (action.type) {
     case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
@@ -173,6 +189,12 @@ export const photosToDisplaySpecReducer = (
       return {
         ...state,
         tagIds: state.tagIds.map((tagId: string) => tagId === (action.payload as any).existingTagId ? (action.payload as any).newTagId : tagId),
+      };
+    }
+    case SET_TAG_SEARCH_OPERATOR: {
+      return {
+        ...state,
+        tagSearchOperator: (action.payload as any).tagSearchOperator,
       };
     }
     default:

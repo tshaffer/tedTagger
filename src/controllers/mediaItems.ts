@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux } from '../models';
-import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, DateRangeSpecification, TagExistenceSpecification, TagsSpecification } from '../types';
+import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, DateRangeSpecification, TagExistenceSpecification, TagsSpecification, TagSearchOperator } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 import { getDateRangeSpecification, getTagByLabel, getTagExistenceSpecification, getTagsSpecification } from '../selectors';
 
@@ -37,12 +37,15 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
       path += '&tagSelector=' + tagExistenceSpecification.tagSelector;
     }
     path += '&specifySearchWithTags=' + tagsSpecification.specifySearchWithTags;
-    if (tagsSpecification.tagIds.length > 0) {
-      path += '&tagIds=' + tagsSpecification.tagIds.join(',');
-    } else {
-      // TEDTODO
-      const tagIds: string[] = [];
-      path += '&tagIds=' + tagIds.join(',');
+    if (tagsSpecification.specifySearchWithTags) {
+      if (tagsSpecification.tagIds.length > 0) {
+        path += '&tagIds=' + tagsSpecification.tagIds.join(',');
+      } else {
+        // TEDTODO - simpler way?
+        path += '&tagIds=' + [].join(',');
+      }
+      const tagSearchOperator: TagSearchOperator = isNil(tagsSpecification.tagSearchOperator) ? TagSearchOperator.OR : tagsSpecification.tagSearchOperator;
+      path += '&tagSearchOperator=' + tagSearchOperator;
     }
 
     return axios.get(path)

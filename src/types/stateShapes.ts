@@ -1,5 +1,8 @@
 import { MediaItem, Tag, AppTagAvatar, UserTagAvatar } from './entities';
-import { TagSelectorType } from './enums';
+import {
+  TagSearchOperator,
+  TagSelectorType
+} from './enums';
 
 export interface TedTaggerState {
   appState: AppState;
@@ -45,6 +48,7 @@ export interface PhotosToDisplaySpec {
   tagSelector?: TagSelectorType;
   specifySearchWithTags: boolean;
   tagIds: string[];
+  tagSearchOperator?: TagSearchOperator;
 }
 
 export interface DateRangeSpecification {
@@ -61,4 +65,5 @@ export interface TagExistenceSpecification {
 export interface TagsSpecification {
   specifySearchWithTags: boolean;
   tagIds: string[];
+  tagSearchOperator?: TagSearchOperator;
 }

@@ -1,10 +1,10 @@
 import {
   TedTaggerState,
-  TagSelectorType,
   DateRangeSpecification,
   TagExistenceSpecification,
   TagsSpecification,
   Tag,
+  TagSearchOperator,
   // DateSelectorType
 } from '../types';
 import { getAllTags } from './tags';
@@ -20,8 +20,8 @@ export const getTagExistenceSpecification = (state: TedTaggerState): TagExistenc
 };
 
 export const getTagsSpecification = (state: TedTaggerState): TagsSpecification => {
-  const { specifySearchWithTags, tagIds } = state.photosToDisplaySpec;
-  return { specifySearchWithTags, tagIds };
+  const { specifySearchWithTags, tagIds, tagSearchOperator } = state.photosToDisplaySpec;
+  return { specifySearchWithTags, tagIds, tagSearchOperator };
 };
 
 export const getSearchTags = (state: TedTaggerState): Tag[] => {
@@ -34,5 +34,10 @@ export const getSearchTags = (state: TedTaggerState): Tag[] => {
     }
   }
   return searchTags;
+};
+
+export const getSearchTagOperator = (state: TedTaggerState): TagSearchOperator | undefined => {
+  const { tagSearchOperator } = state.photosToDisplaySpec;
+  return tagSearchOperator;
 };
 
