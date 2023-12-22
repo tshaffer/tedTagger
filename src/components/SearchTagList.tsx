@@ -206,8 +206,8 @@ const SearchTagList = (props: SearchTagListProps) => {
             name="radio-buttons-group"
             onChange={handleTagSearchOperatorChange}
           >
-            <FormControlLabel value="or" control={<Radio />} label="Or" />
-            <FormControlLabel value="and" control={<Radio />} label="And" />
+            <FormControlLabel value={TagSearchOperator.OR} control={<Radio />} label="Or" />
+            <FormControlLabel value={TagSearchOperator.AND} control={<Radio />} label="And" />
           </RadioGroup>
         </FormControl>
       </div>
