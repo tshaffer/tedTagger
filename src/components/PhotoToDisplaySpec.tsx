@@ -117,6 +117,15 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
     );
   };
 
+  const getSpecificTags = (): JSX.Element | null => {
+    if (props.tagSelector !== TagSelectorType.TagList) {
+      return null;
+    }
+    return (
+      <SearchTagList />
+    );
+  };
+
   const getTagsInSearchSpecification = (): JSX.Element => {
     const display: string = props.specifyTagsInSearch ? 'block' : 'none';
     return (
@@ -130,18 +139,9 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
           <FormControlLabel value="untagged" control={<Radio />} label="Untagged photos" />
           <FormControlLabel value="tagged" control={<Radio />} label="Tagged photos (any tag)" />
           <FormControlLabel value="tagList" control={<Radio />} label="Specific tag(s)" />
+          {getSpecificTags()}
         </RadioGroup>
       </FormControl>
-    );
-  };
-
-  const getTagsSpecification = (): JSX.Element | null => {
-    if (props.tagSelector !== TagSelectorType.TagList) {
-      return null;
-    }
-
-    return (
-      <SearchTagList />
     );
   };
 
