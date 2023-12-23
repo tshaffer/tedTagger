@@ -24,7 +24,7 @@ import {
   loadMediaItems,
   loadTags,
   loadUserTagAvatars,
-  loadPhotosToDisplaySpec,
+  // loadPhotosToDisplaySpec,
   deselectAllPhotos,
   loadDefaultTagAvatarId,
 } from '../controllers';
@@ -55,7 +55,7 @@ export interface HomeProps {
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
   onLoadUserTagAvatars: () => any;
-  onLoadPhotosToDisplay: () => any;
+  // onLoadPhotosToDisplay: () => any;
   onDeselectAllPhotos: () => any;
 }
 
@@ -66,22 +66,22 @@ const Home = (props: HomeProps) => {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    props.onLoadPhotosToDisplay()
+    // props.onLoadPhotosToDisplay()
+    // .then(() => {
+    props.onLoadDefaultTagAvatarId()
       .then(() => {
-        props.onLoadDefaultTagAvatarId()
+        props.onLoadAppTagAvatars()
           .then(() => {
-            props.onLoadAppTagAvatars()
+            props.onLoadUserTagAvatars()
               .then(() => {
-                props.onLoadUserTagAvatars()
+                props.onLoadTags()
                   .then(() => {
-                    props.onLoadTags()
-                      .then(() => {
-                        props.onLoadMediaItems();
-                      });
+                    props.onLoadMediaItems();
                   });
               });
           });
       });
+    // });
   }, []);
 
   const handleClose = () => {
@@ -281,7 +281,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadMediaItems: loadMediaItems,
     onLoadTags: loadTags,
     onLoadUserTagAvatars: loadUserTagAvatars,
-    onLoadPhotosToDisplay: loadPhotosToDisplaySpec,
+    // onLoadPhotosToDisplay: loadPhotosToDisplaySpec,
     onDeselectAllPhotos: deselectAllPhotos,
   }, dispatch);
 };

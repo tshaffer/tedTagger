@@ -5,19 +5,19 @@ import { TedTaggerDispatch,
    } from '../models';
 import { serverUrl, apiUrlFragment, PhotosToDisplaySpec, TagSelectorType } from '../types';
 
-export const loadPhotosToDisplaySpec = () => {
-  return (dispatch: TedTaggerDispatch, getState: any) => {
+// export const loadPhotosToDisplaySpec = () => {
+//   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const path = serverUrl + apiUrlFragment + 'photosToDisplaySpec';
+//     const path = serverUrl + apiUrlFragment + 'photosToDisplaySpec';
 
-    return axios.get(path)
-      .then((photosToDisplaySpecResponse: any) => {
-        const photosToDisplaySpec: PhotosToDisplaySpec = (photosToDisplaySpecResponse as any).data;
-        // console.log('photosToDisplaySpec', photosToDisplaySpec);
-        // dispatch(setPhotosToDisplaySpecRedux(photosToDisplaySpec));
-      });
-  };
-};
+//     return axios.get(path)
+//       .then((photosToDisplaySpecResponse: any) => {
+//         const photosToDisplaySpec: PhotosToDisplaySpec = (photosToDisplaySpecResponse as any).data;
+//         // console.log('photosToDisplaySpec', photosToDisplaySpec);
+//         // dispatch(setPhotosToDisplaySpecRedux(photosToDisplaySpec));
+//       });
+//   };
+// };
 
 // export const setDateRangeSpecification = (specifyDateRange: boolean, startDate?: string, endDate?: string) => {
 //   return (dispatch: TedTaggerDispatch, getState: any) => {

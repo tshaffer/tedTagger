@@ -1,93 +1,80 @@
 import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux } from '../models';
-import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, DateRangeSpecification, 
-  // TagExistenceSpecification, 
-  // TagsSpecification, 
-  TagSearchOperator } from '../types';
+import {
+  serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT,
+} from '../types';
 import { cloneDeep, isNil } from 'lodash';
-import { 
-  getDateRangeSpecification, 
-  getTagByLabel, 
-  // getTagExistenceSpecification, 
-  // getTagsSpecification
- } from '../selectors';
+import {
+  getDateRangeSpecification,
+  getTagByLabel,
+  getTagsInSearchSpecification,
+} from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
+
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    return Promise.resolve();
+    const state: TedTaggerState = getState();
+    console.log('Tags on entry to loadMediaItems');
+    console.log(state.tagsState.tags);
 
-    // const state: TedTaggerState = getState();
-    // console.log('Tags on entry to loadMediaItems');
-    // console.log(state.tagsState.tags);
+    const tagsByTagId: StringToTagLUT = {};
+    state.tagsState.tags.forEach((tag) => {
+      tagsByTagId[tag.id] = tag;
+    });
 
-    // const tagsByTagId: StringToTagLUT = {};
-    // state.tagsState.tags.forEach((tag) => {
-    //   tagsByTagId[tag.id] = tag;
-    // });
+    const { specifyDateRange, startDate, endDate } = getDateRangeSpecification(state);
+    const { specifyTagsInSearch, tagSelector, tagIds, tagSearchOperator } = getTagsInSearchSpecification(state);
 
-    // const dateRangeSpecification: DateRangeSpecification = getDateRangeSpecification(state);
-    // const tagExistenceSpecification: TagExistenceSpecification = getTagExistenceSpecification(state);
-    // const tagsSpecification: TagsSpecification = getTagsSpecification(state);
+    let path = serverUrl
+      + apiUrlFragment
+      + 'mediaItemsToDisplay';
 
-    // let path = serverUrl
-    //   + apiUrlFragment
-    //   + 'mediaItemsToDisplay';
+    path += '?specifyDateRange=' + specifyDateRange;
+    path += '&startDate=' + startDate;
+    path += '&endDate=' + endDate;
 
-    // path += '?specifyDateRange=' + dateRangeSpecification.specifyDateRange;
-    // if (dateRangeSpecification.startDate) {
-    //   path += '&startDate=' + dateRangeSpecification.startDate;
-    // }
-    // if (dateRangeSpecification.endDate) {
-    //   path += '&endDate=' + dateRangeSpecification.endDate;
-    // }
-    // path += '&specifyTagExistence=' + tagExistenceSpecification.specifyTagExistence;
-    // if (tagExistenceSpecification.tagSelector) {
-    //   path += '&tagSelector=' + tagExistenceSpecification.tagSelector;
-    // }
-    // path += '&specifySearchWithTags=' + tagsSpecification.specifySearchWithTags;
-    // if (tagsSpecification.specifySearchWithTags) {
-    //   if (tagsSpecification.tagIds.length > 0) {
-    //     path += '&tagIds=' + tagsSpecification.tagIds.join(',');
-    //   } else {
-    //     // TEDTODO - simpler way?
-    //     path += '&tagIds=' + [].join(',');
-    //   }
-    //   const tagSearchOperator: TagSearchOperator = isNil(tagsSpecification.tagSearchOperator) ? TagSearchOperator.OR : tagsSpecification.tagSearchOperator;
-    //   path += '&tagSearchOperator=' + tagSearchOperator;
-    // }
+    path += '&specifyTagsInSearch=' + specifyTagsInSearch;
+    path += '&tagSelector=' + tagSelector;
+    if (tagIds.length > 0) {
+      path += '&tagIds=' + tagIds.join(',');
+    } else {
+      path += '&tagIds=' + [].join(','); // TEDTODO - simpler way?
+    }
+    path += '&tagSearchOperator=' + tagSearchOperator;
 
-    // return axios.get(path)
-    //   .then((mediaItemsResponse: any) => {
 
-    //     const mediaItems: MediaItem[] = [];
-    //     const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
+    return axios.get(path)
+      .then((mediaItemsResponse: any) => {
 
-    //     // derive mediaItems from serverMediaItems
-    //     for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
+        const mediaItems: MediaItem[] = [];
+        const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
 
-    //       const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
+        // derive mediaItems from serverMediaItems
+        for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
 
-    //       const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
-    //       if (description.startsWith('TedTag-')) {
-    //         // mediaItem includes one or more tags
-    //         const tagsSpec: string = description.substring('TedTag-'.length);
-    //         const tagLabels: string[] = tagsSpec.split(':');
-    //         tagLabels.forEach((tagLabel: string) => {
-    //           const tag: Tag | null = getTagByLabel(state, tagLabel);
-    //           if (!isNil(tag)) {
-    //             (mediaItem as MediaItem).tagIds.push(tag.id);
-    //           }
-    //         });
-    //       }
+          const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
 
-    //       mediaItems.push(mediaItem as MediaItem);
+          const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
+          if (description.startsWith('TedTag-')) {
+            // mediaItem includes one or more tags
+            const tagsSpec: string = description.substring('TedTag-'.length);
+            const tagLabels: string[] = tagsSpec.split(':');
+            tagLabels.forEach((tagLabel: string) => {
+              const tag: Tag | null = getTagByLabel(state, tagLabel);
+              if (!isNil(tag)) {
+                (mediaItem as MediaItem).tagIds.push(tag.id);
+              }
+            });
+          }
 
-    //     }
+          mediaItems.push(mediaItem as MediaItem);
 
-    //     dispatch(setMediaItems(mediaItems));
-    //   });
+        }
+
+        dispatch(setMediaItems(mediaItems));
+      });
   };
 };
 

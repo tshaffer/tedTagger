@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { ChangeEvent } from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch, setEndDateRedux, setSpecifyDateRangeRedux, setSpecifyTagsInSearchRedux, setStartDateRedux, setTagSelectorRedux } from '../models';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
 
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -14,24 +13,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { isNil } from 'lodash';
 
-import { TagSelectorType, DateRangeSpecification, TagsInSearchSpecification, PhotosToDisplaySpec, TagSearchOperator } from '../types';
-import { loadMediaItems, 
-  // setDateRangeSpecification, 
-  // setTagExistenceSpecification
- } from '../controllers';
+import { TagSelectorType, TagSearchOperator } from '../types';
+import { loadMediaItems } from '../controllers';
 import SearchTagList from './SearchTagList';
-import { getDateRangeSpecification, getEndDate, getSpecifyDateRange, getSpecifyTagsInSearch, getStartDate, getTagIds, getTagSearchOperator, getTagSelector, getTagsInSearchSpecification } from '../selectors';
+import { getEndDate, getSpecifyDateRange, getSpecifyTagsInSearch, getStartDate, getTagIds, getTagSearchOperator, getTagSelector } from '../selectors';
 
 export interface PhotosToDisplaySpecPropsFromParent {
   onClose: () => void;
 }
 
 export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromParent {
-  // dateRangeSpecification: DateRangeSpecification;
-  // onSetDateRangeSpecification: (specifyDateRange: boolean, startDate?: string, endDate?: string) => void;
-  // onSetTagExistenceSpecification: (specifyTagExistence: boolean, tagExistence?: TagSelectorType) => void;
-  // onSetTagsSpecification: (specifySearchWithTags: boolean, tagIds: string[]) => void;
-  // onReloadMediaItems: () => void;
 
   specifyDateRange: boolean;
   startDate: string;
@@ -41,6 +32,7 @@ export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromPa
   tagIds: string[];
   tagSearchOperator: TagSearchOperator;
 
+  onReloadMediaItems: () => void;
   onSetSpecifyDateRange: (specifyDateRange: boolean) => void;
   onSetStartDate: (startDate: string) => void;
   onSetEndDate: (startDate: string) => void;
@@ -86,7 +78,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   };
 
   const handleSearch = () => {
-    // props.onReloadMediaItems();
+    props.onReloadMediaItems();
   };
 
   const handleClose = () => {
@@ -193,10 +185,6 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onReloadMediaItems: loadMediaItems,
-    // onSetDateRangeSpecification: setDateRangeSpecification,
-    // onSetTagExistenceSpecification: setTagExistenceSpecification,
-    // onSetTagsSpecification: setTagsSpecificationRedux,
-
     onSetSpecifyDateRange: setSpecifyDateRangeRedux,
     onSetStartDate: setStartDateRedux,
     onSetEndDate: setEndDateRedux,
