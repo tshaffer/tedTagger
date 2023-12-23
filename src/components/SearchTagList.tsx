@@ -164,7 +164,6 @@ const SearchTagList = (props: SearchTagListProps) => {
               style: {
                 maxHeight: '300px',
                 border: '1px solid red',
-                marginLeft: '0px',
               }
             }
           }
@@ -200,13 +199,8 @@ const SearchTagList = (props: SearchTagListProps) => {
   };
 
   const getSearchTagOperator = (): JSX.Element => {
-    // const display: string = props.tagExistenceSpecification.specifyTagExistence ? 'block' : 'none';
-    const display = 'block';
-
-    // TEDTODO
-    // <FormControl style={{ marginLeft: '31px', display }}>
     return (
-      <FormControl style={{ marginLeft: '0', display }}>
+      <FormControl style={{ marginLeft: '31px' }}>
         <span>Tag search operator</span>
         <RadioGroup
           aria-labelledby="tagSpecFormControl"
@@ -224,17 +218,13 @@ const SearchTagList = (props: SearchTagListProps) => {
   const renderedSearchTagOperator: JSX.Element = getSearchTagOperator();
   const renderedListOfTags: JSX.Element[] = getRenderedListOfTags();
 
+  console.log('renderedSearchTagOperator');
 
-  console.log('re-render tagList');
-
-  // TEDTODO
-  // <span style={{ marginLeft: '31px', marginTop: '8px' }}>Tag list</span>
-  // <div style={{ marginLeft: '14px' }}>
   return (
     <div>
       {renderedSearchTagOperator}
-      <span style={{ marginLeft: '0', marginTop: '8px' }}>Tag list</span>
-      <div style={{ marginLeft: '0px' }}>
+      <span style={{ marginLeft: '31px', marginTop: '8px' }}>Tag list</span>
+      <div style={{ marginLeft: '14px' }}>
         <List>
           {renderedListOfTags}
         </List>
