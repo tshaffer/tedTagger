@@ -222,8 +222,6 @@ const SearchTagList = (props: SearchTagListProps) => {
   const renderedSearchTagOperator: JSX.Element = getSearchTagOperator();
   const renderedListOfTags: JSX.Element[] = getRenderedListOfTags();
 
-  console.log('renderedSearchTagOperator');
-
   return (
     <div>
       {renderedSearchTagOperator}

@@ -36,7 +36,7 @@ import PhotoToDisplaySpec from './PhotoToDisplaySpec';
 import PhotoProperties from './PhotoProperties';
 import { getSelectedMediaItemIds } from '../selectors';
 
-const leftSideDrawerWidth = 240;
+const leftSideDrawerWidth = 256;
 const rightSideDrawerWidth = 240;
 
 const DrawerHeader = styled('div')(({ theme }) => ({
