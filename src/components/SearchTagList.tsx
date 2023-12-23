@@ -200,18 +200,22 @@ const SearchTagList = (props: SearchTagListProps) => {
 
   const getSearchTagOperator = (): JSX.Element => {
     return (
-      <FormControl style={{ marginLeft: '31px' }}>
-        <span>Tag search operator</span>
-        <RadioGroup
-          aria-labelledby="tagSpecFormControl"
-          value={props.tagSearchOperator}
-          name="radio-buttons-group"
-          onChange={handleTagSearchOperatorChange}
-        >
-          <FormControlLabel value={TagSearchOperator.OR} control={<Radio />} label="Or" />
-          <FormControlLabel value={TagSearchOperator.AND} control={<Radio />} label="And" />
-        </RadioGroup>
-      </FormControl>
+      <div>
+        <FormControl style={{ marginLeft: '6px' }}>
+          <span>Tag search operator</span>
+          <RadioGroup
+            row
+            aria-labelledby="tagSpecFormControl"
+            value={props.tagSearchOperator}
+            name="radio-buttons-group"
+            onChange={handleTagSearchOperatorChange}
+            style={{ marginLeft: '8px' }}
+          >
+            <FormControlLabel value={TagSearchOperator.OR} control={<Radio />} label="Or" />
+            <FormControlLabel value={TagSearchOperator.AND} control={<Radio />} label="And" />
+          </RadioGroup>
+        </FormControl>
+      </div>
     );
   };
 
@@ -223,8 +227,8 @@ const SearchTagList = (props: SearchTagListProps) => {
   return (
     <div>
       {renderedSearchTagOperator}
-      <span style={{ marginLeft: '31px', marginTop: '8px' }}>Tag list</span>
-      <div style={{ marginLeft: '14px' }}>
+      <span style={{ marginLeft: '8px', marginTop: '8px' }}>Tag list</span>
+      <div style={{ marginLeft: '0px' }}>
         <List>
           {renderedListOfTags}
         </List>
