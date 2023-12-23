@@ -10,13 +10,11 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 import { TedTaggerDispatch, addSearchTagRedux, removeSearchTagRedux, replaceSearchTagRedux, setTagSearchOperatorRedux } from '../models';
 import {
-  Tag, TagSearchOperator, TagSelectorType,
-  //  TagsSpecification 
+  Tag, TagSearchOperator,
 } from '../types';
 import { isNil, isObject, isString } from 'lodash';
 import {
-  getAllTags, getSearchTags,
-  // getTagsSpecification 
+  getAllTags, getSearchTags, getTagSearchOperator,
 } from '../selectors';
 
 interface TagOption {
@@ -25,9 +23,9 @@ interface TagOption {
 }
 
 export interface SearchTagListProps {
-  // tagsSpecification: TagsSpecification;
   searchTags: Tag[];
   allTags: Tag[],
+  tagSearchOperator: TagSearchOperator;
   onAddSearchTag: (tagId: string) => any;
   onRemoveSearchTag: (tagId: string) => any;
   onReplaceSearchTag: (existingTagId: string, newTagId: string) => any;
@@ -165,7 +163,8 @@ const SearchTagList = (props: SearchTagListProps) => {
             {
               style: {
                 maxHeight: '300px',
-                border: '1px solid red'
+                border: '1px solid red',
+                marginLeft: '0px',
               }
             }
           }
@@ -203,13 +202,15 @@ const SearchTagList = (props: SearchTagListProps) => {
   const getSearchTagOperator = (): JSX.Element => {
     // const display: string = props.tagExistenceSpecification.specifyTagExistence ? 'block' : 'none';
     const display = 'block';
+
+    // TEDTODO
+    // <FormControl style={{ marginLeft: '31px', display }}>
     return (
-      <FormControl style={{ marginLeft: '31px', display }}>
+      <FormControl style={{ marginLeft: '0', display }}>
         <span>Tag search operator</span>
         <RadioGroup
           aria-labelledby="tagSpecFormControl"
-          // value={props.tagsSpecification.tagSearchOperator ? props.tagsSpecification.tagSearchOperator : 'or'}
-          value={TagSearchOperator.OR}
+          value={props.tagSearchOperator}
           name="radio-buttons-group"
           onChange={handleTagSearchOperatorChange}
         >
@@ -226,11 +227,14 @@ const SearchTagList = (props: SearchTagListProps) => {
 
   console.log('re-render tagList');
 
+  // TEDTODO
+  // <span style={{ marginLeft: '31px', marginTop: '8px' }}>Tag list</span>
+  // <div style={{ marginLeft: '14px' }}>
   return (
     <div>
       {renderedSearchTagOperator}
-      <span style={{ marginLeft: '31px', marginTop: '8px' }}>Tag list</span>
-      <div style={{ marginLeft: '14px' }}>
+      <span style={{ marginLeft: '0', marginTop: '8px' }}>Tag list</span>
+      <div style={{ marginLeft: '0px' }}>
         <List>
           {renderedListOfTags}
         </List>
@@ -242,9 +246,9 @@ const SearchTagList = (props: SearchTagListProps) => {
 function mapStateToProps(state: any, ownProps: any) {
 
   return {
-    // tagsSpecification: getTagsSpecification(state),
     searchTags: getSearchTags(state),
     allTags: getAllTags(state),
+    tagSearchOperator: getTagSearchOperator(state),
   };
 }
 

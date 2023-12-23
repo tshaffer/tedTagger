@@ -169,15 +169,6 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
           }
           label="Include tags in search" />
         {tagsInSearchSpecification}
-        {/* <FormControlLabel
-          control={
-            <Checkbox
-              checked={props.tagsSpecification.specifySearchWithTags ? true : false}
-              onChange={handleSpecifyTagsChanged}
-            />
-          }
-          label="Specify tag(s)" />
-        {tagsSpecification} */}
       </FormGroup>
       <Button onClick={handleSearch}>Search</Button>
       <br />
