@@ -5,9 +5,13 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // Constants
 // ------------------------------------
 export const SET_PHOTOS_TO_DISPLAY_SPEC_STATE = 'SET_PHOTOS_TO_DISPLAY_SPEC_STATE';
-export const SET_DATE_RANGE = 'SET_DATE_RANGE';
-export const SET_TAG_EXISTENCE = 'SET_TAG_EXISTENCE';
-export const SET_TAGS_SPECIFICATION = 'SET_TAGS_SPECIFICATION';
+
+export const SET_SPECIFY_DATE_RANGE = 'SET_SPECIFY_DATE_RANGE';
+export const SET_START_DATE = 'SET_SPECIFY_START_DATE';
+export const SET_END_DATE = 'SET_SPECIFY_END_DATE';
+
+export const SET_SPECIFY_TAGS_IN_SEARCH = 'SET_SPECIFY_TAGS_IN_SEARCH';
+export const SET_TAG_SELECTOR = 'SET_TAG_SELECTOR';
 export const ADD_SEARCH_TAG = 'ADD_SEARCH_TAG';
 export const REMOVE_SEARCH_TAG = 'REMOVE_SEARCH_TAG';
 export const REPLACE_SEARCH_TAG = 'REPLACE_SEARCH_TAG';
@@ -17,68 +21,86 @@ export const SET_TAG_SEARCH_OPERATOR = 'SET_TAG_SEARCH_OPERATOR';
 // Actions
 // ------------------------------------
 
-interface SetPhotosToDisplaySpecPayload {
-  photosToDisplaySpec: PhotosToDisplaySpec
+// interface SetPhotosToDisplaySpecPayload {
+//   photosToDisplaySpec: PhotosToDisplaySpec
+// }
+
+// export const setPhotosToDisplaySpecRedux = (photosToDisplaySpec: PhotosToDisplaySpec): any => {
+//   return {
+//     type: SET_PHOTOS_TO_DISPLAY_SPEC_STATE,
+//     payload: {
+//       photosToDisplaySpec,
+//     },
+//   };
+// };
+
+interface SetSpecifyDateRangePayload {
+  specifyDateRange: boolean,
 }
 
-export const setPhotosToDisplaySpecRedux = (photosToDisplaySpec: PhotosToDisplaySpec): any => {
+export const setSpecifyDateRangeRedux = (specifyDateRange: boolean): any => {
   return {
-    type: SET_PHOTOS_TO_DISPLAY_SPEC_STATE,
+    type: SET_SPECIFY_DATE_RANGE,
     payload: {
-      photosToDisplaySpec,
+      specifyDateRange,
     },
   };
 };
 
-interface SetDateRangeSpecificationPayload {
-  specifyDateRange: boolean,
-  startDate?: string,
-  endDate?: string
+interface SetStartDatePayload {
+  startDate: string,
 }
 
-export const setDateRangeSpecificationRedux = (specifyDateRange: boolean, startDate?: string, endDate?: string): any => {
+export const setStartDateRedux = (startDate: string): any => {
   return {
-    type: SET_DATE_RANGE,
+    type: SET_START_DATE,
     payload: {
-      specifyDateRange,
       startDate,
+    },
+  };
+};
+
+interface SetEndDatePayload {
+  endDate: string,
+}
+
+export const setEndDateRedux = (endDate: string): any => {
+  return {
+    type: SET_END_DATE,
+    payload: {
       endDate,
     },
   };
 };
 
-interface SetTagExistenceSpecificationPayload {
-  specifyTagExistence: boolean,
-  tagSelector?: TagSelectorType
+interface SetSpecifyTagsInSearchPayload {
+  specifyTagsInSearch: boolean,
 }
 
-export const setTagExistenceSpecificationRedux = (specifyTagExistence: boolean, tagSelector?: TagSelectorType): any => {
+export const setSpecifyTagsInSearchRedux = (specifyTagsInSearch: boolean): any => {
   return {
-    type: SET_TAG_EXISTENCE,
+    type: SET_SPECIFY_TAGS_IN_SEARCH,
     payload: {
-      specifyTagExistence,
+      specifyTagsInSearch,
+    },
+  };
+};
+
+interface SetTagSelectorPayload {
+  tagSelector: TagSelectorType,
+}
+
+export const setTagSelectorRedux = (tagSelector: TagSelectorType): any => {
+  return {
+    type: SET_TAG_SELECTOR,
+    payload: {
       tagSelector,
     },
   };
 };
 
-interface SetTagsSpecificationPayload {
-  specifySearchWithTags: boolean,
-  tagIds: string[],
-}
-
-export const setTagsSpecificationRedux = (specifySearchWithTags: boolean, tagIds: string[]): any => {
-  return {
-    type: SET_TAGS_SPECIFICATION,
-    payload: {
-      specifySearchWithTags,
-      tagIds,
-    },
-  };
-};
-
 interface AddRemoveSearchTagPayload {
-  tagId: string[],
+  tagId: string,
 }
 
 export const addSearchTagRedux = (tagId: string): any => {
@@ -135,66 +157,118 @@ export const setTagSearchOperatorRedux = (tagSearchOperator: TagSearchOperator):
 // ------------------------------------
 
 const initialState: PhotosToDisplaySpec = {
-  specifyDateRange: false,
-  specifyTagExistence: false,
-  specifySearchWithTags: false,
-  tagIds: [],
+  dateRangeSpecification: {
+    specifyDateRange: false,
+    startDate: (new Date()).toISOString(),    // TEDTODO - initialize to fixed date
+    endDate: (new Date()).toISOString(),
+  },
+  tagsInSearchSpecification: {
+    specifyTagsInSearch: false,
+    tagSelector: TagSelectorType.Untagged,
+    tagIds: [],
+    tagSearchOperator: TagSearchOperator.OR,
+  },
 };
+
+// action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload &SetSpecifyDateRangePayload &SetStartDatePayload &SetEndDatePayload &SetSpecifyTagsInSearchPayload &SetTagSelectorPayload &AddRemoveSearchTagPayload &ReplaceSearchTagPayload &SetTagSearchOperatorPayload
 
 export const photosToDisplaySpecReducer = (
   state: PhotosToDisplaySpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotosToDisplaySpecPayload & SetDateRangeSpecificationPayload 
-  & SetTagExistenceSpecificationPayload & SetTagsSpecificationPayload & AddRemoveSearchTagPayload & ReplaceSearchTagPayload
-  & SetTagSearchOperatorPayload>
+  action: TedTaggerModelBaseAction<SetSpecifyDateRangePayload &SetStartDatePayload &SetEndDatePayload &SetSpecifyTagsInSearchPayload &SetTagSelectorPayload &AddRemoveSearchTagPayload &ReplaceSearchTagPayload &SetTagSearchOperatorPayload
+  >
 ): PhotosToDisplaySpec => {
   switch (action.type) {
-    case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
-      return (action.payload as any).photosToDisplaySpec;
-    }
-    case SET_DATE_RANGE: {
+    // case SET_PHOTOS_TO_DISPLAY_SPEC_STATE: {
+    //   return (action.payload as SetPhotosToDisplaySpecPayload).photosToDisplaySpec;
+    // }
+    case SET_SPECIFY_DATE_RANGE: {
       return {
         ...state,
-        specifyDateRange: (action.payload as any).specifyDateRange,
-        startDate: (action.payload as any).startDate,
-        endDate: (action.payload as any).endDate
+        dateRangeSpecification:
+        {
+          ...state.dateRangeSpecification,
+          specifyDateRange: (action.payload as SetSpecifyDateRangePayload).specifyDateRange,
+        }
       };
     }
-    case SET_TAG_EXISTENCE: {
+    case SET_START_DATE: {
       return {
         ...state,
-        specifyTagExistence: (action.payload as any).specifyTagExistence,
-        tagSelector: (action.payload as any).tagSelector
+        dateRangeSpecification:
+        {
+          ...state.dateRangeSpecification,
+          startDate: (action.payload as SetStartDatePayload).startDate,
+        }
       };
     }
-    case SET_TAGS_SPECIFICATION: {
+    case SET_END_DATE: {
       return {
         ...state,
-        specifySearchWithTags: (action.payload as any).specifySearchWithTags,
-        tagIds: (action.payload as any).tagIds,
+        dateRangeSpecification:
+        {
+          ...state.dateRangeSpecification,
+          endDate: (action.payload as SetEndDatePayload).endDate,
+        }
+      };
+    }
+    case SET_SPECIFY_TAGS_IN_SEARCH: {
+      return {
+        ...state,
+        tagsInSearchSpecification:
+        {
+          ...state.tagsInSearchSpecification,
+          specifyTagsInSearch: (action.payload as SetSpecifyTagsInSearchPayload).specifyTagsInSearch,
+        }
+      };
+    }
+    case SET_TAG_SELECTOR: {
+      return {
+        ...state,
+        tagsInSearchSpecification:
+        {
+          ...state.tagsInSearchSpecification,
+          tagSelector: (action.payload as SetTagSelectorPayload).tagSelector,
+        }
       };
     }
     case ADD_SEARCH_TAG: {
       return {
         ...state,
-        tagIds: [...state.tagIds, (action.payload as any).tagId],
+        tagsInSearchSpecification:
+        {
+          ...state.tagsInSearchSpecification,
+          tagIds: [...state.tagsInSearchSpecification.tagIds, (action.payload as AddRemoveSearchTagPayload).tagId],
+        }
       };
     }
     case REMOVE_SEARCH_TAG: {
       return {
         ...state,
-        tagIds: state.tagIds.filter((tagId: string) => tagId !== (action.payload as any).tagId),
+        tagsInSearchSpecification:
+        {
+          ...state.tagsInSearchSpecification,
+          tagIds: state.tagsInSearchSpecification.tagIds.filter((tagId: string) => tagId !== (action.payload as AddRemoveSearchTagPayload).tagId),
+        }
       };
     }
     case REPLACE_SEARCH_TAG: {
       return {
         ...state,
-        tagIds: state.tagIds.map((tagId: string) => tagId === (action.payload as any).existingTagId ? (action.payload as any).newTagId : tagId),
+        tagsInSearchSpecification:
+        {
+          ...state.tagsInSearchSpecification,
+          tagIds: state.tagsInSearchSpecification.tagIds.map((tagId: string) => tagId === (action.payload as any).existingTagId ? (action.payload as ReplaceSearchTagPayload).newTagId : tagId)
+        }
       };
     }
     case SET_TAG_SEARCH_OPERATOR: {
       return {
         ...state,
-        tagSearchOperator: (action.payload as any).tagSearchOperator,
+        tagsInSearchSpecification:
+        {
+          ...state.tagsInSearchSpecification,
+          tagSearchOperator: state.tagsInSearchSpecification.specifyTagsInSearch ? (action.payload as SetTagSearchOperatorPayload).tagSearchOperator : TagSearchOperator.OR,
+        }
       };
     }
     default:

@@ -1,6 +1,7 @@
 export enum TagSelectorType {
   Untagged = 'untagged',
   Tagged = 'tagged',
+  TagList = 'tagList',
 }
 
 export enum TagSearchOperator {

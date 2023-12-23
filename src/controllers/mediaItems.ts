@@ -1,83 +1,93 @@
 import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux } from '../models';
-import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, DateRangeSpecification, TagExistenceSpecification, TagsSpecification, TagSearchOperator } from '../types';
+import { serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, DateRangeSpecification, 
+  // TagExistenceSpecification, 
+  // TagsSpecification, 
+  TagSearchOperator } from '../types';
 import { cloneDeep, isNil } from 'lodash';
-import { getDateRangeSpecification, getTagByLabel, getTagExistenceSpecification, getTagsSpecification } from '../selectors';
+import { 
+  getDateRangeSpecification, 
+  getTagByLabel, 
+  // getTagExistenceSpecification, 
+  // getTagsSpecification
+ } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const state: TedTaggerState = getState();
-    console.log('Tags on entry to loadMediaItems');
-    console.log(state.tagsState.tags);
+    return Promise.resolve();
 
-    const tagsByTagId: StringToTagLUT = {};
-    state.tagsState.tags.forEach((tag) => {
-      tagsByTagId[tag.id] = tag;
-    });
+    // const state: TedTaggerState = getState();
+    // console.log('Tags on entry to loadMediaItems');
+    // console.log(state.tagsState.tags);
 
-    const dateRangeSpecification: DateRangeSpecification = getDateRangeSpecification(state);
-    const tagExistenceSpecification: TagExistenceSpecification = getTagExistenceSpecification(state);
-    const tagsSpecification: TagsSpecification = getTagsSpecification(state);
+    // const tagsByTagId: StringToTagLUT = {};
+    // state.tagsState.tags.forEach((tag) => {
+    //   tagsByTagId[tag.id] = tag;
+    // });
 
-    let path = serverUrl
-      + apiUrlFragment
-      + 'mediaItemsToDisplay';
+    // const dateRangeSpecification: DateRangeSpecification = getDateRangeSpecification(state);
+    // const tagExistenceSpecification: TagExistenceSpecification = getTagExistenceSpecification(state);
+    // const tagsSpecification: TagsSpecification = getTagsSpecification(state);
 
-    path += '?specifyDateRange=' + dateRangeSpecification.specifyDateRange;
-    if (dateRangeSpecification.startDate) {
-      path += '&startDate=' + dateRangeSpecification.startDate;
-    }
-    if (dateRangeSpecification.endDate) {
-      path += '&endDate=' + dateRangeSpecification.endDate;
-    }
-    path += '&specifyTagExistence=' + tagExistenceSpecification.specifyTagExistence;
-    if (tagExistenceSpecification.tagSelector) {
-      path += '&tagSelector=' + tagExistenceSpecification.tagSelector;
-    }
-    path += '&specifySearchWithTags=' + tagsSpecification.specifySearchWithTags;
-    if (tagsSpecification.specifySearchWithTags) {
-      if (tagsSpecification.tagIds.length > 0) {
-        path += '&tagIds=' + tagsSpecification.tagIds.join(',');
-      } else {
-        // TEDTODO - simpler way?
-        path += '&tagIds=' + [].join(',');
-      }
-      const tagSearchOperator: TagSearchOperator = isNil(tagsSpecification.tagSearchOperator) ? TagSearchOperator.OR : tagsSpecification.tagSearchOperator;
-      path += '&tagSearchOperator=' + tagSearchOperator;
-    }
+    // let path = serverUrl
+    //   + apiUrlFragment
+    //   + 'mediaItemsToDisplay';
 
-    return axios.get(path)
-      .then((mediaItemsResponse: any) => {
+    // path += '?specifyDateRange=' + dateRangeSpecification.specifyDateRange;
+    // if (dateRangeSpecification.startDate) {
+    //   path += '&startDate=' + dateRangeSpecification.startDate;
+    // }
+    // if (dateRangeSpecification.endDate) {
+    //   path += '&endDate=' + dateRangeSpecification.endDate;
+    // }
+    // path += '&specifyTagExistence=' + tagExistenceSpecification.specifyTagExistence;
+    // if (tagExistenceSpecification.tagSelector) {
+    //   path += '&tagSelector=' + tagExistenceSpecification.tagSelector;
+    // }
+    // path += '&specifySearchWithTags=' + tagsSpecification.specifySearchWithTags;
+    // if (tagsSpecification.specifySearchWithTags) {
+    //   if (tagsSpecification.tagIds.length > 0) {
+    //     path += '&tagIds=' + tagsSpecification.tagIds.join(',');
+    //   } else {
+    //     // TEDTODO - simpler way?
+    //     path += '&tagIds=' + [].join(',');
+    //   }
+    //   const tagSearchOperator: TagSearchOperator = isNil(tagsSpecification.tagSearchOperator) ? TagSearchOperator.OR : tagsSpecification.tagSearchOperator;
+    //   path += '&tagSearchOperator=' + tagSearchOperator;
+    // }
 
-        const mediaItems: MediaItem[] = [];
-        const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
+    // return axios.get(path)
+    //   .then((mediaItemsResponse: any) => {
 
-        // derive mediaItems from serverMediaItems
-        for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
+    //     const mediaItems: MediaItem[] = [];
+    //     const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
 
-          const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
+    //     // derive mediaItems from serverMediaItems
+    //     for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
 
-          const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
-          if (description.startsWith('TedTag-')) {
-            // mediaItem includes one or more tags
-            const tagsSpec: string = description.substring('TedTag-'.length);
-            const tagLabels: string[] = tagsSpec.split(':');
-            tagLabels.forEach((tagLabel: string) => {
-              const tag: Tag | null = getTagByLabel(state, tagLabel);
-              if (!isNil(tag)) {
-                (mediaItem as MediaItem).tagIds.push(tag.id);
-              }
-            });
-          }
+    //       const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
 
-          mediaItems.push(mediaItem as MediaItem);
+    //       const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
+    //       if (description.startsWith('TedTag-')) {
+    //         // mediaItem includes one or more tags
+    //         const tagsSpec: string = description.substring('TedTag-'.length);
+    //         const tagLabels: string[] = tagsSpec.split(':');
+    //         tagLabels.forEach((tagLabel: string) => {
+    //           const tag: Tag | null = getTagByLabel(state, tagLabel);
+    //           if (!isNil(tag)) {
+    //             (mediaItem as MediaItem).tagIds.push(tag.id);
+    //           }
+    //         });
+    //       }
 
-        }
+    //       mediaItems.push(mediaItem as MediaItem);
 
-        dispatch(setMediaItems(mediaItems));
-      });
+    //     }
+
+    //     dispatch(setMediaItems(mediaItems));
+    //   });
   };
 };
 

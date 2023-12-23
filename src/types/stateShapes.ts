@@ -41,29 +41,19 @@ export interface UserTagAvatarsState {
 }
 
 export interface PhotosToDisplaySpec {
-  specifyDateRange: boolean;
-  startDate?: string;
-  endDate?: string;
-  specifyTagExistence: boolean;
-  tagSelector?: TagSelectorType;
-  specifySearchWithTags: boolean;
-  tagIds: string[];
-  tagSearchOperator?: TagSearchOperator;
+  dateRangeSpecification: DateRangeSpecification;
+  tagsInSearchSpecification: TagsInSearchSpecification;
 }
 
 export interface DateRangeSpecification {
   specifyDateRange: boolean;
-  startDate?: string;
-  endDate?: string;
+  startDate: string;
+  endDate: string;
 }
 
-export interface TagExistenceSpecification {
-  specifyTagExistence: boolean;
-  tagSelector?: TagSelectorType;
-}
-
-export interface TagsSpecification {
-  specifySearchWithTags: boolean;
+export interface TagsInSearchSpecification {
+  specifyTagsInSearch: boolean;
+  tagSelector: TagSelectorType;
   tagIds: string[];
-  tagSearchOperator?: TagSearchOperator;
+  tagSearchOperator: TagSearchOperator;
 }

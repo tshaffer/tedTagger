@@ -210,7 +210,7 @@ const Home = (props: HomeProps) => {
                 <ListItemText
                   primaryTypographyProps={{ style: photoToDisplaySpecTextStyle }}
                 >
-                  View Spec
+                  Specify Photos to Display
                 </ListItemText>
               </ListItemButton>
             </ListItem>

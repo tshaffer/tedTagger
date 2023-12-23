@@ -9,9 +9,15 @@ import { Autocomplete, FormControl, FormControlLabel, IconButton, Radio, RadioGr
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 import { TedTaggerDispatch, addSearchTagRedux, removeSearchTagRedux, replaceSearchTagRedux, setTagSearchOperatorRedux } from '../models';
-import { Tag, TagSearchOperator, TagSelectorType, TagsSpecification } from '../types';
+import {
+  Tag, TagSearchOperator, TagSelectorType,
+  //  TagsSpecification 
+} from '../types';
 import { isNil, isObject, isString } from 'lodash';
-import { getAllTags, getSearchTags, getTagsSpecification } from '../selectors';
+import {
+  getAllTags, getSearchTags,
+  // getTagsSpecification 
+} from '../selectors';
 
 interface TagOption {
   value: Tag | null;
@@ -19,7 +25,7 @@ interface TagOption {
 }
 
 export interface SearchTagListProps {
-  tagsSpecification: TagsSpecification;
+  // tagsSpecification: TagsSpecification;
   searchTags: Tag[];
   allTags: Tag[],
   onAddSearchTag: (tagId: string) => any;
@@ -202,7 +208,8 @@ const SearchTagList = (props: SearchTagListProps) => {
         <span>Tag search operator</span>
         <RadioGroup
           aria-labelledby="tagSpecFormControl"
-          value={props.tagsSpecification.tagSearchOperator ? props.tagsSpecification.tagSearchOperator : 'or'}
+          // value={props.tagsSpecification.tagSearchOperator ? props.tagsSpecification.tagSearchOperator : 'or'}
+          value={TagSearchOperator.OR}
           name="radio-buttons-group"
           onChange={handleTagSearchOperatorChange}
         >
@@ -235,7 +242,7 @@ const SearchTagList = (props: SearchTagListProps) => {
 function mapStateToProps(state: any, ownProps: any) {
 
   return {
-    tagsSpecification: getTagsSpecification(state),
+    // tagsSpecification: getTagsSpecification(state),
     searchTags: getSearchTags(state),
     allTags: getAllTags(state),
   };

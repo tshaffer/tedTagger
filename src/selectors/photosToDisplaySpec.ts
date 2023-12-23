@@ -1,32 +1,59 @@
 import {
   TedTaggerState,
   DateRangeSpecification,
-  TagExistenceSpecification,
-  TagsSpecification,
+  TagsInSearchSpecification,
+  TagSelectorType,
   Tag,
   TagSearchOperator,
-  // DateSelectorType
 } from '../types';
 import { getAllTags } from './tags';
 
 export const getDateRangeSpecification = (state: TedTaggerState): DateRangeSpecification => {
-  const { specifyDateRange, startDate, endDate } = state.photosToDisplaySpec;
-  return { specifyDateRange, startDate, endDate };
+  return state.photosToDisplaySpec.dateRangeSpecification;
 };
 
-export const getTagExistenceSpecification = (state: TedTaggerState): TagExistenceSpecification => {
-  const { specifyTagExistence, tagSelector } = state.photosToDisplaySpec;
-  return { specifyTagExistence, tagSelector };
+export const getSpecifyDateRange = (state: TedTaggerState): boolean => {
+  const { specifyDateRange } = state.photosToDisplaySpec.dateRangeSpecification;
+  return specifyDateRange;
 };
 
-export const getTagsSpecification = (state: TedTaggerState): TagsSpecification => {
-  const { specifySearchWithTags, tagIds, tagSearchOperator } = state.photosToDisplaySpec;
-  return { specifySearchWithTags, tagIds, tagSearchOperator };
+export const getStartDate = (state: TedTaggerState): string => {
+  const { startDate } = state.photosToDisplaySpec.dateRangeSpecification;
+  return startDate;
 };
+
+export const getEndDate = (state: TedTaggerState): string => {
+  const { endDate } = state.photosToDisplaySpec.dateRangeSpecification;
+  return endDate;
+};
+
+export const getTagsInSearchSpecification = (state: TedTaggerState): TagsInSearchSpecification => {
+  return state.photosToDisplaySpec.tagsInSearchSpecification;
+};
+
+export const getSpecifyTagsInSearch = (state: TedTaggerState): boolean => {
+  const { specifyTagsInSearch } = getTagsInSearchSpecification(state);
+  return specifyTagsInSearch;
+};
+
+export const getTagSelector = (state: TedTaggerState): TagSelectorType => {
+  const { tagSelector } = getTagsInSearchSpecification(state);
+  return tagSelector;
+}; 
+
+export const getTagIds = (state: TedTaggerState): string[] => {
+  const { tagIds } = getTagsInSearchSpecification(state);
+  return tagIds;
+}; 
+
+export const getTagSearchOperator = (state: TedTaggerState): TagSearchOperator => {
+  const { tagSearchOperator } = getTagsInSearchSpecification(state);
+  return tagSearchOperator;
+}; 
 
 export const getSearchTags = (state: TedTaggerState): Tag[] => {
   const tags: Tag[] = getAllTags(state);
-  const tagIds: string[] = state.photosToDisplaySpec.tagIds;
+  const tagIds: string[] = state.photosToDisplaySpec.tagsInSearchSpecification.tagIds;
   const searchTags: Tag[] = [];
   for (const tag of tags) {
     if (tagIds.includes(tag.id)) {
@@ -34,10 +61,5 @@ export const getSearchTags = (state: TedTaggerState): Tag[] => {
     }
   }
   return searchTags;
-};
-
-export const getSearchTagOperator = (state: TedTaggerState): TagSearchOperator | undefined => {
-  const { tagSearchOperator } = state.photosToDisplaySpec;
-  return tagSearchOperator;
 };
 
