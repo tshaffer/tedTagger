@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, setSpecifyDateRangeRedux } from '../models';
+import { TedTaggerDispatch, setEndDateRedux, setSpecifyDateRangeRedux, setSpecifyTagsInSearchRedux, setStartDateRedux, setTagSelectorRedux } from '../models';
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -42,6 +42,10 @@ export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromPa
   tagSearchOperator: TagSearchOperator;
 
   onSetSpecifyDateRange: (specifyDateRange: boolean) => void;
+  onSetStartDate: (startDate: string) => void;
+  onSetEndDate: (startDate: string) => void;
+  onSetSpecifyTagsInSearch: (specifyTagsInSearch: boolean) => void;
+  onSetTagSelector: (tagSelector: TagSelectorType) => void;
 }
 
 const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
@@ -51,21 +55,34 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
     console.log('handlePhotosToDisplaySpecTagTypeChange');
     console.log(specifyDateRange);
     props.onSetSpecifyDateRange(specifyDateRange);
-    // props.onSetTagExistenceSpecification(props.tagExistenceSpecification.specifyTagExistence, newValue as TagSelectorType);
   };
 
   const handleSetStartDate = (startDateDayJs: Dayjs | null) => {
     if (!isNil(startDateDayJs)) {
       const startDate: Date = startDateDayJs.toDate();
-      // props.onSetDateRangeSpecification(props.dateRangeSpecification.specifyDateRange, startDate.toISOString(), props.dateRangeSpecification.endDate);
+      props.onSetStartDate(startDate.toISOString());
     }
   };
 
   const handleSetEndDate = (endDateDayJs: Dayjs | null) => {
     if (!isNil(endDateDayJs)) {
       const endDate: Date = endDateDayJs.toDate();
-      // props.onSetDateRangeSpecification(props.dateRangeSpecification.specifyDateRange, props.dateRangeSpecification.startDate, endDate.toISOString());
+      props.onSetEndDate(endDate.toISOString());
     }
+  };
+
+  const handleSpecifyTagsInSearchChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const specifyTagsInSearch: boolean = (event.target as HTMLInputElement).checked;
+    console.log('handleSpecifyTagsInSearchChanged');
+    console.log(specifyTagsInSearch);
+    props.onSetSpecifyTagsInSearch(specifyTagsInSearch);
+  };
+
+  const handleTagSelectorChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue: string = (event.target as HTMLInputElement).value;
+    console.log('handleTagSelectorChanged');
+    console.log(newValue);
+    props.onSetTagSelector(newValue as TagSelectorType);
   };
 
   const handleSearch = () => {
@@ -100,7 +117,6 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
     );
   };
 
-
   const getTagsInSearchSpecification = (): JSX.Element => {
     const display: string = props.specifyTagsInSearch ? 'block' : 'none';
     return (
@@ -109,7 +125,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
           aria-labelledby="tagSpecFormControl"
           value={props.tagSelector}
           name="radio-buttons-group"
-          // onChange={handlePhotosToDisplaySpecTagTypeChange}
+          onChange={handleTagSelectorChanged}
         >
           <FormControlLabel value="untagged" control={<Radio />} label="Untagged photos" />
           <FormControlLabel value="tagged" control={<Radio />} label="Tagged photos (any tag)" />
@@ -131,22 +147,6 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
 
   const dateRangeSpecification: JSX.Element = getDateRangeSpecification();
   const tagsInSearchSpecification: JSX.Element = getTagsInSearchSpecification();
-  // const tagsSpecification: JSX.Element | null = getTagsSpecification();
-
-  // function handleSpecifyDateRangeChanged(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
-  //   console.log('handleSpecifyDateRangeChanged', event.target.checked);
-  //   // props.onSetDateRangeSpecification(event.target.checked, props.dateRangeSpecification.startDate, props.dateRangeSpecification.endDate);
-  // }
-
-  // function handleSpecifyTagExistenceChanged(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
-  //   console.log('handleSpecifyTagExistenceChanged', event.target.checked);
-  //   // props.onSetTagExistenceSpecification(event.target.checked, props.tagExistenceSpecification.tagSelector);
-  // }
-
-  // function handleSpecifyTagsChanged(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
-  //   console.log('handleSpecifyTagsChanged', event.target.checked);
-  //   // props.onSetTagsSpecification(event.target.checked, props.tagsSpecification.tagIds);
-  // }
 
   return (
     <Box id='photosToDisplaySpecBox' sx={{ marginLeft: '8px', height: '600px', bgcolor: 'background.paper' }}>
@@ -164,7 +164,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
           control={
             <Checkbox
               checked={props.specifyTagsInSearch}
-              // onChange={handleSpecifyTagExistenceChanged}
+              onChange={handleSpecifyTagsInSearchChanged}
             />
           }
           label="Include tags in search" />
@@ -207,6 +207,10 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     // onSetTagsSpecification: setTagsSpecificationRedux,
 
     onSetSpecifyDateRange: setSpecifyDateRangeRedux,
+    onSetStartDate: setStartDateRedux,
+    onSetEndDate: setEndDateRedux,
+    onSetSpecifyTagsInSearch: setSpecifyTagsInSearchRedux,
+    onSetTagSelector: setTagSelectorRedux,
   }, dispatch);
 };
 
