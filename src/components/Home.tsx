@@ -166,6 +166,22 @@ const Home = (props: HomeProps) => {
     setOpen(false);
   };
 
+  const getSelectPhotosElement = () => {
+    if (props.selectedMediaItemIds.length === 0) {
+      return null;
+    }
+    return (
+      <div>
+
+        <Button onClick={props.onDeselectAllPhotos}>X</Button>
+        <span>
+          {props.selectedMediaItemIds.length} selected
+        </span>
+
+      </div>
+    );
+  };
+
   const appBarWidth = open ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
   const marginRightWidth = open ? `${rightSideDrawerWidth}px` : 0;
 
@@ -198,10 +214,11 @@ const Home = (props: HomeProps) => {
         }}
       >
         <Toolbar>
-          {props.selectedMediaItemIds.length === 0
+          {getSelectPhotosElement()}
+          {/* {props.selectedMediaItemIds.length === 0
             ? null
             : <Button onClick={props.onDeselectAllPhotos}>Deselect All Photos</Button>
-          }
+          } */}
         </Toolbar>
         <Box sx={{ overflow: 'auto' }}>
           <List>
