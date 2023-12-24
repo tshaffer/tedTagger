@@ -47,6 +47,7 @@ export interface PhotoProps extends PhotoPropsFromParent {
 function Photo(props: PhotoProps) {
 
   const [clickCount, setClickCount] = React.useState(0);
+  const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
 
   const getPhotoUrl = (): string => {
     const basename: string = path.basename(props.mediaItem.filePath!);
@@ -107,15 +108,30 @@ function Photo(props: PhotoProps) {
 
 
   const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    // console.log('handleClick: ', (e.target as any).id);
-    // console.log('shiftKey: ', e.shiftKey);
-    // console.log('ctrlKey: ', e.ctrlKey);
-    // console.log('altKey: ', e.altKey);
-    // console.log('metaKey: ', e.metaKey);
+    console.log('handleClick: ', (e.target as any).id);
+    console.log('shiftKey: ', e.shiftKey);
+    console.log('ctrlKey: ', e.ctrlKey);
+    console.log('altKey: ', e.altKey);
+    console.log('metaKey: ', e.metaKey);
 
     props.onClickPhoto((e.target as any).id, e.metaKey, e.shiftKey);
   };
 
+  const handleClicks = () => {
+    if (clickTimeout !== null) {
+      console.log('double click executes');
+      clearTimeout(clickTimeout);
+      setClickTimeout(null);
+    } else {
+      console.log('single click');
+      const clickTimeout = setTimeout(() => {
+        console.log('first click executes ');
+        clearTimeout(clickTimeout);
+        setClickTimeout(null);
+      }, 300);
+      setClickTimeout(clickTimeout);
+    }
+  };
   const photoTags: Tag[] = [];
   props.mediaItem.tagIds.forEach((tagId: string) => {
     const tag: Tag = props.tagsLUT[tagId];
@@ -142,8 +158,9 @@ function Photo(props: PhotoProps) {
           loading="lazy"
           title={photoUrl}
           sx={cardMediaStyle}
-          onClick={(e) => handleClickPhoto(e)}
-          onDoubleClick={handleDoubleClick}
+          // onClick={(e) => handleClickPhoto(e)}
+          // onDoubleClick={handleDoubleClick}
+          onClick={(e) => handleClicks()}
         />
         {tagAvatars}
       </Card>
