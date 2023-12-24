@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, setEndDateRedux, setSpecifyDateRangeRedux, setSpecifyTagsInSearchRedux, setStartDateRedux, setTagSelectorRedux } from '../models';
+import { TedTaggerDispatch, setEndDateRedux, setMainDisplayMode, setSpecifyDateRangeRedux, setSpecifyTagsInSearchRedux, setStartDateRedux, setTagSelectorRedux } from '../models';
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -13,10 +13,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { isNil } from 'lodash';
 
-import { TagSelectorType, TagSearchOperator } from '../types';
+import { TagSelectorType, TagSearchOperator, MainDisplayMode } from '../types';
 import { loadMediaItems } from '../controllers';
 import SearchTagList from './SearchTagList';
-import { getEndDate, getSpecifyDateRange, getSpecifyTagsInSearch, getStartDate, getTagIds, getTagSearchOperator, getTagSelector } from '../selectors';
+import { getEndDate, getMainDisplayMode, getSpecifyDateRange, getSpecifyTagsInSearch, getStartDate, getTagIds, getTagSearchOperator, getTagSelector } from '../selectors';
 
 export interface PhotosToDisplaySpecPropsFromParent {
   onClose: () => void;
@@ -31,6 +31,7 @@ export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromPa
   tagSelector: TagSelectorType;
   tagIds: string[];
   tagSearchOperator: TagSearchOperator;
+  mainDisplayMode: MainDisplayMode;
 
   onReloadMediaItems: () => void;
   onSetSpecifyDateRange: (specifyDateRange: boolean) => void;
@@ -38,6 +39,7 @@ export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromPa
   onSetEndDate: (startDate: string) => void;
   onSetSpecifyTagsInSearch: (specifyTagsInSearch: boolean) => void;
   onSetTagSelector: (tagSelector: TagSelectorType) => void;
+  onSetMainDisplayMode: (mainDisplayMode: MainDisplayMode) => void;
 }
 
 const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
@@ -78,7 +80,17 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   };
 
   const handleSearch = () => {
+    // TEDTODO - is this what I want?
     props.onReloadMediaItems();
+    if (props.mainDisplayMode === MainDisplayMode.FullScreen) {
+      props.onSetMainDisplayMode(MainDisplayMode.Grid);
+    }
+    // or this?
+    // if (props.mainDisplayMode === MainDisplayMode.Grid) {
+    //   props.onReloadMediaItems();
+    // } else {
+    //   props.onSetMainDisplayMode(MainDisplayMode.Grid);
+    // }
   };
 
   const handleClose = () => {
@@ -179,6 +191,7 @@ function mapStateToProps(state: any) {
     tagSelector: getTagSelector(state),
     tagIds: getTagIds(state),
     tagSearchOperator: getTagSearchOperator(state),
+    mainDisplayMode: getMainDisplayMode(state),
   };
 }
 
@@ -190,6 +203,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetEndDate: setEndDateRedux,
     onSetSpecifyTagsInSearch: setSpecifyTagsInSearchRedux,
     onSetTagSelector: setTagSelectorRedux,
+    onSetMainDisplayMode: setMainDisplayMode,
   }, dispatch);
 };
 
