@@ -120,19 +120,6 @@ const Home = (props: HomeProps) => {
 
   const drawerContentsJSX = getDrawerContents();
 
-  /*
-    <ListItemText    style={ this.state.checkboxState ? { fontWeight: 'normal' } : { fontWeight: 'bold' } }
-  
-    <ListItemText
-      disableTypography
-      style={{ fontWeight: 'bold' }}
-    >
-  
-    const text = {
-      color: "red"
-    };
-    <ListItemText primaryTypographyProps={{ style: text }} primary="MyText">
-  */
   const
     selectedPropertyPanelText = {
       fontWeight: 'bold',
@@ -215,6 +202,7 @@ const Home = (props: HomeProps) => {
   };
 
   const appBarWidth = rightDrawerOpen ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
+  console.log('appBarWidth', appBarWidth);
   const marginRightWidth = rightDrawerOpen ? `${rightSideDrawerWidth}px` : 0;
   const mainDisplayContents = getMainDisplayContents();
 
