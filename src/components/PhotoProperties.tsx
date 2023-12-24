@@ -9,28 +9,27 @@ import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 
 import { MediaItem } from '../types';
-import { getMediaItem, getSelectedMediaItemIds } from '../selectors';
+import { getFullScreenMediaItemId, getMediaItem, getSelectedMediaItemIds } from '../selectors';
 import { isNil } from 'lodash';
 import { formatISOString } from '../utilities';
 
 export interface PhotoPropertiesProps {
-  selectedMediaItem: MediaItem | null,
-  selectedMediaItemIds: string[],
+  mediaItem: MediaItem | null,
 }
 
 const PhotoProperties = (props: PhotoPropertiesProps) => {
 
-  if (isNil(props.selectedMediaItem)) {
+  if (isNil(props.mediaItem)) {
     return null;
   }
 
   const renderCreationTime = (): JSX.Element | null => {
 
-    if (isNil(props.selectedMediaItem!.creationTime)) {
+    if (isNil(props.mediaItem!.creationTime)) {
       return null;
     }
 
-    const formattedDate = formatISOString(props.selectedMediaItem!.creationTime);
+    const formattedDate = formatISOString(props.mediaItem!.creationTime);
 
     return (
       <React.Fragment>
@@ -51,7 +50,7 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <ImageOutlinedIcon />
           <span style={{ marginLeft: '10px' }}>
-            {props.selectedMediaItem?.fileName}
+            {props.mediaItem?.fileName}
           </span>
         </div>
       </div>
@@ -60,11 +59,8 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
 };
 
 function mapStateToProps(state: any) {
-  const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
-  const selectedMediaItem: MediaItem | null = selectedMediaItemIds.length === 0 ? null : getMediaItem(state, selectedMediaItemIds[0]);
   return {
-    selectedMediaItemIds,
-    selectedMediaItem,
+    mediaItem: getMediaItem(state, getFullScreenMediaItemId(state)),
   };
 }
 
