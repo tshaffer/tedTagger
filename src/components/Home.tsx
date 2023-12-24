@@ -29,12 +29,15 @@ import {
   loadDefaultTagAvatarId,
 } from '../controllers';
 import { TedTaggerDispatch } from '../models';
+
+import FullScreenPhoto from './FullScreenPhoto';
 import PhotoGrid from './PhotoGrid';
 import AssignTags from './AssignTags';
 import TagManager from './TagManager';
 import PhotoToDisplaySpec from './PhotoToDisplaySpec';
 import PhotoProperties from './PhotoProperties';
-import { getSelectedMediaItemIds } from '../selectors';
+import { getFullScreenMediaItemId, getMainDisplayMode, getSelectedMediaItemIds } from '../selectors';
+import { MainDisplayMode } from '../types';
 
 const leftSideDrawerWidth = 256;
 const rightSideDrawerWidth = 240;
@@ -49,6 +52,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export interface HomeProps {
+  mainDisplayMode: MainDisplayMode;
+  fullScreenMediaItemId: string;
   selectedMediaItemIds: string[];
   onLoadDefaultTagAvatarId: () => any;
   onLoadAppTagAvatars: () => any;
@@ -182,9 +187,22 @@ const Home = (props: HomeProps) => {
     );
   };
 
+  const getMainDisplayContents = (): JSX.Element => {
+    if (props.mainDisplayMode === MainDisplayMode.FullScreen) {
+      return (
+        <FullScreenPhoto />
+      );
+    } else {
+      return (
+        <PhotoGrid />
+      );
+    }
+  };
+
   const appBarWidth = open ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
   const marginRightWidth = open ? `${rightSideDrawerWidth}px` : 0;
-
+  const mainDisplayContents = getMainDisplayContents();
+  
   // TEDTODO - split into multiple components
   return (
     <Box sx={{ display: 'flex' }}>
@@ -256,7 +274,7 @@ const Home = (props: HomeProps) => {
       </Drawer >
       <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: 'lightgray', width: '1450px' }}>
         <Toolbar />
-        <PhotoGrid />
+        {mainDisplayContents}
       </Box>
       <Drawer
         sx={{
@@ -287,6 +305,8 @@ const Home = (props: HomeProps) => {
 
 function mapStateToProps(state: any) {
   return {
+    mainDisplayMode: getMainDisplayMode(state),
+    fullScreenMediaItemId: getFullScreenMediaItemId(state),
     selectedMediaItemIds: getSelectedMediaItemIds(state),
   };
 }

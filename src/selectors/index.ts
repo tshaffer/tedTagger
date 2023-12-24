@@ -1,3 +1,4 @@
+export * from './appState';
 export * from './appTagAvatars';
 export * from './mediaItems';
 export * from './selectedMediaItems';

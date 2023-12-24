@@ -1,5 +1,6 @@
 import { MediaItem, Tag, AppTagAvatar, UserTagAvatar } from './entities';
 import {
+  MainDisplayMode,
   TagSearchOperator,
   TagSelectorType
 } from './enums';
@@ -16,6 +17,8 @@ export interface TedTaggerState {
 
 export interface AppState {
   appInitialized: boolean;
+  mainDisplayMode: MainDisplayMode;
+  fullScreenMediaItemId: string;
 }
 
 export interface MediaItemsState {

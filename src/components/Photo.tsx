@@ -1,8 +1,10 @@
-import { Grid, Card, CardMedia, Tooltip } from '@mui/material';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { TedTaggerDispatch } from '../models';
+
+import { Grid, Card, CardMedia } from '@mui/material';
+
+import { TedTaggerDispatch, setFullScreenMediaItemId } from '../models';
 import { selectPhoto } from '../controllers';
 import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
 import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../types';
@@ -42,6 +44,7 @@ export interface PhotoProps extends PhotoPropsFromParent {
   tagsLUT: StringToTagLUT;
   isSelected: boolean;
   onClickPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
+  onSetFullScreenMediaItemId: (id: string) => any;
 }
 
 function Photo(props: PhotoProps) {
@@ -89,8 +92,17 @@ function Photo(props: PhotoProps) {
   };
 
   const handleDoubleClick = () => {
-    // Process the double click event here
-    console.log('Double click processed');
+    console.log('Double click processed', props.mediaItem.googleId);
+    props.onSetFullScreenMediaItemId(props.mediaItem.googleId);
+  };
+
+  const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    // console.log('handleClick: ', (e.target as any).id);
+    // console.log('shiftKey: ', e.shiftKey);
+    // console.log('ctrlKey: ', e.ctrlKey);
+    // console.log('altKey: ', e.altKey);
+    // console.log('metaKey: ', e.metaKey);
+    props.onClickPhoto((e.target as any).id, e.metaKey, e.shiftKey);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
@@ -105,16 +117,6 @@ function Photo(props: PhotoProps) {
     }, 300); // Adjust the delay based on your preference
   };
 
-
-  const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    // console.log('handleClick: ', (e.target as any).id);
-    // console.log('shiftKey: ', e.shiftKey);
-    // console.log('ctrlKey: ', e.ctrlKey);
-    // console.log('altKey: ', e.altKey);
-    // console.log('metaKey: ', e.metaKey);
-
-    props.onClickPhoto((e.target as any).id, e.metaKey, e.shiftKey);
-  };
 
   const photoTags: Tag[] = [];
   props.mediaItem.tagIds.forEach((tagId: string) => {
@@ -142,7 +144,7 @@ function Photo(props: PhotoProps) {
           loading="lazy"
           title={photoUrl}
           sx={cardMediaStyle}
-          onClick={(e) => handleClickPhoto(e)}
+          onClick={(e) => handleClick(e)}
           onDoubleClick={handleDoubleClick}
         />
         {tagAvatars}
@@ -164,6 +166,7 @@ function mapStateToProps(state: any, ownProps: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onClickPhoto: selectPhoto,
+    onSetFullScreenMediaItemId: setFullScreenMediaItemId,
   }, dispatch);
 };
 
