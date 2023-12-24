@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch } from '../models';
-import { handleClickPhoto } from '../controllers';
+import { selectPhoto } from '../controllers';
 import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
 import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../types';
 
@@ -46,6 +46,8 @@ export interface PhotoProps extends PhotoPropsFromParent {
 
 function Photo(props: PhotoProps) {
 
+  const [clickCount, setClickCount] = React.useState(0);
+
   const getPhotoUrl = (): string => {
     const basename: string = path.basename(props.mediaItem.filePath!);
     const numChars = basename.length;
@@ -86,12 +88,30 @@ function Photo(props: PhotoProps) {
     );
   };
 
+  const handleDoubleClick = () => {
+    // Process the double click event here
+    console.log('Double click processed');
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    setClickCount((prevCount) => prevCount + 1);
+
+    setTimeout(() => {
+      if (clickCount === 1) {
+        // Process the single click event if no double click occurs
+        handleClickPhoto(e);
+      }
+      setClickCount(0);
+    }, 300); // Adjust the delay based on your preference
+  };
+
+
   const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    console.log('handleClick: ', (e.target as any).id);
-    console.log('shiftKey: ', e.shiftKey);
-    console.log('ctrlKey: ', e.ctrlKey);
-    console.log('altKey: ', e.altKey);
-    console.log('metaKey: ', e.metaKey);
+    // console.log('handleClick: ', (e.target as any).id);
+    // console.log('shiftKey: ', e.shiftKey);
+    // console.log('ctrlKey: ', e.ctrlKey);
+    // console.log('altKey: ', e.altKey);
+    // console.log('metaKey: ', e.metaKey);
 
     props.onClickPhoto((e.target as any).id, e.metaKey, e.shiftKey);
   };
@@ -123,6 +143,7 @@ function Photo(props: PhotoProps) {
           title={photoUrl}
           sx={cardMediaStyle}
           onClick={(e) => handleClickPhoto(e)}
+          onDoubleClick={handleDoubleClick}
         />
         {tagAvatars}
       </Card>
@@ -142,7 +163,7 @@ function mapStateToProps(state: any, ownProps: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onClickPhoto: handleClickPhoto,
+    onClickPhoto: selectPhoto,
   }, dispatch);
 };
 
