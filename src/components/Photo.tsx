@@ -49,7 +49,7 @@ export interface PhotoProps extends PhotoPropsFromParent {
 
 function Photo(props: PhotoProps) {
 
-  const [clickCount, setClickCount] = React.useState(0);
+  const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
 
   const getPhotoUrl = (): string => {
     const basename: string = path.basename(props.mediaItem.filePath!);
@@ -102,21 +102,27 @@ function Photo(props: PhotoProps) {
     // console.log('ctrlKey: ', e.ctrlKey);
     // console.log('altKey: ', e.altKey);
     // console.log('metaKey: ', e.metaKey);
-    props.onClickPhoto((e.target as any).id, e.metaKey, e.shiftKey);
+    console.log('Single click processed', props.mediaItem.googleId);
+    props.onClickPhoto(props.mediaItem.googleId, e.metaKey, e.shiftKey);
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    setClickCount((prevCount) => prevCount + 1);
-
-    setTimeout(() => {
-      if (clickCount === 1) {
-        // Process the single click event if no double click occurs
+  const handleClicks = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    if (clickTimeout !== null) {
+      console.log('double click executes');
+      clearTimeout(clickTimeout);
+      setClickTimeout(null);
+      handleDoubleClick();
+    } else {
+      console.log('single click');
+      const clickTimeout = setTimeout(() => {
+        console.log('first click executes ');
+        clearTimeout(clickTimeout);
+        setClickTimeout(null);
         handleClickPhoto(e);
-      }
-      setClickCount(0);
-    }, 300); // Adjust the delay based on your preference
+      }, 300);
+      setClickTimeout(clickTimeout);
+    }
   };
-
 
   const photoTags: Tag[] = [];
   props.mediaItem.tagIds.forEach((tagId: string) => {
@@ -144,8 +150,7 @@ function Photo(props: PhotoProps) {
           loading="lazy"
           title={photoUrl}
           sx={cardMediaStyle}
-          onClick={(e) => handleClick(e)}
-          onDoubleClick={handleDoubleClick}
+          onClick={(e) => handleClicks(e)}
         />
         {tagAvatars}
       </Card>
