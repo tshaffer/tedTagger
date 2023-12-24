@@ -68,7 +68,7 @@ const Home = (props: HomeProps) => {
 
   // TEDTODO - rename
   const [drawerContents, setDrawerContents] = React.useState('photoToDisplaySpec');
-  const [open, setOpen] = React.useState(false);
+  const [rightDrawerOpen, setRightDrawerOpen] = React.useState(false);
 
   React.useEffect(() => {
     // props.onLoadPhotosToDisplay()
@@ -163,12 +163,12 @@ const Home = (props: HomeProps) => {
       break;
   }
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleRightDrawerOpen = () => {
+    setRightDrawerOpen(true);
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleRightDrawerClose = () => {
+    setRightDrawerOpen(false);
   };
 
   const getSelectPhotosElement = () => {
@@ -199,10 +199,12 @@ const Home = (props: HomeProps) => {
     }
   };
 
-  const appBarWidth = open ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
-  const marginRightWidth = open ? `${rightSideDrawerWidth}px` : 0;
+  const appBarWidth = rightDrawerOpen ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
+  const marginRightWidth = rightDrawerOpen ? `${rightSideDrawerWidth}px` : 0;
   const mainDisplayContents = getMainDisplayContents();
-  
+
+  const displayMenuIcon: boolean = !(rightDrawerOpen  || (props.mainDisplayMode === MainDisplayMode.FullScreen));
+
   // TEDTODO - split into multiple components
   return (
     <Box sx={{ display: 'flex' }}>
@@ -216,8 +218,8 @@ const Home = (props: HomeProps) => {
             color="inherit"
             aria-label="open drawer"
             edge="end"
-            onClick={handleDrawerOpen}
-            sx={{ ...(open && { display: 'none' }) }}
+            onClick={handleRightDrawerOpen}
+            sx={{ ...(displayMenuIcon && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
@@ -278,7 +280,7 @@ const Home = (props: HomeProps) => {
       </Box>
       <Drawer
         sx={{
-          width: open ? rightSideDrawerWidth : 0,
+          width: rightDrawerOpen ? rightSideDrawerWidth : 0,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: rightSideDrawerWidth,
@@ -286,11 +288,11 @@ const Home = (props: HomeProps) => {
         }}
         variant="persistent"
         anchor="right"
-        open={open}
+        open={rightDrawerOpen}
       >
         <DrawerHeader>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton onClick={handleRightDrawerClose}>
               <ChevronRightIcon />
             </IconButton>
             <span style={{ marginLeft: '8px' }}>Properties</span>
