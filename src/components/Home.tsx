@@ -178,8 +178,23 @@ const Home = (props: HomeProps) => {
     return (
       <div>
 
-        <Button onClick={props.onDeselectAllPhotos}>X</Button>
-        <span>
+        <Button
+          style={{
+            verticalAlign: 'bottom',
+          }}
+          onClick={props.onDeselectAllPhotos}
+        >
+          X</Button>
+        <span
+          style={{
+            fontFamily: 'Google-Sans,Roboto,Arial,sans-serif',
+            fontSize: '1.125rem',
+            letterSpacing: '0',
+            fontWeight: '400',
+            lineHeight: '38px',
+            verticalAlign: 'bottom',
+          }}
+        >
           {props.selectedMediaItemIds.length} selected
         </span>
 
@@ -203,7 +218,7 @@ const Home = (props: HomeProps) => {
   const marginRightWidth = rightDrawerOpen ? `${rightSideDrawerWidth}px` : 0;
   const mainDisplayContents = getMainDisplayContents();
 
-  const displayMenuIcon: boolean = !(rightDrawerOpen  || (props.mainDisplayMode === MainDisplayMode.FullScreen));
+  const displayMenuIcon: boolean = !(rightDrawerOpen || (props.mainDisplayMode === MainDisplayMode.FullScreen));
 
   // TEDTODO - split into multiple components
   return (
