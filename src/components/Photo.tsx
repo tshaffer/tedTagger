@@ -119,7 +119,7 @@ function Photo(props: PhotoProps) {
         clearTimeout(clickTimeout);
         setClickTimeout(null);
         handleClickPhoto(e);
-      }, 300);
+      }, 200);
       setClickTimeout(clickTimeout);
     }
   };
