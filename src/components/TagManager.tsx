@@ -60,16 +60,13 @@ const TagManager = (props: TagManagerProps) => {
             onBlur={(text: string) => handleBlur(tag.id, text)}
           />
           <Tooltip title="Delete tag">
-            <ListItemIcon
+            <IconButton
               style={{ cursor: 'pointer' }}
+              disabled={props.tagInUseByTagId[tag.id]}
+              onClick={() => handleDeleteTag(tag.id)}
             >
-              <IconButton
-                disabled={props.tagInUseByTagId[tag.id]}
-                onClick={() => handleDeleteTag(tag.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </ListItemIcon>
+              <DeleteIcon />
+            </IconButton>
           </Tooltip>
 
         </ListItem >
