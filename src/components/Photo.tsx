@@ -92,30 +92,20 @@ function Photo(props: PhotoProps) {
   };
 
   const handleDoubleClick = () => {
-    console.log('Double click processed', props.mediaItem.googleId);
     props.onSetFullScreenMediaItemId(props.mediaItem.googleId);
   };
 
   const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    // console.log('handleClick: ', (e.target as any).id);
-    // console.log('shiftKey: ', e.shiftKey);
-    // console.log('ctrlKey: ', e.ctrlKey);
-    // console.log('altKey: ', e.altKey);
-    // console.log('metaKey: ', e.metaKey);
-    console.log('Single click processed', props.mediaItem.googleId);
     props.onClickPhoto(props.mediaItem.googleId, e.metaKey, e.shiftKey);
   };
 
   const handleClicks = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     if (clickTimeout !== null) {
-      console.log('double click executes');
       clearTimeout(clickTimeout);
       setClickTimeout(null);
       handleDoubleClick();
     } else {
-      console.log('single click');
       const clickTimeout = setTimeout(() => {
-        console.log('first click executes ');
         clearTimeout(clickTimeout);
         setClickTimeout(null);
         handleClickPhoto(e);

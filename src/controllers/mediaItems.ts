@@ -16,8 +16,6 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
     const state: TedTaggerState = getState();
-    console.log('Tags on entry to loadMediaItems');
-    console.log(state.tagsState.tags);
 
     const tagsByTagId: StringToTagLUT = {};
     state.tagsState.tags.forEach((tag) => {
@@ -84,10 +82,6 @@ export const addTagToMediaItems = (
 ): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    console.log('addTagToMediaItems');
-    console.log(mediaItems);
-    console.log(tag);
-
     const path = serverUrl + apiUrlFragment + 'addTagToMediaItems';
 
     const googleMediaItemIds: string[] = mediaItems.map((mediaItem: MediaItem) => {
@@ -103,8 +97,6 @@ export const addTagToMediaItems = (
       path,
       updateTagsInMediaItemsBody
     ).then((response) => {
-      console.log('updateTagsInMediaItemsBody response');
-      console.log(response);
       dispatch(addTagToMediaItemsRedux(mediaItems, tag.id));
       // return mediaItems.googleId;
     }).catch((error) => {
@@ -123,11 +115,6 @@ export const replaceTagInMediaItems = (
 ): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    console.log('replaceTagInMediaItems');
-    console.log(mediaItems);
-    console.log('existingTag: ', existingTag);
-    console.log('newTag: ', newTag);
-
     const path = serverUrl + apiUrlFragment + 'replaceTagInMediaItems';
 
     const googleMediaItemIds: string[] = mediaItems.map((mediaItem: MediaItem) => {
@@ -144,8 +131,6 @@ export const replaceTagInMediaItems = (
       path,
       replaceTagsInMediaItemsBody
     ).then((response) => {
-      console.log('replaceTagsInMediaItemsBody response');
-      console.log(response);
       dispatch(replaceTagInMediaItemsRedux(mediaItems, existingTag.id, newTag.id));
       // return mediaItems.googleId;
     }).catch((error) => {
@@ -176,8 +161,6 @@ export const deleteTagFromMediaItems = (tagId: string, mediaItems: MediaItem[]):
       path,
       deleteTagsInMediaItemsBody
     ).then((response) => {
-      console.log('deleteTagFromMediaItems response');
-      console.log(response);
       dispatch(deleteTagFromMediaItemsRedux(mediaItems, tagId));
       // return mediaItems.googleId;
     }).catch((error) => {

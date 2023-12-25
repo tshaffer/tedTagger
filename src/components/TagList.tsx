@@ -50,7 +50,7 @@ const TagList = (props: TagListProps) => {
     });
   });
 
-  const handleDeleteTag = (tag: Tag | null) => {
+  const handleDeleteTagFromMediaItems = (tag: Tag | null) => {
     if (!isNil(tag)) {
       props.onDeleteTagFromMediaItems(tag.id, props.mediaItems);
     }
@@ -63,7 +63,7 @@ const TagList = (props: TagListProps) => {
     return (
       <IconButton
         id={tag.id}
-        onClick={() => handleDeleteTag(tag)}
+        onClick={() => handleDeleteTagFromMediaItems(tag)}
       >
         <DeleteIcon />
       </IconButton>

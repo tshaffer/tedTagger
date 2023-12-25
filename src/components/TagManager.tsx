@@ -1,17 +1,18 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch } from '../models';
-import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
-import { getAllAppTagAvatars, getAllTags, getAllUserTagAvatars } from '../selectors';
 import { Box, Button, IconButton, ListItemIcon, TextField, Tooltip } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+
+import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
+import { TedTaggerDispatch } from '../models';
 import { addTagToDb, updateTagLabel } from '../controllers';
+import { getAllAppTagAvatars, getAllTags, getAllUserTagAvatars } from '../selectors';
 import SelectAvatarDialog from './SelectAvatarDialog';
 import TagAvatar from './TagAvatar';
 import EditableTextLabel from './EditableTextLabel';
@@ -74,6 +75,15 @@ const TagManager = (props: TagManagerProps) => {
             text={tag.label}
             onBlur={(text: string) => handleBlur(tag.id, text)}
           />
+          <Tooltip title="Delete tag">
+            <ListItemIcon
+              onClick={() => console.log('delete tag', tag)}
+              style={{ cursor: 'pointer' }}
+            >
+              <DeleteIcon />
+            </ListItemIcon>
+          </Tooltip>
+
         </ListItem >
       );
     });
