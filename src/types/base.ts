@@ -12,3 +12,7 @@ export type StringToStringLUT = {
 export type StringToTagLUT = {
   [key: string]: Tag;
 }
+
+export type StringToBooleanLUT = {
+  [key: string]: boolean;
+}

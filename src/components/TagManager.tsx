@@ -9,10 +9,10 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
-import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
+import { AppTagAvatar, StringToBooleanLUT, Tag, UserTagAvatar } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { addTagToDb, deleteTag, updateTagLabel } from '../controllers';
-import { getAllAppTagAvatars, getAllTags, getAllUserTagAvatars } from '../selectors';
+import { getAllAppTagAvatars, getAllTags, getAllUserTagAvatars, isTagInUse } from '../selectors';
 import SelectAvatarDialog from './SelectAvatarDialog';
 import TagAvatar from './TagAvatar';
 import EditableTextLabel from './EditableTextLabel';
@@ -23,6 +23,7 @@ export interface TagManagerPropsFromParent {
 
 export interface TagManagerProps extends TagManagerPropsFromParent {
   tags: Tag[],
+  tagInUseByTagId: StringToBooleanLUT,
   appTagAvatars: AppTagAvatar[];
   userTagAvatars: UserTagAvatar[];
   onAddTag: (label: string) => void;
@@ -60,10 +61,14 @@ const TagManager = (props: TagManagerProps) => {
           />
           <Tooltip title="Delete tag">
             <ListItemIcon
-              onClick={() => handleDeleteTag(tag.id)}
               style={{ cursor: 'pointer' }}
             >
-              <DeleteIcon />
+              <IconButton
+                disabled={props.tagInUseByTagId[tag.id]}
+                onClick={() => handleDeleteTag(tag.id)}
+              >
+                <DeleteIcon />
+              </IconButton>
             </ListItemIcon>
           </Tooltip>
 
@@ -143,8 +148,16 @@ const TagManager = (props: TagManagerProps) => {
 };
 
 function mapStateToProps(state: any) {
+
+  const tagInUseByTagId: StringToBooleanLUT = {};
+  const tags: Tag[] = getAllTags(state);
+  tags.forEach((tag: Tag) => {
+    tagInUseByTagId[tag.id] = isTagInUse(state, tag.id);
+  });
+
   return {
-    tags: getAllTags(state),
+    tags,
+    tagInUseByTagId,
     appTagAvatars: getAllAppTagAvatars(state),
     userTagAvatars: getAllUserTagAvatars(state),
   };

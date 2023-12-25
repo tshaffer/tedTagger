@@ -1,4 +1,6 @@
+import { isNil } from 'lodash';
 import {
+  MediaItem,
   StringToTagLUT,
   Tag,
   TedTaggerState
@@ -26,12 +28,15 @@ export const getTagById = (state: TedTaggerState, id: string): Tag | null => {
 };
 
 export const getTagByLabel = (state: TedTaggerState, label: string): Tag | null => {
-
   for (const tag of state.tagsState.tags) {
     if (tag.label === label) {
       return tag;
     }
   }
-
   return null;
+};
+
+export const isTagInUse = (state: TedTaggerState, tagId: string): boolean => {
+  const matchingInputItem: MediaItem | undefined = state.mediaItemsState.mediaItems.find((mediaItem) => mediaItem.tagIds.includes(tagId));
+  return !isNil(matchingInputItem);
 };
