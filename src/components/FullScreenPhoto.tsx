@@ -40,7 +40,6 @@ function FullScreenPhoto(props: FullScreenPhotoProps) {
     return photoUrl;
   };
 
-
   const src = getPhotoUrl();
 
   // TEDTODO - scaling - need to remove hardcoded width and height.
@@ -54,7 +53,7 @@ function FullScreenPhoto(props: FullScreenPhotoProps) {
   // the following works.
   //  <div ref={containerRef} style={{ width: '1450px', height: '748px' }}>
   //    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-  
+
   // the following works.
   //  <div ref={containerRef} style={{ width: '1640px', height: '790px' }}>
   //    style={{ width: '100%', height: '100%', objectFit: 'contain' }}

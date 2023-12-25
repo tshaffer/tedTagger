@@ -221,13 +221,6 @@ const Home = (props: HomeProps) => {
     setRightDrawerOpen(false);
   };
 
-  const handleKeyUp = (e: any) => {
-    console.log('keyUp', e.key);
-    if (e.key === 'Escape') {
-      console.log('Escape');
-    }
-  }
-
   const appBarWidth = rightDrawerOpen ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
   const marginRightWidth = rightDrawerOpen ? `${rightSideDrawerWidth}px` : 0;
   const mainDisplayContents = getMainDisplayContents();
@@ -236,10 +229,7 @@ const Home = (props: HomeProps) => {
 
   // TEDTODO - split into multiple components
   return (
-    <Box
-      onKeyUp={(e) => handleKeyUp(e)}
-      sx={{ display: 'flex' }}
-    >
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar sx={{ width: appBarWidth, marginRight: marginRightWidth }}>
         <Toolbar>
