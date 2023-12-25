@@ -38,6 +38,7 @@ import PhotoToDisplaySpec from './PhotoToDisplaySpec';
 import PhotoProperties from './PhotoProperties';
 import { getFullScreenMediaItemId, getMainDisplayMode, getSelectedMediaItemIds } from '../selectors';
 import { MainDisplayMode } from '../types';
+import { isNil } from 'lodash';
 
 const leftSideDrawerWidth = 256;
 const rightSideDrawerWidth = 240;
@@ -66,6 +67,26 @@ export interface HomeProps {
 
 const Home = (props: HomeProps) => {
 
+  // TEDOTODO
+  // const boxRef: any = React.useRef();
+  // const toolbarRef: any = React.useRef();
+
+  // React.useEffect(() => {
+  //   if (!isNil(boxRef) && !isNil(boxRef.current)) {
+  //     const { width, height } = (boxRef.current as any).getBoundingClientRect();
+  //     console.log('box width, height', width, height);
+  //     console.log('home offsetWidth', boxRef.current.parentElement.offsetWidth);
+  //     console.log('home offsetHeight', boxRef.current.parentElement.offsetHeight);
+  //     console.log('home clientHeight', boxRef.current.parentElement.clientHeight);
+
+  //   }
+  //   if (!isNil(toolbarRef) && !isNil(toolbarRef.current)) {
+  //     const { width, height } = (toolbarRef.current as any).getBoundingClientRect();
+  //     console.log('toolbar width, height', width, height);
+  //   }
+  //   // Do something with the dimensions
+  // }, []);
+
   // TEDTODO - rename
   const [drawerContents, setDrawerContents] = React.useState('photoToDisplaySpec');
   const [rightDrawerOpen, setRightDrawerOpen] = React.useState(false);
@@ -88,10 +109,6 @@ const Home = (props: HomeProps) => {
       });
     // });
   }, []);
-
-  const handleClose = () => {
-    setDrawerContents('');
-  };
 
   const getDrawerContents = (): JSX.Element | null => {
     if (drawerContents === 'photoToDisplaySpec') {
@@ -150,21 +167,12 @@ const Home = (props: HomeProps) => {
       break;
   }
 
-  const handleRightDrawerOpen = () => {
-    setRightDrawerOpen(true);
-  };
-
-  const handleRightDrawerClose = () => {
-    setRightDrawerOpen(false);
-  };
-
   const getSelectPhotosElement = () => {
     if (props.selectedMediaItemIds.length === 0) {
       return null;
     }
     return (
       <div>
-
         <Button
           style={{
             verticalAlign: 'bottom',
@@ -201,8 +209,26 @@ const Home = (props: HomeProps) => {
     }
   };
 
+  const handleClose = () => {
+    setDrawerContents('');
+  };
+
+  const handleRightDrawerOpen = () => {
+    setRightDrawerOpen(true);
+  };
+
+  const handleRightDrawerClose = () => {
+    setRightDrawerOpen(false);
+  };
+
+  const handleKeyUp = (e: any) => {
+    console.log('keyUp', e.key);
+    if (e.key === 'Escape') {
+      console.log('Escape');
+    }
+  }
+
   const appBarWidth = rightDrawerOpen ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
-  console.log('appBarWidth', appBarWidth);
   const marginRightWidth = rightDrawerOpen ? `${rightSideDrawerWidth}px` : 0;
   const mainDisplayContents = getMainDisplayContents();
 
@@ -210,7 +236,10 @@ const Home = (props: HomeProps) => {
 
   // TEDTODO - split into multiple components
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box
+      onKeyUp={(e) => handleKeyUp(e)}
+      sx={{ display: 'flex' }}
+    >
       <CssBaseline />
       <AppBar sx={{ width: appBarWidth, marginRight: marginRightWidth }}>
         <Toolbar>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -15,7 +16,17 @@ export interface FullScreenPhotoProps {
 
 function FullScreenPhoto(props: FullScreenPhotoProps) {
 
-  const [aspectRatio, setAspectRatio] = React.useState<number | null>(null);
+  // const containerRef: any = React.useRef();
+
+  // React.useEffect(() => {
+  //   if (!isNil(containerRef) && !isNil(containerRef.current)) {
+  //     const { width, height } = (containerRef.current as any).getBoundingClientRect();
+  //     console.log('width, height', width, height);
+  //     console.log('offsetWidth', containerRef.current.parentElement.offsetWidth);
+  //     console.log('offsetHeight', containerRef.current.parentElement.offsetHeight);
+  //     console.log('clientHeight', containerRef.current.parentElement.clientHeight);
+  //   }
+  // }, []);
 
   const getPhotoUrl = (): string => {
     const basename: string = path.basename(props.mediaItem!.filePath!);
@@ -30,67 +41,30 @@ function FullScreenPhoto(props: FullScreenPhotoProps) {
   };
 
 
-  React.useEffect(() => {
-    const updateAspectRatio = () => {
-      const img = new Image();
-      img.src = getPhotoUrl();
-
-      img.onload = () => {
-        console.log('img dimensions', img.width, img.height);
-        const ratio = img.width / img.height;
-        setAspectRatio(ratio);
-      };
-    };
-
-    updateAspectRatio();
-  }, [getPhotoUrl()]);
-
   const src = getPhotoUrl();
 
-  // const leftSideDrawerWidth = 256;
-  // //   const appBarWidth = rightDrawerOpen ? `calc(100% - ${leftSideDrawerWidth + rightSideDrawerWidth}px)` : `calc(100% - ${leftSideDrawerWidth}px)`;
+  // TEDTODO - scaling - need to remove hardcoded width and height.
 
-  // const photoWidth = `calc(100% - ${leftSideDrawerWidth}px)`;
-  // console.log('photoWidth', photoWidth);
+  // https://www.npmjs.com/package/react-sizes
 
-  // return (
-  //   <div style={{ maxWidth: 1450, maxHeight: 748, margin: '0 auto', overflow: 'hidden' }}>
-  //     {aspectRatio !== null && (
-  //       <div
-  //         style={{
-  //           position: 'relative',
-  //           width: '100%',
-  //           paddingBottom: `${(1 / aspectRatio) * 100}%`,
-  //         }}
-  //       >
-  //         <img
-  //           src={src}
-  //           alt="Image"
-  //           style={{
-  //             position: 'absolute',
-  //             top: 0,
-  //             left: 0,
-  //             width: '100%',
-  //             height: '100%',
-  //             objectFit: 'contain',
-  //           }}
-  //         />
-  //       </div>
-  //     )}
-  //   </div>
-  // )
+  // https://stackoverflow.com/questions/34247337/object-fit-not-affecting-images
+  // the following doesn't work.
+  // style={{ width: '2048px', height: '1536px', objectFit: 'contain', }}
 
-  //     <div style={{ width: '1450px', height: '748px', maxWidth: '1450px', maxHeight: '748px' }}>
-
-  //         style={{ objectFit: 'contain', }}
+  // the following works.
+  //  <div ref={containerRef} style={{ width: '1450px', height: '748px' }}>
+  //    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+  
+  // the following works.
+  //  <div ref={containerRef} style={{ width: '1640px', height: '790px' }}>
+  //    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
 
   return (
-    <div style={{ width: '997px', height: '748px' }}>
+    <div style={{ width: '1640px', height: '790px' }}>
       <img
-        style={{ width: '997px', height: '748px' }}
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
         src={src}
       />
-      pizza
     </div>
   );
 }
