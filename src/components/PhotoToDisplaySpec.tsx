@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TedTaggerDispatch, setEndDateRedux, setMainDisplayMode, setSpecifyDateRangeRedux, setSpecifyTagsInSearchRedux, setStartDateRedux, setTagSelectorRedux } from '../models';
+import { TedTaggerDispatch, setEndDateRedux, setSpecifyDateRangeRedux, setSpecifyTagsInSearchRedux, setStartDateRedux, setTagSelectorRedux } from '../models';
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -39,7 +39,6 @@ export interface PhotosToDisplaySpecProps extends PhotosToDisplaySpecPropsFromPa
   onSetEndDate: (startDate: string) => void;
   onSetSpecifyTagsInSearch: (specifyTagsInSearch: boolean) => void;
   onSetTagSelector: (tagSelector: TagSelectorType) => void;
-  onSetMainDisplayMode: (mainDisplayMode: MainDisplayMode) => void;
 }
 
 const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
@@ -80,17 +79,7 @@ const PhotoToDisplaySpec = (props: PhotosToDisplaySpecProps) => {
   };
 
   const handleSearch = () => {
-    // TEDTODO - is this what I want?
     props.onReloadMediaItems();
-    if (props.mainDisplayMode === MainDisplayMode.FullScreen) {
-      props.onSetMainDisplayMode(MainDisplayMode.Grid);
-    }
-    // or this?
-    // if (props.mainDisplayMode === MainDisplayMode.Grid) {
-    //   props.onReloadMediaItems();
-    // } else {
-    //   props.onSetMainDisplayMode(MainDisplayMode.Grid);
-    // }
   };
 
   const handleClose = () => {
@@ -203,7 +192,6 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetEndDate: setEndDateRedux,
     onSetSpecifyTagsInSearch: setSpecifyTagsInSearchRedux,
     onSetTagSelector: setTagSelectorRedux,
-    onSetMainDisplayMode: setMainDisplayMode,
   }, dispatch);
 };
 

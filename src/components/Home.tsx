@@ -19,6 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
+import { setMainDisplayMode } from '../models';
+
 import {
   loadAppTagAvatars,
   loadMediaItems,
@@ -38,7 +40,6 @@ import PhotoToDisplaySpec from './PhotoToDisplaySpec';
 import PhotoProperties from './PhotoProperties';
 import { getFullScreenMediaItemId, getMainDisplayMode, getSelectedMediaItemIds } from '../selectors';
 import { MainDisplayMode } from '../types';
-import { isNil } from 'lodash';
 
 const leftSideDrawerWidth = 256;
 const rightSideDrawerWidth = 240;
@@ -63,6 +64,7 @@ export interface HomeProps {
   onLoadUserTagAvatars: () => any;
   // onLoadPhotosToDisplay: () => any;
   onDeselectAllPhotos: () => any;
+  onSetMainDisplayMode: (mainDisplayMode: MainDisplayMode) => any;
 }
 
 const Home = (props: HomeProps) => {
@@ -167,10 +169,40 @@ const Home = (props: HomeProps) => {
       break;
   }
 
+  const getReturnToGridElement = () => {
+    return (
+      <div>
+        <Button
+          style={{
+            verticalAlign: 'bottom',
+          }}
+          onClick={() => props.onSetMainDisplayMode(MainDisplayMode.Grid)}
+        >
+          X
+        </Button>
+        <span
+          style={{
+            fontFamily: 'Google-Sans,Roboto,Arial,sans-serif',
+            fontSize: '1.125rem',
+            letterSpacing: '0',
+            fontWeight: '400',
+            lineHeight: '38px',
+            verticalAlign: 'bottom',
+          }}
+        >
+          Return to Grid
+        </span>
+
+      </div >
+    );
+  };
+
   const getSelectPhotosElement = () => {
+
     if (props.selectedMediaItemIds.length === 0) {
       return null;
     }
+
     return (
       <div>
         <Button
@@ -195,6 +227,15 @@ const Home = (props: HomeProps) => {
 
       </div>
     );
+  };
+
+  const getUpperLeftButton = () => {
+    if (props.mainDisplayMode === MainDisplayMode.FullScreen) {
+      return getReturnToGridElement();
+      return null;
+    } else {
+      return getSelectPhotosElement();
+    }
   };
 
   const getMainDisplayContents = (): JSX.Element => {
@@ -256,11 +297,7 @@ const Home = (props: HomeProps) => {
         }}
       >
         <Toolbar>
-          {getSelectPhotosElement()}
-          {/* {props.selectedMediaItemIds.length === 0
-            ? null
-            : <Button onClick={props.onDeselectAllPhotos}>Deselect All Photos</Button>
-          } */}
+          {getUpperLeftButton()}
         </Toolbar>
         <Box sx={{ overflow: 'auto' }}>
           <List>
@@ -344,6 +381,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadUserTagAvatars: loadUserTagAvatars,
     // onLoadPhotosToDisplay: loadPhotosToDisplaySpec,
     onDeselectAllPhotos: deselectAllPhotos,
+    onSetMainDisplayMode: setMainDisplayMode,
   }, dispatch);
 };
 
