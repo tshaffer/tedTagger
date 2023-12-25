@@ -268,6 +268,8 @@ const Home = (props: HomeProps) => {
 
   const displayMenuIcon: boolean = !(rightDrawerOpen || (props.mainDisplayMode === MainDisplayMode.FullScreen));
 
+  const displayLeftDrawerContents = props.mainDisplayMode !== MainDisplayMode.FullScreen ? 'block' : 'none';
+
   // TEDTODO - split into multiple components
   return (
     <Box sx={{ display: 'flex' }}>
@@ -299,7 +301,10 @@ const Home = (props: HomeProps) => {
         <Toolbar>
           {getUpperLeftButton()}
         </Toolbar>
-        <Box sx={{ overflow: 'auto' }}>
+        <Box 
+          display={displayLeftDrawerContents}
+          sx={{ overflow: 'auto' }}
+        >
           <List>
             <ListItem key={2} disablePadding>
               <ListItemButton onClick={() => setDrawerContents('photoToDisplaySpec')}>
