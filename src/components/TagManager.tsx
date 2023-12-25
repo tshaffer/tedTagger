@@ -44,11 +44,12 @@ const TagManager = (props: TagManagerProps) => {
       return (
         <ListItem
           key={tag.id}
+          style={{ paddingLeft: '8px' }}
         >
           <Tooltip title="Select avatar">
             <ListItemIcon
+              style={{ cursor: 'pointer', width: '32px', minWidth: '32px' }}
               onClick={() => handleClickTag(tag)}
-              style={{ cursor: 'pointer' }}
             >
               <AssignmentIndIcon />
             </ListItemIcon>
@@ -56,12 +57,13 @@ const TagManager = (props: TagManagerProps) => {
           <TagAvatar avatarType={tag.avatarType} avatarId={tag.avatarId} />
           <EditableTextLabel
             key={tag.id}
+            // style={{ width: '85px' }}
             text={tag.label}
             onBlur={(text: string) => handleBlur(tag.id, text)}
           />
           <Tooltip title="Delete tag">
             <IconButton
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', width: '40px' }}
               disabled={props.tagInUseByTagId[tag.id]}
               onClick={() => handleDeleteTag(tag.id)}
             >

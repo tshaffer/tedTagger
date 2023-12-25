@@ -36,9 +36,10 @@ const EditableTextLabel = (props: EditableTextLabelProps) => {
           onChange={handleChange}
           onBlur={handleBlur}
           autoFocus
+          width="80px"
         />
       ) : (
-        <ListItemText primary={props.text} onDoubleClick={handleDoubleClick}/>
+        <ListItemText style={{ paddingLeft: '6px', width: '80px' }} primary={props.text} onDoubleClick={handleDoubleClick} />
       )}
     </div>
   );

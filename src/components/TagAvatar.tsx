@@ -59,12 +59,12 @@ const TagAvatar = (props: TagAvatarProps) => {
 
   if (isNil(props.photoTag) || isNil(props.googleId)) {
     return (
-      <img src={url} />
+      <img width="48px" src={url} />
     );
   } else {
     return (
       <Tooltip title={props.photoTag.label} key={props.photoTag.id + '::' + props.googleId}>
-        <img src={url} />
+        <img width="48px" src={url} />
       </Tooltip>
     );
   }
