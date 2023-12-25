@@ -94,25 +94,24 @@ export const addTagToDb = (
 export const deleteTag = (tagId: string): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
     console.log('deleteTag', tagId);
-    return dispatch(deleteTagRedux(tagId));
-    // const path = serverUrl + apiUrlFragment + 'deleteTag';
+    const path = serverUrl + apiUrlFragment + 'deleteTag';
 
-    // const deleteTagBody = {
-    //   tagId,
-    // };
+    const deleteTagBody = {
+      tagId,
+    };
 
-    // return axios.post(
-    //   path,
-    //   deleteTagBody
-    // ).then((response) => {
-    //   console.log('deleteTag response');
-    //   console.log(response);
-    //   return tagId;
-    // }).catch((error) => {
-    //   console.log('error');
-    //   console.log(error);
-    //   return '';
-    // });
+    return axios.post(
+      path,
+      deleteTagBody
+    ).then((response) => {
+      console.log('deleteTag response');
+      console.log(response);
+      return dispatch(deleteTagRedux(tagId));
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
   };
 };
 
