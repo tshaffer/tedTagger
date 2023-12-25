@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 import { AppTagAvatar, Tag, UserTagAvatar } from '../types';
 import { TedTaggerDispatch } from '../models';
-import { addTagToDb, updateTagLabel } from '../controllers';
+import { addTagToDb, deleteTag, updateTagLabel } from '../controllers';
 import { getAllAppTagAvatars, getAllTags, getAllUserTagAvatars } from '../selectors';
 import SelectAvatarDialog from './SelectAvatarDialog';
 import TagAvatar from './TagAvatar';
@@ -27,6 +27,7 @@ export interface TagManagerProps extends TagManagerPropsFromParent {
   userTagAvatars: UserTagAvatar[];
   onAddTag: (label: string) => void;
   onUpdateTagLabel: (tagId: string, label: string) => void;
+  onDeleteTag: (tagId: string) => void;
 }
 
 const TagManager = (props: TagManagerProps) => {
@@ -36,24 +37,6 @@ const TagManager = (props: TagManagerProps) => {
   const [newTag, setNewTag] = React.useState('');
 
   const [showSelectAvatarDialog, setShowSelectAvatarDialog] = React.useState(false);
-
-  const handleClose = () => {
-    props.onClose();
-  };
-
-  const handleClickTag = (tag: Tag) => {
-    setSelectedTag(tag);
-    setShowSelectAvatarDialog(true);
-  };
-
-  const handleSetNewTag = (text: string) => {
-    setNewTag(text);
-  };
-
-  const handleBlur = (tagId: string, text: string) => {
-    console.log(text);
-    props.onUpdateTagLabel(tagId, text);
-  };
 
   const getListItems = (): JSX.Element[] => {
     const listItems = props.tags.map((tag: Tag) => {
@@ -77,7 +60,7 @@ const TagManager = (props: TagManagerProps) => {
           />
           <Tooltip title="Delete tag">
             <ListItemIcon
-              onClick={() => console.log('delete tag', tag)}
+              onClick={() => handleDeleteTag(tag.id)}
               style={{ cursor: 'pointer' }}
             >
               <DeleteIcon />
@@ -91,14 +74,35 @@ const TagManager = (props: TagManagerProps) => {
     return listItems;
   };
 
+  const handleClose = () => {
+    props.onClose();
+  };
+
+  const handleClickTag = (tag: Tag) => {
+    setSelectedTag(tag);
+    setShowSelectAvatarDialog(true);
+  };
+
+  const handleSetNewTag = (text: string) => {
+    setNewTag(text);
+  };
+
+  const handleBlur = (tagId: string, text: string) => {
+    console.log(text);
+    props.onUpdateTagLabel(tagId, text);
+  };
+
   const handleCloseSelectAvatar = () => {
     setShowSelectAvatarDialog(false);
   };
 
-
-  const handleSave = () => {
+  const handleSaveTag = () => {
     props.onAddTag(newTag);
     setNewTag('');
+  };
+
+  const handleDeleteTag = (tagId: string) => {
+    props.onDeleteTag(tagId);
   };
 
   const listItems: JSX.Element[] = getListItems();
@@ -126,7 +130,7 @@ const TagManager = (props: TagManagerProps) => {
         </TextField>
         <Tooltip title="Save">
           <IconButton
-            onClick={() => handleSave()}
+            onClick={() => handleSaveTag()}
           >
             <SaveIcon />
           </IconButton>
@@ -150,6 +154,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddTag: addTagToDb,
     onUpdateTagLabel: updateTagLabel,
+    onDeleteTag: deleteTag,
   }, dispatch);
 };
 

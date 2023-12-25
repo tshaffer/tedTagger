@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatar, addUserTagAvatars, updateTag } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTag, addTags, addUserTagAvatar, addUserTagAvatars, deleteTagRedux, updateTag } from '../models';
 import { serverUrl, apiUrlFragment, Tag, AppTagAvatar, UserTagAvatar } from '../types';
 import { addAppTagAvatars, setDefaultAvatarId } from '../models/appTagAvatars';
 import { getDefaultAvatarId, getTagById } from '../selectors';
@@ -88,6 +88,31 @@ export const addTagToDb = (
       console.log(error);
       return '';
     });
+  };
+};
+
+export const deleteTag = (tagId: string): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+    console.log('deleteTag', tagId);
+    return dispatch(deleteTagRedux(tagId));
+    // const path = serverUrl + apiUrlFragment + 'deleteTag';
+
+    // const deleteTagBody = {
+    //   tagId,
+    // };
+
+    // return axios.post(
+    //   path,
+    //   deleteTagBody
+    // ).then((response) => {
+    //   console.log('deleteTag response');
+    //   console.log(response);
+    //   return tagId;
+    // }).catch((error) => {
+    //   console.log('error');
+    //   console.log(error);
+    //   return '';
+    // });
   };
 };
 

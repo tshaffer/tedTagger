@@ -1,4 +1,4 @@
-import { cloneDeep, isNil } from 'lodash';
+import { cloneDeep, isNil, remove } from 'lodash';
 
 import { Tag, TagsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
@@ -9,7 +9,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 export const ADD_TAGS = 'ADD_TAGS';
 export const ADD_TAG = 'ADD_TAG';
 export const UPDATE_TAG = 'UPDATE_TAG';
-// export const DELETE_TAG = 'DELETE_TAG';
+export const DELETE_TAG = 'DELETE_TAG';
 
 // ------------------------------------
 // Actions
@@ -63,20 +63,20 @@ export const updateTag = (
   };
 };
 
-// interface DeleteTagPayload {
-//   tag: Tag;
-// }
+interface DeleteTagPayload {
+  tagId: string;
+}
 
-// export const deleteTag = (
-//   tag: Tag,
-// ): any => {
-//   return {
-//     type: DELETE_TAG,
-//     payload: {
-//       tag,
-//     }
-//   };
-// };
+export const deleteTagRedux = (
+  tagId: string,
+): any => {
+  return {
+    type: DELETE_TAG,
+    payload: {
+      tagId
+    }
+  };
+};
 
 // ------------------------------------
 // Reducer
@@ -89,7 +89,7 @@ const initialState: TagsState =
 
 export const tagsStateReducer = (
   state: TagsState = initialState,
-  action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload & UpdateTagPayload>
+  action: TedTaggerModelBaseAction<AddTagsPayload & AddTagPayload & UpdateTagPayload & DeleteTagPayload>
 ): TagsState => {
   switch (action.type) {
     case ADD_TAGS: {
@@ -114,11 +114,12 @@ export const tagsStateReducer = (
       }
       return newState;
     }
-    // case DELETE_TAG: {
-    //   const newState = cloneDeep(state) as TagsState;
-    //   debugger;
-    //   return newState;
-    // }
+    case DELETE_TAG: {
+      const newState = cloneDeep(state) as TagsState;
+      const existingTags: Tag[] = newState.tags;
+      remove(existingTags, (tag: Tag) => tag.id === action.payload.tagId);
+      return newState;
+    }
 
     default:
       return state;
