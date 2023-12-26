@@ -30,11 +30,13 @@ function FullScreenPhoto(props: FullScreenPhotoProps) {
 
   const getPhotoUrl = (): string => {
     const basename: string = path.basename(props.mediaItem!.filePath!);
+    const extension: string = path.extname(basename);
+    const extensionLength: number = extension.length;
     const numChars = basename.length;
     const photoUrl = path.join(
       '/images',
-      basename.charAt(numChars - 6),
-      basename.charAt(numChars - 5),
+      basename.charAt(numChars - (extensionLength + 2)),
+      basename.charAt(numChars - (extensionLength + 1)),
       basename,
     );
     return photoUrl;
