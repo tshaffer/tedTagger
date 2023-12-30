@@ -112,6 +112,26 @@ const Home = (props: HomeProps) => {
     // });
   }, []);
 
+  React.useEffect(() => {
+    const handleEscapeKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        // Handle the escape key press here
+        console.log('Escape key pressed!');
+        // Add your logic to handle the escape key press globally
+      }
+    };
+
+    // Add the event listener when the component mounts
+    console.log('addEventListener!');
+    document.addEventListener('keydown', handleEscapeKeyPress);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      console.log('removeEventListener!');
+      document.removeEventListener('keydown', handleEscapeKeyPress);
+    };
+  }, []); // Empty dependency array ensures that the effect runs only once on mount
+
   const getDrawerContents = (): JSX.Element | null => {
     if (drawerContents === 'photoToDisplaySpec') {
       return (
