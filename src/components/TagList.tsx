@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { TedTaggerDispatch } from '../models';
 import { MediaItem, Tag } from '../types';
 import { cloneDeep, isNil, isObject, isString } from 'lodash';
-import { getAllTags, getMediaItem, getTagById } from '../selectors';
+import { getAllTags, getMediaItemById, getTagById } from '../selectors';
 import { addTagToMediaItems, deleteTagFromMediaItems, replaceTagInMediaItems } from '../controllers';
 
 interface TagOption {
@@ -231,7 +231,7 @@ const TagList = (props: TagListProps) => {
 const getMediaItems = (state: any, mediaItemIds: string[]): MediaItem[] => {
   const mediaItems: MediaItem[] = [];
   mediaItemIds.forEach((mediaItemId: string) => {
-    const mediaItem: MediaItem | null = getMediaItem(state, mediaItemId);
+    const mediaItem: MediaItem | null = getMediaItemById(state, mediaItemId);
     if (!isNil(mediaItem)) {
       mediaItems.push(mediaItem);
     }

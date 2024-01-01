@@ -7,7 +7,7 @@ import path from 'path-browserify';
 
 import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
-import { getMediaItem, getFullScreenMediaItemId } from '../selectors';
+import { getMediaItemById, getFullScreenMediaItemId } from '../selectors';
 
 
 export interface FullScreenPhotoProps {
@@ -73,7 +73,7 @@ function FullScreenPhoto(props: FullScreenPhotoProps) {
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
-    mediaItem: getMediaItem(state, getFullScreenMediaItemId(state)),
+    mediaItem: getMediaItemById(state, getFullScreenMediaItemId(state)),
   };
 }
 

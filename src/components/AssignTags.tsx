@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TedTaggerDispatch } from '../models';
-import { getMediaItem, getSelectedMediaItemIds, getTagById } from '../selectors';
+import { getMediaItemById, getSelectedMediaItemIds, getTagById } from '../selectors';
 import { MediaItem, Tag, TedTaggerState } from '../types';
 
 import TagList from './TagList';
@@ -57,7 +57,7 @@ const getTags = (state: TedTaggerState, mediaItem: MediaItem): Tag[] => {
 
 function mapStateToProps(state: any) {
   const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
-  const selectedMediaItem: MediaItem | null = selectedMediaItemIds.length === 0 ? null : getMediaItem(state, selectedMediaItemIds[0]);
+  const selectedMediaItem: MediaItem | null = selectedMediaItemIds.length === 0 ? null : getMediaItemById(state, selectedMediaItemIds[0]);
   return {
     selectedMediaItemIds,
     tags: (selectedMediaItemIds.length === 1 || isNil(selectedMediaItem)) ? getTags(state, selectedMediaItem as MediaItem) : [],

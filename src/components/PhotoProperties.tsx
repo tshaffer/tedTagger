@@ -9,7 +9,7 @@ import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 
 import { MediaItem } from '../types';
-import { getFullScreenMediaItemId, getMediaItem, getSelectedMediaItemIds } from '../selectors';
+import { getFullScreenMediaItemId, getMediaItemById, getSelectedMediaItemIds } from '../selectors';
 import { isNil } from 'lodash';
 import { formatISOString } from '../utilities';
 
@@ -60,7 +60,7 @@ const PhotoProperties = (props: PhotoPropertiesProps) => {
 
 function mapStateToProps(state: any) {
   return {
-    mediaItem: getMediaItem(state, getFullScreenMediaItemId(state)),
+    mediaItem: getMediaItemById(state, getFullScreenMediaItemId(state)),
   };
 }
 

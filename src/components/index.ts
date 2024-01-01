@@ -1,4 +1,5 @@
 export * from './App';
+export * from './LoupeView';
 export * from './FullScreenPhoto';
 export * from './PhotoGrid';
 export * from './Home';

@@ -30,7 +30,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App viewMode={'main'} />} />
+        <Route path='/' element={<App/>} />
       </Routes>
     </BrowserRouter>
   </Provider>,

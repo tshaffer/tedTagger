@@ -3,7 +3,7 @@ import {
   TedTaggerState
 } from '../types';
 
-import { getMediaItem } from './mediaItems';
+import { getMediaItemById } from './mediaItems';
 
 export const getSelectedMediaItemIds = (state: TedTaggerState): string[] => {
   return state.selectionsState.selectedMediaItemIds;
@@ -13,7 +13,7 @@ export const isMediaItemSelected = (state: TedTaggerState, mediaItem: MediaItem)
 
   const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
   for (const selectedMediaItemId of selectedMediaItemIds) {
-    const selectedMediaItem = getMediaItem(state, selectedMediaItemId);
+    const selectedMediaItem = getMediaItemById(state, selectedMediaItemId);
     if (selectedMediaItem?.googleId === mediaItem?.googleId) {
       return true;
     }
