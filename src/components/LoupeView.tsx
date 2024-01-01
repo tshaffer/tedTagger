@@ -18,9 +18,24 @@ export interface LoupeViewProps extends LoupeViewPropsFromParent {
 }
 
 const LoupeView = (props: LoupeViewProps) => {
-  console.log('poo6');
-  console.log('props.mediaItemId', props.mediaItemId);
-  console.log('props.mediaItem', props.mediaItem);
+
+  const [windowDimensions, setWindowDimensions] = React.useState(getWindowDimensions());
+
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height
+    };
+  }
+
+  React.useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   if (isNil(props.mediaItem)) {
     return null;
@@ -28,20 +43,16 @@ const LoupeView = (props: LoupeViewProps) => {
 
   const src = getPhotoUrl(props.mediaItem);
 
+  const maxHeightInPixels = windowDimensions.height - 222;
+  const maxHeightProperty = maxHeightInPixels.toString() + 'px';
+
+  console.log('maxHeightProperty: ' + maxHeightProperty);
+
   return (
-    // <div>
-    //   <div className='loupeView'>LoupeView</div>
-    // </div>
-    // <div style={{ width: '1640px', height: '790px' }}>
-    //   <img
-    //     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-    //     src={src}
-    //   />
-    // </div>
     <div className='loupeView'>
       <img
         className='imgView'
-        style={{ width: '100%', objectFit: 'contain' }}
+        style={{ width: '100%', objectFit: 'contain', maxHeight: maxHeightProperty }}
         src={src}
       />
     </div>

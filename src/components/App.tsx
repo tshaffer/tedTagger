@@ -35,6 +35,9 @@ const App = (props: AppProps) => {
   });
 
   // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
+  // <GridView />
+
+  // <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
 
   console.log('poo8');
   return (
@@ -42,7 +45,7 @@ const App = (props: AppProps) => {
       <div className='topPanel' >Top Panel</div>
       <div className='leftPanel'>Left Panel</div>
       <div className='centerPanel'>
-        <GridView />
+        <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
       </div>
       <div className='rightPanel'>Right Panel</div>
       <div className='bottomPanel'>Bottom Panel</div>
