@@ -8,6 +8,7 @@ import path from 'path-browserify';
 import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getMediaItemById, getFullScreenMediaItemId } from '../selectors';
+import { getPhotoUrl } from '../utilities';
 
 
 export interface FullScreenPhotoProps {
@@ -28,21 +29,7 @@ function FullScreenPhoto(props: FullScreenPhotoProps) {
   //   }
   // }, []);
 
-  const getPhotoUrl = (): string => {
-    const basename: string = path.basename(props.mediaItem!.filePath!);
-    const extension: string = path.extname(basename);
-    const extensionLength: number = extension.length;
-    const numChars = basename.length;
-    const photoUrl = path.join(
-      '/images',
-      basename.charAt(numChars - (extensionLength + 2)),
-      basename.charAt(numChars - (extensionLength + 1)),
-      basename,
-    );
-    return photoUrl;
-  };
-
-  const src = getPhotoUrl();
+  const src = getPhotoUrl(props.mediaItem!);
 
   // TEDTODO - scaling - need to remove hardcoded width and height.
 

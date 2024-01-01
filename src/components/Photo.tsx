@@ -12,6 +12,7 @@ import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../
 import path from 'path-browserify';
 import TagAvatar from './TagAvatar';
 import { isNil } from 'lodash';
+import { getPhotoUrl } from '../utilities';
 
 const cardStyle = {
   display: 'flex',
@@ -50,20 +51,6 @@ export interface PhotoProps extends PhotoPropsFromParent {
 function Photo(props: PhotoProps) {
 
   const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
-
-  const getPhotoUrl = (): string => {
-    const basename: string = path.basename(props.mediaItem.filePath!);
-    const extension: string = path.extname(basename);
-    const extensionLength: number = extension.length;
-    const numChars = basename.length;
-    const photoUrl = path.join(
-      '/images',
-      basename.charAt(numChars - (extensionLength + 2)),
-      basename.charAt(numChars - (extensionLength + 1)),
-      basename,
-    );
-    return photoUrl;
-  };
 
   const getTagAvatar = (photoTag: Tag): JSX.Element => {
     if (isNil(photoTag.avatarId) || isNil(photoTag.avatarType)) {
@@ -122,7 +109,7 @@ function Photo(props: PhotoProps) {
     photoTags.push(tag);
   });
 
-  const photoUrl = getPhotoUrl();
+  const photoUrl = getPhotoUrl(props.mediaItem);
 
   const tagAvatars = getTagAvatars(photoTags);
 
