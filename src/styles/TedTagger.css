@@ -14,7 +14,8 @@
 }
 
 .leftPanel {
-  width: 256px; /* was 64px */
+  width: 256px;
+  /* was 64px */
 
   height: calc(100% - 192px);
   /* min - height: calc(100 % - 192px); */
@@ -26,19 +27,21 @@
 }
 
 .centerPanel {
-  margin: 0 240px 0 256px;  /* was 0 32px 0 64px */
+  margin: 0 240px 0 256px;
+  /* was 0 32px 0 64px */
   /* Adjust left and right margins based on the left and right panel widths */
 
   /* max-height: 100%; */
   /* max-height: calc(100% - 192px); */
   max-height: 616px;
-  
+
   background-color: lightcoral;
   overflow-y: auto;
 }
 
 .rightPanel {
-  width: 240px; /* was 32px */
+  width: 240px;
+  /* was 32px */
 
   height: calc(100% - 192px);
   /* min - height: calc(100 % - 192px); */
@@ -59,6 +62,8 @@
 
 .loupeView {
   max-height: 616px;
+  padding-top: 24px;
+  /* margin-bottom: 4px; */
 }
 
 .imgView {
@@ -68,4 +73,3 @@
 .gridView {
   max-height: 616px;
 }
-

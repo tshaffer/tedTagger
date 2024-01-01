@@ -19,6 +19,8 @@ export interface AppProps {
 
 const App = (props: AppProps) => {
 
+  const appRef = React.useRef(null);
+
   React.useEffect(() => {
     props.onLoadDefaultTagAvatarId()
       .then(function () {
@@ -35,15 +37,24 @@ const App = (props: AppProps) => {
   });
 
   // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
+  //         <GridView />
 
   console.log('poo8');
+
+  if (appRef && appRef.current) {
+    console.log(getComputedStyle(appRef.current));
+  } else if (appRef) {
+    console.log('appRef.current is null');
+  } else {
+    console.log('appRef is null');
+  }
+
   return (
-    <div>
+    <div ref={appRef}>
       <div className='topPanel' >Top Panel</div>
       <div className='leftPanel'>Left Panel</div>
       <div className='centerPanel'>
-        <GridView />
-      </div>
+        <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />      </div>
       <div className='rightPanel'>Right Panel</div>
       <div className='bottomPanel'>Bottom Panel</div>
     </div>
