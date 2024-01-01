@@ -41,14 +41,13 @@ const App = (props: AppProps) => {
 
   console.log('poo8');
   return (
-    <div>
-      <div className='topPanel' >Top Panel</div>
-      <div className='leftPanel'>Left Panel</div>
-      <div className='centerPanel'>
+    <div className='appStyle'>
+      <div className='leftColumnStyle'>Left Panel</div>
+      <div className='centerColumnStyle'>
         <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
       </div>
-      <div className='rightPanel'>Right Panel</div>
-      <div className='bottomPanel'>Bottom Panel</div>
+      <div className='rightColumnStyle'>Right Panel</div>
+      {/* <div className='bottomPanel'>Bottom Panel</div> */}
     </div>
   );
 };

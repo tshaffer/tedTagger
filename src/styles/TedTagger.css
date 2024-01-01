@@ -44,3 +44,23 @@
 .gridView {
   max-height: 616px;
 }
+
+.appStyle {
+  display: flex;
+  height: 100vh;
+}
+
+.leftColumnStyle {
+  flex: 0 0 256px;
+  background-color: pink;
+}
+
+.centerColumnStyle {
+  flex: 1;
+  background-color: lightcoral;
+}
+
+.rightColumnStyle {
+  flex: 0 0 240px;
+  background-color: orange;
+}
