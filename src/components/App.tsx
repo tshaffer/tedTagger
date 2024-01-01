@@ -28,21 +28,7 @@ const App = (props: AppProps) => {
       }, []);
   });
 
-  // props.onLoadDefaultTagAvatarId()
-  //   .then(() => {
-  //     props.onLoadAppTagAvatars()
-  //       .then(() => {
-  //         props.onLoadUserTagAvatars()
-  //           .then(() => {
-  //             props.onLoadTags()
-  //               .then(() => {
-  //                 props.onLoadMediaItems();
-  //               });
-  //           });
-  //       });
-  //   });
-
-  console.log('poo6');
+  console.log('poo8');
   return (
     <div>
       <div className='topPanel' >Top Panel</div>
