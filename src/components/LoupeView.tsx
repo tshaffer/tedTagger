@@ -19,6 +19,8 @@ export interface LoupeViewProps extends LoupeViewPropsFromParent {
 
 const LoupeView = (props: LoupeViewProps) => {
 
+  const [imageHeight, setImageHeight] = React.useState(0);
+
   // const loupeRef = React.useRef(null);
   // const imgRef = React.useRef(null);
 
@@ -73,9 +75,16 @@ const LoupeView = (props: LoupeViewProps) => {
     // setElementRect(node?.getBoundingClientRect());
   }, []);
 
+  function handleImgLoadComplete(event: React.SyntheticEvent<HTMLImageElement, Event>): void {
+    console.log('handleImgLoadComplete');
+    console.log((event.target as HTMLElement).offsetHeight);
+    setImageHeight((event.target as HTMLElement).offsetHeight);
+  }
 
   //     <div ref={handleLoupe} className='loupeView' onClick={() => { console.log('loupeView onClick'); outputHeight(loupeRef); }}>
   //         onClick={() => { console.log('imgView onClick'); outputHeight(imgRef); }}
+
+  console.log('render me');
 
   return (
     <div ref={handleLoupe} className='loupeView'>
@@ -84,6 +93,7 @@ const LoupeView = (props: LoupeViewProps) => {
         style={{ width: '100%', objectFit: 'contain' }}
         src={src}
         ref={handleImg}
+        onLoad={handleImgLoadComplete}
       />
     </div>
   );
