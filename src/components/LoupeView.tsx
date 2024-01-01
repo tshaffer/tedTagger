@@ -4,20 +4,20 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { TedTaggerDispatch } from '../models';
-import { getMediaItemById, getFullScreenMediaItemId } from '../selectors';
+import { getMediaItemById } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
 
-export interface LoupePropsFromParent {
+export interface LoupeViewPropsFromParent {
   mediaItemId: string;
 }
 
-export interface LoupeProps extends LoupePropsFromParent {
+export interface LoupeViewProps extends LoupeViewPropsFromParent {
   mediaItem: MediaItem | null;
 }
 
-const Loupe = (props: LoupeProps) => {
+const LoupeView = (props: LoupeViewProps) => {
   console.log('poo6');
   console.log('props.mediaItemId', props.mediaItemId);
   console.log('props.mediaItem', props.mediaItem);
@@ -59,4 +59,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Loupe);
+export default connect(mapStateToProps, mapDispatchToProps)(LoupeView);

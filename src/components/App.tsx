@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import '../styles/TedTagger.css';
 import LoupeView from './LoupeView';
 import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars } from '../controllers';
-import { TedTaggerDispatch } from '../models';
+import { TedTaggerDispatch, setAppInitialized } from '../models';
+import GridView from './GridView';
 
 export interface AppProps {
   onLoadDefaultTagAvatarId: () => any;
@@ -13,6 +14,7 @@ export interface AppProps {
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
   onLoadUserTagAvatars: () => any;
+  onSetAppInitialized: () => any;
 }
 
 const App = (props: AppProps) => {
@@ -22,11 +24,17 @@ const App = (props: AppProps) => {
       .then(function () {
         return props.onLoadAppTagAvatars();
       }).then(function () {
+        return props.onLoadUserTagAvatars();
+      }).then(function () {
         return props.onLoadTags();
       }).then(function () {
         return props.onLoadMediaItems();
+      }).then(function () {
+        return props.onSetAppInitialized();
       }, []);
   });
+
+  // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
 
   console.log('poo8');
   return (
@@ -34,7 +42,7 @@ const App = (props: AppProps) => {
       <div className='topPanel' >Top Panel</div>
       <div className='leftPanel'>Left Panel</div>
       <div className='centerPanel'>
-        <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
+        <GridView />
       </div>
       <div className='rightPanel'>Right Panel</div>
       <div className='bottomPanel'>Bottom Panel</div>
@@ -54,6 +62,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadMediaItems: loadMediaItems,
     onLoadTags: loadTags,
     onLoadUserTagAvatars: loadUserTagAvatars,
+    onSetAppInitialized: setAppInitialized
   }, dispatch);
 };
 
