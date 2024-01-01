@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { rootReducer } from './models';
 
-import Home from './components/Home';
+import App from './components/App';
 
 import {composeWithDevTools} from 'redux-devtools-extension';
 
@@ -30,7 +30,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<App viewMode={'main'} />} />
       </Routes>
     </BrowserRouter>
   </Provider>,

@@ -6,3 +6,43 @@
   margin-right: 2px;
 }
 
+.topPanel {
+  height: 128px;
+  width: 100%;
+  background-color: lightBlue;
+  /* Adjust the color as needed */
+}
+
+.leftPanel {
+  width: 64px;
+  height: calc(100% - 192px);
+  /* Adjust based on the top and bottom panel heights */
+  background-color: pink;
+  /* Adjust the color as needed */
+  float: left;
+}
+
+.centerPanel {
+  margin: 0 32px 0 64px;
+  /* Adjust left and right margins based on the left and right panel widths */
+  height: 100%;
+  background-color: lightcoral;
+  overflow-y: auto;
+}
+
+.rightPanel {
+  width: 32px;
+  height: calc(100% - 192px);
+  /* Adjust based on the top and bottom panel heights */
+  background-color: orange;
+  /* Adjust the color as needed */
+  float: right;
+}
+
+.bottomPanel {
+  height: 64px;
+  width: 100%;
+  background-color: yellowgreen;
+  /* Adjust the color as needed */
+  clear: both;
+}

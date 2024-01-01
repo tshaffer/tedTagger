@@ -292,7 +292,7 @@ const Home = (props: HomeProps) => {
 
   // TEDTODO - split into multiple components
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box id='homeScreen' sx={{ display: 'flex' }}> 
       <CssBaseline />
       <AppBar sx={{ width: appBarWidth, marginRight: marginRightWidth }}>
         <Toolbar>
