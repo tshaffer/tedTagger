@@ -68,6 +68,7 @@
 .centerColumnStyle {
   flex: 1;
   background-color: lightcoral;
+  overflow-y: auto;
 }
 
 .rightColumnStyle {
