@@ -45,9 +45,19 @@
   max-height: 616px;
 }
 
+.toolbarStyle {
+  height: 10vh;
+  background-color: lime;
+}
+
 .appStyle {
   display: flex;
-  height: 100vh;
+  height: 80vh;
+}
+
+.footerStyle {
+  height: 8vh;
+  background-color: violet;
 }
 
 .leftColumnStyle {
