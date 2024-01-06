@@ -128,14 +128,15 @@ export const keywordsStateReducer = (
       const keywordTree: KeywordTree = newState.keywordsTree;
       console.log('invoke addChildNode');
       console.log(newState);
-      addChildNode(state, keywordTree, action.payload.parentKeywordId, action.payload.keywordNode);
-      return {
+      addChildNode(newState, keywordTree, action.payload.parentKeywordId, action.payload.keywordNode);
+      const retState: KeywordsState = {
         ...newState,
         keywordNodesByNodeId: {
           ...newState.keywordNodesByNodeId,
           [action.payload.keywordNode.nodeId]: action.payload.keywordNode,
         }
       };
+      return retState;
     }
     default:
       return state;
