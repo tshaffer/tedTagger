@@ -76,11 +76,11 @@ export interface Keyword {
 
 export interface KeywordNode {
   id: string;
-  keywordId?: string;
-  parentNodeId?: string;
-  childrenNodeIds?: string[];
+  keywordId: string;
+  parentId?: string;
+  childrenIds?: string[];
 }
 
-export interface KeywordTree{
+export interface KeywordTree {
   root: KeywordNode;
 }

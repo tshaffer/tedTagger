@@ -39,8 +39,8 @@ export function findNodeById(keywordNode: KeywordNode, id: string): KeywordNode 
     return keywordNode;
   }
 
-  if (keywordNode.childrenNodeIds) {
-    for (const childId of keywordNode.childrenNodeIds) {
+  if (keywordNode.childrenIds) {
+    for (const childId of keywordNode.childrenIds) {
       const childNode = findNodeById(keywordNode, childId);
       if (childNode) {
         return childNode;

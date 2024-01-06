@@ -34,12 +34,12 @@ function addChildNode(tree: KeywordTree, parentNodeId: string, newNode: KeywordN
   const parentNode = findNodeById(tree.root, parentNodeId);
 
   if (parentNode) {
-    if (!parentNode.childrenNodeIds) {
-      parentNode.childrenNodeIds = [];
+    if (!parentNode.childrenIds) {
+      parentNode.childrenIds = [];
     }
 
-    newNode.parentNodeId = parentNodeId;
-    parentNode.childrenNodeIds.push(newNode.id);
+    newNode.parentId = parentNodeId;
+    parentNode.childrenIds.push(newNode.id);
   } else {
     debugger;
     console.error(`Parent node with id ${parentNodeId} not found.`);
@@ -58,8 +58,8 @@ const initialState: KeywordsState =
     {
       id: '1',
       keywordId: 'rootKeyword',
-      parentNodeId: undefined,
-      childrenNodeIds: [],
+      parentId: undefined,
+      childrenIds: [],
     }
   }
 };
