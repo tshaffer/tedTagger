@@ -1,6 +1,7 @@
 import {
   KeywordNode,
   KeywordTree,
+  KeywordsState,
   TedTaggerState,
 } from '../types';
 
@@ -8,18 +9,25 @@ export const getKeywords = (state: TedTaggerState): KeywordTree => {
   return state.keywordsState.keywordsTree;
 };
 
-export function findNodeById(keywordNode: KeywordNode, id: string): KeywordNode | undefined {
+export function findNodeByNodeId(keywordsState: KeywordsState, keywordNode: KeywordNode, nodeId: string): KeywordNode | undefined {
 
-  if (keywordNode.nodeId === id) {
+  console.log('findNodeById');
+  console.log('keywordNode: ', keywordNode.nodeId);
+  console.log('nodeId: ', nodeId);
+
+  if (keywordNode.nodeId === nodeId) {
     return keywordNode;
   }
 
-  if (keywordNode.childrenIds) {
-    for (const childId of keywordNode.childrenIds) {
-      const childNode = findNodeById(keywordNode, childId);
-      if (childNode) {
-        return childNode;
+  if (keywordNode.childrenNodeIds) {
+    for (const childId of keywordNode.childrenNodeIds) {
+      if (keywordsState.keywordNodesByNodeId[childId]) {
+        return keywordsState.keywordNodesByNodeId[childId];
       }
+      return findNodeByNodeId(keywordsState, keywordNode, childId);
+      // if (childNode) {
+      //   return childNode;
+      // }
     }
   }
 

@@ -13,9 +13,11 @@ export function addKeyword(parentId: string, keywordLabel: string, keywordType: 
     const keywordNode: KeywordNode = {
       nodeId: uuidv4(),
       keywordId: newKeywordId,
-      parentId,
-      childrenIds: []
+      parentNodeId: parentId,
+      childrenNodeIds: []
     };
     dispatch(addKeywordNode(parentId, keywordNode));
+
+    return keywordNode;
   };
 }

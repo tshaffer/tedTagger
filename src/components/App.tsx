@@ -49,11 +49,24 @@ const App = (props: AppProps) => {
       console.log('key pressed: ' + event.key);
 
       if (event.key === 's') {
-        props.onAddKeyword(props.rootKeywordId, 'Sam', 'person');
+        const samNode = props.onAddKeyword(props.rootKeywordId, 'Sam', 'person');
+        console.log('samNode: ');
+        console.log(samNode);
       } else if (event.key === 'j') {
-        props.onAddKeyword(props.rootKeywordId, 'Joel', 'person');
+        const joelNode = props.onAddKeyword(props.rootKeywordId, 'Joel', 'person');
+        console.log('joelNode: ');
+        console.log(joelNode);
       } else if (event.key === 'r') {
-        props.onAddKeyword(props.rootKeywordId, 'Rachel', 'person');
+        const rachelNode = props.onAddKeyword(props.rootKeywordId, 'Rachel', 'person');
+        console.log('rachelNode: ');
+        console.log(rachelNode);
+      } else if (event.key === 'a') {
+        debugger;
+        const parentsNode: KeywordNode = props.onAddKeyword(props.rootKeywordId, 'Parents', 'person');
+        const samNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Sam', 'person');
+        const joelNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Joel', 'person');
+        const rachelNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Rachel', 'person');
+        console.log('all nodes added');
       }
     };
 

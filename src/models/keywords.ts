@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import { KeywordNode, KeywordTree, KeywordsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
-import { findNodeById } from '../selectors';
+import { findNodeByNodeId } from '../selectors';
 
 // ------------------------------------
 // Constants
@@ -51,17 +51,20 @@ export const addKeywordNode = (
   };
 };
 
-function addChildNode(tree: KeywordTree, parentNodeId: string, newNode: KeywordNode): void {
+function addChildNode(keywordsState: KeywordsState, tree: KeywordTree, parentNodeId: string, newNode: KeywordNode): void {
 
-  const parentNode = findNodeById(tree.root, parentNodeId);
+  console.log(parentNodeId);
+
+  const parentNode = findNodeByNodeId(keywordsState, tree.root, parentNodeId);
+  console.log(parentNode);
 
   if (parentNode) {
-    if (!parentNode.childrenIds) {
-      parentNode.childrenIds = [];
+    if (!parentNode.childrenNodeIds) {
+      parentNode.childrenNodeIds = [];
     }
 
-    newNode.parentId = parentNodeId;
-    parentNode.childrenIds.push(newNode.nodeId);
+    newNode.parentNodeId = parentNodeId;
+    parentNode.childrenNodeIds.push(newNode.nodeId);
   } else {
     debugger;
     console.error(`Parent node with id ${parentNodeId} not found.`);
@@ -86,8 +89,8 @@ const initialState: KeywordsState =
     ['1']: {
       nodeId: '1',
       keywordId: '1',
-      parentId: undefined,
-      childrenIds: [],
+      parentNodeId: undefined,
+      childrenNodeIds: [],
     }
   }
   ,
@@ -96,8 +99,8 @@ const initialState: KeywordsState =
     {
       nodeId: '1',
       keywordId: 'rootKeyword',
-      parentId: undefined,
-      childrenIds: [],
+      parentNodeId: undefined,
+      childrenNodeIds: [],
     }
   }
 };
@@ -123,7 +126,9 @@ export const keywordsStateReducer = (
     case ADD_KEYWORD_NODE: {
       const newState = cloneDeep(state);
       const keywordTree: KeywordTree = newState.keywordsTree;
-      addChildNode(keywordTree, action.payload.parentKeywordId, action.payload.keywordNode);
+      console.log('invoke addChildNode');
+      console.log(newState);
+      addChildNode(state, keywordTree, action.payload.parentKeywordId, action.payload.keywordNode);
       return {
         ...newState,
         keywordNodesByNodeId: {
