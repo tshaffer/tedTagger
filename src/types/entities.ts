@@ -68,22 +68,19 @@ export interface UserTagAvatar {
   path: string;
 }
 
-export interface Tree<T> {
-  root: TreeNode<T>;
-}
-
-export interface TreeNode<T> {
-  value: T;
-  parent?: TreeNode<T>;
-  children?: TreeNode<T>[];
-}
-
-export type KeywordNode = TreeNode<Keyword>;
-export type KeywordTree = Tree<Keyword>;
-
 export interface Keyword {
   id: string;
   label: string;
-  // type: string;
+  type: string;
 }
 
+export interface KeywordNode {
+  id: string;
+  keywordId?: string;
+  parentNodeId?: string;
+  childrenNodeIds?: string[];
+}
+
+export interface KeywordTree{
+  root: KeywordNode;
+}

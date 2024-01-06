@@ -7,8 +7,6 @@ import {
   StringToTagLUT,
   Tag,
   TedTaggerState,
-  Tree,
-  TreeNode
 } from '../types';
 import { Key } from 'react';
 
@@ -16,20 +14,36 @@ export const getKeywords = (state: TedTaggerState): KeywordTree => {
   return state.keywordsState.keywords;
 };
 
+/*
+function findNodeByIdByChatGPT(treeNode: TreeNode, id: string): TreeNode | undefined {
+  if (treeNode.id === id) {
+    return treeNode;
+  }
+
+  if (treeNode.children) {
+    for (const childId of treeNode.children) {
+      const childNode = findNodeById(treeNode, childId);
+      if (childNode) {
+        return childNode;
+      }
+    }
+  }
+
+  return undefined;
+}
+*/
 
 export function findNodeById(keywordNode: KeywordNode, id: string): KeywordNode | undefined {
 
-  const keyword: Keyword = keywordNode.value;
-
-  if (keyword.id === id) {
+  if (keywordNode.id === id) {
     return keywordNode;
   }
 
-  if (keywordNode.children) {
-    for (const childNode of keywordNode.children) {
-      const foundNode = findNodeById(childNode, id);
-      if (foundNode) {
-        return foundNode;
+  if (keywordNode.childrenNodeIds) {
+    for (const childId of keywordNode.childrenNodeIds) {
+      const childNode = findNodeById(keywordNode, childId);
+      if (childNode) {
+        return childNode;
       }
     }
   }
@@ -37,11 +51,11 @@ export function findNodeById(keywordNode: KeywordNode, id: string): KeywordNode 
   return undefined;
 }
 
-function findKeywordById(id: string): KeywordNode | undefined {
+// function findKeywordById(id: string): KeywordNode | undefined {
 
 
-  return undefined;
-}
+//   return undefined;
+// }
 
 
 // export const getTagsLUT = (state: TedTaggerState): StringToTagLUT => {

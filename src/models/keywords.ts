@@ -20,7 +20,6 @@ export const addKeywordRedux = (
   parentKeywordId: string,
   keywordNode: KeywordNode,
 ): any => {
-  debugger;
   return {
     type: ADD_KEYWORD,
     payload: {
@@ -30,21 +29,20 @@ export const addKeywordRedux = (
   };
 };
 
-function addChildNode(tree: KeywordTree, parentId: string, newNode: KeywordNode): void {
+function addChildNode(tree: KeywordTree, parentNodeId: string, newNode: KeywordNode): void {
 
-  const parentNode = findNodeById(tree.root, parentId);
+  const parentNode = findNodeById(tree.root, parentNodeId);
 
   if (parentNode) {
-    if (!parentNode.children) {
-      debugger;
-      parentNode.children = [];
+    if (!parentNode.childrenNodeIds) {
+      parentNode.childrenNodeIds = [];
     }
 
-    newNode.parent = parentNode;
-    parentNode.children.push(newNode);
+    newNode.parentNodeId = parentNodeId;
+    parentNode.childrenNodeIds.push(newNode.id);
   } else {
     debugger;
-    console.error(`Parent node with id ${parentId} not found.`);
+    console.error(`Parent node with id ${parentNodeId} not found.`);
   }
 }
 
@@ -58,13 +56,10 @@ const initialState: KeywordsState =
   keywords: {
     root:
     {
-      value: {
-        id: 'root',
-        label: 'root',
-        // type: 'root'
-      },
-      parent: undefined,
-      children: [],
+      id: '1',
+      keywordId: 'rootKeyword',
+      parentNodeId: undefined,
+      childrenNodeIds: [],
     }
   }
 };

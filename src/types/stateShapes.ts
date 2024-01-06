@@ -1,4 +1,4 @@
-import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, Tree, Keyword } from './entities';
+import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, Keyword, KeywordTree } from './entities';
 import {
   MainDisplayMode,
   TagSearchOperator,
@@ -63,5 +63,5 @@ export interface TagsInSearchSpecification {
 }
 
 export interface KeywordsState {
-  keywords: Tree<Keyword>
+  keywords: KeywordTree;
 }

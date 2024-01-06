@@ -94,9 +94,8 @@ const App = (props: AppProps) => {
 function mapStateToProps(state: any) {
   const keywords: KeywordTree = getKeywords(state);
   const root: KeywordNode = keywords.root;
-  const value: Keyword = root.value;
   return {
-    rootKeywordId: value.id,
+    rootKeywordId: root.id,
   };
 }
 

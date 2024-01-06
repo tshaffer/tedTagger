@@ -5,11 +5,10 @@ import { KeywordNode } from '../types';
 
 export function addKeyword(parentKeywordId: string, keyword: string): any {
   const keywordNode: KeywordNode = {
-    value: {
-      id: uuidv4(),
-      label: keyword,
-    }
+    id: uuidv4(),
+    keywordId: uuidv4(),
+    parentNodeId: parentKeywordId,
+    childrenNodeIds: []
   };
-  
   return addKeywordRedux(parentKeywordId, keywordNode);
 }
