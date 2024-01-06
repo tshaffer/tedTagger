@@ -10,6 +10,7 @@ import { tagsStateReducer } from './tags';
 import { photosToDisplaySpecReducer } from './photoToDisplaySpec';
 import { appTagAvatarsStateReducer } from './appTagAvatars';
 import { userTagAvatarsStateReducer } from './userTagAvatars';
+import { keywordsStateReducer } from './keywords';
 
 // -----------------------------------------------------------------------
 // Reducers
@@ -22,6 +23,7 @@ export const rootReducer = combineReducers<TedTaggerState>({
   appTagAvatarsState: appTagAvatarsStateReducer,
   userTagAvatarsState: userTagAvatarsStateReducer,
   photosToDisplaySpec: photosToDisplaySpecReducer,
+  keywordsState: keywordsStateReducer,
 });
 
 // -----------------------------------------------------------------------

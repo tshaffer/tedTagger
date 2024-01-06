@@ -1,4 +1,4 @@
-import { MediaItem, Tag, AppTagAvatar, UserTagAvatar } from './entities';
+import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, Tree, Keyword } from './entities';
 import {
   MainDisplayMode,
   TagSearchOperator,
@@ -13,6 +13,7 @@ export interface TedTaggerState {
   appTagAvatarsState: AppTagAvatarsState;
   userTagAvatarsState: UserTagAvatarsState;
   photosToDisplaySpec: PhotosToDisplaySpec;
+  keywordsState: KeywordsState;
 }
 
 export interface AppState {
@@ -59,4 +60,8 @@ export interface TagsInSearchSpecification {
   tagSelector: TagSelectorType;
   tagIds: string[];
   tagSearchOperator: TagSearchOperator;
+}
+
+export interface KeywordsState {
+  keywords: Tree<Keyword>
 }

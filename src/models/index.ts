@@ -7,3 +7,4 @@ export * from './selectedMediaItems';
 export * from './tags';
 export * from './userTagAvatars';
 export * from './photoToDisplaySpec';
+export * from './keywords';
