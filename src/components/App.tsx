@@ -9,7 +9,7 @@ import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { addKeyword } from '../controllers';
 import { getKeywords } from '../selectors';
-import { Keyword, KeywordNode, KeywordTree } from '../types';
+import { KeywordNode, KeywordTree } from '../types';
 
 export interface AppProps {
   onLoadDefaultTagAvatarId: () => any;
@@ -19,7 +19,7 @@ export interface AppProps {
   onLoadUserTagAvatars: () => any;
   onSetAppInitialized: () => any;
   rootKeywordId: string;
-  onAddKeyword: (parentKeywordId: string, keyword: string) => any;
+  onAddKeyword: (parentId: string, keywordLabel: string, keywordType: string) => any;
 }
 
 const App = (props: AppProps) => {
@@ -49,11 +49,11 @@ const App = (props: AppProps) => {
       console.log('key pressed: ' + event.key);
 
       if (event.key === 's') {
-        props.onAddKeyword(props.rootKeywordId, 'Sam');
+        props.onAddKeyword(props.rootKeywordId, 'Sam', 'person');
       } else if (event.key === 'j') {
-        props.onAddKeyword(props.rootKeywordId, 'Joel');
+        props.onAddKeyword(props.rootKeywordId, 'Joel', 'person');
       } else if (event.key === 'r') {
-        props.onAddKeyword(props.rootKeywordId, 'Rachel');
+        props.onAddKeyword(props.rootKeywordId, 'Rachel', 'person');
       }
     };
 
@@ -95,7 +95,7 @@ function mapStateToProps(state: any) {
   const keywords: KeywordTree = getKeywords(state);
   const root: KeywordNode = keywords.root;
   return {
-    rootKeywordId: root.id,
+    rootKeywordId: root.nodeId,
   };
 }
 

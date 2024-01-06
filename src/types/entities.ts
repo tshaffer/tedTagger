@@ -69,13 +69,13 @@ export interface UserTagAvatar {
 }
 
 export interface Keyword {
-  id: string;
+  keywordId: string;
   label: string;
   type: string;
 }
 
 export interface KeywordNode {
-  id: string;
+  nodeId: string;
   keywordId: string;
   parentId?: string;
   childrenIds?: string[];

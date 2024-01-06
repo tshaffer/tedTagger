@@ -1,4 +1,5 @@
-import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, Keyword, KeywordTree } from './entities';
+import { StringToKeywordLUT, StringToKeywordNodeLUT } from './base';
+import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, KeywordTree } from './entities';
 import {
   MainDisplayMode,
   TagSearchOperator,
@@ -63,5 +64,7 @@ export interface TagsInSearchSpecification {
 }
 
 export interface KeywordsState {
-  keywords: KeywordTree;
+  keywordsById: StringToKeywordLUT;
+  keywordNodesByNodeId: StringToKeywordNodeLUT;
+  keywordsTree: KeywordTree;
 }
