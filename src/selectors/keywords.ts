@@ -5,9 +5,9 @@ import {
   TedTaggerState,
 } from '../types';
 
-export const getKeywords = (state: TedTaggerState): KeywordTree => {
-  return state.keywordsState.keywordsTree;
-};
+export function getRootNodeId(tedTaggerState: TedTaggerState): string {
+  return tedTaggerState.keywordsState.rootNodeId;
+}
 
 export function findNodeByNodeId(keywordsState: KeywordsState, keywordNode: KeywordNode, nodeId: string): KeywordNode | undefined {
 

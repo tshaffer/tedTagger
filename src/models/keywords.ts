@@ -51,11 +51,11 @@ export const addKeywordNode = (
   };
 };
 
-function addChildNode(keywordsState: KeywordsState, tree: KeywordTree, parentNodeId: string, newNode: KeywordNode): void {
+function addChildNode(keywordsState: KeywordsState, parentNodeId: string, newNode: KeywordNode): void {
 
   console.log(parentNodeId);
 
-  const parentNode = findNodeByNodeId(keywordsState, tree.root, parentNodeId);
+  const parentNode = findNodeByNodeId(keywordsState, keywordsState.keywordNodesByNodeId['rootNode'], parentNodeId);
   console.log(parentNode);
 
   if (parentNode) {
@@ -79,30 +79,22 @@ function addChildNode(keywordsState: KeywordsState, tree: KeywordTree, parentNod
 const initialState: KeywordsState =
 {
   keywordsById: {
-    ['1']: {
-      keywordId: '1',
-      label: 'rootKeyword',
+    ['rootKeyword']: {
+      keywordId: 'rootKeyword',
+      label: 'Keyword Tree Root',
       type: 'root',
     }
   },
   keywordNodesByNodeId: {
-    ['1']: {
-      nodeId: '1',
-      keywordId: '1',
-      parentNodeId: undefined,
-      childrenNodeIds: [],
-    }
-  }
-  ,
-  keywordsTree: {
-    root:
-    {
-      nodeId: '1',
+    ['rootNode']: {
+      nodeId: 'rootNode',
       keywordId: 'rootKeyword',
       parentNodeId: undefined,
       childrenNodeIds: [],
     }
   }
+  ,
+  rootNodeId: 'rootNode',
 };
 
 export const keywordsStateReducer = (
@@ -125,10 +117,10 @@ export const keywordsStateReducer = (
       };
     case ADD_KEYWORD_NODE: {
       const newState = cloneDeep(state);
-      const keywordTree: KeywordTree = newState.keywordsTree;
+      // const keywordTree: KeywordTree = newState.keywordsTree;
       console.log('invoke addChildNode');
       console.log(newState);
-      addChildNode(newState, keywordTree, action.payload.parentKeywordId, action.payload.keywordNode);
+      addChildNode(newState, action.payload.parentKeywordId, action.payload.keywordNode);
       const retState: KeywordsState = {
         ...newState,
         keywordNodesByNodeId: {

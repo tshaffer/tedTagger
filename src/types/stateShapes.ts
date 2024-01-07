@@ -66,5 +66,5 @@ export interface TagsInSearchSpecification {
 export interface KeywordsState {
   keywordsById: StringToKeywordLUT;
   keywordNodesByNodeId: StringToKeywordNodeLUT;
-  keywordsTree: KeywordTree;
+  rootNodeId: string;
 }

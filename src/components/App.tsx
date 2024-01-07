@@ -8,8 +8,8 @@ import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, lo
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { addKeyword } from '../controllers';
-import { getKeywords } from '../selectors';
 import { KeywordNode, KeywordTree } from '../types';
+import { getRootNodeId } from '../selectors';
 
 export interface AppProps {
   onLoadDefaultTagAvatarId: () => any;
@@ -18,7 +18,7 @@ export interface AppProps {
   onLoadTags: () => any;
   onLoadUserTagAvatars: () => any;
   onSetAppInitialized: () => any;
-  rootKeywordId: string;
+  rootNodeId: string;
   onAddKeyword: (parentId: string, keywordLabel: string, keywordType: string) => any;
 }
 
@@ -49,20 +49,20 @@ const App = (props: AppProps) => {
       console.log('key pressed: ' + event.key);
 
       if (event.key === 's') {
-        const samNode = props.onAddKeyword(props.rootKeywordId, 'Sam', 'person');
+        const samNode = props.onAddKeyword(props.rootNodeId, 'Sam', 'person');
         console.log('samNode: ');
         console.log(samNode);
       } else if (event.key === 'j') {
-        const joelNode = props.onAddKeyword(props.rootKeywordId, 'Joel', 'person');
+        const joelNode = props.onAddKeyword(props.rootNodeId, 'Joel', 'person');
         console.log('joelNode: ');
         console.log(joelNode);
       } else if (event.key === 'r') {
-        const rachelNode = props.onAddKeyword(props.rootKeywordId, 'Rachel', 'person');
+        const rachelNode = props.onAddKeyword(props.rootNodeId, 'Rachel', 'person');
         console.log('rachelNode: ');
         console.log(rachelNode);
       } else if (event.key === 'a') {
         debugger;
-        const parentsNode: KeywordNode = props.onAddKeyword(props.rootKeywordId, 'Parents', 'person');
+        const parentsNode: KeywordNode = props.onAddKeyword(props.rootNodeId, 'Parents', 'person');
         const samNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Sam', 'person');
         const joelNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Joel', 'person');
         const rachelNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Rachel', 'person');
@@ -105,10 +105,8 @@ const App = (props: AppProps) => {
 };
 
 function mapStateToProps(state: any) {
-  const keywords: KeywordTree = getKeywords(state);
-  const root: KeywordNode = keywords.root;
   return {
-    rootKeywordId: root.nodeId,
+    rootNodeId: getRootNodeId(state),
   };
 }
 

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { TedTaggerDispatch, addKeywordNode, addKeywordRedux } from '../models';
 import { KeywordNode } from '../types';
 
-export function addKeyword(parentId: string, keywordLabel: string, keywordType: string): any {
+export function addKeyword(parentNodeId: string, keywordLabel: string, keywordType: string): any {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
     const newKeywordId = uuidv4();
@@ -13,10 +13,10 @@ export function addKeyword(parentId: string, keywordLabel: string, keywordType: 
     const keywordNode: KeywordNode = {
       nodeId: uuidv4(),
       keywordId: newKeywordId,
-      parentNodeId: parentId,
+      parentNodeId,
       childrenNodeIds: []
     };
-    dispatch(addKeywordNode(parentId, keywordNode));
+    dispatch(addKeywordNode(parentNodeId, keywordNode));
 
     return keywordNode;
   };
