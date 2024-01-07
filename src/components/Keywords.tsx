@@ -8,14 +8,24 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
+import { KeywordNode, Keyword } from '../types';
 import { TedTaggerDispatch } from '../models';
-import { getKeywordRootNodeId } from '../selectors';
+import { getAppInitialized, getKeywordRootNodeId, getKeywordsAsTree } from '../selectors';
 
 export interface KeywordsProps {
+  appInitialized: boolean;
   keywordRootNodeId: string;
+  keywordsAsTree: string;
 }
 
 const Keywords = (props: KeywordsProps) => {
+
+  if (!props.appInitialized) {
+    return null;
+  }
+
+  console.log(props.keywordsAsTree);
+
   return (
     <Box sx={{ minHeight: 180, flexGrow: 1, maxWidth: 300 }}>
       <TreeView
@@ -39,7 +49,9 @@ const Keywords = (props: KeywordsProps) => {
 
 function mapStateToProps(state: any) {
   return {
+    appInitialized: getAppInitialized(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
+    keywordsAsTree: getKeywordsAsTree(state),
   };
 }
 

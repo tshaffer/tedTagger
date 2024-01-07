@@ -81,6 +81,13 @@ export interface KeywordNode {
   childrenNodeIds?: string[];
 }
 
-export interface KeywordTree {
-  root: KeywordNode;
+export interface KeywordNodeDeep {
+  nodeId: string;
+  keywordId: string;
+  childNodeIds: string[];
+  childNodes?: KeywordNode[] | undefined;
+}
+
+export interface KeywordTreeDeep {
+  root: KeywordNodeDeep;
 }

@@ -8,7 +8,7 @@ import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, lo
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { addKeyword } from '../controllers';
-import { KeywordNode, KeywordTree } from '../types';
+import { KeywordNode } from '../types';
 import { getKeywordRootNodeId } from '../selectors';
 import Keywords from './Keywords';
 
@@ -25,6 +25,18 @@ export interface AppProps {
 
 const App = (props: AppProps) => {
 
+  const buildTree = () => {
+    const grandmaEmilyNode: KeywordNode = props.onAddKeyword(props.keywordRootNodeId, 'Grandma Emily', 'person');
+    const tedNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Ted', 'person');
+    const noahNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Noah', 'person');
+    const samNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Sam', 'person');
+    const joelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Joel', 'person');
+    const rachelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Rachel', 'person');
+    const mattNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Matt', 'person');
+    const andrewNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Andrew', 'person');
+    const elenaNode: KeywordNode = props.onAddKeyword(mattNode.nodeId, 'Elena', 'person');
+  };
+
   React.useEffect(() => {
     props.onLoadDefaultTagAvatarId()
       .then(function () {
@@ -36,55 +48,57 @@ const App = (props: AppProps) => {
       }).then(function () {
         return props.onLoadMediaItems();
       }).then(function () {
+        return buildTree();
+      }).then(function () {
         return props.onSetAppInitialized();
       }, []);
   });
 
-  React.useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      // if (event.key === 'Escape') {
-      //   // Handle the escape key press here
-      //   console.log('Escape key pressed!');
-      //   // Add your logic to handle the escape key press globally
-      // }
-      console.log('key pressed: ' + event.key);
+  // React.useEffect(() => {
+  //   const handleKeyPress = (event: KeyboardEvent) => {
+  //     // if (event.key === 'Escape') {
+  //     //   // Handle the escape key press here
+  //     //   console.log('Escape key pressed!');
+  //     //   // Add your logic to handle the escape key press globally
+  //     // }
+  //     console.log('key pressed: ' + event.key);
 
-      if (event.key === 's') {
-        const samNode = props.onAddKeyword(props.keywordRootNodeId, 'Sam', 'person');
-        console.log('samNode: ');
-        console.log(samNode);
-      } else if (event.key === 'j') {
-        const joelNode = props.onAddKeyword(props.keywordRootNodeId, 'Joel', 'person');
-        console.log('joelNode: ');
-        console.log(joelNode);
-      } else if (event.key === 'r') {
-        const rachelNode = props.onAddKeyword(props.keywordRootNodeId, 'Rachel', 'person');
-        console.log('rachelNode: ');
-        console.log(rachelNode);
-      } else if (event.key === 'a') {
-        const grandmaEmilyNode: KeywordNode = props.onAddKeyword(props.keywordRootNodeId, 'Grandma Emily', 'person');
-        const tedNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Ted', 'person');
-        const noahNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Noah', 'person');
-        const samNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Sam', 'person');
-        const joelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Joel', 'person');
-        const rachelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Rachel', 'person');
-        const mattNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Matt', 'person');
-        const andrewNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Andrew', 'person');
-        const elenaNode: KeywordNode = props.onAddKeyword(mattNode.nodeId, 'Elena', 'person');
-        console.log('all nodes added');
-      }
-    };
+  //     if (event.key === 's') {
+  //       const samNode = props.onAddKeyword(props.keywordRootNodeId, 'Sam', 'person');
+  //       console.log('samNode: ');
+  //       console.log(samNode);
+  //     } else if (event.key === 'j') {
+  //       const joelNode = props.onAddKeyword(props.keywordRootNodeId, 'Joel', 'person');
+  //       console.log('joelNode: ');
+  //       console.log(joelNode);
+  //     } else if (event.key === 'r') {
+  //       const rachelNode = props.onAddKeyword(props.keywordRootNodeId, 'Rachel', 'person');
+  //       console.log('rachelNode: ');
+  //       console.log(rachelNode);
+  //     } else if (event.key === 'a') {
+  //       const grandmaEmilyNode: KeywordNode = props.onAddKeyword(props.keywordRootNodeId, 'Grandma Emily', 'person');
+  //       const tedNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Ted', 'person');
+  //       const noahNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Noah', 'person');
+  //       const samNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Sam', 'person');
+  //       const joelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Joel', 'person');
+  //       const rachelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Rachel', 'person');
+  //       const mattNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Matt', 'person');
+  //       const andrewNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Andrew', 'person');
+  //       const elenaNode: KeywordNode = props.onAddKeyword(mattNode.nodeId, 'Elena', 'person');
+  //       console.log('all nodes added');
+  //     }
+  //   };
 
-    // Add the event listener when the component mounts
-    console.log('addEventListener!');
-    document.addEventListener('keydown', handleKeyPress);
+  //   // Add the event listener when the component mounts
+  //   console.log('addEventListener!');
+  //   document.addEventListener('keydown', handleKeyPress);
 
-    // Remove the event listener when the component unmounts
-    return () => {
-      console.log('removeEventListener!');
-      document.removeEventListener('keydown', handleKeyPress);
-    };
-  }, []); // Empty dependency array ensures that the effect runs only once on mount
+  //   // Remove the event listener when the component unmounts
+  //   return () => {
+  //     console.log('removeEventListener!');
+  //     document.removeEventListener('keydown', handleKeyPress);
+  //   };
+  // }, []); // Empty dependency array ensures that the effect runs only once on mount
 
 
   // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />

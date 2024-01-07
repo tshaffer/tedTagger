@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
-import { KeywordNode, KeywordTree, KeywordsState } from '../types';
+import { KeywordNode, KeywordsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
-import { findNodeByNodeId } from '../selectors';
+import { getNodeByNodeId } from '../selectors';
 
 // ------------------------------------
 // Constants
@@ -55,7 +55,7 @@ function addChildNode(keywordsState: KeywordsState, parentNodeId: string, newNod
 
   console.log(parentNodeId);
 
-  const parentNode = findNodeByNodeId(keywordsState, parentNodeId);
+  const parentNode = getNodeByNodeId(keywordsState, parentNodeId);
   console.log(parentNode);
 
   if (parentNode) {
@@ -117,7 +117,6 @@ export const keywordsStateReducer = (
       };
     case ADD_KEYWORD_NODE: {
       const newState = cloneDeep(state);
-      // const keywordTree: KeywordTree = newState.keywordsTree;
       console.log('invoke addChildNode');
       console.log(newState);
       addChildNode(newState, action.payload.parentNodeId, action.payload.keywordNode);

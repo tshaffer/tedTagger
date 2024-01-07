@@ -1,5 +1,5 @@
 import { StringToKeywordLUT, StringToKeywordNodeLUT } from './base';
-import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, KeywordTree } from './entities';
+import { MediaItem, Tag, AppTagAvatar, UserTagAvatar } from './entities';
 import {
   MainDisplayMode,
   TagSearchOperator,
