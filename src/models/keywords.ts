@@ -34,18 +34,18 @@ export const addKeywordRedux = (
 };
 
 interface AddKeywordNodePayload {
-  parentKeywordId: string;
+  parentNodeId: string;
   keywordNode: KeywordNode;
 }
 
 export const addKeywordNode = (
-  parentKeywordId: string,
+  parentNodeId: string,
   keywordNode: KeywordNode,
 ): any => {
   return {
     type: ADD_KEYWORD_NODE,
     payload: {
-      parentKeywordId,
+      parentNodeId,
       keywordNode,
     }
   };
@@ -55,7 +55,7 @@ function addChildNode(keywordsState: KeywordsState, parentNodeId: string, newNod
 
   console.log(parentNodeId);
 
-  const parentNode = findNodeByNodeId(keywordsState, keywordsState.keywordNodesByNodeId['rootNode'], parentNodeId);
+  const parentNode = findNodeByNodeId(keywordsState, parentNodeId);
   console.log(parentNode);
 
   if (parentNode) {
@@ -120,7 +120,7 @@ export const keywordsStateReducer = (
       // const keywordTree: KeywordTree = newState.keywordsTree;
       console.log('invoke addChildNode');
       console.log(newState);
-      addChildNode(newState, action.payload.parentKeywordId, action.payload.keywordNode);
+      addChildNode(newState, action.payload.parentNodeId, action.payload.keywordNode);
       const retState: KeywordsState = {
         ...newState,
         keywordNodesByNodeId: {
@@ -128,6 +128,8 @@ export const keywordsStateReducer = (
           [action.payload.keywordNode.nodeId]: action.payload.keywordNode,
         }
       };
+      console.log('ADD_KEYWORD_NODE');
+      console.log(retState);
       return retState;
     }
     default:

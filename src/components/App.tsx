@@ -61,11 +61,15 @@ const App = (props: AppProps) => {
         console.log('rachelNode: ');
         console.log(rachelNode);
       } else if (event.key === 'a') {
-        debugger;
-        const parentsNode: KeywordNode = props.onAddKeyword(props.rootNodeId, 'Parents', 'person');
-        const samNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Sam', 'person');
-        const joelNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Joel', 'person');
-        const rachelNode: KeywordNode = props.onAddKeyword(parentsNode.nodeId, 'Rachel', 'person');
+        const grandmaEmilyNode: KeywordNode = props.onAddKeyword(props.rootNodeId, 'Grandma Emily', 'person');
+        const tedNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Ted', 'person');
+        const noahNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Noah', 'person');
+        const samNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Sam', 'person');
+        const joelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Joel', 'person');
+        const rachelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Rachel', 'person');
+        const mattNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Matt', 'person');
+        const andrewNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Andrew', 'person');
+        const elenaNode: KeywordNode = props.onAddKeyword(mattNode.nodeId, 'Elena', 'person');
         console.log('all nodes added');
       }
     };
@@ -86,7 +90,6 @@ const App = (props: AppProps) => {
   // <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
   // <GridView />
 
-  console.log('poo8');
   return (
     <div>
       <div className='toolbarStyle' />
