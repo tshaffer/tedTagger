@@ -11,3 +11,5 @@ export * from './TagManager';
 export * from './AssignTags';
 export * from './PhotoToDisplaySpec';
 export * from './SearchTagList';
+export * from './Keywords';
+

@@ -10,6 +10,7 @@ import GridView from './GridView';
 import { addKeyword } from '../controllers';
 import { KeywordNode, KeywordTree } from '../types';
 import { getKeywordRootNodeId } from '../selectors';
+import Keywords from './Keywords';
 
 export interface AppProps {
   onLoadDefaultTagAvatarId: () => any;
@@ -94,7 +95,9 @@ const App = (props: AppProps) => {
     <div>
       <div className='toolbarStyle' />
       <div className='appStyle'>
-        <div className='leftColumnStyle'>Left Panel</div>
+        <div className='leftColumnStyle'>
+          <Keywords />
+        </div>
         <div className='centerColumnStyle'>
           <GridView />
         </div>
