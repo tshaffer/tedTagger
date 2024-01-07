@@ -8,14 +8,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-import { KeywordNode, Keyword } from '../types';
+import { KeywordTreeDeep } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getKeywordRootNodeId, getKeywordsAsTree } from '../selectors';
 
 export interface KeywordsProps {
   appInitialized: boolean;
   keywordRootNodeId: string;
-  keywordsAsTree: string;
+  keywordsAsTree: KeywordTreeDeep | undefined;
 }
 
 const Keywords = (props: KeywordsProps) => {

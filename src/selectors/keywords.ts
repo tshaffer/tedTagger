@@ -16,11 +16,10 @@ export function getNodeByNodeId(keywordsState: KeywordsState, nodeId: string): K
   return keywordsState.keywordNodesByNodeId[nodeId];
 }
 
-export function getKeywordsAsTree(tedTaggerState: TedTaggerState): any {
+export function getKeywordsAsTree(tedTaggerState: TedTaggerState): KeywordTreeDeep | undefined {
   if (!tedTaggerState.appState.appInitialized) {
-    return 'uninitialized';
+    return undefined;
   }
-  debugger;
   const keywordsState: KeywordsState = tedTaggerState.keywordsState;
   const keywordRootNodeId: string = keywordsState.keywordRootNodeId;
   const keywordRootNode: KeywordNode | undefined = getNodeByNodeId(keywordsState, keywordRootNodeId);
@@ -54,8 +53,9 @@ export function getKeywordsAsTree(tedTaggerState: TedTaggerState): any {
       root: rootKeywordNodeDeep
     };
     recursiveBuildTree(keywordsState, deepKeywordTree, rootKeywordNodeDeep);
+    return deepKeywordTree;
   }
-  return 'pizza';
+  return undefined;
 }
 
 
@@ -90,8 +90,6 @@ function recursiveBuildTree(keywordsState: KeywordsState, deepKeywordTree: Keywo
         }
       });
       recursiveBuildTree(keywordsState, deepKeywordTree, childNode);
-
     }
-    // debugger;
   }
 }
