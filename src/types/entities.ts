@@ -85,7 +85,7 @@ export interface KeywordNodeDeep {
   nodeId: string;
   keywordId: string;
   childNodeIds: string[];
-  childNodes?: KeywordNode[] | undefined;
+  childNodes: KeywordNodeDeep[];
 }
 
 export interface KeywordTreeDeep {
