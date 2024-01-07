@@ -94,7 +94,7 @@ const initialState: KeywordsState =
     }
   }
   ,
-  rootNodeId: 'rootNode',
+  keywordRootNodeId: 'rootNode',
 };
 
 export const keywordsStateReducer = (

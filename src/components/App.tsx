@@ -9,7 +9,7 @@ import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { addKeyword } from '../controllers';
 import { KeywordNode, KeywordTree } from '../types';
-import { getRootNodeId } from '../selectors';
+import { getKeywordRootNodeId } from '../selectors';
 
 export interface AppProps {
   onLoadDefaultTagAvatarId: () => any;
@@ -18,7 +18,7 @@ export interface AppProps {
   onLoadTags: () => any;
   onLoadUserTagAvatars: () => any;
   onSetAppInitialized: () => any;
-  rootNodeId: string;
+  keywordRootNodeId: string;
   onAddKeyword: (parentId: string, keywordLabel: string, keywordType: string) => any;
 }
 
@@ -49,19 +49,19 @@ const App = (props: AppProps) => {
       console.log('key pressed: ' + event.key);
 
       if (event.key === 's') {
-        const samNode = props.onAddKeyword(props.rootNodeId, 'Sam', 'person');
+        const samNode = props.onAddKeyword(props.keywordRootNodeId, 'Sam', 'person');
         console.log('samNode: ');
         console.log(samNode);
       } else if (event.key === 'j') {
-        const joelNode = props.onAddKeyword(props.rootNodeId, 'Joel', 'person');
+        const joelNode = props.onAddKeyword(props.keywordRootNodeId, 'Joel', 'person');
         console.log('joelNode: ');
         console.log(joelNode);
       } else if (event.key === 'r') {
-        const rachelNode = props.onAddKeyword(props.rootNodeId, 'Rachel', 'person');
+        const rachelNode = props.onAddKeyword(props.keywordRootNodeId, 'Rachel', 'person');
         console.log('rachelNode: ');
         console.log(rachelNode);
       } else if (event.key === 'a') {
-        const grandmaEmilyNode: KeywordNode = props.onAddKeyword(props.rootNodeId, 'Grandma Emily', 'person');
+        const grandmaEmilyNode: KeywordNode = props.onAddKeyword(props.keywordRootNodeId, 'Grandma Emily', 'person');
         const tedNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Ted', 'person');
         const noahNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Noah', 'person');
         const samNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Sam', 'person');
@@ -109,7 +109,7 @@ const App = (props: AppProps) => {
 
 function mapStateToProps(state: any) {
   return {
-    rootNodeId: getRootNodeId(state),
+    keywordRootNodeId: getKeywordRootNodeId(state),
   };
 }
 
