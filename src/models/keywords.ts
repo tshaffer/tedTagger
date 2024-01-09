@@ -81,7 +81,7 @@ const initialState: KeywordsState =
   keywordsById: {
     ['rootKeyword']: {
       keywordId: 'rootKeyword',
-      label: 'Keyword Tree Root',
+      label: 'Keywords',
       type: 'root',
     }
   },

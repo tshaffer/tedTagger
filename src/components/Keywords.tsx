@@ -25,16 +25,11 @@ const Keywords = (props: KeywordsProps) => {
     return null;
   }
 
-  console.log(props.keywordsAsTree);
-
   const buildTreeViewItems = (keywordNode: KeywordNodeDeep): JSX.Element => {
-
-    console.log('invoke buildTreeViewItem: ', props.keywordsById[keywordNode.keywordId].label);
 
     if (keywordNode.childNodes.length === 0) {
       const keyword: Keyword = props.keywordsById[keywordNode.keywordId];
       const keywordLabel: string = keyword.label;
-      console.log(keywordLabel + ' has no children');
       return (
         <TreeItem
           key={keywordNode.nodeId}
@@ -44,7 +39,6 @@ const Keywords = (props: KeywordsProps) => {
       );
     }
     const keywordNodes = keywordNode.childNodes.map((childNode: KeywordNodeDeep) => {
-      console.log('recursively invoke buildTreeViewItem with child: ', props.keywordsById[childNode.keywordId].label);
       return buildTreeViewItems(childNode);
     });
 
@@ -73,23 +67,6 @@ const Keywords = (props: KeywordsProps) => {
 
   const treeViewContents: JSX.Element = buildTreeViewContents();
 
-  /*
-      <TreeView
-        aria-label="file system navigator"
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
-        <TreeItem nodeId="1" label="Applications">
-          <TreeItem nodeId="2" label="Calendar" />
-        </TreeItem>
-        <TreeItem nodeId="5" label="Documents">
-          <TreeItem nodeId="10" label="OSS" />
-          <TreeItem nodeId="6" label="MUI">
-            <TreeItem nodeId="8" label="index.js" />
-          </TreeItem>
-        </TreeItem>
-      </TreeView>
-  */
   return (
     <Box sx={{ minHeight: 180, flexGrow: 1, maxWidth: 300 }}>
       {treeViewContents}
@@ -98,7 +75,6 @@ const Keywords = (props: KeywordsProps) => {
 };
 
 function mapStateToProps(state: any) {
-  console.log('mapStateToProps');
   return {
     appInitialized: getAppInitialized(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
