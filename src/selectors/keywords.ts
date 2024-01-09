@@ -5,11 +5,16 @@ import {
   KeywordNodeDeep,
   KeywordsState,
   KeywordTreeDeep,
+  StringToKeywordLUT,
   TedTaggerState,
 } from '../types';
 
 export function getKeywordRootNodeId(tedTaggerState: TedTaggerState): string {
   return tedTaggerState.keywordsState.keywordRootNodeId;
+}
+
+export function getKeywordsById(tedTaggerState: TedTaggerState): StringToKeywordLUT {
+  return tedTaggerState.keywordsState.keywordsById;
 }
 
 export function getNodeByNodeId(keywordsState: KeywordsState, nodeId: string): KeywordNode | undefined {
@@ -52,7 +57,9 @@ export function getKeywordsAsTree(tedTaggerState: TedTaggerState): KeywordTreeDe
     const deepKeywordTree: KeywordTreeDeep = {
       root: rootKeywordNodeDeep
     };
+    console.log('invoke recursiveBuildTree');
     recursiveBuildTree(keywordsState, deepKeywordTree, rootKeywordNodeDeep);
+    console.log('return deepKeywordTree');
     return deepKeywordTree;
   }
   return undefined;
