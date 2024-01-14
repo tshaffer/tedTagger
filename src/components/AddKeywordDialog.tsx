@@ -31,35 +31,23 @@ function AddKeywordDialog(props: AddKeywordDialogProps) {
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>AddKeyword MealWheel</DialogTitle>
-      <DialogContent>
+      <DialogTitle>Add Keyword</DialogTitle>
+      <DialogContent style={{ paddingBottom: '0px' }}>
         <Box
           component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-          }}
           noValidate
           autoComplete="off"
         >
-          <div style={{ marginLeft: '10px', marginRight: '10px', marginBottom: '10px' }}>
+          <div>
             <TextField
               label="Keyword Label"
               value={keywordLabel}
               onChange={(event) => setKeywordLabel(event.target.value)}
             />
           </div>
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '10px',
-              right: '10px',
-            }}
-          >
-          </div>
         </Box>
       </DialogContent>
       <DialogActions
-        style={{ marginTop: '10px' }}
       >
         <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={handleAddNewKeyword} autoFocus>
