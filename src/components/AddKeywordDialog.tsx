@@ -9,6 +9,9 @@ import { Button, DialogActions, DialogContent } from '@mui/material';
 
 export interface AddKeywordDialogPropsFromParent {
   open: boolean;
+  onAddKeyword: (
+    keywordLabel: string,
+  ) => void;
   onClose: () => void;
 }
 
@@ -21,13 +24,16 @@ function AddKeywordDialog(props: AddKeywordDialogProps) {
 
   const { open, onClose } = props;
 
+  function handleAddNewKeyword(): void {
+    if (keywordLabel !== '') {
+      props.onAddKeyword(keywordLabel);
+      props.onClose();
+    }
+  }
+
   const handleClose = () => {
     onClose();
   };
-
-  function handleAddNewKeyword(): void {
-    console.log('handleAddNewKeyword');
-  }
 
   return (
     <Dialog onClose={handleClose} open={open}>

@@ -23,6 +23,7 @@ import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getKeywordRootNodeId, getKeywordsAsTree, getKeywordsById } from '../selectors';
 
 import AddKeywordDialog from './AddKeywordDialog';
+import { addKeyword } from '../controllers';
 
 const CustomContent = React.forwardRef(function CustomContent(
   props: TreeItemContentProps,
@@ -104,6 +105,11 @@ export interface KeywordsProps {
   keywordRootNodeId: string;
   keywordsAsTree: KeywordTreeDeep | undefined;
   keywordsById: StringToKeywordLUT;
+  onAddKeyword: (
+    parentNodeId: string,
+    keywordLabel: string,
+    keywordType: string,
+  ) => void;
 }
 
 const Keywords = (props: KeywordsProps) => {
@@ -118,7 +124,13 @@ const Keywords = (props: KeywordsProps) => {
     setShowAddKeywordDialog(false);
   };
 
-  const buildTreeViewItems = (keywordNode: KeywordNodeDeep): JSX.Element => {
+  const handleAddKeyword = (keywordLabel: string): void => {
+    // throw new Error('Function not implemented.');
+    console.log('add keyword: ' + keywordLabel + ' to node: ' + props.keywordRootNodeId);
+    props.onAddKeyword(props.keywordRootNodeId, keywordLabel, 'user');
+  };
+
+  const renderTreeViewItems = (keywordNode: KeywordNodeDeep): JSX.Element => {
 
     if (keywordNode.childNodes.length === 0) {
       const keyword: Keyword = props.keywordsById[keywordNode.keywordId];
@@ -132,7 +144,7 @@ const Keywords = (props: KeywordsProps) => {
       );
     }
     const keywordNodes = keywordNode.childNodes.map((childNode: KeywordNodeDeep) => {
-      return buildTreeViewItems(childNode);
+      return renderTreeViewItems(childNode);
     });
 
     return (
@@ -149,8 +161,8 @@ const Keywords = (props: KeywordsProps) => {
     );
   };
 
-  const buildTreeViewContents = (): JSX.Element => {
-    const treeViewItems: JSX.Element = buildTreeViewItems(props.keywordsAsTree!.root);
+  const renderTreeViewContents = (): JSX.Element => {
+    const treeViewItems: JSX.Element = renderTreeViewItems(props.keywordsAsTree!.root);
     return (
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
@@ -161,12 +173,13 @@ const Keywords = (props: KeywordsProps) => {
     );
   };
 
-  const treeViewContents: JSX.Element = buildTreeViewContents();
+  const treeViewContents: JSX.Element = renderTreeViewContents();
 
   return (
     <Box sx={{ minHeight: 180, flexGrow: 1, maxWidth: 300 }}>
       <AddKeywordDialog
         open={showAddKeywordDialog}
+        onAddKeyword={handleAddKeyword}
         onClose={handleCloseAddKeywordDialog}
       />
       {treeViewContents}
@@ -185,6 +198,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onAddKeyword: addKeyword,
   }, dispatch);
 };
 
