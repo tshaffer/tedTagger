@@ -6,6 +6,7 @@ import {
   KeywordsState,
   KeywordTreeDeep,
   StringToKeywordLUT,
+  StringToKeywordNodeLUT,
   TedTaggerState,
 } from '../types';
 
@@ -18,6 +19,10 @@ export function getKeywordRootNodeId(tedTaggerState: TedTaggerState): string {
 
 export function getKeywordsById(tedTaggerState: TedTaggerState): StringToKeywordLUT {
   return tedTaggerState.keywordsState.keywordsById;
+}
+
+export function getKeywordNodesByNodeId(tedTaggerState: TedTaggerState): StringToKeywordNodeLUT {
+  return tedTaggerState.keywordsState.keywordNodesByNodeId;
 }
 
 export function getNodeByNodeId(keywordsState: KeywordsState, nodeId: string): KeywordNode | undefined {
