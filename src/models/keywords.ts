@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { KeywordNode, KeywordsState } from '../types';
+import { Keyword, KeywordNode, KeywordsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 import { getNodeByNodeId } from '../selectors';
 
@@ -7,11 +7,29 @@ import { getNodeByNodeId } from '../selectors';
 // Constants
 // ------------------------------------
 export const ADD_KEYWORD = 'ADD_KEYWORD';
+export const ADD_KEYWORDS = 'ADD_KEYWORDS';
 export const ADD_KEYWORD_NODE = 'ADD_KEYWORD_NODE';
+export const ADD_KEYWORD_NODES = 'ADD_KEYWORD_NODES';
+export const SET_KEYWORD_ROOT_NODE_ID = 'SET_KEYWORD_ROOT_NODE_ID';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
+interface AddKeywordsPayload {
+  keywords: Keyword[],
+}
+
+export const addKeywordsRedux = (
+  keywords: Keyword[],
+): any => {
+  return {
+    type: ADD_KEYWORDS,
+    payload: {
+      keywords
+    }
+  };
+};
+
 interface AddKeywordPayload {
   keywordId: string,
   label: string,
@@ -23,6 +41,10 @@ export const addKeywordRedux = (
   label: string,
   type: string,
 ): any => {
+  // console.log('addKeywordRedux', label);
+  // if (label === 'Elena') {
+  //   debugger;
+  // }
   return {
     type: ADD_KEYWORD,
     payload: {
@@ -32,6 +54,22 @@ export const addKeywordRedux = (
     }
   };
 };
+
+interface AddKeywordNodesPayload {
+  keywordNodes: KeywordNode[],
+}
+
+export const addKeywordNodesRedux = (
+  keywordNodes: KeywordNode[],
+): any => {
+  return {
+    type: ADD_KEYWORD_NODES,
+    payload: {
+      keywordNodes
+    }
+  };
+};
+
 
 interface AddKeywordNodePayload {
   parentNodeId: string;
@@ -53,10 +91,10 @@ export const addKeywordNode = (
 
 function addChildNode(keywordsState: KeywordsState, parentNodeId: string, newNode: KeywordNode): void {
 
-  console.log(parentNodeId);
+  // console.log(parentNodeId);
 
   const parentNode = getNodeByNodeId(keywordsState, parentNodeId);
-  console.log(parentNode);
+  // console.log(parentNode);
 
   if (parentNode) {
     if (!parentNode.childrenNodeIds) {
@@ -71,6 +109,21 @@ function addChildNode(keywordsState: KeywordsState, parentNodeId: string, newNod
   }
 }
 
+interface SetKeywordRootNodeIdPayload {
+  keywordRootNodeId: string;
+}
+
+export const setKeywordRootNodeIdRedux = (
+  keywordRootNodeId: string,
+): any => {
+  return {
+    type: SET_KEYWORD_ROOT_NODE_ID,
+    payload: {
+      keywordRootNodeId
+    }
+  };
+};
+
 
 // ------------------------------------
 // Reducer
@@ -78,30 +131,40 @@ function addChildNode(keywordsState: KeywordsState, parentNodeId: string, newNod
 
 const initialState: KeywordsState =
 {
-  keywordsById: {
-    ['rootKeyword']: {
-      keywordId: 'rootKeyword',
-      label: 'Keywords',
-      type: 'root',
-    }
-  },
-  keywordNodesByNodeId: {
-    ['rootNode']: {
-      nodeId: 'rootNode',
-      keywordId: 'rootKeyword',
-      parentNodeId: undefined,
-      childrenNodeIds: [],
-    }
-  }
-  ,
-  keywordRootNodeId: 'rootNode',
+  keywordsById: {},
+  keywordNodesByNodeId: {},
+  keywordRootNodeId: '',
+  // keywordsById: {
+  //   ['rootKeyword']: {
+  //     keywordId: 'rootKeyword',
+  //     label: 'Keywords',
+  //     type: 'root',
+  //   }
+  // },
+  // keywordNodesByNodeId: {
+  //   ['rootNode']: {
+  //     nodeId: 'rootNode',
+  //     keywordId: 'rootKeyword',
+  //     parentNodeId: undefined,
+  //     childrenNodeIds: [],
+  //   }
+  // }
+  // ,
+  // keywordRootNodeId: 'rootNode',
 };
 
 export const keywordsStateReducer = (
   state: KeywordsState = initialState,
-  action: TedTaggerModelBaseAction<AddKeywordNodePayload & AddKeywordPayload>
+  action: TedTaggerModelBaseAction<AddKeywordsPayload & AddKeywordNodesPayload & AddKeywordNodePayload & AddKeywordPayload & SetKeywordRootNodeIdPayload>
 ): KeywordsState => {
   switch (action.type) {
+    case ADD_KEYWORDS: {
+      const newState = cloneDeep(state);
+      action.payload.keywords.forEach((keyword) => {
+        newState.keywordsById[keyword.keywordId] = keyword;
+      });
+      return newState;
+    }
     case ADD_KEYWORD:
       return {
         ...state,
@@ -115,10 +178,17 @@ export const keywordsStateReducer = (
           }
         }
       };
+    case ADD_KEYWORD_NODES: {
+      const newState = cloneDeep(state);
+      action.payload.keywordNodes.forEach((keywordNode) => {
+        newState.keywordNodesByNodeId[keywordNode.nodeId] = keywordNode;
+      });
+      return newState;
+    }
     case ADD_KEYWORD_NODE: {
       const newState = cloneDeep(state);
-      console.log('invoke addChildNode');
-      console.log(newState);
+      // console.log('invoke addChildNode');
+      // console.log(newState);
       addChildNode(newState, action.payload.parentNodeId, action.payload.keywordNode);
       const retState: KeywordsState = {
         ...newState,
@@ -127,9 +197,15 @@ export const keywordsStateReducer = (
           [action.payload.keywordNode.nodeId]: action.payload.keywordNode,
         }
       };
-      console.log('ADD_KEYWORD_NODE');
-      console.log(retState);
+      // console.log('ADD_KEYWORD_NODE');
+      // console.log(retState);
       return retState;
+    }
+    case SET_KEYWORD_ROOT_NODE_ID: {
+      return {
+        ...state,
+        keywordRootNodeId: action.payload.keywordRootNodeId,
+      };
     }
     default:
       return state;

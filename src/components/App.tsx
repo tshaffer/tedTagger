@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import LoupeView from './LoupeView';
-import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars } from '../controllers';
+import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { addKeyword } from '../controllers';
@@ -14,6 +14,7 @@ import Keywords from './Keywords';
 import IconExpansionTreeView from './MuiTestTreeView';
 
 export interface AppProps {
+  onLoadKeywordData: () => any;
   onLoadDefaultTagAvatarId: () => any;
   onLoadAppTagAvatars: () => any;
   onLoadMediaItems: () => any;
@@ -27,7 +28,9 @@ export interface AppProps {
 const App = (props: AppProps) => {
 
   const buildTree = () => {
-    const grandmaEmilyNode: KeywordNode = props.onAddKeyword(props.keywordRootNodeId, 'Grandma Emily', 'person');
+    console.log('buildTree invoked');
+    const keywordRootNodeId = 'rootKeywordNodeId';
+    const grandmaEmilyNode: KeywordNode = props.onAddKeyword(keywordRootNodeId, 'Grandma Emily', 'person');
     const tedNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Ted', 'person');
     const noahNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Noah', 'person');
     const samNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Sam', 'person');
@@ -39,9 +42,12 @@ const App = (props: AppProps) => {
   };
 
   React.useEffect(() => {
+    console.log('React.useEffect invoked');
     props.onLoadDefaultTagAvatarId()
       .then(function () {
         return props.onLoadAppTagAvatars();
+      }).then(function () {
+        return props.onLoadKeywordData();
       }).then(function () {
         return props.onLoadUserTagAvatars();
       }).then(function () {
@@ -52,8 +58,8 @@ const App = (props: AppProps) => {
         return buildTree();
       }).then(function () {
         return props.onSetAppInitialized();
-      }, []);
-  });
+      });
+  }, []);
 
   // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
   // <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
@@ -79,6 +85,7 @@ const App = (props: AppProps) => {
 };
 
 function mapStateToProps(state: any) {
+  // console.log('mapStateToProps', getKeywordRootNodeId(state));
   return {
     keywordRootNodeId: getKeywordRootNodeId(state),
   };
@@ -86,6 +93,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onLoadKeywordData: loadKeywordData,
     onLoadDefaultTagAvatarId: loadDefaultTagAvatarId,
     onLoadAppTagAvatars: loadAppTagAvatars,
     onLoadMediaItems: loadMediaItems,

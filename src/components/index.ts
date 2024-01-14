@@ -1,3 +1,4 @@
+export * from './AddKeywordDialog';
 export * from './App';
 export * from './GridView';
 export * from './LoupeView';

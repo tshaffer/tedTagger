@@ -2,15 +2,14 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import clsx from 'clsx';
+
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-
-
-
-import clsx from 'clsx';
 import Typography from '@mui/material/Typography';
 import {
   TreeItemProps,
@@ -19,12 +18,11 @@ import {
 } from '@mui/x-tree-view/TreeItem';
 import Checkbox from '@mui/material/Checkbox';
 
-
-
-
 import { Keyword, KeywordNodeDeep, KeywordTreeDeep, StringToKeywordLUT } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getKeywordRootNodeId, getKeywordsAsTree, getKeywordsById } from '../selectors';
+
+import AddKeywordDialog from './AddKeywordDialog';
 
 const CustomContent = React.forwardRef(function CustomContent(
   props: TreeItemContentProps,
@@ -101,7 +99,6 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   return <TreeItem ContentComponent={CustomContent} {...props} ref={ref} />;
 });
 
-
 export interface KeywordsProps {
   appInitialized: boolean;
   keywordRootNodeId: string;
@@ -111,9 +108,15 @@ export interface KeywordsProps {
 
 const Keywords = (props: KeywordsProps) => {
 
+  const [showAddKeywordDialog, setShowAddKeywordDialog] = React.useState(false);
+
   if (!props.appInitialized) {
     return null;
   }
+
+  const handleCloseAddKeywordDialog = () => {
+    setShowAddKeywordDialog(false);
+  };
 
   const buildTreeViewItems = (keywordNode: KeywordNodeDeep): JSX.Element => {
 
@@ -133,13 +136,16 @@ const Keywords = (props: KeywordsProps) => {
     });
 
     return (
-      <CustomTreeItem
-        key={keywordNode.nodeId}
-        nodeId={keywordNode.nodeId}
-        label={props.keywordsById[keywordNode.keywordId].label}
-      >
-        {keywordNodes}
-      </CustomTreeItem>
+      <div>
+        <Button onClick={() => setShowAddKeywordDialog(true)}>Add Keyword</Button>
+        <CustomTreeItem
+          key={keywordNode.nodeId}
+          nodeId={keywordNode.nodeId}
+          label={props.keywordsById[keywordNode.keywordId].label}
+        >
+          {keywordNodes}
+        </CustomTreeItem>
+      </div>
     );
   };
 
@@ -159,6 +165,10 @@ const Keywords = (props: KeywordsProps) => {
 
   return (
     <Box sx={{ minHeight: 180, flexGrow: 1, maxWidth: 300 }}>
+      <AddKeywordDialog
+        open={showAddKeywordDialog}
+        onClose={handleCloseAddKeywordDialog}
+      />
       {treeViewContents}
     </Box>
   );

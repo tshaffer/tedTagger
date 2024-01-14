@@ -10,6 +10,9 @@ import {
 } from '../types';
 
 export function getKeywordRootNodeId(tedTaggerState: TedTaggerState): string {
+  // if (tedTaggerState.keywordsState.keywordRootNodeId !== '') {
+  //   console.log('getKeywordRootNodeId', tedTaggerState.keywordsState.keywordRootNodeId);
+  // }
   return tedTaggerState.keywordsState.keywordRootNodeId;
 }
 
@@ -57,9 +60,9 @@ export function getKeywordsAsTree(tedTaggerState: TedTaggerState): KeywordTreeDe
     const deepKeywordTree: KeywordTreeDeep = {
       root: rootKeywordNodeDeep
     };
-    console.log('invoke recursiveBuildTree');
+    // console.log('invoke recursiveBuildTree');
     recursiveBuildTree(keywordsState, deepKeywordTree, rootKeywordNodeDeep);
-    console.log('return deepKeywordTree');
+    // console.log('return deepKeywordTree');
     return deepKeywordTree;
   }
   return undefined;
@@ -71,10 +74,10 @@ function recursiveBuildTree(keywordsState: KeywordsState, deepKeywordTree: Keywo
     for (const childNode of parentNodeDeep.childNodes) {
 
       const parentKeyword: Keyword = keywordsState.keywordsById[parentNodeDeep.keywordId];
-      console.log('Parent keyword: ', parentKeyword.label);
+      // console.log('Parent keyword: ', parentKeyword.label);
 
       const keyword: Keyword = keywordsState.keywordsById[childNode.keywordId];
-      console.log('Node keyword: ', keyword.label);
+      // console.log('Node keyword: ', keyword.label);
 
       // add full nodes to childNode
       const childNodeIds: string[] = childNode.childNodeIds;

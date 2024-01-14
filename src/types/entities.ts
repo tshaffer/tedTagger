@@ -91,3 +91,9 @@ export interface KeywordNodeDeep {
 export interface KeywordTreeDeep {
   root: KeywordNodeDeep;
 }
+
+export interface KeywordData {
+  keywords: Keyword[];
+  keywordNodes: KeywordNode[];
+  keywordRootNodeId: string;
+}
