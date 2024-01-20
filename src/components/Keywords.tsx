@@ -18,12 +18,13 @@ import {
 } from '@mui/x-tree-view/TreeItem';
 import Checkbox from '@mui/material/Checkbox';
 
-import { Keyword, KeywordNodeDeep, KeywordTreeDeep, StringToKeywordLUT } from '../types';
+import { Keyword, KeywordNode, KeywordNodeDeep, KeywordTreeDeep, MediaItem, StringToKeywordLUT, StringToKeywordNodeLUT, StringToStringArrayLUT } from '../types';
 import { TedTaggerDispatch } from '../models';
-import { getAppInitialized, getKeywordRootNodeId, getKeywordsAsTree, getKeywordsById } from '../selectors';
+import { getAppInitialized, getKeywordNodesByNodeId, getKeywordRootNodeId, getKeywordsAsTree, getKeywordsById, getMediaItemById, getSelectedMediaItemIds } from '../selectors';
 
 import AddKeywordDialog from './AddKeywordDialog';
 import { addKeyword } from '../controllers';
+import { isNil } from 'lodash';
 
 const CustomContent = React.forwardRef(function CustomContent(
   props: TreeItemContentProps,
@@ -67,6 +68,11 @@ const CustomContent = React.forwardRef(function CustomContent(
     handleSelection(event);
   };
 
+  const handleToggleAssignKeywordToItem = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const assignKeywordToItem: boolean = (event.target as HTMLInputElement).checked;
+    (props as any).onEatPizza();
+  };
+
   return (
     <div
       className={clsx(className, classes.root, {
@@ -88,16 +94,35 @@ const CustomContent = React.forwardRef(function CustomContent(
       >
         {label}
       </Typography>
-      <Checkbox />
+      <Checkbox
+        checked={false}
+        onChange={handleToggleAssignKeywordToItem}
+      />
     </div>
   );
 });
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
-  props: TreeItemProps,
+  // props: TreeItemProps,
+  props: any,
   ref: React.Ref<HTMLLIElement>,
 ) {
-  return <TreeItem ContentComponent={CustomContent} {...props} ref={ref} />;
+  // props: nodeId, label (children sometimes). need to include isAssignedToMediaItem somehow. how to encode it? 
+  // I think node needs to be a custom interface and includes information about the selected media item 
+  // required props for the treeItem node
+  //    isSelectedMediaItemAssignedToKeyword
+  //    toggleIsSelectedMediaItemAssignedToKeyword
+  // what information is necessary to assign the props properly?
+  //    mapping of media item id to keyword id
+  //    mapping of keyword id to media item id
+  return <TreeItem
+    ContentComponent={CustomContent}
+    ContentProps={ { 
+      onEatPizza: () => props.onEatPizza(),
+    } }
+    {...props}
+    ref={ref}
+  />;
 });
 
 export interface KeywordsProps {
@@ -105,6 +130,7 @@ export interface KeywordsProps {
   keywordRootNodeId: string;
   keywordsAsTree: KeywordTreeDeep | undefined;
   keywordsById: StringToKeywordLUT;
+  selectedMediaItemIds: string[],
   onAddKeyword: (
     parentNodeId: string,
     keywordLabel: string,
@@ -138,6 +164,7 @@ const Keywords = (props: KeywordsProps) => {
           key={keywordNode.nodeId}
           nodeId={keywordNode.nodeId}
           label={keywordLabel}
+          onEatPizza={() => console.log('eat pizza - 0')}
         />
       );
     }
@@ -150,10 +177,29 @@ const Keywords = (props: KeywordsProps) => {
         key={keywordNode.nodeId}
         nodeId={keywordNode.nodeId}
         label={props.keywordsById[keywordNode.keywordId].label}
+        onEatPizza={() => console.log('eat pizza - 1')}
       >
         {keywordNodes}
       </CustomTreeItem>
     );
+  };
+
+  const handleNodeFocus = (param1: any, param2: any) => {
+    // console.log('handleNodeFocus');
+    // console.log(param1);
+    // console.log(param2);
+  };
+
+  const handleNodeSelect = (param1: any, param2: any) => {
+    // console.log('handleNodeSelected');
+    // console.log(param1);
+    // console.log(param2);
+  };
+
+  const handleNodeToggle = (param1: any, param2: any) => {
+    // console.log('handleNodeToggle');
+    // console.log(param1);
+    // console.log(param2);
   };
 
   const renderTreeViewContents = (): JSX.Element => {
@@ -164,10 +210,13 @@ const Keywords = (props: KeywordsProps) => {
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
+          onNodeFocus={handleNodeFocus}
+          onNodeSelect={handleNodeSelect}
+          onNodeToggle={handleNodeToggle}
         >
           {treeViewItems}
         </TreeView>
-      </div>
+      </div >
     );
   };
 
@@ -185,12 +234,78 @@ const Keywords = (props: KeywordsProps) => {
   );
 };
 
+const generatePropData = (state: any): any => {
+
+  // required mappings
+  //    for each keywordNodeId,
+  //        mediaItems (ids) that include this keyword
+  //            map keywordNodeId to array of mediaItemIds
+  //    for each selectedMediaItem(id)
+  //        list of keywords associated with this media item
+  //            map mediaItemId to array of keywordNodeIds
+
+  const keywordNodesByNodeId: StringToKeywordNodeLUT = getKeywordNodesByNodeId(state);
+  const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
+
+  const mapKeywordNodeIdToSelectedMediaItemIds: StringToStringArrayLUT = {};
+  const mapSelectedMediaItemIdToKeywordNodeIds: StringToStringArrayLUT = {};
+
+  for (const keywordNodeId in keywordNodesByNodeId) {
+    for (const selectedMediaItemId of selectedMediaItemIds) {
+      const selectedMediaItem: MediaItem | null = getMediaItemById(state, selectedMediaItemId);
+      if (!isNil(selectedMediaItem) && !isNil(selectedMediaItem.keywordNodeIds)) {
+        const keywordNodeIdsForSelectedMediaItem: string[] = selectedMediaItem.keywordNodeIds;
+        if (keywordNodeIdsForSelectedMediaItem.includes(keywordNodeId)) {
+          if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, keywordNodeId)) {
+            mapKeywordNodeIdToSelectedMediaItemIds[keywordNodeId].push(selectedMediaItemId);
+          } else {
+            mapKeywordNodeIdToSelectedMediaItemIds[keywordNodeId] = [selectedMediaItemId];
+          }
+        }
+      }
+    }
+  }
+
+  for (const selectedMediaItemId of selectedMediaItemIds) {
+    const selectedMediaItem: MediaItem | null = getMediaItemById(state, selectedMediaItemId);
+    if (!isNil(selectedMediaItem) && !isNil(selectedMediaItem.keywordNodeIds)) {
+      const keywordNodeIdsForSelectedMediaItem: string[] = selectedMediaItem.keywordNodeIds;
+      for (const keywordNodeId in keywordNodesByNodeId) {
+        if (keywordNodeIdsForSelectedMediaItem.includes(keywordNodeId)) {
+          if (Object.prototype.hasOwnProperty.call(mapSelectedMediaItemIdToKeywordNodeIds, keywordNodeId)) {
+            mapSelectedMediaItemIdToKeywordNodeIds[selectedMediaItemId].push(keywordNodeId);
+          } else {
+            mapSelectedMediaItemIdToKeywordNodeIds[selectedMediaItemId] = [keywordNodeId];
+          }
+        }
+      }
+    }
+  }
+
+  // console.log('generatePropData');
+  // console.log(mapKeywordNodeIdToSelectedMediaItemIds);
+  // console.log(mapSelectedMediaItemIdToKeywordNodeIds);
+
+};
+
 function mapStateToProps(state: any) {
+  // console.log('mapStateToProps');
+  if (getAppInitialized(state)) {
+    // console.log('keywordRootNodeId', getKeywordRootNodeId(state));
+    // console.log('keywordsAsTree');
+    // console.log(getKeywordsAsTree(state));
+    // console.log('keywordsById');
+    // console.log(getKeywordsById(state));
+    // console.log('selectedMediaItemIds');
+    // console.log(getSelectedMediaItemIds(state));
+    generatePropData(state);
+  }
   return {
     appInitialized: getAppInitialized(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
     keywordsAsTree: getKeywordsAsTree(state),
     keywordsById: getKeywordsById(state),
+    selectedMediaItemIds: getSelectedMediaItemIds(state),
   };
 }
 

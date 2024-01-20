@@ -9,6 +9,10 @@ export type StringToStringLUT = {
   [key: string]: string;
 }
 
+export type StringToStringArrayLUT = {
+  [key: string]: string[];
+}
+
 export type StringToTagLUT = {
   [key: string]: Tag;
 }

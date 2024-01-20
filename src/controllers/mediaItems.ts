@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux } from '../models';
 import {
-  serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT,
+  serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, KeywordNode,
 } from '../types';
 import { cloneDeep, isNil } from 'lodash';
 import {
@@ -75,6 +75,42 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
       });
   };
 };
+
+export const addKeywordToMediaItems = (
+  mediaItems: MediaItem[],
+  keywordNode: KeywordNode,
+): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    // const path = serverUrl + apiUrlFragment + 'addKeywordToMediaItems';
+
+    // const googleMediaItemIds: string[] = mediaItems.map((mediaItem: MediaItem) => {
+    //   return mediaItem.googleId;
+    // });
+
+    dispatch(addKeywordToMediaItemsRedux(mediaItems, keywordNode.nodeId));
+    
+    return Promise.resolve();
+    // const updateKeywordsInMediaItemsBody = {
+    //   mediaItemIds: googleMediaItemIds,
+    //   tagId: keywordNode.id,
+    // };
+
+    // return axios.post(
+    //   path,
+    //   updateKeywordsInMediaItemsBody
+    // ).then((response) => {
+    //   dispatch(addTagToMediaItemsRedux(mediaItems, keywordNode.id));
+    //   // return mediaItems.googleId;
+    // }).catch((error) => {
+    //   console.log('error');
+    //   console.log(error);
+    //   return '';
+    // });
+  };
+
+};
+
 
 export const addTagToMediaItems = (
   mediaItems: MediaItem[],
