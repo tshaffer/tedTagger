@@ -125,7 +125,6 @@ const Keywords = (props: KeywordsProps) => {
   };
 
   const handleAddKeyword = (keywordLabel: string): void => {
-    // throw new Error('Function not implemented.');
     console.log('add keyword: ' + keywordLabel + ' to node: ' + props.keywordRootNodeId);
     props.onAddKeyword(props.keywordRootNodeId, keywordLabel, 'user');
   };
@@ -148,28 +147,28 @@ const Keywords = (props: KeywordsProps) => {
     });
 
     return (
-      <div>
-        <Button onClick={() => setShowAddKeywordDialog(true)}>Add Keyword</Button>
-        <CustomTreeItem
-          key={keywordNode.nodeId}
-          nodeId={keywordNode.nodeId}
-          label={props.keywordsById[keywordNode.keywordId].label}
-        >
-          {keywordNodes}
-        </CustomTreeItem>
-      </div>
+      <CustomTreeItem
+        key={keywordNode.nodeId}
+        nodeId={keywordNode.nodeId}
+        label={props.keywordsById[keywordNode.keywordId].label}
+      >
+        {keywordNodes}
+      </CustomTreeItem>
     );
   };
 
   const renderTreeViewContents = (): JSX.Element => {
     const treeViewItems: JSX.Element = renderTreeViewItems(props.keywordsAsTree!.root);
     return (
-      <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
-        {treeViewItems}
-      </TreeView>
+      <div>
+        <Button onClick={() => setShowAddKeywordDialog(true)}>Add Keyword</Button>
+        <TreeView
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
+          {treeViewItems}
+        </TreeView>
+      </div>
     );
   };
 
