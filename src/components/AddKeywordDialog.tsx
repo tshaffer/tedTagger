@@ -28,7 +28,7 @@ export interface AddKeywordDialogProps extends AddKeywordDialogPropsFromParent {
 
 const AddKeywordDialog = (props: AddKeywordDialogProps) => {
 
-  const [age, setAge] = React.useState<number | string>('');
+  const [parentNodeId, setParentNodeId] = React.useState(props.keywordRootNodeId);
   const [keywordLabel, setKeywordLabel] = React.useState('');
 
   const { open, onClose } = props;
@@ -41,30 +41,26 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
     return null;
   }
 
-
-  const handleChange = (event: SelectChangeEvent<typeof age>) => {
-    setAge(Number(event.target.value) || '');
+  const handleChange = (event: SelectChangeEvent<typeof parentNodeId>) => {
+    setParentNodeId(event.target.value || '');
   };
 
-
-  const traverseKeywordTree = (parentNodeId: string, keywordLabels: string[]): void => {
-    const keywordNode = props.keywordNodesByNodeId[parentNodeId];
-    const keywordId: string = keywordNode.keywordId;
-    const keyword: Keyword = props.keywordsById[keywordId];
-    keywordLabels.push(keyword.label);
+  const traverseKeywordTree = (parentNodeId: string, keywordNodes: KeywordNode[]): void => {
+    const keywordNode: KeywordNode = props.keywordNodesByNodeId[parentNodeId];
+    keywordNodes.push(keywordNode);
 
     if (!isNil(keywordNode.childrenNodeIds)) {
       keywordNode.childrenNodeIds.forEach((childNodeId: string) => {
-        traverseKeywordTree(childNodeId, keywordLabels);
+        traverseKeywordTree(childNodeId, keywordNodes);
       });
     }
   };
 
-  const getKeywords = (): string[] => {
-    const keywordLabels: string[] = [];
+  const getKeywords = (): KeywordNode[]  => {
+    const keywordNodes: KeywordNode[] = [];
     const keywordRootNodeId = props.keywordRootNodeId;
-    traverseKeywordTree(keywordRootNodeId, keywordLabels);
-    return keywordLabels;
+    traverseKeywordTree(keywordRootNodeId, keywordNodes);
+    return keywordNodes;
   };
 
   const handleAddNewKeyword = (): void => {
@@ -78,8 +74,23 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
     onClose();
   };
 
-  const keywordLabels: string[] = getKeywords();
-  console.log('keywordLabels: ' + keywordLabels);
+  const renderKeywordParentNode = (keywordNode: KeywordNode): JSX.Element => {
+    const keywordId: string = keywordNode.keywordId;
+    const keyword: Keyword = props.keywordsById[keywordId];
+    return (
+      <MenuItem value={keywordNode.nodeId}>{keyword.label}</MenuItem>
+    );
+  };
+
+  const renderKeywordParentNodes = (): JSX.Element[] => {
+    const keywordNodes = getKeywords();
+    const keywordParentNodes: JSX.Element[] = keywordNodes.map((keywordNode: KeywordNode) => {
+      return renderKeywordParentNode(keywordNode);
+    });
+    return keywordParentNodes;
+  };
+
+  const keywordParentNodes: JSX.Element[] = renderKeywordParentNodes();
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -99,20 +110,15 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
             />
           </div>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-dialog-select-label">Age</InputLabel>
+            <InputLabel id="demo-dialog-select-label">Parent Node</InputLabel>
             <Select
-              labelId="demo-dialog-select-label"
-              id="demo-dialog-select"
-              value={age}
+              labelId="keywordParentLabel"
+              id="keywordParentSelect"
+              value={parentNodeId}
               onChange={handleChange}
-              input={<OutlinedInput label="Age" />}
+              input={<OutlinedInput label="Parent Keyword" />}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {keywordParentNodes}
             </Select>
           </FormControl>
         </Box>
