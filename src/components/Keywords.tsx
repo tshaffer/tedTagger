@@ -125,7 +125,6 @@ const Keywords = (props: KeywordsProps) => {
   };
 
   const handleAddKeyword = (keywordLabel: string): void => {
-    console.log('add keyword: ' + keywordLabel + ' to node: ' + props.keywordRootNodeId);
     props.onAddKeyword(props.keywordRootNodeId, keywordLabel, 'user');
   };
 

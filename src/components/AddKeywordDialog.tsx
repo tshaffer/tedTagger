@@ -5,7 +5,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, DialogActions, DialogContent } from '@mui/material';
+import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
 import { getAppInitialized, getKeywordNodesByNodeId, getKeywordRootNodeId, getKeywordsAsTree, getKeywordsById } from '../selectors';
 import { KeywordTreeDeep, StringToKeywordLUT, StringToKeywordNodeLUT, KeywordNode, Keyword } from '../types';
 import { isNil } from 'lodash';
@@ -28,6 +28,7 @@ export interface AddKeywordDialogProps extends AddKeywordDialogPropsFromParent {
 
 const AddKeywordDialog = (props: AddKeywordDialogProps) => {
 
+  const [age, setAge] = React.useState<number | string>('');
   const [keywordLabel, setKeywordLabel] = React.useState('');
 
   const { open, onClose } = props;
@@ -40,7 +41,11 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
     return null;
   }
 
-  console.log('AddKeywordDlg proceed beyond initial checks');
+
+  const handleChange = (event: SelectChangeEvent<typeof age>) => {
+    setAge(Number(event.target.value) || '');
+  };
+
 
   const traverseKeywordTree = (parentNodeId: string, keywordLabels: string[]): void => {
     const keywordNode = props.keywordNodesByNodeId[parentNodeId];
@@ -75,7 +80,7 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
 
   const keywordLabels: string[] = getKeywords();
   console.log('keywordLabels: ' + keywordLabels);
-  
+
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Add Keyword</DialogTitle>
@@ -87,11 +92,29 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
         >
           <div>
             <TextField
+              style={{ paddingBottom: '8px' }}
               label="Keyword Label"
               value={keywordLabel}
               onChange={(event) => setKeywordLabel(event.target.value)}
             />
           </div>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-dialog-select-label">Age</InputLabel>
+            <Select
+              labelId="demo-dialog-select-label"
+              id="demo-dialog-select"
+              value={age}
+              onChange={handleChange}
+              input={<OutlinedInput label="Age" />}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
       </DialogContent>
       <DialogActions
