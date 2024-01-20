@@ -124,8 +124,8 @@ const Keywords = (props: KeywordsProps) => {
     setShowAddKeywordDialog(false);
   };
 
-  const handleAddKeyword = (keywordLabel: string): void => {
-    props.onAddKeyword(props.keywordRootNodeId, keywordLabel, 'user');
+  const handleAddKeyword = (keywordLabel: string, parentKeywordNodeId: string): void => {
+    props.onAddKeyword(parentKeywordNodeId, keywordLabel, 'user');
   };
 
   const renderTreeViewItems = (keywordNode: KeywordNodeDeep): JSX.Element => {

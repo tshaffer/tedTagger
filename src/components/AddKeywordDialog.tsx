@@ -14,6 +14,7 @@ export interface AddKeywordDialogPropsFromParent {
   open: boolean;
   onAddKeyword: (
     keywordLabel: string,
+    parentKeywordNodeId: string,
   ) => void;
   onClose: () => void;
 }
@@ -28,7 +29,7 @@ export interface AddKeywordDialogProps extends AddKeywordDialogPropsFromParent {
 
 const AddKeywordDialog = (props: AddKeywordDialogProps) => {
 
-  const [parentNodeId, setParentNodeId] = React.useState(props.keywordRootNodeId);
+  const [parentKeywordNodeId, setParentKeywordNodeId] = React.useState(props.keywordRootNodeId);
   const [keywordLabel, setKeywordLabel] = React.useState('');
 
   const { open, onClose } = props;
@@ -41,8 +42,8 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
     return null;
   }
 
-  const handleChange = (event: SelectChangeEvent<typeof parentNodeId>) => {
-    setParentNodeId(event.target.value || '');
+  const handleChange = (event: SelectChangeEvent<typeof parentKeywordNodeId>) => {
+    setParentKeywordNodeId(event.target.value || '');
   };
 
   const traverseKeywordTree = (parentNodeId: string, keywordNodes: KeywordNode[]): void => {
@@ -65,7 +66,7 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
 
   const handleAddNewKeyword = (): void => {
     if (keywordLabel !== '') {
-      props.onAddKeyword(keywordLabel);
+      props.onAddKeyword(keywordLabel, parentKeywordNodeId);
       props.onClose();
     }
   };
@@ -114,7 +115,7 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
             <Select
               labelId="keywordParentLabel"
               id="keywordParentSelect"
-              value={parentNodeId}
+              value={parentKeywordNodeId}
               onChange={handleChange}
               input={<OutlinedInput label="Parent Keyword" />}
             >
