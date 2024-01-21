@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux, addKeywordToMediaItemIdsRedux } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, KeywordNode,
 } from '../types';
-import { cloneDeep, isNil } from 'lodash';
+import { assign, cloneDeep, isNil } from 'lodash';
 import {
   getDateRangeSpecification,
   getTagByLabel,
@@ -73,6 +73,21 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
         dispatch(setMediaItems(mediaItems));
       });
+  };
+};
+
+export const updateKeywordAssignedToSelectedMediaItems = (
+  keywordNodeId: string,
+  selectedMediaItemIds: string[],
+  assignKeyword: boolean
+): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+    if (assignKeyword) {
+      dispatch(addKeywordToMediaItemIdsRedux(selectedMediaItemIds, keywordNodeId));
+    } else {
+      dispatch(removeKeywordFromMediaItemIdsRedux(selectedMediaItemIds, keywordNodeId));
+    }
+    return Promise.resolve();
   };
 };
 

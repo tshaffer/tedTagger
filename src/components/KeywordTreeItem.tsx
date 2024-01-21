@@ -12,10 +12,10 @@ import {
 } from '@mui/x-tree-view/TreeItem';
 import Checkbox from '@mui/material/Checkbox';
 
-import { StringToStringArrayLUT } from '../types';
+import { KeywordAssignedToSelectedMediaItemsStatus, StringToStringArrayLUT } from '../types';
 
 interface KeywordTreeItemProps extends TreeItemContentProps {
-  onToggleAssignKeywordToMediaItems: (nodeId: string) => void;
+  onUpdateKeywordAssignedToSelectedMediaItems: (assignKeyword: boolean) => void;
   selectedMediaItemIds: string[];
   mapKeywordNodeIdToSelectedMediaItemIds: StringToStringArrayLUT;
 }
@@ -34,7 +34,7 @@ const CustomContent = React.forwardRef(function CustomContent(
     displayIcon,
     mapKeywordNodeIdToSelectedMediaItemIds,
     selectedMediaItemIds,
-    onToggleAssignKeywordToMediaItems,
+    onUpdateKeywordAssignedToSelectedMediaItems,
   } = props;
 
   const {
@@ -56,7 +56,7 @@ const CustomContent = React.forwardRef(function CustomContent(
   // required mappings
   //    for each keywordNodeId,
   //        mediaItems (ids) that include this keyword
-  //            map keywordNodeId to array of mediaItemIds
+  //            map keywordNodeId to array of mediaItemIds (that include this keyword)
   //    for each selectedMediaItem(id)
   //        list of keywords associated with this media item
   //            map mediaItemId to array of keywordNodeIds
@@ -71,6 +71,20 @@ const CustomContent = React.forwardRef(function CustomContent(
       return true;
     }
     return false;
+  };
+
+  const getKeywordAssignedToSelectedMediaItemsStatus = (): KeywordAssignedToSelectedMediaItemsStatus => {
+    if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, nodeId)) {
+      const selectedMediaItemIdsThatIncludeThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[nodeId];
+      if (selectedMediaItemIdsThatIncludeThisKeyword.length === 0) {
+        debugger;
+      } else if (selectedMediaItemIdsThatIncludeThisKeyword.length === selectedMediaItemIds.length) {
+        return KeywordAssignedToSelectedMediaItemsStatus.AllSelectedMediaItemsIncludeThisKeyword;
+      } else {
+        return KeywordAssignedToSelectedMediaItemsStatus.SomeSelectedMediaItemsIncludeThisKeyword;
+      }
+    }
+    return KeywordAssignedToSelectedMediaItemsStatus.NoSelectedMediaItemsIncludeThisKeyword;
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -88,9 +102,20 @@ const CustomContent = React.forwardRef(function CustomContent(
   ) => {
     handleSelection(event);
   };
-
-  const handleToggleAssignKeywordToItem = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onToggleAssignKeywordToMediaItems(nodeId);
+  
+  
+  const handleClickKeywordAssign = () => {
+    const keywordAssignedToSelectedMediaItemsStatus: KeywordAssignedToSelectedMediaItemsStatus = getKeywordAssignedToSelectedMediaItemsStatus();
+    if (keywordAssignedToSelectedMediaItemsStatus === KeywordAssignedToSelectedMediaItemsStatus.AllSelectedMediaItemsIncludeThisKeyword) {
+      console.log('all selected media items include this keyword: unassign keyword from all selected media items');
+      onUpdateKeywordAssignedToSelectedMediaItems(false);
+    } else if (keywordAssignedToSelectedMediaItemsStatus === KeywordAssignedToSelectedMediaItemsStatus.NoSelectedMediaItemsIncludeThisKeyword) {
+      console.log('no selected media items include this keyword: assign keyword to all selected media items');
+      onUpdateKeywordAssignedToSelectedMediaItems(true);
+    } else {
+      console.log('some selected media items include this keyword: assign keyword to all selected media items');
+      onUpdateKeywordAssignedToSelectedMediaItems(true);
+    }
   };
 
   const isChecked = getIsChecked();
@@ -119,7 +144,7 @@ const CustomContent = React.forwardRef(function CustomContent(
       </Typography>
       <Checkbox
         checked={isChecked}
-        onChange={handleToggleAssignKeywordToItem}
+        onChange={handleClickKeywordAssign}
         disabled={isDisabled}
       />
     </div>
@@ -135,7 +160,7 @@ export const KeywordTreeItem = React.forwardRef(function KeywordTreeItem(
   return <TreeItem
     ContentComponent={CustomContent}
     ContentProps={{
-      onToggleAssignKeywordToMediaItems: (nodeId: string) => props.onToggleAssignKeywordToMediaItems(nodeId),
+      onUpdateKeywordAssignedToSelectedMediaItems: (assignKeyword: boolean) => props.onUpdateKeywordAssignedToSelectedMediaItems(assignKeyword),
       selectedMediaItemIds: props.selectedMediaItemIds,
       mapKeywordNodeIdToSelectedMediaItemIds: props.mapKeywordNodeIdToSelectedMediaItemIds,
     }}

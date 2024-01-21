@@ -9,11 +9,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 
 import { Keyword, KeywordNodeDeep, KeywordTreeDeep, MediaItem, StringToKeywordLUT, StringToKeywordNodeLUT, StringToStringArrayLUT } from '../types';
-import { TedTaggerDispatch,  } from '../models';
+import { TedTaggerDispatch, } from '../models';
 import { getAppInitialized, getKeywordNodesByNodeId, getKeywordRootNodeId, getKeywordsAsTree, getKeywordsById, getMediaItemById, getSelectedMediaItemIds } from '../selectors';
 
 import AddKeywordDialog from './AddKeywordDialog';
-import { addKeyword, addKeywordToMediaItems } from '../controllers';
+import { addKeyword, addKeywordToMediaItems, updateKeywordAssignedToSelectedMediaItems } from '../controllers';
 import { isNil } from 'lodash';
 import { KeywordTreeItem } from './KeywordTreeItem';
 
@@ -30,9 +30,14 @@ export interface KeywordsProps {
     keywordLabel: string,
     keywordType: string,
   ) => void;
-  onAddKeywordToMediaItems: (
-    mediaItemIds: string[],
+  // onAddKeywordToMediaItems: (
+  //   mediaItemIds: string[],
+  //   keywordNodeId: string,
+  // ) => void;
+  onUpdateKeywordAssignedToSelectedMediaItems: (
     keywordNodeId: string,
+    selectedMediaItemIds: string[],
+    assignKeyword: boolean
   ) => void;
 }
 
@@ -52,25 +57,31 @@ const Keywords = (props: KeywordsProps) => {
     props.onAddKeyword(parentKeywordNodeId, keywordLabel, 'user');
   };
 
-  const handleToggleAssignKeywordToSelectedMediaItems = (keywordNodeId: string) => {
-    console.log('handleToggleAssignKeywordToSelectedMediaItems', keywordNodeId);
+  // const handleToggleAssignKeywordToSelectedMediaItems = (keywordNodeId: string) => {
+  //   console.log('handleToggleAssignKeywordToSelectedMediaItems', keywordNodeId);
 
-    const selectedMediaItemIds: string[] = props.selectedMediaItemIds;
-    props.onAddKeywordToMediaItems(selectedMediaItemIds, keywordNodeId);
+  //   const selectedMediaItemIds: string[] = props.selectedMediaItemIds;
+  //   props.onAddKeywordToMediaItems(selectedMediaItemIds, keywordNodeId);
 
-  };
+  // };
+
+  function handleUpdateKeywordAssignedToSelectedMediaItems(keywordNodeId: string, assignKeyword: boolean) {
+    console.log('handleToggleAssignKeywordToSelectedMediaItems', keywordNodeId, assignKeyword);
+    props.onUpdateKeywordAssignedToSelectedMediaItems(keywordNodeId, props.selectedMediaItemIds, assignKeyword);
+  }
 
   const renderTreeViewItems = (keywordNode: KeywordNodeDeep): JSX.Element => {
 
     if (keywordNode.childNodes.length === 0) {
       const keyword: Keyword = props.keywordsById[keywordNode.keywordId];
       const keywordLabel: string = keyword.label;
+
       return (
         <KeywordTreeItem
           key={keywordNode.nodeId}
           nodeId={keywordNode.nodeId}
           label={keywordLabel}
-          onToggleAssignKeywordToMediaItems={(nodeId: string) => handleToggleAssignKeywordToSelectedMediaItems(nodeId)}
+          onUpdateKeywordAssignedToSelectedMediaItems={(assignKeyword: boolean) => { handleUpdateKeywordAssignedToSelectedMediaItems(keywordNode.nodeId, assignKeyword); }}
           selectedMediaItemIds={props.selectedMediaItemIds}
           mapKeywordNodeIdToSelectedMediaItemIds={props.mapKeywordNodeIdToSelectedMediaItemIds}
         />
@@ -85,7 +96,7 @@ const Keywords = (props: KeywordsProps) => {
         key={keywordNode.nodeId}
         nodeId={keywordNode.nodeId}
         label={props.keywordsById[keywordNode.keywordId].label}
-        onToggleAssignKeywordToMediaItems={(nodeId: string) => handleToggleAssignKeywordToSelectedMediaItems(nodeId)}
+        onUpdateKeywordAssignedToSelectedMediaItems={(assignKeyword: boolean) => { handleUpdateKeywordAssignedToSelectedMediaItems(keywordNode.nodeId, assignKeyword); }}
         selectedMediaItemIds={props.selectedMediaItemIds}
         mapKeywordNodeIdToSelectedMediaItemIds={props.mapKeywordNodeIdToSelectedMediaItemIds}
       >
@@ -212,7 +223,8 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddKeyword: addKeyword,
-    onAddKeywordToMediaItems: addKeywordToMediaItems,
+    onUpdateKeywordAssignedToSelectedMediaItems: updateKeywordAssignedToSelectedMediaItems
+    // onAddKeywordToMediaItems: addKeywordToMediaItems,
   }, dispatch);
 };
 

@@ -8,6 +8,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const SET_MEDIA_ITEMS = 'SET_MEDIA_ITEMS';
 export const ADD_KEYWORD_TO_MEDIA_ITEM_IDS = 'ADD_KEYWORD_TO_MEDIA_ITEM_IDS';
+export const REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS = 'REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS';
 export const ADD_KEYWORD_TO_MEDIA_ITEMS = 'ADD_KEYWORD_TO_MEDIA_ITEMS';
 export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
 export const REPLACE_TAG_IN_MEDIA_ITEMS = 'REPLACE_TAG_IN_MEDIA_ITEMS';
@@ -32,7 +33,7 @@ export const setMediaItems = (
   };
 };
 
-interface AddKeywordToMediaItemIdsPayload {
+interface AddOrRemoveKeywordToMediaItemIdsPayload {
   mediaItemIds: string[];
   keywordNodeId: string;
 }
@@ -49,6 +50,20 @@ export const addKeywordToMediaItemIdsRedux = (
     }
   };
 };
+
+export const removeKeywordFromMediaItemIdsRedux = (
+  mediaItemIds: string[],
+  keywordNodeId: string,
+): any => {
+  return {
+    type: REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS,
+    payload: {
+      mediaItemIds,
+      keywordNodeId,
+    }
+  };
+};
+
 
 interface AddKeywordToMediaItemsPayload {
   mediaItem: MediaItem[];
@@ -137,7 +152,7 @@ const initialState: MediaItemsState =
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
   // action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload & ReplaceTagInMediaItemsPayload>
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddKeywordToMediaItemIdsPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case SET_MEDIA_ITEMS: {
@@ -145,15 +160,40 @@ export const mediaItemsStateReducer = (
     }
     case ADD_KEYWORD_TO_MEDIA_ITEM_IDS: {
       const newState = cloneDeep(state) as MediaItemsState;
+
+      // newState.mediaItems is all media items
+      // action.payload.mediaItemIds is the media items that are selected
+
+      // iterate through each media item
       newState.mediaItems.forEach((mediaItem) => {
+
+        // is the current media item in the list of selected media items?
         const matchingInputItem = action.payload.mediaItemIds.find((inputItemId) => inputItemId === mediaItem.googleId);
         if (matchingInputItem) {
+          // if yes, add the keyword to the media item's list of assigned keywords (if it doesn't already exist)
           if (isNil(mediaItem.keywordNodeIds)) {
+            // mediaItem.keywordNodeIds may be undefined unless I regenerate the data (keywordNodeIds was added later)
             mediaItem.keywordNodeIds = [action.payload.keywordNodeId];
           } else {
             const keywordNodeIndex = mediaItem.keywordNodeIds.indexOf(action.payload.keywordNodeId);
+            // only push if it's not already there
             if (keywordNodeIndex === -1) {
               mediaItem.keywordNodeIds.push(action.payload.keywordNodeId);
+            }
+          }
+        }
+      });
+      return newState;
+    }
+    case REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS: {
+      const newState = cloneDeep(state) as MediaItemsState;
+      newState.mediaItems.forEach((mediaItem) => {
+        const matchingInputItem = action.payload.mediaItemIds.find((inputItemId) => inputItemId === mediaItem.googleId);
+        if (matchingInputItem) {
+          if (!isNil(mediaItem.keywordNodeIds)) {
+            const keywordNodeIndex = mediaItem.keywordNodeIds.indexOf(action.payload.keywordNodeId);
+            if (keywordNodeIndex !== -1) {
+              mediaItem.keywordNodeIds.splice(keywordNodeIndex, 1);
             }
           }
         }
