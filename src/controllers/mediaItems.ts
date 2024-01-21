@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux, addKeywordToMediaItemIdsRedux } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, KeywordNode,
 } from '../types';
@@ -77,8 +77,8 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 };
 
 export const addKeywordToMediaItems = (
-  mediaItems: MediaItem[],
-  keywordNode: KeywordNode,
+  mediaItemIds: string[],
+  keywordNodeId: string,
 ): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
@@ -88,8 +88,7 @@ export const addKeywordToMediaItems = (
     //   return mediaItem.googleId;
     // });
 
-    dispatch(addKeywordToMediaItemsRedux(mediaItems, keywordNode.nodeId));
-    
+    dispatch(addKeywordToMediaItemIdsRedux(mediaItemIds, keywordNodeId));
     return Promise.resolve();
     // const updateKeywordsInMediaItemsBody = {
     //   mediaItemIds: googleMediaItemIds,
@@ -108,7 +107,6 @@ export const addKeywordToMediaItems = (
     //   return '';
     // });
   };
-
 };
 
 

@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isNil } from 'lodash';
 
 import { MediaItem, MediaItemsState } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
@@ -7,6 +7,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // Constants
 // ------------------------------------
 export const SET_MEDIA_ITEMS = 'SET_MEDIA_ITEMS';
+export const ADD_KEYWORD_TO_MEDIA_ITEM_IDS = 'ADD_KEYWORD_TO_MEDIA_ITEM_IDS';
 export const ADD_KEYWORD_TO_MEDIA_ITEMS = 'ADD_KEYWORD_TO_MEDIA_ITEMS';
 export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
 export const REPLACE_TAG_IN_MEDIA_ITEMS = 'REPLACE_TAG_IN_MEDIA_ITEMS';
@@ -27,6 +28,24 @@ export const setMediaItems = (
     type: SET_MEDIA_ITEMS,
     payload: {
       mediaItems
+    }
+  };
+};
+
+interface AddKeywordToMediaItemIdsPayload {
+  mediaItemIds: string[];
+  keywordNodeId: string;
+}
+
+export const addKeywordToMediaItemIdsRedux = (
+  mediaItemIds: string[],
+  keywordNodeId: string,
+): any => {
+  return {
+    type: ADD_KEYWORD_TO_MEDIA_ITEM_IDS,
+    payload: {
+      mediaItemIds,
+      keywordNodeId,
     }
   };
 };
@@ -118,11 +137,28 @@ const initialState: MediaItemsState =
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
   // action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload & ReplaceTagInMediaItemsPayload>
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddKeywordToMediaItemIdsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case SET_MEDIA_ITEMS: {
       return { ...state, mediaItems: action.payload.mediaItems };
+    }
+    case ADD_KEYWORD_TO_MEDIA_ITEM_IDS: {
+      const newState = cloneDeep(state) as MediaItemsState;
+      newState.mediaItems.forEach((mediaItem) => {
+        const matchingInputItem = action.payload.mediaItemIds.find((inputItemId) => inputItemId === mediaItem.googleId);
+        if (matchingInputItem) {
+          if (isNil(mediaItem.keywordNodeIds)) {
+            mediaItem.keywordNodeIds = [action.payload.keywordNodeId];
+          } else {
+            const keywordNodeIndex = mediaItem.keywordNodeIds.indexOf(action.payload.keywordNodeId);
+            if (keywordNodeIndex === -1) {
+              mediaItem.keywordNodeIds.push(action.payload.keywordNodeId);
+            }
+          }
+        }
+      });
+      return newState;
     }
     case ADD_KEYWORD_TO_MEDIA_ITEMS: {
       const newState = cloneDeep(state) as MediaItemsState;

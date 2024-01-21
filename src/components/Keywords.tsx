@@ -19,12 +19,12 @@ import {
 import Checkbox from '@mui/material/Checkbox';
 
 import { Keyword, KeywordNode, KeywordNodeDeep, KeywordTreeDeep, MediaItem, StringToKeywordLUT, StringToKeywordNodeLUT, StringToStringArrayLUT } from '../types';
-import { TedTaggerDispatch } from '../models';
+import { TedTaggerDispatch,  } from '../models';
 import { getAppInitialized, getKeywordNodesByNodeId, getKeywordRootNodeId, getKeywordsAsTree, getKeywordsById, getMediaItemById, getSelectedMediaItemIds } from '../selectors';
 
 import AddKeywordDialog from './AddKeywordDialog';
-import { addKeyword } from '../controllers';
-import { isNil } from 'lodash';
+import { addKeyword, addKeywordToMediaItems } from '../controllers';
+import { get, isNil } from 'lodash';
 
 const CustomContent = React.forwardRef(function CustomContent(
   props: TreeItemContentProps,
@@ -52,6 +52,36 @@ const CustomContent = React.forwardRef(function CustomContent(
 
   const icon = iconProp || expansionIcon || displayIcon;
 
+  /*
+    selectedMediaItemIds: props.selectedMediaItemIds,
+    mapKeywordNodeIdToSelectedMediaItemIds: props.mapKeywordNodeIdToSelectedMediaItemIds,
+*/
+
+  const getIsDisabled = (): boolean => {
+    return isNil((props as any).selectedMediaItemIds) || (props as any).selectedMediaItemIds.length === 0;
+  };
+
+  // required mappings
+  //    for each keywordNodeId,
+  //        mediaItems (ids) that include this keyword
+  //            map keywordNodeId to array of mediaItemIds
+  //    for each selectedMediaItem(id)
+  //        list of keywords associated with this media item
+  //            map mediaItemId to array of keywordNodeIds
+  const getIsChecked = (): boolean => {
+    const mapKeywordNodeIdToSelectedMediaItemIds: StringToStringArrayLUT = (props as any).mapKeywordNodeIdToSelectedMediaItemIds;
+    if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, nodeId)) {
+      const selectedMediaItemIdsWithThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[nodeId];
+      // at this point, two possible cases:
+      //    case 0: selectedMediaItemIdsWithThisKeyword.length === selectedMediaItemIds.length
+      //    case 1: selectedMediaItemIdsWithThisKeyword.length < selectedMediaItemIds.length
+
+      // for now, assume case 0
+      return true;
+    }
+    return false;
+  };
+
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     preventSelection(event);
   };
@@ -69,9 +99,12 @@ const CustomContent = React.forwardRef(function CustomContent(
   };
 
   const handleToggleAssignKeywordToItem = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const assignKeywordToItem: boolean = (event.target as HTMLInputElement).checked;
-    (props as any).onEatPizza();
+    // const assignKeywordToItem: boolean = (event.target as HTMLInputElement).checked;
+    (props as any).onToggleAssignKeywordToMediaItems(nodeId);
   };
+
+  const isChecked = getIsChecked();
+  const isDisabled = getIsDisabled();
 
   return (
     <div
@@ -95,8 +128,9 @@ const CustomContent = React.forwardRef(function CustomContent(
         {label}
       </Typography>
       <Checkbox
-        checked={false}
+        checked={isChecked}
         onChange={handleToggleAssignKeywordToItem}
+        disabled={isDisabled}
       />
     </div>
   );
@@ -117,9 +151,11 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   //    mapping of keyword id to media item id
   return <TreeItem
     ContentComponent={CustomContent}
-    ContentProps={ { 
-      onEatPizza: () => props.onEatPizza(),
-    } }
+    ContentProps={{
+      onToggleAssignKeywordToMediaItems: (nodeId: string) => props.onToggleAssignKeywordToMediaItems(nodeId),
+      selectedMediaItemIds: props.selectedMediaItemIds,
+      mapKeywordNodeIdToSelectedMediaItemIds: props.mapKeywordNodeIdToSelectedMediaItemIds,
+    }}
     {...props}
     ref={ref}
   />;
@@ -131,10 +167,16 @@ export interface KeywordsProps {
   keywordsAsTree: KeywordTreeDeep | undefined;
   keywordsById: StringToKeywordLUT;
   selectedMediaItemIds: string[],
+  mapKeywordNodeIdToSelectedMediaItemIds: StringToStringArrayLUT,
+  mapSelectedMediaItemIdToKeywordNodeIds: StringToStringArrayLUT,
   onAddKeyword: (
     parentNodeId: string,
     keywordLabel: string,
     keywordType: string,
+  ) => void;
+  onAddKeywordToMediaItems: (
+    mediaItemIds: string[],
+    keywordNodeId: string,
   ) => void;
 }
 
@@ -154,6 +196,14 @@ const Keywords = (props: KeywordsProps) => {
     props.onAddKeyword(parentKeywordNodeId, keywordLabel, 'user');
   };
 
+  const handleToggleAssignKeywordToSelectedMediaItems = (keywordNodeId: string) => {
+    console.log('handleToggleAssignKeywordToSelectedMediaItems', keywordNodeId);
+
+    const selectedMediaItemIds: string[] = props.selectedMediaItemIds;
+    props.onAddKeywordToMediaItems(selectedMediaItemIds, keywordNodeId);
+
+  };
+
   const renderTreeViewItems = (keywordNode: KeywordNodeDeep): JSX.Element => {
 
     if (keywordNode.childNodes.length === 0) {
@@ -164,7 +214,9 @@ const Keywords = (props: KeywordsProps) => {
           key={keywordNode.nodeId}
           nodeId={keywordNode.nodeId}
           label={keywordLabel}
-          onEatPizza={() => console.log('eat pizza - 0')}
+          onToggleAssignKeywordToMediaItems={(nodeId: string) => handleToggleAssignKeywordToSelectedMediaItems(nodeId)}
+          selectedMediaItemIds={props.selectedMediaItemIds}
+          mapKeywordNodeIdToSelectedMediaItemIds={props.mapKeywordNodeIdToSelectedMediaItemIds}
         />
       );
     }
@@ -177,29 +229,13 @@ const Keywords = (props: KeywordsProps) => {
         key={keywordNode.nodeId}
         nodeId={keywordNode.nodeId}
         label={props.keywordsById[keywordNode.keywordId].label}
-        onEatPizza={() => console.log('eat pizza - 1')}
+        onToggleAssignKeywordToMediaItems={(nodeId: string) => handleToggleAssignKeywordToSelectedMediaItems(nodeId)}
+        selectedMediaItemIds={props.selectedMediaItemIds}
+        mapKeywordNodeIdToSelectedMediaItemIds={props.mapKeywordNodeIdToSelectedMediaItemIds}
       >
         {keywordNodes}
       </CustomTreeItem>
     );
-  };
-
-  const handleNodeFocus = (param1: any, param2: any) => {
-    // console.log('handleNodeFocus');
-    // console.log(param1);
-    // console.log(param2);
-  };
-
-  const handleNodeSelect = (param1: any, param2: any) => {
-    // console.log('handleNodeSelected');
-    // console.log(param1);
-    // console.log(param2);
-  };
-
-  const handleNodeToggle = (param1: any, param2: any) => {
-    // console.log('handleNodeToggle');
-    // console.log(param1);
-    // console.log(param2);
   };
 
   const renderTreeViewContents = (): JSX.Element => {
@@ -210,9 +246,6 @@ const Keywords = (props: KeywordsProps) => {
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
-          onNodeFocus={handleNodeFocus}
-          onNodeSelect={handleNodeSelect}
-          onNodeToggle={handleNodeToggle}
         >
           {treeViewItems}
         </TreeView>
@@ -244,74 +277,86 @@ const generatePropData = (state: any): any => {
   //        list of keywords associated with this media item
   //            map mediaItemId to array of keywordNodeIds
 
-  const keywordNodesByNodeId: StringToKeywordNodeLUT = getKeywordNodesByNodeId(state);
-  const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
-
   const mapKeywordNodeIdToSelectedMediaItemIds: StringToStringArrayLUT = {};
   const mapSelectedMediaItemIdToKeywordNodeIds: StringToStringArrayLUT = {};
 
-  for (const keywordNodeId in keywordNodesByNodeId) {
+  if (getAppInitialized(state)) {
+    const keywordNodesByNodeId: StringToKeywordNodeLUT = getKeywordNodesByNodeId(state);
+    const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
+
+
+    for (const keywordNodeId in keywordNodesByNodeId) {
+      for (const selectedMediaItemId of selectedMediaItemIds) {
+        const selectedMediaItem: MediaItem | null = getMediaItemById(state, selectedMediaItemId);
+        if (!isNil(selectedMediaItem) && !isNil(selectedMediaItem.keywordNodeIds)) {
+          const keywordNodeIdsForSelectedMediaItem: string[] = selectedMediaItem.keywordNodeIds;
+          if (keywordNodeIdsForSelectedMediaItem.includes(keywordNodeId)) {
+            if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, keywordNodeId)) {
+              mapKeywordNodeIdToSelectedMediaItemIds[keywordNodeId].push(selectedMediaItemId);
+            } else {
+              mapKeywordNodeIdToSelectedMediaItemIds[keywordNodeId] = [selectedMediaItemId];
+            }
+          }
+        }
+      }
+    }
+
     for (const selectedMediaItemId of selectedMediaItemIds) {
       const selectedMediaItem: MediaItem | null = getMediaItemById(state, selectedMediaItemId);
       if (!isNil(selectedMediaItem) && !isNil(selectedMediaItem.keywordNodeIds)) {
         const keywordNodeIdsForSelectedMediaItem: string[] = selectedMediaItem.keywordNodeIds;
-        if (keywordNodeIdsForSelectedMediaItem.includes(keywordNodeId)) {
-          if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, keywordNodeId)) {
-            mapKeywordNodeIdToSelectedMediaItemIds[keywordNodeId].push(selectedMediaItemId);
-          } else {
-            mapKeywordNodeIdToSelectedMediaItemIds[keywordNodeId] = [selectedMediaItemId];
+        for (const keywordNodeId in keywordNodesByNodeId) {
+          if (keywordNodeIdsForSelectedMediaItem.includes(keywordNodeId)) {
+            if (Object.prototype.hasOwnProperty.call(mapSelectedMediaItemIdToKeywordNodeIds, keywordNodeId)) {
+              mapSelectedMediaItemIdToKeywordNodeIds[selectedMediaItemId].push(keywordNodeId);
+            } else {
+              mapSelectedMediaItemIdToKeywordNodeIds[selectedMediaItemId] = [keywordNodeId];
+            }
           }
         }
       }
     }
+
+    // console.log('generatePropData');
+    // console.log(mapKeywordNodeIdToSelectedMediaItemIds);
+    // console.log(mapSelectedMediaItemIdToKeywordNodeIds);
   }
 
-  for (const selectedMediaItemId of selectedMediaItemIds) {
-    const selectedMediaItem: MediaItem | null = getMediaItemById(state, selectedMediaItemId);
-    if (!isNil(selectedMediaItem) && !isNil(selectedMediaItem.keywordNodeIds)) {
-      const keywordNodeIdsForSelectedMediaItem: string[] = selectedMediaItem.keywordNodeIds;
-      for (const keywordNodeId in keywordNodesByNodeId) {
-        if (keywordNodeIdsForSelectedMediaItem.includes(keywordNodeId)) {
-          if (Object.prototype.hasOwnProperty.call(mapSelectedMediaItemIdToKeywordNodeIds, keywordNodeId)) {
-            mapSelectedMediaItemIdToKeywordNodeIds[selectedMediaItemId].push(keywordNodeId);
-          } else {
-            mapSelectedMediaItemIdToKeywordNodeIds[selectedMediaItemId] = [keywordNodeId];
-          }
-        }
-      }
-    }
-  }
-
-  // console.log('generatePropData');
-  // console.log(mapKeywordNodeIdToSelectedMediaItemIds);
-  // console.log(mapSelectedMediaItemIdToKeywordNodeIds);
-
+  return {
+    mapKeywordNodeIdToSelectedMediaItemIds,
+    mapSelectedMediaItemIdToKeywordNodeIds,
+  };
 };
 
 function mapStateToProps(state: any) {
+
+  const { mapKeywordNodeIdToSelectedMediaItemIds, mapSelectedMediaItemIdToKeywordNodeIds } = generatePropData(state);
   // console.log('mapStateToProps');
-  if (getAppInitialized(state)) {
-    // console.log('keywordRootNodeId', getKeywordRootNodeId(state));
-    // console.log('keywordsAsTree');
-    // console.log(getKeywordsAsTree(state));
-    // console.log('keywordsById');
-    // console.log(getKeywordsById(state));
-    // console.log('selectedMediaItemIds');
-    // console.log(getSelectedMediaItemIds(state));
-    generatePropData(state);
-  }
+  // if (getAppInitialized(state)) {
+  // console.log('keywordRootNodeId', getKeywordRootNodeId(state));
+  // console.log('keywordsAsTree');
+  // console.log(getKeywordsAsTree(state));
+  // console.log('keywordsById');
+  // console.log(getKeywordsById(state));
+  // console.log('selectedMediaItemIds');
+  // console.log(getSelectedMediaItemIds(state));
+  //   generatePropData(state);
+  // }
   return {
     appInitialized: getAppInitialized(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
     keywordsAsTree: getKeywordsAsTree(state),
     keywordsById: getKeywordsById(state),
     selectedMediaItemIds: getSelectedMediaItemIds(state),
+    mapKeywordNodeIdToSelectedMediaItemIds,
+    mapSelectedMediaItemIdToKeywordNodeIds
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddKeyword: addKeyword,
+    onAddKeywordToMediaItems: addKeywordToMediaItems,
   }, dispatch);
 };
 
