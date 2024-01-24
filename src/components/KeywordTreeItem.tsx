@@ -53,26 +53,6 @@ const CustomContent = React.forwardRef(function CustomContent(
     return isNil(selectedMediaItemIds) || selectedMediaItemIds.length === 0;
   };
 
-  // required mappings
-  //    for each keywordNodeId,
-  //        mediaItems (ids) that include this keyword
-  //            map keywordNodeId to array of mediaItemIds (that include this keyword)
-  //    for each selectedMediaItem(id)
-  //        list of keywords associated with this media item
-  //            map mediaItemId to array of keywordNodeIds
-  const getIsChecked = (): boolean => {
-    if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, nodeId)) {
-      // const selectedMediaItemIdsWithThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[nodeId];
-      // at this point, two possible cases:
-      //    case 0: selectedMediaItemIdsWithThisKeyword.length === selectedMediaItemIds.length
-      //    case 1: selectedMediaItemIdsWithThisKeyword.length < selectedMediaItemIds.length
-
-      // for now, assume case 0
-      return true;
-    }
-    return false;
-  };
-
   const getKeywordAssignedToSelectedMediaItemsStatus = (): KeywordAssignedToSelectedMediaItemsStatus => {
     if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, nodeId)) {
       const selectedMediaItemIdsThatIncludeThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[nodeId];
@@ -118,8 +98,9 @@ const CustomContent = React.forwardRef(function CustomContent(
     }
   };
 
-  const isChecked = getIsChecked();
+  // const isChecked = getIsChecked();
   const isDisabled = getIsDisabled();
+  const keywordAssignedToSelectedMediaItemsStatus: KeywordAssignedToSelectedMediaItemsStatus = getKeywordAssignedToSelectedMediaItemsStatus();
 
   return (
     <div
@@ -143,9 +124,11 @@ const CustomContent = React.forwardRef(function CustomContent(
         {label}
       </Typography>
       <Checkbox
-        checked={isChecked}
+        checked={keywordAssignedToSelectedMediaItemsStatus === KeywordAssignedToSelectedMediaItemsStatus.AllSelectedMediaItemsIncludeThisKeyword}
         onChange={handleClickKeywordAssign}
         disabled={isDisabled}
+        indeterminate={keywordAssignedToSelectedMediaItemsStatus === KeywordAssignedToSelectedMediaItemsStatus.SomeSelectedMediaItemsIncludeThisKeyword}
+
       />
     </div>
   );
