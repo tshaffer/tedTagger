@@ -12,11 +12,13 @@ import {
 } from '@mui/x-tree-view/TreeItem';
 import Checkbox from '@mui/material/Checkbox';
 
-import { KeywordAssignedToSelectedMediaItemsStatus, StringToStringArrayLUT } from '../types';
+import { KeywordAssignedToSelectedMediaItemsStatus, KeywordNode, KeywordTreeDeep, StringToKeywordNodeLUT, StringToStringArrayLUT } from '../types';
 
 interface KeywordTreeItemProps extends TreeItemContentProps {
-  onUpdateKeywordAssignedToSelectedMediaItems: (assignKeyword: boolean) => void;
   selectedMediaItemIds: string[];
+  keywordsAsTree: KeywordTreeDeep | undefined;
+  keywordNodesByNodeId: StringToKeywordNodeLUT
+  onUpdateKeywordAssignedToSelectedMediaItems: (assignKeyword: boolean) => void;
   mapKeywordNodeIdToSelectedMediaItemIds: StringToStringArrayLUT;
 }
 
@@ -53,17 +55,69 @@ const CustomContent = React.forwardRef(function CustomContent(
     return isNil(selectedMediaItemIds) || selectedMediaItemIds.length === 0;
   };
 
-  const getKeywordAssignedToSelectedMediaItemsStatus = (): KeywordAssignedToSelectedMediaItemsStatus => {
-    if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, nodeId)) {
-      const selectedMediaItemIdsThatIncludeThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[nodeId];
+  const getKeywordAssignedToSelectedMediaItemsStatus = (inputNodeId: string): KeywordAssignedToSelectedMediaItemsStatus => {
+
+    if (selectedMediaItemIds.length === 0) {
+      return KeywordAssignedToSelectedMediaItemsStatus.NoSelectedMediaItemsIncludeThisKeyword;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, inputNodeId)) {
+      // the keyword associated with inputNodeId is assigned to one or more of the selected photos
+      // get all the selected media item ids that include this keyword
+      const selectedMediaItemIdsThatIncludeThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[inputNodeId];
       if (selectedMediaItemIdsThatIncludeThisKeyword.length === 0) {
+        // if there are none, then the code should not have reached this point
         debugger;
       } else if (selectedMediaItemIdsThatIncludeThisKeyword.length === selectedMediaItemIds.length) {
+        // if the number of selected media items that include this keyword is the same as the number of selected media items, then all selected media items include this keyword
         return KeywordAssignedToSelectedMediaItemsStatus.AllSelectedMediaItemsIncludeThisKeyword;
       } else {
+        // if the number of selected media items that include this keyword is not the same as the number of selected media items, then some of the selected media items include this keyword
+        return KeywordAssignedToSelectedMediaItemsStatus.SomeSelectedMediaItemsIncludeThisKeyword;
+      }
+    } else {
+      // keyword associated with inputNodeId is not assigned to any of the selected photos
+      // recursively search children of inputNodeId; as soon as one is found that is assigned to any of the selected photos, return SomeSelectedMediaItemsIncludeThisKeyword 
+      const keywordNodesByNodeId = props.keywordNodesByNodeId;
+      if (Object.prototype.hasOwnProperty.call(keywordNodesByNodeId, inputNodeId)) {
+        const keywordNode: KeywordNode = keywordNodesByNodeId[inputNodeId];
+        if (!isNil(keywordNode.childrenNodeIds)) {
+          for (const childNodeId of keywordNode.childrenNodeIds) {
+            const keywordAssignedToSelectedMediaItemsStatus: KeywordAssignedToSelectedMediaItemsStatus = getKeywordAssignedToSelectedMediaItemsStatus(childNodeId);
+            if (keywordAssignedToSelectedMediaItemsStatus !== KeywordAssignedToSelectedMediaItemsStatus.NoSelectedMediaItemsIncludeThisKeyword) {
+              // childNodeId is assigned to at least one of the selected media items' children
+              return KeywordAssignedToSelectedMediaItemsStatus.SomeSelectedMediaItemsIncludeThisKeyword;
+            } 
+          }
+          return KeywordAssignedToSelectedMediaItemsStatus.NoSelectedMediaItemsIncludeThisKeyword;
+        }
+      } else {
+        debugger;
+      }
+    }
+    // the keyword associated with nodeId is not assigned to any of the selected photos
+    return KeywordAssignedToSelectedMediaItemsStatus.NoSelectedMediaItemsIncludeThisKeyword;
+  };
+
+
+  // props.nodeId is the keywordNodeId
+  const getPropKeywordAssignedToSelectedMediaItemsStatus = (): KeywordAssignedToSelectedMediaItemsStatus => {
+    // is the keyword associated with nodeId assigned to any of the selected photos?
+    if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, nodeId)) {
+      // get all the selected media item ids that include this keyword
+      const selectedMediaItemIdsThatIncludeThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[nodeId];
+      if (selectedMediaItemIdsThatIncludeThisKeyword.length === 0) {
+        // if there are none, then the code should not have reached this point
+        debugger;
+      } else if (selectedMediaItemIdsThatIncludeThisKeyword.length === selectedMediaItemIds.length) {
+        // if the number of selected media items that include this keyword is the same as the number of selected media items, then all selected media items include this keyword
+        return KeywordAssignedToSelectedMediaItemsStatus.AllSelectedMediaItemsIncludeThisKeyword;
+      } else {
+        // if the number of selected media items that include this keyword is not the same as the number of selected media items, then some of the selected media items include this keyword
         return KeywordAssignedToSelectedMediaItemsStatus.SomeSelectedMediaItemsIncludeThisKeyword;
       }
     }
+    // the keyword associated with nodeId is not assigned to any of the selected photos
     return KeywordAssignedToSelectedMediaItemsStatus.NoSelectedMediaItemsIncludeThisKeyword;
   };
 
@@ -82,10 +136,11 @@ const CustomContent = React.forwardRef(function CustomContent(
   ) => {
     handleSelection(event);
   };
-  
-  
+
+
+  // the result of clicking has nothing to do with the current state of any of the child keywords.
   const handleClickKeywordAssign = () => {
-    const keywordAssignedToSelectedMediaItemsStatus: KeywordAssignedToSelectedMediaItemsStatus = getKeywordAssignedToSelectedMediaItemsStatus();
+    const keywordAssignedToSelectedMediaItemsStatus: KeywordAssignedToSelectedMediaItemsStatus = getPropKeywordAssignedToSelectedMediaItemsStatus();
     if (keywordAssignedToSelectedMediaItemsStatus === KeywordAssignedToSelectedMediaItemsStatus.AllSelectedMediaItemsIncludeThisKeyword) {
       console.log('all selected media items include this keyword: unassign keyword from all selected media items');
       onUpdateKeywordAssignedToSelectedMediaItems(false);
@@ -100,7 +155,7 @@ const CustomContent = React.forwardRef(function CustomContent(
 
   // const isChecked = getIsChecked();
   const isDisabled = getIsDisabled();
-  const keywordAssignedToSelectedMediaItemsStatus: KeywordAssignedToSelectedMediaItemsStatus = getKeywordAssignedToSelectedMediaItemsStatus();
+  const keywordAssignedToSelectedMediaItemsStatus: KeywordAssignedToSelectedMediaItemsStatus = getKeywordAssignedToSelectedMediaItemsStatus(props.nodeId);
 
   return (
     <div
@@ -128,7 +183,6 @@ const CustomContent = React.forwardRef(function CustomContent(
         onChange={handleClickKeywordAssign}
         disabled={isDisabled}
         indeterminate={keywordAssignedToSelectedMediaItemsStatus === KeywordAssignedToSelectedMediaItemsStatus.SomeSelectedMediaItemsIncludeThisKeyword}
-
       />
     </div>
   );
@@ -145,6 +199,8 @@ export const KeywordTreeItem = React.forwardRef(function KeywordTreeItem(
     ContentProps={{
       onUpdateKeywordAssignedToSelectedMediaItems: (assignKeyword: boolean) => props.onUpdateKeywordAssignedToSelectedMediaItems(assignKeyword),
       selectedMediaItemIds: props.selectedMediaItemIds,
+      keywordsAsTree: props.keywordsAsTree,
+      keywordNodesByNodeId: props.keywordNodesByNodeId,
       mapKeywordNodeIdToSelectedMediaItemIds: props.mapKeywordNodeIdToSelectedMediaItemIds,
     }}
     {...props}

@@ -21,6 +21,7 @@ export interface KeywordsProps {
   appInitialized: boolean;
   keywordRootNodeId: string;
   keywordsAsTree: KeywordTreeDeep | undefined;
+  keywordNodesByNodeId: StringToKeywordNodeLUT;
   keywordsById: StringToKeywordLUT;
   selectedMediaItemIds: string[],
   mapKeywordNodeIdToSelectedMediaItemIds: StringToStringArrayLUT,
@@ -80,6 +81,8 @@ const Keywords = (props: KeywordsProps) => {
         <KeywordTreeItem
           key={keywordNode.nodeId}
           nodeId={keywordNode.nodeId}
+          keywordsAsTree={props.keywordsAsTree}
+          keywordNodesByNodeId={props.keywordNodesByNodeId}
           label={keywordLabel}
           onUpdateKeywordAssignedToSelectedMediaItems={(assignKeyword: boolean) => { handleUpdateKeywordAssignedToSelectedMediaItems(keywordNode.nodeId, assignKeyword); }}
           selectedMediaItemIds={props.selectedMediaItemIds}
@@ -95,6 +98,8 @@ const Keywords = (props: KeywordsProps) => {
       <KeywordTreeItem
         key={keywordNode.nodeId}
         nodeId={keywordNode.nodeId}
+        keywordsAsTree={props.keywordsAsTree}
+        keywordNodesByNodeId={props.keywordNodesByNodeId}
         label={props.keywordsById[keywordNode.keywordId].label}
         onUpdateKeywordAssignedToSelectedMediaItems={(assignKeyword: boolean) => { handleUpdateKeywordAssignedToSelectedMediaItems(keywordNode.nodeId, assignKeyword); }}
         selectedMediaItemIds={props.selectedMediaItemIds}
@@ -104,7 +109,7 @@ const Keywords = (props: KeywordsProps) => {
       </KeywordTreeItem>
     );
   };
-
+``
   const renderTreeViewContents = (): JSX.Element => {
     const treeViewItems: JSX.Element = renderTreeViewItems(props.keywordsAsTree!.root);
     return (
@@ -213,6 +218,7 @@ function mapStateToProps(state: any) {
     appInitialized: getAppInitialized(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
     keywordsAsTree: getKeywordsAsTree(state),
+    keywordNodesByNodeId: getKeywordNodesByNodeId(state),
     keywordsById: getKeywordsById(state),
     selectedMediaItemIds: getSelectedMediaItemIds(state),
     mapKeywordNodeIdToSelectedMediaItemIds,

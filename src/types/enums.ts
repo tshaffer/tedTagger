@@ -14,22 +14,6 @@ export enum TagSearchOperator {
   OR = 'OR',
 }
 
-/*
-  const getKeywordAssignedToSelectedMediaItemsStatus = (): any => {
-    if (Object.prototype.hasOwnProperty.call(mapKeywordNodeIdToSelectedMediaItemIds, nodeId)) {
-      const selectedMediaItemIdsThatIncludeThisKeyword: string[] = mapKeywordNodeIdToSelectedMediaItemIds[nodeId];
-      if (selectedMediaItemIdsThatIncludeThisKeyword.length === 0) {
-        debugger;
-      } else if (selectedMediaItemIdsThatIncludeThisKeyword.length === selectedMediaItemIds.length) {
-        return 'allSelectedMediaItemsIncludeThisKeyword';
-      } else {
-        return 'someSelectedMediaItemsIncludeThisKeyword';
-      }
-    }
-    return 'noSelectedMediaItemsIncludeThisKeyword';
-  };
-*/
-
 export enum KeywordAssignedToSelectedMediaItemsStatus {
   AllSelectedMediaItemsIncludeThisKeyword = 'AllSelectedMediaItemsIncludeThisKeyword',
   SomeSelectedMediaItemsIncludeThisKeyword = 'SomeSelectedMediaItemsIncludeThisKeyword',
