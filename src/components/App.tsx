@@ -12,6 +12,9 @@ import { KeywordNode } from '../types';
 import { getKeywordRootNodeId } from '../selectors';
 import Keywords from './Keywords';
 import IconExpansionTreeView from './MuiTestTreeView';
+import { Button } from '@mui/material';
+
+import SearchSpecDialog from './SearchSpecDialog';
 
 export interface AppProps {
   onLoadKeywordData: () => any;
@@ -26,6 +29,12 @@ export interface AppProps {
 }
 
 const App = (props: AppProps) => {
+
+  const [showSearchSpecDialog, setShowSearchSpecDialog] = React.useState(false);
+
+  const handleCloseSearchSpecDialog = () => {
+    setShowSearchSpecDialog(false);
+  };
 
   const buildTree = () => {
     console.log('buildTree invoked');
@@ -70,7 +79,11 @@ const App = (props: AppProps) => {
       <div className='appStyle'>
         <div className='leftColumnStyle'>
           <Keywords />
-          {/* <IconExpansionTreeView /> */}
+          <Button onClick={() => setShowSearchSpecDialog(true)}>Set Search Spec</Button>
+          <SearchSpecDialog
+            open={showSearchSpecDialog}
+            onClose={handleCloseSearchSpecDialog}
+          />
         </div>
         <div className='centerColumnStyle'>
           <GridView />

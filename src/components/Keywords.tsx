@@ -109,7 +109,7 @@ const Keywords = (props: KeywordsProps) => {
       </KeywordTreeItem>
     );
   };
-``
+
   const renderTreeViewContents = (): JSX.Element => {
     const treeViewItems: JSX.Element = renderTreeViewItems(props.keywordsAsTree!.root);
     return (

@@ -13,4 +13,6 @@ export * from './AssignTags';
 export * from './PhotoToDisplaySpec';
 export * from './SearchTagList';
 export * from './Keywords';
+export * from './SearchSpecDialog';
+
 
