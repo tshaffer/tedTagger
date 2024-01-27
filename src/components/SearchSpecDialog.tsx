@@ -6,7 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 
 import { getAppInitialized } from '../selectors';
-import { Button, DialogActions, DialogContent } from '@mui/material';
+import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
 
 export interface SearchSpecDialogPropsFromParent {
   open: boolean;
@@ -27,6 +27,8 @@ export interface SearchSpecDialogProps extends SearchSpecDialogPropsFromParent {
 
 const SearchSpecDialog = (props: SearchSpecDialogProps) => {
 
+  const [matchRule, setMatchRule] = React.useState('all');
+
   const { open, onClose } = props;
 
   if (!props.appInitialized) {
@@ -42,22 +44,38 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
 
+  const handleChangeMatchRule = (event: SelectChangeEvent<string>, child: React.ReactNode): void => {
+    // throw new Error('Function not implemented.');
+    // setParentKeywordNodeId(event.target.value || '');
+    console.log('handleChangeMatchRule', event.target.value);
+    setMatchRule(event.target.value || 'all');
+  };
+
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Add Keyword</DialogTitle>
+      <DialogTitle>Search</DialogTitle>
       <DialogContent style={{ paddingBottom: '0px' }}>
         <Box
           component="form"
           noValidate
           autoComplete="off"
         >
-          <div>
-            pizza
-          </div>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-dialog-select-label">Match rules:</InputLabel>
+            <Select
+              labelId="matchRuleLabel"
+              id="matchRuleLabelSelect"
+              value={matchRule}
+              onChange={handleChangeMatchRule}
+              input={<OutlinedInput label="Parent Keyword" />}
+            >
+              <MenuItem value={'all'}>all</MenuItem>
+              <MenuItem value={'any'}>any</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
       </DialogContent>
-      <DialogActions
-      >
+      <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
