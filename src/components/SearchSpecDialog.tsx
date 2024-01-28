@@ -10,10 +10,15 @@ import { TableHead, TableRow, TableCell, TableSortLabel, AlertProps, Alert, Snac
 
 import { getAppInitialized, getMatchRule, getSearchRules } from '../selectors';
 import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent } from '@mui/material';
-import { DateSearchRuleType, KeywordSearchRuleType, MatchRule, SearchRule, SearchRuleType } from '../types';
+import { DateSearchRule, DateSearchRuleType, KeywordSearchRule, KeywordSearchRuleType, MatchRule, SearchRule, SearchRuleType } from '../types';
 
 import AddIcon from '@mui/icons-material/Add';
 import { addSearchRule, updateSearchRule } from '../models';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import dayjs, { Dayjs } from 'dayjs';
+import { isNil } from 'lodash';
 
 export interface SearchSpecDialogPropsFromParent {
   open: boolean;
@@ -51,7 +56,7 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
       searchRuleType: SearchRuleType.Date,
       searchRule: {
         dateSearchRuleType: DateSearchRuleType.IsBefore,
-        date: '',
+        date: new Date().toISOString(),
       }
     };
     props.onAddSearchRule(newSearchRule);
@@ -75,7 +80,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
         props.onUpdateSearchRule(searchRuleIndex, newSearchRule);
         break;
       }
-        break;
       case SearchRuleType.Date: {
         const newSearchRule: SearchRule = {
           searchRuleType: SearchRuleType.Date,
@@ -93,14 +97,44 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
 
   };
 
-  const renderRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+  const handleChangeDateSearchRuleType = (searchRuleIndex: number, event: SelectChangeEvent<string>): void => {
+    console.log('handleChangeDateSearchRuleType', searchRuleIndex, event.target.value);
+
+    const searchRules: SearchRule[] = props.searchRules;
+    const searchRule: SearchRule = searchRules[searchRuleIndex];
+    const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+
+    dateSearchRule.dateSearchRuleType = event.target.value as DateSearchRuleType;
+
+    props.onUpdateSearchRule(searchRuleIndex, searchRule);
+  };
+
+  const handleSetDate = (dateDayJs: Dayjs | null) => {
+    if (!isNil(dateDayJs)) {
+      const date: Date = dateDayJs.toDate();
+      console.log('handleSetDate', date.toISOString());
+    }
+  };
+
+  const getDateSearchRuleType = (searchRuleIndex: number): DateSearchRuleType => {
+    const searchRules: SearchRule[] = props.searchRules;
+    const searchRule: SearchRule = searchRules[searchRuleIndex];
+    const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+    return dateSearchRule.dateSearchRuleType;
+  };
+
+  const renderDateRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+
+    const searchRuleRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+    const dateSearchRuleType: DateSearchRuleType = getDateSearchRuleType(rowIndex);
+
     return (
       <TableRow>
         <TableCell>
           <Select
             labelId="searchRuleTypeLabel"
             id="searchRuleTypeSelect"
-            value={searchRule.searchRuleType.toString()}
+            value={SearchRuleType.Date.toString()}
             onChange={(event) => handleChangeSearchRuleType(rowIndex, event)}
             input={<OutlinedInput label="Rule Type" />}
           >
@@ -108,7 +142,77 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
             <MenuItem value={SearchRuleType.Date}>Date</MenuItem>
           </Select>
         </TableCell>
+        <TableCell>
+          <Select
+            labelId="dateSearchRuleTypeLabel"
+            id="dateSearchRuleTypeSelect"
+            value={dateSearchRuleType}
+            onChange={(event) => handleChangeDateSearchRuleType(rowIndex, event)}
+            input={<OutlinedInput label="Rule Type" />}
+          >
+            <MenuItem value={DateSearchRuleType.IsInTheRange}>is in the range</MenuItem>
+            <MenuItem value={DateSearchRuleType.IsBefore}>is before</MenuItem>
+            <MenuItem value={DateSearchRuleType.IsAfter}>is after</MenuItem>
+          </Select>
+        </TableCell>
+        <TableCell>
+          <FormControl style={{ marginLeft: '6px', display: 'block' }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={['DatePicker']}>
+                <DatePicker
+                  label="Date"
+                  value={dayjs(searchRuleRule.date)}
+                  onChange={(newValue) => handleSetDate(newValue)}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </FormControl>
+
+        </TableCell>
+
       </TableRow>
+    );
+  };
+
+  const renderKeywordRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+    return (
+      <TableRow>
+        <TableCell>
+          <Select
+            labelId="keywordSearchRuleTypeLabel"
+            id="keywordSearchRuleTypeSelect"
+            value={SearchRuleType.Keyword.toString()}
+            onChange={(event) => handleChangeSearchRuleType(rowIndex, event)}
+            input={<OutlinedInput label="Rule Type" />}
+          >
+            <MenuItem value={SearchRuleType.Keyword}>Keyword</MenuItem>
+            <MenuItem value={SearchRuleType.Date}>Date</MenuItem>
+          </Select>
+        </TableCell>
+        <TableCell>
+
+        </TableCell>
+
+      </TableRow>
+    );
+  };
+
+  const renderRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+
+    let rowJsx: JSX.Element;
+    switch (searchRule.searchRuleType) {
+      case SearchRuleType.Keyword:
+        rowJsx = renderKeywordRow(rowIndex, searchRule);
+        break;
+      case SearchRuleType.Date:
+      default:
+        rowJsx = renderDateRow(rowIndex, searchRule);
+    }
+
+    return (
+      <div>
+        {rowJsx}
+      </div>
     );
   };
 
