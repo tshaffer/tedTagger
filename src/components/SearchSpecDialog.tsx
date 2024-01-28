@@ -45,10 +45,20 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
 
 
   const handleChangeMatchRule = (event: SelectChangeEvent<string>, child: React.ReactNode): void => {
-    // throw new Error('Function not implemented.');
-    // setParentKeywordNodeId(event.target.value || '');
     console.log('handleChangeMatchRule', event.target.value);
     setMatchRule(event.target.value || 'all');
+  };
+
+  const renderSearchRule = () : JSX.Element => {
+    return (
+      <div>search rule</div>
+    );
+  };
+
+  const renderSearchRules = (): JSX.Element => {
+    return (
+      <div>search rules</div>
+    );
   };
 
   return (

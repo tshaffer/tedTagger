@@ -1,7 +1,11 @@
 import { StringToKeywordLUT, StringToKeywordNodeLUT } from './base';
 import { MediaItem, Tag, AppTagAvatar, UserTagAvatar } from './entities';
 import {
+  DateSearchRuleType,
+  KeywordSearchRuleType,
   MainDisplayMode,
+  MatchRule,
+  SearchRuleType,
   TagSearchOperator,
   TagSelectorType
 } from './enums';
@@ -15,6 +19,7 @@ export interface TedTaggerState {
   userTagAvatarsState: UserTagAvatarsState;
   photosToDisplaySpec: PhotosToDisplaySpec;
   keywordsState: KeywordsState;
+  searchUIState: SearchUIState;
 }
 
 export interface AppState {
@@ -68,3 +73,26 @@ export interface KeywordsState {
   keywordNodesByNodeId: StringToKeywordNodeLUT;
   keywordRootNodeId: string;
 }
+
+export interface SearchUIState {
+  matchRule: MatchRule;
+  searchRules: SearchRule[];
+}
+
+export interface SearchRule {
+  searchRuleType: SearchRuleType;
+  searchRule: KeywordSearchRule | DateSearchRule;
+}
+
+export interface DateSearchRule {
+  dateSearchRuleType: DateSearchRuleType;
+  date: string;
+  date2: string | undefined;
+}
+
+export interface KeywordSearchRule {
+  keywordearchRuleType: KeywordSearchRuleType;
+  keywordId: string | undefined;
+
+}
+
