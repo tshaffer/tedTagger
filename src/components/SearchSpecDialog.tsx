@@ -10,10 +10,10 @@ import { TableHead, TableRow, TableCell, TableSortLabel, AlertProps, Alert, Snac
 
 import { getAppInitialized, getMatchRule, getSearchRules } from '../selectors';
 import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent } from '@mui/material';
-import { DateSearchRuleType, MatchRule, SearchRule, SearchRuleType } from '../types';
+import { DateSearchRuleType, KeywordSearchRuleType, MatchRule, SearchRule, SearchRuleType } from '../types';
 
 import AddIcon from '@mui/icons-material/Add';
-import { addSearchRule } from '../models';
+import { addSearchRule, updateSearchRule } from '../models';
 
 export interface SearchSpecDialogPropsFromParent {
   open: boolean;
@@ -25,6 +25,7 @@ export interface SearchSpecDialogProps extends SearchSpecDialogPropsFromParent {
   matchRule: MatchRule;
   searchRules: SearchRule[];
   onAddSearchRule: (searchRule: SearchRule) => any;
+  onUpdateSearchRule: (searchRuleIndex: number, searchRule: SearchRule) => any;
 }
 
 const SearchSpecDialog = (props: SearchSpecDialogProps) => {
@@ -46,7 +47,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
   function handleAddRow(): void {
-    console.log('handleAddRow');
     const newSearchRule: SearchRule = {
       searchRuleType: SearchRuleType.Date,
       searchRule: {
@@ -58,16 +58,42 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   }
 
   const handleChangeMatchRule = (event: SelectChangeEvent<string>, child: React.ReactNode): void => {
-    console.log('handleChangeMatchRule', event.target.value);
     setMatchRule(event.target.value || 'all');
   };
 
-  const handleChangeSearchRule = (event: SelectChangeEvent<string>, child: React.ReactNode): void => {
-    console.log('handleChangeSearchRule', event.target.value);
+  const handleChangeSearchRuleType = (searchRuleIndex: number, event: SelectChangeEvent<string>): void => {
+    console.log('handleChangeSearchRuleType', searchRuleIndex, event.target.value);
+
+    switch (event.target.value) {
+      case SearchRuleType.Keyword: {
+        const newSearchRule: SearchRule = {
+          searchRuleType: SearchRuleType.Keyword,
+          searchRule: {
+            keywordSearchRuleType: KeywordSearchRuleType.AreEmpty,
+          }
+        };
+        props.onUpdateSearchRule(searchRuleIndex, newSearchRule);
+        break;
+      }
+        break;
+      case SearchRuleType.Date: {
+        const newSearchRule: SearchRule = {
+          searchRuleType: SearchRuleType.Date,
+          searchRule: {
+            dateSearchRuleType: DateSearchRuleType.IsBefore,
+            date: new Date().toISOString(),
+          }
+        };
+        props.onUpdateSearchRule(searchRuleIndex, newSearchRule);
+        break;
+      }
+      default:
+        debugger;
+    }
+
   };
 
-
-  const renderRow = (searchRule: SearchRule): JSX.Element => {
+  const renderRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
     return (
       <TableRow>
         <TableCell>
@@ -75,7 +101,7 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
             labelId="searchRuleTypeLabel"
             id="searchRuleTypeSelect"
             value={searchRule.searchRuleType.toString()}
-            onChange={handleChangeSearchRule}
+            onChange={(event) => handleChangeSearchRuleType(rowIndex, event)}
             input={<OutlinedInput label="Rule Type" />}
           >
             <MenuItem value={SearchRuleType.Keyword}>Keyword</MenuItem>
@@ -87,8 +113,8 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
   const renderRows = (): JSX.Element[] => {
-    const rows: JSX.Element[] = props.searchRules.map((searchRule: SearchRule) => {
-      return renderRow(searchRule);
+    const rows: JSX.Element[] = props.searchRules.map((searchRule: SearchRule, index: number) => {
+      return renderRow(index, searchRule);
     });
     return rows;
   };
@@ -157,7 +183,8 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onAddSearchRule: addSearchRule
+    onAddSearchRule: addSearchRule,
+    onUpdateSearchRule: updateSearchRule,
   }, dispatch);
 };
 
