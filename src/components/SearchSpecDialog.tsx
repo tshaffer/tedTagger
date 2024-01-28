@@ -47,6 +47,12 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
     return null;
   }
 
+  const getSearchRuleType = (searchRuleIndex: number): SearchRuleType => {
+    const searchRules: SearchRule[] = props.searchRules;
+    const searchRule: SearchRule = searchRules[searchRuleIndex];
+    return searchRule.searchRuleType;
+  };
+
   const getDateSearchRuleType = (searchRuleIndex: number): DateSearchRuleType => {
     const searchRules: SearchRule[] = props.searchRules;
     const searchRule: SearchRule = searchRules[searchRuleIndex];
@@ -198,23 +204,13 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
 
   const renderDateRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
 
+    const searchRuleTypeSelect = renderSearchRuleTypeFragment(rowIndex);
     const dateSearchRuleType: DateSearchRuleType = getDateSearchRuleType(rowIndex);
     const dateInputs: JSX.Element = renderDateInputs(rowIndex, searchRule);
 
     return (
       <TableRow>
-        <TableCell>
-          <Select
-            labelId="searchRuleTypeLabel"
-            id="searchRuleTypeSelect"
-            value={SearchRuleType.Date.toString()}
-            onChange={(event) => handleChangeSearchRuleType(rowIndex, event)}
-            input={<OutlinedInput label="Rule Type" />}
-          >
-            <MenuItem value={SearchRuleType.Keyword}>Keyword</MenuItem>
-            <MenuItem value={SearchRuleType.Date}>Date</MenuItem>
-          </Select>
-        </TableCell>
+        {searchRuleTypeSelect}
         <TableCell>
           <Select
             labelId="dateSearchRuleTypeLabel"
@@ -237,26 +233,31 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
   const renderKeywordRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+    const searchRuleTypeSelect = renderSearchRuleTypeFragment(rowIndex);
     return (
       <TableRow>
+        {searchRuleTypeSelect}
         <TableCell>
-          <Select
-            labelId="keywordSearchRuleTypeLabel"
-            id="keywordSearchRuleTypeSelect"
-            value={SearchRuleType.Keyword.toString()}
-            onChange={(event) => handleChangeSearchRuleType(rowIndex, event)}
-            input={<OutlinedInput label="Rule Type" />}
-          >
-            <MenuItem value={SearchRuleType.Keyword}>Keyword</MenuItem>
-            <MenuItem value={SearchRuleType.Date}>Date</MenuItem>
-          </Select>
         </TableCell>
-        <TableCell>
-
-        </TableCell>
-
       </TableRow>
     );
+  };
+
+  const renderSearchRuleTypeFragment = (rowIndex: number): JSX.Element => {
+    return (
+      <TableCell>
+        <Select
+          labelId="searchRuleTypeLabel"
+          id="searchRuleTypeSelect"
+          value={getSearchRuleType(rowIndex)}
+          onChange={(event) => handleChangeSearchRuleType(rowIndex, event)}
+          input={<OutlinedInput label="Rule Type" />}
+        >
+          <MenuItem value={SearchRuleType.Keyword}>Keyword</MenuItem>
+          <MenuItem value={SearchRuleType.Date}>Date</MenuItem>
+        </Select>
+      </TableCell>
+    )
   };
 
   const renderRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
