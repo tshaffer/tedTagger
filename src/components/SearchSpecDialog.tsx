@@ -47,6 +47,13 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
     return null;
   }
 
+  const getDateSearchRuleType = (searchRuleIndex: number): DateSearchRuleType => {
+    const searchRules: SearchRule[] = props.searchRules;
+    const searchRule: SearchRule = searchRules[searchRuleIndex];
+    const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+    return dateSearchRule.dateSearchRuleType;
+  };
+
   const handleClose = () => {
     onClose();
   };
@@ -67,7 +74,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
   const handleChangeSearchRuleType = (searchRuleIndex: number, event: SelectChangeEvent<string>): void => {
-    console.log('handleChangeSearchRuleType', searchRuleIndex, event.target.value);
 
     switch (event.target.value) {
       case SearchRuleType.Keyword: {
@@ -109,24 +115,91 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
     props.onUpdateSearchRule(searchRuleIndex, searchRule);
   };
 
-  const handleSetDate = (dateDayJs: Dayjs | null) => {
+  const handleSetDate = (searchRuleIndex: number, dateDayJs: Dayjs | null) => {
     if (!isNil(dateDayJs)) {
       const date: Date = dateDayJs.toDate();
       console.log('handleSetDate', date.toISOString());
+
+      const searchRules: SearchRule[] = props.searchRules;
+      const searchRule: SearchRule = searchRules[searchRuleIndex];
+      const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+      dateSearchRule.date = date.toISOString();
+      props.onUpdateSearchRule(searchRuleIndex, searchRule);
     }
   };
 
-  const getDateSearchRuleType = (searchRuleIndex: number): DateSearchRuleType => {
-    const searchRules: SearchRule[] = props.searchRules;
-    const searchRule: SearchRule = searchRules[searchRuleIndex];
-    const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
-    return dateSearchRule.dateSearchRuleType;
+  const handleSetOptionalDate = (searchRuleIndex: number, dateDayJs: Dayjs | null) => {
+    if (!isNil(dateDayJs)) {
+      const date: Date = dateDayJs.toDate();
+      console.log('handleSetOptionalDate', date.toISOString());
+
+      const searchRules: SearchRule[] = props.searchRules;
+      const searchRule: SearchRule = searchRules[searchRuleIndex];
+      const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+      dateSearchRule.date2 = date.toISOString();
+      props.onUpdateSearchRule(searchRuleIndex, searchRule);
+    }
+  };
+
+  const renderMandatoryDateInput = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+    const searchRuleRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+    return (
+      <React.Fragment>
+        <FormControl style={{ marginLeft: '6px', display: 'block' }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker
+                label="Date"
+                value={dayjs(searchRuleRule.date)}
+                onChange={(newValue) => handleSetDate(rowIndex, newValue)}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </FormControl>
+      </React.Fragment>
+    );
+  };
+
+  const renderOptionalDateInput = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+    const searchRuleRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+    return (
+      <React.Fragment>
+        <FormControl style={{ marginLeft: '6px', display: 'block' }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker
+                label="Date"
+                value={dayjs(searchRuleRule.date2)}
+                onChange={(newValue) => handleSetOptionalDate(rowIndex, newValue)}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </FormControl>
+      </React.Fragment>
+    );
+  };
+
+  const renderDateInputs = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+    const mandatoryDateInput: JSX.Element = renderMandatoryDateInput(rowIndex, searchRule);
+
+    const searchRuleRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
+    if (searchRuleRule.dateSearchRuleType !== DateSearchRuleType.IsInTheRange) {
+      return mandatoryDateInput;
+    } else {
+      const optionalDateInput: JSX.Element = renderOptionalDateInput(rowIndex, searchRule);
+      return (
+        <React.Fragment>
+          {mandatoryDateInput}
+          {optionalDateInput}
+        </React.Fragment>
+      );
+    }
   };
 
   const renderDateRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
 
-    const searchRuleRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
     const dateSearchRuleType: DateSearchRuleType = getDateSearchRuleType(rowIndex);
+    const dateInputs: JSX.Element = renderDateInputs(rowIndex, searchRule);
 
     return (
       <TableRow>
@@ -156,18 +229,7 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
           </Select>
         </TableCell>
         <TableCell>
-          <FormControl style={{ marginLeft: '6px', display: 'block' }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DatePicker']}>
-                <DatePicker
-                  label="Date"
-                  value={dayjs(searchRuleRule.date)}
-                  onChange={(newValue) => handleSetDate(newValue)}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-          </FormControl>
-
+          {dateInputs}
         </TableCell>
 
       </TableRow>
@@ -258,7 +320,7 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
               </div>
               <TableContainer>
                 <Table
-                  sx={{ minWidth: 400 }}
+                  sx={{ minWidth: 800 }}
                   size={'small'}
                 >
                   <TableBody>
