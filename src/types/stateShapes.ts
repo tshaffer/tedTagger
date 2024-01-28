@@ -91,7 +91,7 @@ export interface DateSearchRule {
 }
 
 export interface KeywordSearchRule {
-  keywordSearchRuleType: KeywordSearchRuleType.AreEmpty;
-  keywordId?: string;
+  keywordSearchRuleType: KeywordSearchRuleType;
+  keywordNodeId?: string;
 }
 

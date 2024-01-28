@@ -25,6 +25,29 @@ export function getKeywordNodesByNodeId(tedTaggerState: TedTaggerState): StringT
   return tedTaggerState.keywordsState.keywordNodesByNodeId;
 }
 
+export function getKeywordNodeIdToKeywordLUT(tedTaggerState: TedTaggerState): StringToKeywordLUT {
+
+  const keywordNodeIdToKeyword: StringToKeywordLUT = {};
+
+  const keywordNodesByNodeId: StringToKeywordNodeLUT = getKeywordNodesByNodeId(tedTaggerState);
+  const keywordsById: StringToKeywordLUT = getKeywordsById(tedTaggerState);
+  for (const keywordNodeId in keywordNodesByNodeId) {
+    if (Object.prototype.hasOwnProperty.call(keywordNodesByNodeId, keywordNodeId)) {
+      const keywordNode: KeywordNode = keywordNodesByNodeId[keywordNodeId];
+      const keywordId: string = keywordNode.keywordId;
+      if (Object.prototype.hasOwnProperty.call(keywordsById, keywordId)) {
+        const keyword: Keyword = keywordsById[keywordId];
+        keywordNodeIdToKeyword[keywordNodeId] = keyword;
+      }
+    }
+  }
+  return keywordNodeIdToKeyword;
+}
+
+export function getKeywordNodeIds(tedTaggerState: TedTaggerState): string[] {
+  return Object.keys(tedTaggerState.keywordsState.keywordNodesByNodeId);
+}
+
 export function getNodeByNodeId(keywordsState: KeywordsState, nodeId: string): KeywordNode | undefined {
   return keywordsState.keywordNodesByNodeId[nodeId];
 }
@@ -72,7 +95,6 @@ export function getKeywordsAsTree(tedTaggerState: TedTaggerState): KeywordTreeDe
   }
   return undefined;
 }
-
 
 function recursiveBuildTree(keywordsState: KeywordsState, deepKeywordTree: KeywordTreeDeep, parentNodeDeep: KeywordNodeDeep): void {
   if (parentNodeDeep.childNodeIds && parentNodeDeep.childNodeIds.length > 0) {

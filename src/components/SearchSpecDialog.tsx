@@ -8,9 +8,9 @@ import Box from '@mui/material/Box';
 
 import { TableHead, TableRow, TableCell, TableSortLabel, AlertProps, Alert, Snackbar, Table, TableBody, TableContainer, TablePagination, Checkbox, TextField, IconButton, Tooltip } from '@mui/material';
 
-import { getAppInitialized, getMatchRule, getSearchRules } from '../selectors';
+import { getAppInitialized, getKeywordNodeIdToKeywordLUT, getMatchRule, getSearchRules } from '../selectors';
 import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent } from '@mui/material';
-import { DateSearchRule, DateSearchRuleType, KeywordSearchRule, KeywordSearchRuleType, MatchRule, SearchRule, SearchRuleType } from '../types';
+import { DateSearchRule, DateSearchRuleType, KeywordSearchRule, KeywordSearchRuleType, MatchRule, SearchRule, SearchRuleType, StringToKeywordLUT } from '../types';
 
 import AddIcon from '@mui/icons-material/Add';
 import { addSearchRule, updateSearchRule } from '../models';
@@ -29,6 +29,7 @@ export interface SearchSpecDialogProps extends SearchSpecDialogPropsFromParent {
   appInitialized: boolean;
   matchRule: MatchRule;
   searchRules: SearchRule[];
+  keywordNodeIdToKeywordLUT: StringToKeywordLUT;
   onAddSearchRule: (searchRule: SearchRule) => any;
   onUpdateSearchRule: (searchRuleIndex: number, searchRule: SearchRule) => any;
 }
@@ -58,6 +59,20 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
     const searchRule: SearchRule = searchRules[searchRuleIndex];
     const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
     return dateSearchRule.dateSearchRuleType;
+  };
+
+  const getKeywordSearchRuleType = (searchRuleIndex: number): KeywordSearchRuleType => {
+    const searchRules: SearchRule[] = props.searchRules;
+    const searchRule: SearchRule = searchRules[searchRuleIndex];
+    const keywordSearchRule: KeywordSearchRule = searchRule.searchRule as KeywordSearchRule;
+    return keywordSearchRule.keywordSearchRuleType;
+  };
+
+  const getKeywordNodeId = (searchRuleIndex: number): string => {
+    const searchRules: SearchRule[] = props.searchRules;
+    const searchRule: SearchRule = searchRules[searchRuleIndex];
+    const keywordSearchRule: KeywordSearchRule = searchRule.searchRule as KeywordSearchRule;
+    return keywordSearchRule.keywordNodeId!;
   };
 
   const handleClose = () => {
@@ -117,6 +132,18 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
     const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
 
     dateSearchRule.dateSearchRuleType = event.target.value as DateSearchRuleType;
+
+    props.onUpdateSearchRule(searchRuleIndex, searchRule);
+  };
+
+  const handleChangeKeywordSearchRuleType = (searchRuleIndex: number, event: SelectChangeEvent<string>): void => {
+    console.log('handleChangeKeywordSearchRuleType', searchRuleIndex, event.target.value);
+
+    const searchRules: SearchRule[] = props.searchRules;
+    const searchRule: SearchRule = searchRules[searchRuleIndex];
+    const keywordSearchRule: KeywordSearchRule = searchRule.searchRule as KeywordSearchRule;
+
+    keywordSearchRule.keywordSearchRuleType = event.target.value as KeywordSearchRuleType;
 
     props.onUpdateSearchRule(searchRuleIndex, searchRule);
   };
@@ -232,12 +259,82 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
     );
   };
 
+  const renderKeywordMenuItem = (keywordNodeId: string): JSX.Element => {
+    return (
+      <MenuItem
+        key={keywordNodeId}
+        value={keywordNodeId}
+      >
+        {props.keywordNodeIdToKeywordLUT[keywordNodeId].label}
+      </MenuItem>
+    );
+  };
+
+  const renderKeywordMenuItems = (): JSX.Element[] => {
+    const keywordMenuItems: JSX.Element[] = Object.keys(props.keywordNodeIdToKeywordLUT).map((keywordNodeId: string) => {
+      return renderKeywordMenuItem(keywordNodeId);
+    });
+    return keywordMenuItems;
+  };
+
+  function handleChangeKeyword(rowIndex: number, event: SelectChangeEvent<string>): void {
+    console.log('handleChangeKeyword', rowIndex, event.target.value);
+  }
+
+  const renderKeywordSelect = (rowIndex: number): JSX.Element => {
+    const keywordNodeId: string = getKeywordNodeId(rowIndex);
+    const keywordMenuItems: JSX.Element[] = renderKeywordMenuItems();
+    return (
+      <Select
+        labelId="keywordSelectLabel"
+        id="keywordSelect"
+        value={keywordNodeId}
+        onChange={(event) => handleChangeKeyword(rowIndex, event)}
+        input={<OutlinedInput label="Keyword" />}
+      >
+        {keywordMenuItems}
+      </Select>
+    );
+  };
+
+  const renderKeywordInputs = (rowIndex: number, searchRule: SearchRule): JSX.Element | null => {
+    const searchRuleRule: KeywordSearchRule = searchRule.searchRule as KeywordSearchRule;
+    if (searchRuleRule.keywordSearchRuleType === KeywordSearchRuleType.AreEmpty || searchRuleRule.keywordSearchRuleType === KeywordSearchRuleType.AreNotEmpty) {
+      return null;
+    } else {
+      const keywordSelect: JSX.Element = renderKeywordSelect(rowIndex);
+      return (
+        <React.Fragment>
+          {keywordSelect}
+        </React.Fragment>
+      );
+    }
+  };
+
   const renderKeywordRow = (rowIndex: number, searchRule: SearchRule): JSX.Element => {
+
     const searchRuleTypeSelect = renderSearchRuleTypeFragment(rowIndex);
+    const keywordSearchRuleType: KeywordSearchRuleType = getKeywordSearchRuleType(rowIndex);
+    const keywordInputs: JSX.Element | null = renderKeywordInputs(rowIndex, searchRule);
+
     return (
       <TableRow>
         {searchRuleTypeSelect}
         <TableCell>
+          <Select
+            labelId="keywordSearchRuleTypeLabel"
+            id="keywordSearchRuleTypeSelect"
+            value={keywordSearchRuleType}
+            onChange={(event) => handleChangeKeywordSearchRuleType(rowIndex, event)}
+            input={<OutlinedInput label="Rule Type" />}
+          >
+            <MenuItem value={KeywordSearchRuleType.Contains}>contains</MenuItem>
+            <MenuItem value={KeywordSearchRuleType.AreEmpty}>are empty</MenuItem>
+            <MenuItem value={KeywordSearchRuleType.AreNotEmpty}>are not empty</MenuItem>
+          </Select>
+        </TableCell>
+        <TableCell>
+          {keywordInputs}
         </TableCell>
       </TableRow>
     );
@@ -345,6 +442,7 @@ function mapStateToProps(state: any) {
     appInitialized: getAppInitialized(state),
     matchRule: getMatchRule(state),
     searchRules: getSearchRules(state),
+    keywordNodeIdToKeywordLUT: getKeywordNodeIdToKeywordLUT(state),
   };
 }
 
