@@ -5,24 +5,19 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 
-import { getAppInitialized } from '../selectors';
+import { getAppInitialized, getMatchRule, getSearchRules } from '../selectors';
 import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
+import { MatchRule, SearchRule } from '../types';
 
 export interface SearchSpecDialogPropsFromParent {
   open: boolean;
-  // onSearchSpec: (
-  //   keywordLabel: string,
-  //   parentKeywordNodeId: string,
-  // ) => void;
   onClose: () => void;
 }
 
 export interface SearchSpecDialogProps extends SearchSpecDialogPropsFromParent {
   appInitialized: boolean;
-  // keywordRootNodeId: string;
-  // keywordsAsTree: KeywordTreeDeep | undefined;
-  // keywordsById: StringToKeywordLUT;
-  // keywordNodesByNodeId: StringToKeywordNodeLUT
+  matchRule: MatchRule;
+  searchRules: SearchRule[];
 }
 
 const SearchSpecDialog = (props: SearchSpecDialogProps) => {
@@ -95,10 +90,8 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
 function mapStateToProps(state: any) {
   return {
     appInitialized: getAppInitialized(state),
-    // keywordRootNodeId: getKeywordRootNodeId(state),
-    // keywordsAsTree: getKeywordsAsTree(state),
-    // keywordsById: getKeywordsById(state),
-    // keywordNodesByNodeId: getKeywordNodesByNodeId(state),
+    matchRule: getMatchRule(state),
+    searchRules: getSearchRules(state),
   };
 }
 
