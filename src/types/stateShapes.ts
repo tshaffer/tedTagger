@@ -87,12 +87,11 @@ export interface SearchRule {
 export interface DateSearchRule {
   dateSearchRuleType: DateSearchRuleType;
   date: string;
-  date2: string | undefined;
+  date2?: string;
 }
 
 export interface KeywordSearchRule {
-  keywordearchRuleType: KeywordSearchRuleType;
+  keywordSearchRuleType: KeywordSearchRuleType;
   keywordId: string | undefined;
-
 }
 
