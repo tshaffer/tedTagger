@@ -19,6 +19,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs, { Dayjs } from 'dayjs';
 import { isNil } from 'lodash';
+import { loadMediaItemsFromSearchSpec } from '../controllers';
 
 export interface SearchSpecDialogPropsFromParent {
   open: boolean;
@@ -33,6 +34,7 @@ export interface SearchSpecDialogProps extends SearchSpecDialogPropsFromParent {
   keywordNodeIdToKeywordLUT: StringToKeywordLUT;
   onAddSearchRule: (searchRule: SearchRule) => any;
   onUpdateSearchRule: (searchRuleIndex: number, searchRule: SearchRule) => any;
+  onLoadMediaItemsFromSearchSpec: () => any;
 }
 
 const SearchSpecDialog = (props: SearchSpecDialogProps) => {
@@ -127,7 +129,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
   const handleChangeDateSearchRuleType = (searchRuleIndex: number, event: SelectChangeEvent<string>): void => {
-    console.log('handleChangeDateSearchRuleType', searchRuleIndex, event.target.value);
 
     const searchRules: SearchRule[] = props.searchRules;
     const searchRule: SearchRule = searchRules[searchRuleIndex];
@@ -139,7 +140,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
   const handleChangeKeywordSearchRuleType = (searchRuleIndex: number, event: SelectChangeEvent<string>): void => {
-    console.log('handleChangeKeywordSearchRuleType', searchRuleIndex, event.target.value);
 
     const searchRules: SearchRule[] = props.searchRules;
     const searchRule: SearchRule = searchRules[searchRuleIndex];
@@ -153,8 +153,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   const handleSetDate = (searchRuleIndex: number, dateDayJs: Dayjs | null) => {
     if (!isNil(dateDayJs)) {
       const date: Date = dateDayJs.toDate();
-      console.log('handleSetDate', date.toISOString());
-
       const searchRules: SearchRule[] = props.searchRules;
       const searchRule: SearchRule = searchRules[searchRuleIndex];
       const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
@@ -166,8 +164,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   const handleSetOptionalDate = (searchRuleIndex: number, dateDayJs: Dayjs | null) => {
     if (!isNil(dateDayJs)) {
       const date: Date = dateDayJs.toDate();
-      console.log('handleSetOptionalDate', date.toISOString());
-
       const searchRules: SearchRule[] = props.searchRules;
       const searchRule: SearchRule = searchRules[searchRuleIndex];
       const dateSearchRule: DateSearchRule = searchRule.searchRule as DateSearchRule;
@@ -280,7 +276,6 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
   };
 
   function handleChangeKeyword(rowIndex: number, event: SelectChangeEvent<string>): void {
-    console.log('handleChangeKeyword', rowIndex, event.target.value);
     const newSearchRule: SearchRule = {
       searchRuleType: SearchRuleType.Keyword,
       searchRule: {
@@ -289,8 +284,13 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
       }
     };
     props.onUpdateSearchRule(rowIndex, newSearchRule);
-
   }
+
+  const handleSearch = () => {
+    // onGenerateGroceryList(props.startDate, props.numberOfMealsInGroceryList, props.showStaples);
+    props.onLoadMediaItemsFromSearchSpec();
+    onClose();
+  };
 
   const renderKeywordSelect = (rowIndex: number): JSX.Element => {
     const keywordNodeId: string = getKeywordNodeId(rowIndex);
@@ -443,6 +443,9 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleSearch} autoFocus>
+          Search
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -462,6 +465,8 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
     onAddSearchRule: addSearchRule,
     onUpdateSearchRule: updateSearchRule,
+    onLoadMediaItemsFromSearchSpec: loadMediaItemsFromSearchSpec,
+
   }, dispatch);
 };
 

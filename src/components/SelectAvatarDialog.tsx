@@ -96,6 +96,7 @@ function SelectAvatarDialog(props: SelectAvatarDialogProps) {
   };
 
   const dialogContents = getDialogContents();
+
   return (
     <Dialog
       onClose={handleClose}

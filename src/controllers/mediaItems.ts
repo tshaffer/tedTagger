@@ -76,6 +76,15 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
   };
 };
 
+export const loadMediaItemsFromSearchSpec = (): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    console.log('loadMediaItemsFromSearchSpec');
+    
+    return Promise.resolve();
+  };
+};
+
 export const updateKeywordAssignedToSelectedMediaItems = (
   keywordNodeId: string,
   selectedMediaItemIds: string[],
