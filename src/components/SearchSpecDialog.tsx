@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 
-import { TableHead, TableRow, TableCell, TableSortLabel, AlertProps, Alert, Snackbar, Table, TableBody, TableContainer, TablePagination, Checkbox, TextField, IconButton, Tooltip } from '@mui/material';
+import { TableRow, TableCell, Table, TableBody, TableContainer } from '@mui/material';
 
 import { getAppInitialized, getKeywordNodeIdToKeywordLUT, getKeywordRootNodeId, getMatchRule, getSearchRules } from '../selectors';
 import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent } from '@mui/material';

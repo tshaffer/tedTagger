@@ -2,11 +2,13 @@ import axios from 'axios';
 
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux } from '../models';
 import {
-  serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, KeywordNode,
+  serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, KeywordNode, MatchRule, SearchRule,
 } from '../types';
 import { assign, cloneDeep, isNil } from 'lodash';
 import {
   getDateRangeSpecification,
+  getMatchRule,
+  getSearchRules,
   getTagByLabel,
   getTagsInSearchSpecification,
 } from '../selectors';
@@ -80,8 +82,23 @@ export const loadMediaItemsFromSearchSpec = (): TedTaggerAnyPromiseThunkAction =
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
     console.log('loadMediaItemsFromSearchSpec');
-    
-    return Promise.resolve();
+
+    const state: TedTaggerState = getState();
+
+    const matchRule: MatchRule = getMatchRule(state);
+    const searchRules: SearchRule[] = getSearchRules(state);
+
+    let path = serverUrl
+      + apiUrlFragment
+      + 'mediaItemsToDisplayFromSearchSpec';
+
+    path += '?matchRule=' + matchRule;
+    path += '&searchRules=' + JSON.stringify(searchRules);
+
+    return axios.get(path)
+      .then((mediaItemsResponse: any) => {
+        console.log('mediaItemsResponse');
+      });
   };
 };
 
