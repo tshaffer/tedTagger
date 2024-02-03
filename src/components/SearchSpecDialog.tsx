@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 
 import { TableHead, TableRow, TableCell, TableSortLabel, AlertProps, Alert, Snackbar, Table, TableBody, TableContainer, TablePagination, Checkbox, TextField, IconButton, Tooltip } from '@mui/material';
 
-import { getAppInitialized, getKeywordNodeIdToKeywordLUT, getMatchRule, getSearchRules } from '../selectors';
+import { getAppInitialized, getKeywordNodeIdToKeywordLUT, getKeywordRootNodeId, getMatchRule, getSearchRules } from '../selectors';
 import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent } from '@mui/material';
 import { DateSearchRule, DateSearchRuleType, KeywordSearchRule, KeywordSearchRuleType, MatchRule, SearchRule, SearchRuleType, StringToKeywordLUT } from '../types';
 
@@ -27,6 +27,7 @@ export interface SearchSpecDialogPropsFromParent {
 
 export interface SearchSpecDialogProps extends SearchSpecDialogPropsFromParent {
   appInitialized: boolean;
+  rootNodeId: string;
   matchRule: MatchRule;
   searchRules: SearchRule[];
   keywordNodeIdToKeywordLUT: StringToKeywordLUT;
@@ -101,7 +102,8 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
         const newSearchRule: SearchRule = {
           searchRuleType: SearchRuleType.Keyword,
           searchRule: {
-            keywordSearchRuleType: KeywordSearchRuleType.AreEmpty,
+            keywordSearchRuleType: KeywordSearchRuleType.Contains,
+            keywordNodeId: props.rootNodeId,
           }
         };
         props.onUpdateSearchRule(searchRuleIndex, newSearchRule);
@@ -279,6 +281,15 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
 
   function handleChangeKeyword(rowIndex: number, event: SelectChangeEvent<string>): void {
     console.log('handleChangeKeyword', rowIndex, event.target.value);
+    const newSearchRule: SearchRule = {
+      searchRuleType: SearchRuleType.Keyword,
+      searchRule: {
+        keywordSearchRuleType: KeywordSearchRuleType.Contains,
+        keywordNodeId: event.target.value,
+      }
+    };
+    props.onUpdateSearchRule(rowIndex, newSearchRule);
+
   }
 
   const renderKeywordSelect = (rowIndex: number): JSX.Element => {
@@ -443,6 +454,7 @@ function mapStateToProps(state: any) {
     matchRule: getMatchRule(state),
     searchRules: getSearchRules(state),
     keywordNodeIdToKeywordLUT: getKeywordNodeIdToKeywordLUT(state),
+    rootNodeId: getKeywordRootNodeId(state),
   };
 }
 
