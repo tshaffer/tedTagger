@@ -14,5 +14,6 @@ export * from './PhotoToDisplaySpec';
 export * from './SearchTagList';
 export * from './Keywords';
 export * from './SearchSpecDialog';
+export * from './ImportFromTakeoutDialog';
 
 

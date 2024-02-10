@@ -15,6 +15,7 @@ import IconExpansionTreeView from './MuiTestTreeView';
 import { Button } from '@mui/material';
 
 import SearchSpecDialog from './SearchSpecDialog';
+import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
 
 export interface AppProps {
   onLoadKeywordData: () => any;
@@ -31,9 +32,14 @@ export interface AppProps {
 const App = (props: AppProps) => {
 
   const [showSearchSpecDialog, setShowSearchSpecDialog] = React.useState(false);
+  const [showImportFromTakeoutDialog, setShowImportFromTakeoutDialog] = React.useState(false);
 
   const handleCloseSearchSpecDialog = () => {
     setShowSearchSpecDialog(false);
+  };
+
+  const handleCloseImportFromTakeoutDialog = () => {
+    setShowImportFromTakeoutDialog(false);
   };
 
   React.useEffect(() => {
@@ -67,6 +73,11 @@ const App = (props: AppProps) => {
           <SearchSpecDialog
             open={showSearchSpecDialog}
             onClose={handleCloseSearchSpecDialog}
+          />
+          <Button onClick={() => setShowImportFromTakeoutDialog(true)}>Import from Takeout</Button>
+          <ImportFromTakeoutDialog
+            open={showImportFromTakeoutDialog}
+            onClose={handleCloseImportFromTakeoutDialog}
           />
         </div>
         <div className='centerColumnStyle'>
