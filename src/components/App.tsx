@@ -36,20 +36,6 @@ const App = (props: AppProps) => {
     setShowSearchSpecDialog(false);
   };
 
-  const buildTree = () => {
-    console.log('buildTree invoked');
-    const keywordRootNodeId = 'rootKeywordNodeId';
-    const grandmaEmilyNode: KeywordNode = props.onAddKeyword(keywordRootNodeId, 'Grandma Emily', 'person');
-    const tedNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Ted', 'person');
-    const noahNode: KeywordNode = props.onAddKeyword(grandmaEmilyNode.nodeId, 'Noah', 'person');
-    const samNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Sam', 'person');
-    const joelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Joel', 'person');
-    const rachelNode: KeywordNode = props.onAddKeyword(tedNode.nodeId, 'Rachel', 'person');
-    const mattNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Matt', 'person');
-    const andrewNode: KeywordNode = props.onAddKeyword(noahNode.nodeId, 'Andrew', 'person');
-    const elenaNode: KeywordNode = props.onAddKeyword(mattNode.nodeId, 'Elena', 'person');
-  };
-
   React.useEffect(() => {
     console.log('React.useEffect invoked');
     props.onLoadDefaultTagAvatarId()
@@ -63,8 +49,6 @@ const App = (props: AppProps) => {
         return props.onLoadTags();
       }).then(function () {
         return props.onLoadMediaItems();
-      }).then(function () {
-        return buildTree();
       }).then(function () {
         return props.onSetAppInitialized();
       });
