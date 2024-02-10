@@ -10,7 +10,8 @@ import {
   addKeywordsRedux,
   setKeywordRootNodeIdRedux,
 } from '../models';
-import { KeywordData, KeywordNode, apiUrlFragment, serverUrl } from '../types';
+import { KeywordData, KeywordNode, StringToKeywordLUT, apiUrlFragment, serverUrl } from '../types';
+import { getKeywordsById } from '../selectors';
 
 export const loadKeywordData = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -38,13 +39,24 @@ export const loadKeywordData = (): TedTaggerAnyPromiseThunkAction => {
 export function addKeyword(parentNodeId: string, keywordLabel: string, keywordType: string): any {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const newKeywordId = uuidv4();
+    // if a keyword with the same label and type already exists, get and use the existing keyword
+    const keywords: StringToKeywordLUT = getKeywordsById(getState());
+    
+    // TEDTODO
+    // const indexOfExistingKeyword: number = Object.values(keywords).findIndex((keyword: any) => keyword.label === keywordLabel && keyword.type === keywordType);
+    const indexOfExistingKeyword: number = Object.values(keywords).findIndex((keyword: any) => keyword.label === keywordLabel);
 
-    dispatch(addKeywordRedux(newKeywordId, keywordLabel, keywordType));
+    let keywordId: string;
+    if (indexOfExistingKeyword >= 0) {
+      keywordId = Object.keys(keywords)[indexOfExistingKeyword];
+    } else {
+      keywordId = uuidv4();
+      dispatch(addKeywordRedux(keywordId, keywordLabel, keywordType));
+    }
 
     const keywordNode: KeywordNode = {
       nodeId: uuidv4(),
-      keywordId: newKeywordId,
+      keywordId,
       parentNodeId,
       childrenNodeIds: []
     };
