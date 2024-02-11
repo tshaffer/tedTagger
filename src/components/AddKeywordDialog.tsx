@@ -117,7 +117,7 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
               id="keywordParentSelect"
               value={parentKeywordNodeId}
               onChange={handleChange}
-              input={<OutlinedInput label="Parent Keyword" />}
+              input={<OutlinedInput label="Takeout" />}
             >
               {keywordParentNodes}
             </Select>

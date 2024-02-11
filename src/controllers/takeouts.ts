@@ -5,8 +5,6 @@ import { serverUrl, apiUrlFragment, Takeout } from '../types';
 export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
     
-    debugger;
-
     const path = serverUrl + apiUrlFragment + 'takeouts';
 
     return axios.get(path)

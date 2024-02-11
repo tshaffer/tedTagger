@@ -1,19 +1,16 @@
 import * as React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 
-import { Stack, TextField } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
 
-import { getAppInitialized, getKeywordNodeIdToKeywordLUT, getKeywordRootNodeId, getMatchRule, getSearchRules } from '../selectors';
+import { getAppInitialized, getTakeouts } from '../selectors';
 import { Button, DialogActions, DialogContent } from '@mui/material';
 
-import { addSearchRule, updateSearchRule } from '../models';
-import { loadMediaItemsFromSearchSpec } from '../controllers';
-import { isNil } from 'lodash';
+import { Takeout } from '../types';
 
 export interface ImportFromTakeoutDialogPropsFromParent {
   open: boolean;
@@ -21,15 +18,11 @@ export interface ImportFromTakeoutDialogPropsFromParent {
 }
 
 export interface ImportFromTakeoutDialogProps extends ImportFromTakeoutDialogPropsFromParent {
+  takeouts: Takeout[];
   appInitialized: boolean;
 }
 
 const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
-
-  const [albumName, setAlbumName] = React.useState('');
-  const [fileInImportFolder, setFileInImportFolder] = React.useState('');
-
-  const hiddenFileInput = React.useRef(null);
 
   const { open, onClose } = props;
 
@@ -41,15 +34,10 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
     return null;
   }
 
-  const handleSelectFileInImportFolder = () => {
-    if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
-      (hiddenFileInput.current as any).click();
-    }
-  };
+  const [takeoutId, setTakeoutId] = React.useState(props.takeouts[0].id);
 
-  const handleFileInImportFolderSelected = (event: any) => {
-    console.log('handleFileInImportSelected', event.target.files[0]);
-    setFileInImportFolder(event.target.files[0].name);
+  const handleChange = (event: SelectChangeEvent<typeof takeoutId>) => {
+    setTakeoutId(event.target.value || '');
   };
 
   const handleClose = () => {
@@ -57,9 +45,25 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
   };
 
   function handleImport(): void {
-    console.log('Importing from Takeout');
-    console.log('import from parent folder of ' + albumName);
+    console.log('Importing from Takeout', takeoutId);
+    onClose();
   }
+
+  const renderTakeout = (takeout: Takeout): JSX.Element => {
+    return (
+      <MenuItem value={takeout.id}>{takeout.label}</MenuItem>
+    );
+  };
+
+  const renderTakeouts = (): JSX.Element[] => {
+    const takeouts = props.takeouts;
+    const takeoutItems: JSX.Element[] = takeouts.map((takeout: Takeout) => {
+      return renderTakeout(takeout);
+    });
+    return takeoutItems;
+  };
+
+  const takeoutItems: JSX.Element[] = renderTakeouts();
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -71,28 +75,16 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
             noValidate
             autoComplete="off"
           >
-            <div>
-              <TextField
-                style={{ paddingBottom: '8px' }}
-                label="Album name"
-                value={albumName}
-                onChange={(event) => setAlbumName(event.target.value)}
-              />
-            </div>
-            <Stack spacing={1} direction="row">
-              <input
-                type="file"
-                onChange={(e) => handleFileInImportFolderSelected(e)}
-                ref={hiddenFileInput}
-                style={{ display: 'none' }} // Make the file input element invisible
-              />
-              <Button
-                variant="outlined"
-                onClick={() => handleSelectFileInImportFolder()}
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-dialog-select-label">Takeout</InputLabel>
+              <Select
+                value={takeoutId}
+                onChange={handleChange}
+                input={<OutlinedInput label="Parent Keyword" />}
               >
-                Select file
-              </Button>
-            </Stack>
+                {takeoutItems}
+              </Select>
+            </FormControl>
           </Box>
         </div>
       </DialogContent>
@@ -109,30 +101,8 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
 function mapStateToProps(state: any) {
   return {
     appInitialized: getAppInitialized(state),
-    matchRule: getMatchRule(state),
-    searchRules: getSearchRules(state),
-    keywordNodeIdToKeywordLUT: getKeywordNodeIdToKeywordLUT(state),
-    rootNodeId: getKeywordRootNodeId(state),
+    takeouts: getTakeouts(state),
   };
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({
-    onAddSearchRule: addSearchRule,
-    onUpdateSearchRule: updateSearchRule,
-    onLoadMediaItemsFromSearchSpec: loadMediaItemsFromSearchSpec,
-
-  }, dispatch);
-};
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ImportFromTakeoutDialog);
-
-
-declare module 'react' {
-  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
-    // extends React's HTMLAttributes
-    directory?: string;        // remember to make these attributes optional....
-    webkitdirectory?: string;
-  }
-}
+export default connect(mapStateToProps)(ImportFromTakeoutDialog);

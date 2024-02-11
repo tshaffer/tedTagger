@@ -7,3 +7,5 @@ export * from './tags';
 export * from './userTagAvatars';
 export * from './photosToDisplaySpec';
 export * from './searchUI';
+export * from './takeouts';
+export * from './searchUI';
