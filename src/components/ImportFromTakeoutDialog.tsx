@@ -6,14 +6,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 
-import { Table, TableBody, TableContainer, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 
 import { getAppInitialized, getKeywordNodeIdToKeywordLUT, getKeywordRootNodeId, getMatchRule, getSearchRules } from '../selectors';
-import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select } from '@mui/material';
+import { Button, DialogActions, DialogContent } from '@mui/material';
 
-import AddIcon from '@mui/icons-material/Add';
 import { addSearchRule, updateSearchRule } from '../models';
 import { loadMediaItemsFromSearchSpec } from '../controllers';
+import { isNil } from 'lodash';
 
 export interface ImportFromTakeoutDialogPropsFromParent {
   open: boolean;
@@ -27,6 +27,9 @@ export interface ImportFromTakeoutDialogProps extends ImportFromTakeoutDialogPro
 const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
 
   const [albumName, setAlbumName] = React.useState('');
+  const [fileInImportFolder, setFileInImportFolder] = React.useState('');
+
+  const hiddenFileInput = React.useRef(null);
 
   const { open, onClose } = props;
 
@@ -38,12 +41,24 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
     return null;
   }
 
+  const handleSelectFileInImportFolder = () => {
+    if (!isNil(hiddenFileInput) && !isNil(hiddenFileInput.current)) {
+      (hiddenFileInput.current as any).click();
+    }
+  };
+
+  const handleFileInImportFolderSelected = (event: any) => {
+    console.log('handleFileInImportSelected', event.target.files[0]);
+    setFileInImportFolder(event.target.files[0].name);
+  };
+
   const handleClose = () => {
     onClose();
   };
 
   function handleImport(): void {
     console.log('Importing from Takeout');
+    console.log('import from parent folder of ' + albumName);
   }
 
   return (
@@ -64,6 +79,20 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
                 onChange={(event) => setAlbumName(event.target.value)}
               />
             </div>
+            <Stack spacing={1} direction="row">
+              <input
+                type="file"
+                onChange={(e) => handleFileInImportFolderSelected(e)}
+                ref={hiddenFileInput}
+                style={{ display: 'none' }} // Make the file input element invisible
+              />
+              <Button
+                variant="outlined"
+                onClick={() => handleSelectFileInImportFolder()}
+              >
+                Select file
+              </Button>
+            </Stack>
           </Box>
         </div>
       </DialogContent>
@@ -100,3 +129,10 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(mapStateToProps, mapDispatchToProps)(ImportFromTakeoutDialog);
 
 
+declare module 'react' {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    // extends React's HTMLAttributes
+    directory?: string;        // remember to make these attributes optional....
+    webkitdirectory?: string;
+  }
+}

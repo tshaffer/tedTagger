@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import LoupeView from './LoupeView';
-import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData } from '../controllers';
+import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData, loadTakeouts } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { addKeyword } from '../controllers';
@@ -24,6 +24,7 @@ export interface AppProps {
   onLoadMediaItems: () => any;
   onLoadTags: () => any;
   onLoadUserTagAvatars: () => any;
+  onLoadTakeouts: () => any;
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
   onAddKeyword: (parentId: string, keywordLabel: string, keywordType: string) => any;
@@ -53,6 +54,8 @@ const App = (props: AppProps) => {
         return props.onLoadUserTagAvatars();
       }).then(function () {
         return props.onLoadTags();
+      }).then(function () {
+        return props.onLoadTakeouts();
       }).then(function () {
         return props.onLoadMediaItems();
       }).then(function () {
@@ -109,6 +112,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadUserTagAvatars: loadUserTagAvatars,
     onSetAppInitialized: setAppInitialized,
     onAddKeyword: addKeyword,
+    onLoadTakeouts: loadTakeouts,
   }, dispatch);
 };
 

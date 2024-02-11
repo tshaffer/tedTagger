@@ -1,5 +1,5 @@
 import { StringToKeywordLUT, StringToKeywordNodeLUT } from './base';
-import { MediaItem, Tag, AppTagAvatar, UserTagAvatar } from './entities';
+import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, Takeout } from './entities';
 import {
   DateSearchRuleType,
   KeywordSearchRuleType,
@@ -20,6 +20,7 @@ export interface TedTaggerState {
   photosToDisplaySpec: PhotosToDisplaySpec;
   keywordsState: KeywordsState;
   searchUIState: SearchUIState;
+  takeoutsState: TakeoutsState;
 }
 
 export interface AppState {
@@ -95,3 +96,6 @@ export interface KeywordSearchRule {
   keywordNodeId?: string;
 }
 
+export interface TakeoutsState {
+  takeouts: Takeout[];
+}

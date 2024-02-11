@@ -9,3 +9,4 @@ export * from './userTagAvatars';
 export * from './photoToDisplaySpec';
 export * from './keywords';
 export * from './searchUI';
+export * from './takeouts';

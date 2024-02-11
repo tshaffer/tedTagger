@@ -98,3 +98,11 @@ export interface KeywordData {
   keywordNodes: KeywordNode[];
   keywordRootNodeId: string;
 }
+
+export interface Takeout {
+  id: string;
+  label: string;
+  albumName: string;
+  path: string;
+}
+
