@@ -21,3 +21,26 @@ export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
   };
 };
 
+export const importFromTakeout = (takeoutId: string): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'importFromTakeout/' + takeoutId;
+
+    const importFromTakeoutBody = {
+      id: takeoutId,
+    };
+
+    return axios.post(
+      path,
+      importFromTakeoutBody
+    ).then((response) => {
+      // dispatch(replaceTagInMediaItemsRedux(mediaItems, existingTag.id, newTag.id));
+      // return mediaItems.googleId;
+      console.log('importFromTakeoutBody response', response);
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
+  };
+};
