@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTakeouts } from '../models';
-import { serverUrl, apiUrlFragment, Takeout } from '../types';
+import { serverUrl, apiUrlFragment, Takeout, AddedTakeoutData, KeywordData } from '../types';
+import { mergeKeywordData, reloadKeywordData } from './keywords';
 
 export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
-    
+
     const path = serverUrl + apiUrlFragment + 'takeouts';
 
     return axios.get(path)
@@ -24,22 +25,24 @@ export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
 export const importFromTakeout = (takeoutId: string): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
-    const path = serverUrl + apiUrlFragment + 'importFromTakeout/' + takeoutId;
+    const path = serverUrl + apiUrlFragment + 'importFromTakeout';
 
-    const importFromTakeoutBody = {
-      id: takeoutId,
-    };
+    const importFromTakeoutBody = { id: takeoutId };
 
     return axios.post(
       path,
       importFromTakeoutBody
     ).then((response) => {
-      // dispatch(replaceTagInMediaItemsRedux(mediaItems, existingTag.id, newTag.id));
-      // return mediaItems.googleId;
       console.log('importFromTakeoutBody response', response);
+      const addedTakeoutData: AddedTakeoutData = response.data;
+      const addedKeywordData: KeywordData = addedTakeoutData.addedKeywordData;
+      console.log('mergeKeywordData');
+      dispatch(mergeKeywordData(addedKeywordData));
+      console.log(getState());
     }).catch((error) => {
       console.log('error');
       console.log(error);
+      debugger;
       return '';
     });
   };

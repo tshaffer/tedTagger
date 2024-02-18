@@ -11,6 +11,7 @@ export const ADD_KEYWORDS = 'ADD_KEYWORDS';
 export const ADD_KEYWORD_NODE = 'ADD_KEYWORD_NODE';
 export const ADD_KEYWORD_NODES = 'ADD_KEYWORD_NODES';
 export const SET_KEYWORD_ROOT_NODE_ID = 'SET_KEYWORD_ROOT_NODE_ID';
+export const CLEAR_KEYWORD_DATA = 'CLEAR_KEYWORD_DATA';
 
 // ------------------------------------
 // Actions
@@ -124,6 +125,13 @@ export const setKeywordRootNodeIdRedux = (
   };
 };
 
+export const clearKeywordData = (
+): any => {
+  return {
+    type: CLEAR_KEYWORD_DATA,
+  };
+};
+
 
 // ------------------------------------
 // Reducer
@@ -134,23 +142,6 @@ const initialState: KeywordsState =
   keywordsById: {},
   keywordNodesByNodeId: {},
   keywordRootNodeId: '',
-  // keywordsById: {
-  //   ['rootKeyword']: {
-  //     keywordId: 'rootKeyword',
-  //     label: 'Keywords',
-  //     type: 'root',
-  //   }
-  // },
-  // keywordNodesByNodeId: {
-  //   ['rootNode']: {
-  //     nodeId: 'rootNode',
-  //     keywordId: 'rootKeyword',
-  //     parentNodeId: undefined,
-  //     childrenNodeIds: [],
-  //   }
-  // }
-  // ,
-  // keywordRootNodeId: 'rootNode',
 };
 
 export const keywordsStateReducer = (
@@ -207,6 +198,10 @@ export const keywordsStateReducer = (
         keywordRootNodeId: action.payload.keywordRootNodeId,
       };
     }
+    case CLEAR_KEYWORD_DATA: {
+      return initialState;
+    }
+
     default:
       return state;
   }

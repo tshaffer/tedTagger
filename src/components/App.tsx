@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import LoupeView from './LoupeView';
-import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData, loadTakeouts } from '../controllers';
+import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { addKeyword } from '../controllers';
@@ -28,6 +28,7 @@ export interface AppProps {
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
   onAddKeyword: (parentId: string, keywordLabel: string, keywordType: string) => any;
+  onImportFromTakeout: (id: string) => void;
 }
 
 const App = (props: AppProps) => {
@@ -35,6 +36,10 @@ const App = (props: AppProps) => {
   const [showSearchSpecDialog, setShowSearchSpecDialog] = React.useState(false);
   const [showImportFromTakeoutDialog, setShowImportFromTakeoutDialog] = React.useState(false);
 
+  const handleImportFromTakeout = (takeoutId: string) => {
+    props.onImportFromTakeout(takeoutId);
+  };
+  
   const handleCloseSearchSpecDialog = () => {
     setShowSearchSpecDialog(false);
   };
@@ -80,6 +85,7 @@ const App = (props: AppProps) => {
           <Button onClick={() => setShowImportFromTakeoutDialog(true)}>Import from Takeout</Button>
           <ImportFromTakeoutDialog
             open={showImportFromTakeoutDialog}
+            onImportFromTakeout={handleImportFromTakeout}
             onClose={handleCloseImportFromTakeoutDialog}
           />
         </div>
@@ -113,6 +119,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetAppInitialized: setAppInitialized,
     onAddKeyword: addKeyword,
     onLoadTakeouts: loadTakeouts,
+    onImportFromTakeout: importFromTakeout,
   }, dispatch);
 };
 

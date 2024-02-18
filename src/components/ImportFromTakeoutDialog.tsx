@@ -14,6 +14,7 @@ import { Takeout } from '../types';
 
 export interface ImportFromTakeoutDialogPropsFromParent {
   open: boolean;
+  onImportFromTakeout: (id: string) => void;
   onClose: () => void;
 }
 
@@ -46,6 +47,7 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
 
   function handleImport(): void {
     console.log('Importing from Takeout', takeoutId);
+    props.onImportFromTakeout(takeoutId);
     onClose();
   }
 

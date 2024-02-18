@@ -9,6 +9,7 @@ import {
   addKeywordNodesRedux,
   addKeywordsRedux,
   setKeywordRootNodeIdRedux,
+  clearKeywordData,
 } from '../models';
 import { KeywordData, KeywordNode, StringToKeywordLUT, apiUrlFragment, serverUrl } from '../types';
 import { getKeywordsById } from '../selectors';
@@ -36,12 +37,31 @@ export const loadKeywordData = (): TedTaggerAnyPromiseThunkAction => {
   };
 };
 
+export const mergeKeywordData = (keywordData: KeywordData): any => {
+  return (dispatch: TedTaggerDispatch) => {
+    const { keywords, keywordNodes } = keywordData;
+    keywords.forEach((keyword: any) => {
+      dispatch(addKeywordRedux(keyword.keywordId, keyword.label, keyword.type));
+    });
+    keywordNodes.forEach((keywordNode: any) => {
+      dispatch(addKeywordNode(keywordNode.parentNodeId, keywordNode));
+    });
+  };
+};
+
+export const reloadKeywordData = (): TedTaggerAnyPromiseThunkAction => {
+  return (dispatch: TedTaggerDispatch) => {
+    dispatch(clearKeywordData());
+    return dispatch(loadKeywordData());
+  };
+};
+
 export function addKeyword(parentNodeId: string, keywordLabel: string, keywordType: string): any {
   return (dispatch: TedTaggerDispatch, getState: any) => {
 
     // if a keyword with the same label and type already exists, get and use the existing keyword
     const keywords: StringToKeywordLUT = getKeywordsById(getState());
-    
+
     // TEDTODO
     // const indexOfExistingKeyword: number = Object.values(keywords).findIndex((keyword: any) => keyword.label === keywordLabel && keyword.type === keywordType);
     const indexOfExistingKeyword: number = Object.values(keywords).findIndex((keyword: any) => keyword.label === keywordLabel);
