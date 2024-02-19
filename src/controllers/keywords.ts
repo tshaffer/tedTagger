@@ -13,7 +13,7 @@ import {
 } from '../models';
 import { KeywordData, KeywordNode, StringToKeywordLUT, TedTaggerState, apiUrlFragment, serverUrl } from '../types';
 import { getKeywordsById, getNodeByNodeId } from '../selectors';
-import { isNil } from 'lodash';
+import { cloneDeep, isNil } from 'lodash';
 
 export const loadKeywordData = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -128,8 +128,6 @@ const addKeywordNodeServerAndRedux = (keywordId: string, parentNodeId: string): 
       keywordNode,
     ).then((response) => {
       // update parent node with new child
-      console.log('return from addKeywordNode');
-      console.log(response);
       return dispatch(updateKeywordNodeServerAndRedux(keywordNode))
         .then(() => {
           return dispatch(addKeywordNodeRedux(parentNodeId, keywordNode));
@@ -144,19 +142,19 @@ const updateKeywordNodeServerAndRedux = (childKeywordNode: KeywordNode): TedTagg
 
     const path = serverUrl + apiUrlFragment + 'updateKeywordNode';
 
-    debugger;
+    const state: TedTaggerState = getState();
 
     if (isNil(childKeywordNode.parentNodeId) || childKeywordNode.parentNodeId === '') {
       return Promise.resolve();
     }
 
-    const state: TedTaggerState = getState();
     const parentKeywordNode: KeywordNode | undefined = getNodeByNodeId(state.keywordsState, childKeywordNode.parentNodeId);
     if (isNil(parentKeywordNode)) {
       return Promise.resolve();
     }
 
-    const childrenNodeIds: string[] = parentKeywordNode.childrenNodeIds || [];
+    const existingChildrenNodeIds: string[] = parentKeywordNode.childrenNodeIds || [];
+    const childrenNodeIds: string[] = cloneDeep(existingChildrenNodeIds);
     childrenNodeIds.push(childKeywordNode.nodeId);
 
     const updateKeywordNodeBody: KeywordNode = {
@@ -170,8 +168,6 @@ const updateKeywordNodeServerAndRedux = (childKeywordNode: KeywordNode): TedTagg
       path,
       updateKeywordNodeBody,
     ).then((response) => {
-      console.log('return from updateKeywordNode');
-      console.log(response);
       return Promise.resolve();
     });
 
