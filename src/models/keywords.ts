@@ -42,10 +42,6 @@ export const addKeywordRedux = (
   label: string,
   type: string,
 ): any => {
-  // console.log('addKeywordRedux', label);
-  // if (label === 'Elena') {
-  //   debugger;
-  // }
   return {
     type: ADD_KEYWORD,
     payload: {
@@ -77,7 +73,7 @@ interface AddKeywordNodePayload {
   keywordNode: KeywordNode;
 }
 
-export const addKeywordNode = (
+export const addKeywordNodeRedux = (
   parentNodeId: string,
   keywordNode: KeywordNode,
 ): any => {
@@ -89,26 +85,6 @@ export const addKeywordNode = (
     }
   };
 };
-
-function addChildNode(keywordsState: KeywordsState, parentNodeId: string, newNode: KeywordNode): void {
-
-  // console.log(parentNodeId);
-
-  const parentNode = getNodeByNodeId(keywordsState, parentNodeId);
-  // console.log(parentNode);
-
-  if (parentNode) {
-    if (!parentNode.childrenNodeIds) {
-      parentNode.childrenNodeIds = [];
-    }
-
-    newNode.parentNodeId = parentNodeId;
-    parentNode.childrenNodeIds.push(newNode.nodeId);
-  } else {
-    debugger;
-    console.error(`Parent node with id ${parentNodeId} not found.`);
-  }
-}
 
 interface SetKeywordRootNodeIdPayload {
   keywordRootNodeId: string;
@@ -131,6 +107,23 @@ export const clearKeywordData = (
     type: CLEAR_KEYWORD_DATA,
   };
 };
+
+function addChildNodeHelper(keywordsState: KeywordsState, parentNodeId: string, newNode: KeywordNode): void {
+
+  const parentNode = getNodeByNodeId(keywordsState, parentNodeId);
+
+  if (parentNode) {
+    if (!parentNode.childrenNodeIds) {
+      parentNode.childrenNodeIds = [];
+    }
+
+    newNode.parentNodeId = parentNodeId;
+    parentNode.childrenNodeIds.push(newNode.nodeId);
+  } else {
+    debugger;
+    console.error(`Parent node with id ${parentNodeId} not found.`);
+  }
+}
 
 
 // ------------------------------------
@@ -178,9 +171,7 @@ export const keywordsStateReducer = (
     }
     case ADD_KEYWORD_NODE: {
       const newState = cloneDeep(state);
-      // console.log('invoke addChildNode');
-      // console.log(newState);
-      addChildNode(newState, action.payload.parentNodeId, action.payload.keywordNode);
+      addChildNodeHelper(newState, action.payload.parentNodeId, action.payload.keywordNode);
       const retState: KeywordsState = {
         ...newState,
         keywordNodesByNodeId: {
@@ -188,8 +179,6 @@ export const keywordsStateReducer = (
           [action.payload.keywordNode.nodeId]: action.payload.keywordNode,
         }
       };
-      // console.log('ADD_KEYWORD_NODE');
-      // console.log(retState);
       return retState;
     }
     case SET_KEYWORD_ROOT_NODE_ID: {

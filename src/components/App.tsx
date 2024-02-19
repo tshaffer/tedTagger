@@ -3,15 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import LoupeView from './LoupeView';
 import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
-import { addKeyword } from '../controllers';
-import { KeywordNode } from '../types';
 import { getKeywordRootNodeId } from '../selectors';
 import Keywords from './Keywords';
-import IconExpansionTreeView from './MuiTestTreeView';
 import { Button } from '@mui/material';
 
 import SearchSpecDialog from './SearchSpecDialog';
@@ -27,7 +23,6 @@ export interface AppProps {
   onLoadTakeouts: () => any;
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
-  onAddKeyword: (parentId: string, keywordLabel: string, keywordType: string) => any;
   onImportFromTakeout: (id: string) => void;
 }
 
@@ -117,7 +112,6 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadTags: loadTags,
     onLoadUserTagAvatars: loadUserTagAvatars,
     onSetAppInitialized: setAppInitialized,
-    onAddKeyword: addKeyword,
     onLoadTakeouts: loadTakeouts,
     onImportFromTakeout: importFromTakeout,
   }, dispatch);

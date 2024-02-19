@@ -31,10 +31,6 @@ export interface KeywordsProps {
     keywordLabel: string,
     keywordType: string,
   ) => void;
-  // onAddKeywordToMediaItems: (
-  //   mediaItemIds: string[],
-  //   keywordNodeId: string,
-  // ) => void;
   onUpdateKeywordAssignedToSelectedMediaItems: (
     keywordNodeId: string,
     selectedMediaItemIds: string[],
@@ -57,14 +53,6 @@ const Keywords = (props: KeywordsProps) => {
   const handleAddKeyword = (keywordLabel: string, parentKeywordNodeId: string): void => {
     props.onAddKeyword(parentKeywordNodeId, keywordLabel, 'user');
   };
-
-  // const handleToggleAssignKeywordToSelectedMediaItems = (keywordNodeId: string) => {
-  //   console.log('handleToggleAssignKeywordToSelectedMediaItems', keywordNodeId);
-
-  //   const selectedMediaItemIds: string[] = props.selectedMediaItemIds;
-  //   props.onAddKeywordToMediaItems(selectedMediaItemIds, keywordNodeId);
-
-  // };
 
   function handleUpdateKeywordAssignedToSelectedMediaItems(keywordNodeId: string, assignKeyword: boolean) {
     console.log('handleToggleAssignKeywordToSelectedMediaItems', keywordNodeId, assignKeyword);
@@ -203,17 +191,6 @@ const generatePropData = (state: any): any => {
 function mapStateToProps(state: any) {
 
   const { mapKeywordNodeIdToSelectedMediaItemIds, mapSelectedMediaItemIdToKeywordNodeIds } = generatePropData(state);
-  // console.log('mapStateToProps');
-  // if (getAppInitialized(state)) {
-  // console.log('keywordRootNodeId', getKeywordRootNodeId(state));
-  // console.log('keywordsAsTree');
-  // console.log(getKeywordsAsTree(state));
-  // console.log('keywordsById');
-  // console.log(getKeywordsById(state));
-  // console.log('selectedMediaItemIds');
-  // console.log(getSelectedMediaItemIds(state));
-  //   generatePropData(state);
-  // }
   return {
     appInitialized: getAppInitialized(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
@@ -230,7 +207,6 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onAddKeyword: addKeyword,
     onUpdateKeywordAssignedToSelectedMediaItems: updateKeywordAssignedToSelectedMediaItems
-    // onAddKeywordToMediaItems: addKeywordToMediaItems,
   }, dispatch);
 };
 

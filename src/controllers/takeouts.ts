@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTakeouts } from '../models';
 import { serverUrl, apiUrlFragment, Takeout, AddedTakeoutData, KeywordData } from '../types';
-import { mergeKeywordData, reloadKeywordData } from './keywords';
+import { mergeKeywordData } from './keywords';
 
 export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {

@@ -4,15 +4,16 @@ import axios from 'axios';
 import {
   TedTaggerAnyPromiseThunkAction,
   TedTaggerDispatch,
-  addKeywordNode,
+  addKeywordNodeRedux,
   addKeywordRedux,
   addKeywordNodesRedux,
   addKeywordsRedux,
   setKeywordRootNodeIdRedux,
   clearKeywordData,
 } from '../models';
-import { KeywordData, KeywordNode, StringToKeywordLUT, apiUrlFragment, serverUrl } from '../types';
-import { getKeywordsById } from '../selectors';
+import { KeywordData, KeywordNode, StringToKeywordLUT, TedTaggerState, apiUrlFragment, serverUrl } from '../types';
+import { getKeywordsById, getNodeByNodeId } from '../selectors';
+import { isNil } from 'lodash';
 
 export const loadKeywordData = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -44,7 +45,7 @@ export const mergeKeywordData = (keywordData: KeywordData): any => {
       dispatch(addKeywordRedux(keyword.keywordId, keyword.label, keyword.type));
     });
     keywordNodes.forEach((keywordNode: any) => {
-      dispatch(addKeywordNode(keywordNode.parentNodeId, keywordNode));
+      dispatch(addKeywordNodeRedux(keywordNode.parentNodeId, keywordNode));
     });
   };
 };
@@ -62,26 +63,118 @@ export function addKeyword(parentNodeId: string, keywordLabel: string, keywordTy
     // if a keyword with the same label and type already exists, get and use the existing keyword
     const keywords: StringToKeywordLUT = getKeywordsById(getState());
 
-    // TEDTODO
+    // TEDTODO - add type to the search
     // const indexOfExistingKeyword: number = Object.values(keywords).findIndex((keyword: any) => keyword.label === keywordLabel && keyword.type === keywordType);
     const indexOfExistingKeyword: number = Object.values(keywords).findIndex((keyword: any) => keyword.label === keywordLabel);
 
     let keywordId: string;
     if (indexOfExistingKeyword >= 0) {
       keywordId = Object.keys(keywords)[indexOfExistingKeyword];
+      dispatch(addKeywordNodeServerAndRedux(keywordId, parentNodeId));
     } else {
       keywordId = uuidv4();
-      dispatch(addKeywordRedux(keywordId, keywordLabel, keywordType));
+      dispatch(addKeywordServerAndRedux(keywordId, keywordLabel, keywordType))
+        .then(() => {
+          dispatch(addKeywordNodeServerAndRedux(keywordId, parentNodeId));
+        });
     }
+  };
+}
+
+const addKeywordServerAndRedux = (keywordId: string, label: string, type: string): TedTaggerAnyPromiseThunkAction => {
+
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'addKeyword';
+
+    const addKeywordBody = {
+      keywordId,
+      label,
+      type,
+    };
+
+    return axios.post(
+      path,
+      addKeywordBody
+    ).then((response) => {
+      dispatch(addKeywordRedux(keywordId, label, type));
+      return Promise.resolve();
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
+  };
+};
+
+// if parent is not empty, add the keyword node to the parent
+const addKeywordNodeServerAndRedux = (keywordId: string, parentNodeId: string): TedTaggerAnyPromiseThunkAction => {
+
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'addKeywordNode';
+
+    const nodeId = uuidv4();
 
     const keywordNode: KeywordNode = {
-      nodeId: uuidv4(),
+      nodeId,
       keywordId,
       parentNodeId,
       childrenNodeIds: []
     };
-    dispatch(addKeywordNode(parentNodeId, keywordNode));
 
-    return keywordNode;
+    return axios.post(
+      path,
+      keywordNode,
+    ).then((response) => {
+      // update parent node with new child
+      console.log('return from addKeywordNode');
+      console.log(response);
+      return dispatch(updateKeywordNodeServerAndRedux(keywordNode))
+        .then(() => {
+          return dispatch(addKeywordNodeRedux(parentNodeId, keywordNode));
+        });
+    });
   };
-}
+};
+
+const updateKeywordNodeServerAndRedux = (childKeywordNode: KeywordNode): TedTaggerAnyPromiseThunkAction => {
+
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'updateKeywordNode';
+
+    debugger;
+
+    if (isNil(childKeywordNode.parentNodeId) || childKeywordNode.parentNodeId === '') {
+      return Promise.resolve();
+    }
+
+    const state: TedTaggerState = getState();
+    const parentKeywordNode: KeywordNode | undefined = getNodeByNodeId(state.keywordsState, childKeywordNode.parentNodeId);
+    if (isNil(parentKeywordNode)) {
+      return Promise.resolve();
+    }
+
+    const childrenNodeIds: string[] = parentKeywordNode.childrenNodeIds || [];
+    childrenNodeIds.push(childKeywordNode.nodeId);
+
+    const updateKeywordNodeBody: KeywordNode = {
+      nodeId: parentKeywordNode.nodeId,
+      keywordId: parentKeywordNode.keywordId,
+      parentNodeId: parentKeywordNode.parentNodeId,
+      childrenNodeIds,
+    };
+
+    return axios.post(
+      path,
+      updateKeywordNodeBody,
+    ).then((response) => {
+      console.log('return from updateKeywordNode');
+      console.log(response);
+      return Promise.resolve();
+    });
+
+
+  };
+};
