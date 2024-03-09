@@ -6,7 +6,8 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SET_MEDIA_ITEMS = 'SET_MEDIA_ITEMS';
+export const REPLACE_MEDIA_ITEMS = 'REPLACE_MEDIA_ITEMS';
+export const ADD_MEDIA_ITEMS = 'ADD_MEDIA_ITEMS';
 export const ADD_KEYWORD_TO_MEDIA_ITEM_IDS = 'ADD_KEYWORD_TO_MEDIA_ITEM_IDS';
 export const REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS = 'REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS';
 export const ADD_KEYWORD_TO_MEDIA_ITEMS = 'ADD_KEYWORD_TO_MEDIA_ITEMS';
@@ -22,11 +23,23 @@ interface SetMediaItemsPayload {
   mediaItems: MediaItem[];
 }
 
-export const setMediaItems = (
+export const replaceMediaItems = (
   mediaItems: MediaItem[],
 ): any => {
   return {
-    type: SET_MEDIA_ITEMS,
+    type: REPLACE_MEDIA_ITEMS,
+    payload: {
+      mediaItems
+    }
+  };
+};
+
+
+export const addMediaItems = (
+  mediaItems: MediaItem[],
+): any => {
+  return {
+    type: ADD_MEDIA_ITEMS,
     payload: {
       mediaItems
     }
@@ -155,8 +168,17 @@ export const mediaItemsStateReducer = (
   action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload>
 ): MediaItemsState => {
   switch (action.type) {
-    case SET_MEDIA_ITEMS: {
-      return { ...state, mediaItems: action.payload.mediaItems };
+    case REPLACE_MEDIA_ITEMS: {
+      return {
+        ...state,
+        mediaItems: action.payload.mediaItems
+      };
+    }
+    case ADD_MEDIA_ITEMS: {
+      return {
+        ...state,
+        mediaItems: state.mediaItems.concat(action.payload.mediaItems)
+      };
     }
     case ADD_KEYWORD_TO_MEDIA_ITEM_IDS: {
       const newState = cloneDeep(state) as MediaItemsState;

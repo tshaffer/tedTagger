@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addTakeouts } from '../models';
-import { serverUrl, apiUrlFragment, Takeout, AddedTakeoutData, KeywordData } from '../types';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTakeouts } from '../models';
+import { serverUrl, apiUrlFragment, Takeout, AddedTakeoutData, KeywordData, MediaItem } from '../types';
 import { mergeKeywordData } from './keywords';
 
 export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
@@ -35,9 +35,15 @@ export const importFromTakeout = (takeoutId: string): TedTaggerAnyPromiseThunkAc
     ).then((response) => {
       console.log('importFromTakeoutBody response', response);
       const addedTakeoutData: AddedTakeoutData = response.data;
+      
+      const addedMediaItems: MediaItem[] = addedTakeoutData.addedMediaItems;
+      console.log('addedMediaItems', addedMediaItems);
+      dispatch(addMediaItems(addedMediaItems));
+
       const addedKeywordData: KeywordData = addedTakeoutData.addedKeywordData;
       console.log('mergeKeywordData');
       dispatch(mergeKeywordData(addedKeywordData));
+      
       console.log(getState());
     }).catch((error) => {
       console.log('error');

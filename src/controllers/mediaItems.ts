@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, setMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux, replaceMediaItems } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, Tag, TedTaggerState, StringToTagLUT, KeywordNode, MatchRule, SearchRule,
 } from '../types';
@@ -54,6 +54,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         // derive mediaItems from serverMediaItems
         for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
 
+          // TEDTODO - replace any
           const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
 
           const description: string = isNil(mediaItemEntityFromServer.description) ? '' : mediaItemEntityFromServer.description;
@@ -73,7 +74,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
         }
 
-        dispatch(setMediaItems(mediaItems));
+        dispatch(addMediaItems(mediaItems));
       });
   };
 };
@@ -98,6 +99,20 @@ export const loadMediaItemsFromSearchSpec = (): TedTaggerAnyPromiseThunkAction =
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
         console.log('mediaItemsResponse');
+        console.log(mediaItemsResponse);
+
+        const mediaItems: MediaItem[] = [];
+        const mediaItemEntitiesFromServer: ServerMediaItem[] = (mediaItemsResponse as any).data;
+
+        // derive mediaItems from serverMediaItems
+        for (const mediaItemEntityFromServer of mediaItemEntitiesFromServer) {
+          // TEDTODO - replace any
+          const mediaItem: any = cloneDeep(mediaItemEntityFromServer);
+          mediaItems.push(mediaItem as MediaItem);
+        }
+
+        dispatch(replaceMediaItems(mediaItems));
+
       });
   };
 };

@@ -27,6 +27,7 @@ export interface ServerMediaItem {
   geoData?: GeoData,
   people?: ServerPerson[],
   tagIds: string[],
+  keywordNodeIds: string[],
 }
 
 export interface MediaItem {
