@@ -104,10 +104,10 @@ function Photo(props: PhotoProps) {
   };
 
   const photoTags: Tag[] = [];
-  props.mediaItem.tagIds.forEach((tagId: string) => {
-    const tag: Tag = props.tagsLUT[tagId];
-    photoTags.push(tag);
-  });
+  // props.mediaItem.tagIds.forEach((tagId: string) => {
+  //   const tag: Tag = props.tagsLUT[tagId];
+  //   photoTags.push(tag);
+  // });
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
