@@ -13,6 +13,7 @@ import Keywords from './Keywords';
 import ViewSpec from './ViewSpec';
 import SearchSpecDialog from './SearchSpecDialog';
 import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
+import LoupeView from './LoupeView';
 
 export interface AppProps {
   onLoadKeywordData: () => any;
@@ -66,6 +67,7 @@ const App = (props: AppProps) => {
 
   // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
   // <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
+  // AEEKk91R187wZeSoD5tysdXQdv12DEH_kS4g_0GwVzqNbPHB4b7BEToQjBlSwAZmsoaeP8J1X7KohxqCk9dmwbrZDOVylmtkZw
 
   return (
     <div>
@@ -87,7 +89,8 @@ const App = (props: AppProps) => {
           />
         </div>
         <div className='centerColumnStyle'>
-          <GridView />
+          {/* <GridView /> */}
+          <LoupeView mediaItemId={'AEEKk91R187wZeSoD5tysdXQdv12DEH_kS4g_0GwVzqNbPHB4b7BEToQjBlSwAZmsoaeP8J1X7KohxqCk9dmwbrZDOVylmtkZw'} />
         </div>
         <div className='rightColumnStyle'>Right Panel</div>
         {/* <div className='bottomPanel'>Bottom Panel</div> */}
