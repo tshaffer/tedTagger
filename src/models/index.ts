@@ -10,3 +10,4 @@ export * from './photoToDisplaySpec';
 export * from './keywords';
 export * from './searchUI';
 export * from './takeouts';
+export * from './photoViewSpec';

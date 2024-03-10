@@ -7,19 +7,21 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { TedTaggerDispatch, } from '../models';
+import { TedTaggerDispatch, setPhotoLayoutRedux, } from '../models';
 import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { getPhotoLayout } from '../selectors';
+import { PhotoLayout } from '../types';
 
 export interface ViewSpecProps {
-  photoLayoutTmp: string;
+  photoLayout: PhotoLayout;
+  onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
 }
 
 const ViewSpec = (props: ViewSpecProps) => {
 
-  const [photoLayout, setPhotoLayout] = React.useState('grid');
-
-  function handleViewSpecChange(event: React.ChangeEvent<HTMLInputElement>, value: string): void {
-    setPhotoLayout(value);
+  function handleUpdatePhotoLayout(event: React.ChangeEvent<HTMLInputElement>, value: string): void {
+    const photoLayout: PhotoLayout = value as PhotoLayout;
+    props.onSetPhotoLayout(photoLayout);
   }
 
   const renderPhotoLayout = (): JSX.Element => {
@@ -29,8 +31,8 @@ const ViewSpec = (props: ViewSpecProps) => {
         <span>Layout</span>
         <RadioGroup
           row
-          value={photoLayout}
-          onChange={handleViewSpecChange}
+          value={props.photoLayout}
+          onChange={handleUpdatePhotoLayout}
           style={{ marginLeft: '8px' }}
         >
           <FormControlLabel value={'grid'} control={<Radio />} label="Grid" />
@@ -63,12 +65,13 @@ const ViewSpec = (props: ViewSpecProps) => {
 function mapStateToProps(state: any) {
 
   return {
-    photoLayout: 'grid',
+    photoLayout: getPhotoLayout(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onSetPhotoLayout: setPhotoLayoutRedux,
   }, dispatch);
 };
 

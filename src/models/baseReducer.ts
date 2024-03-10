@@ -13,6 +13,7 @@ import { userTagAvatarsStateReducer } from './userTagAvatars';
 import { keywordsStateReducer } from './keywords';
 import { searchUIStateReducer } from './searchUI';
 import { takeoutsStateReducer } from './takeouts';
+import { photoViewSpecReducer } from './photoViewSpec';
 
 // -----------------------------------------------------------------------
 // Reducers
@@ -28,6 +29,7 @@ export const rootReducer = combineReducers<TedTaggerState>({
   keywordsState: keywordsStateReducer,
   searchUIState: searchUIStateReducer,
   takeoutsState: takeoutsStateReducer,
+  photoViewSpec: photoViewSpecReducer,
 });
 
 // -----------------------------------------------------------------------

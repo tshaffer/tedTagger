@@ -89,8 +89,8 @@ const App = (props: AppProps) => {
           />
         </div>
         <div className='centerColumnStyle'>
-          {/* <GridView /> */}
-          <LoupeView mediaItemId={'AEEKk91R187wZeSoD5tysdXQdv12DEH_kS4g_0GwVzqNbPHB4b7BEToQjBlSwAZmsoaeP8J1X7KohxqCk9dmwbrZDOVylmtkZw'} />
+          <GridView />
+          {/* <LoupeView mediaItemId={'AEEKk91R187wZeSoD5tysdXQdv12DEH_kS4g_0GwVzqNbPHB4b7BEToQjBlSwAZmsoaeP8J1X7KohxqCk9dmwbrZDOVylmtkZw'} /> */}
         </div>
         <div className='rightColumnStyle'>Right Panel</div>
         {/* <div className='bottomPanel'>Bottom Panel</div> */}

@@ -5,6 +5,7 @@ import {
   KeywordSearchRuleType,
   MainDisplayMode,
   MatchRule,
+  PhotoLayout,
   SearchRuleType,
   TagSearchOperator,
   TagSelectorType
@@ -21,6 +22,7 @@ export interface TedTaggerState {
   keywordsState: KeywordsState;
   searchUIState: SearchUIState;
   takeoutsState: TakeoutsState;
+  photoViewSpec: PhotoViewSpec;
 }
 
 export interface AppState {
@@ -98,4 +100,9 @@ export interface KeywordSearchRule {
 
 export interface TakeoutsState {
   takeouts: Takeout[];
+}
+
+export interface PhotoViewSpec {
+  photoLayout: PhotoLayout;
+  zoomFactor: number;
 }

@@ -41,3 +41,8 @@ export enum DateSearchRuleType {
   IsBefore = 'isBefore',
   IsAfter = 'isAfter',
 }
+
+export enum PhotoLayout {
+  Grid = 'grid',
+  Loupe = 'loupe',
+}

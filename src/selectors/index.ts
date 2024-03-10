@@ -9,3 +9,4 @@ export * from './photosToDisplaySpec';
 export * from './searchUI';
 export * from './takeouts';
 export * from './searchUI';
+export * from './photoViewSpec';
