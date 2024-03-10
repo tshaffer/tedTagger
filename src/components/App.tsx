@@ -7,9 +7,10 @@ import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, lo
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { getKeywordRootNodeId } from '../selectors';
-import Keywords from './Keywords';
 import { Button } from '@mui/material';
 
+import Keywords from './Keywords';
+import ViewSpec from './ViewSpec';
 import SearchSpecDialog from './SearchSpecDialog';
 import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
 
@@ -71,6 +72,7 @@ const App = (props: AppProps) => {
       <div className='toolbarStyle' />
       <div className='appStyle'>
         <div className='leftColumnStyle'>
+          <ViewSpec />
           <Keywords />
           <Button onClick={() => setShowSearchSpecDialog(true)}>Set Search Spec</Button>
           <SearchSpecDialog
