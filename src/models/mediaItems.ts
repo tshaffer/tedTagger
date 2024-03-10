@@ -38,6 +38,7 @@ export const replaceMediaItems = (
 export const addMediaItems = (
   mediaItems: MediaItem[],
 ): any => {
+  console.log('addMediaItems');
   return {
     type: ADD_MEDIA_ITEMS,
     payload: {
@@ -175,6 +176,7 @@ export const mediaItemsStateReducer = (
       };
     }
     case ADD_MEDIA_ITEMS: {
+      console.log('ADD_MEDIA_ITEMS');
       return {
         ...state,
         mediaItems: state.mediaItems.concat(action.payload.mediaItems)

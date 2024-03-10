@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
-import { TedTaggerDispatch, setAppInitialized } from '../models';
+import { TedTaggerDispatch, setAppInitialized, setLoupeViewMediaItemIdRedux } from '../models';
 import GridView from './GridView';
-import { getKeywordRootNodeId, getLoupeViewMediaItemId, getPhotoLayout } from '../selectors';
+import { getKeywordRootNodeId, getLoupeViewMediaItemId, getMediaItems, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
 
 import Keywords from './Keywords';
@@ -14,12 +14,13 @@ import ViewSpec from './ViewSpec';
 import SearchSpecDialog from './SearchSpecDialog';
 import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
 import LoupeView from './LoupeView';
-import { PhotoLayout } from '../types';
+import { MediaItem, PhotoLayout } from '../types';
 import PhotoGrid from './PhotoGrid';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
   loupeViewMediaItemId: string;
+  mediaItems: MediaItem[];
   onLoadKeywordData: () => any;
   onLoadDefaultTagAvatarId: () => any;
   onLoadAppTagAvatars: () => any;
@@ -30,6 +31,7 @@ export interface AppProps {
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
   onImportFromTakeout: (id: string) => void;
+  onSetLoupeViewMediaItemId: (id: string) => any;
 }
 
 const App = (props: AppProps) => {
@@ -69,9 +71,73 @@ const App = (props: AppProps) => {
       });
   }, []);
 
-  // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
-  // <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
-  // AEEKk91R187wZeSoD5tysdXQdv12DEH_kS4g_0GwVzqNbPHB4b7BEToQjBlSwAZmsoaeP8J1X7KohxqCk9dmwbrZDOVylmtkZw
+  React.useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      console.log('handleKeyPress: ' + event.key);
+
+      switch (event.key) {
+        case 'ArrowRight':
+          handleDisplayNextPhoto();
+          break;
+        case 'ArrowLeft':
+          handleDisplayPreviousPhoto();
+          break;
+        default:
+          break;
+      }
+    };
+
+    const handleDisplayPreviousPhoto = () => {
+
+      console.log('props.mediaItems');
+      console.log(props.mediaItems);
+
+      const loupeViewMediaItemId = props.loupeViewMediaItemId;
+
+      const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
+      console.log('handleDisplayPrevPhoto: mediaItemIndex: ' + mediaItemIndex);
+      const previousMediaItemIndex = mediaItemIndex - 1;
+      if (previousMediaItemIndex < 0) {
+        console.log('at beginning');
+        return;
+      } else {
+        const previousMediaItem = props.mediaItems[previousMediaItemIndex];
+        console.log('previousMediaItem: ' + previousMediaItem);
+        props.onSetLoupeViewMediaItemId(previousMediaItem.googleId);
+      }
+    };
+
+    const handleDisplayNextPhoto = () => {
+
+      console.log('props.mediaItems');
+      console.log(props.mediaItems);
+
+      const loupeViewMediaItemId = props.loupeViewMediaItemId;
+
+      const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
+      console.log('handleDisplayNextPhoto: mediaItemIndex: ' + mediaItemIndex);
+      const nextMediaItemIndex = mediaItemIndex + 1;
+      if (nextMediaItemIndex >= props.mediaItems.length) {
+        console.log('at end');
+        return;
+      } else {
+        const nextMediaItem = props.mediaItems[nextMediaItemIndex];
+        console.log('nextMediaItem: ' + nextMediaItem);
+        props.onSetLoupeViewMediaItemId(nextMediaItem.googleId);
+      }
+    };
+
+
+    // Add the event listener when the component mounts
+    console.log('addEventListener!');
+    document.addEventListener('keydown', handleKeyPress);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      console.log('removeEventListener!');
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []); // Empty dependency array ensures that the effect runs only once on mount
 
   const getPhotoDisplay = (): JSX.Element => {
     if (props.photoLayout === PhotoLayout.Loupe) {
@@ -123,9 +189,12 @@ const App = (props: AppProps) => {
 };
 
 function mapStateToProps(state: any) {
+  console.log('mapStateToProps invoked');
+  console.log(getMediaItems(state));
   return {
     photoLayout: getPhotoLayout(state),
     loupeViewMediaItemId: getLoupeViewMediaItemId(state),
+    mediaItems: getMediaItems(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
   };
 }
@@ -141,6 +210,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetAppInitialized: setAppInitialized,
     onLoadTakeouts: loadTakeouts,
     onImportFromTakeout: importFromTakeout,
+    onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
   }, dispatch);
 };
 
