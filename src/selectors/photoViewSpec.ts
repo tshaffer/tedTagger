@@ -12,3 +12,6 @@ export const getZoomFactor = (state: TedTaggerState): number => {
   return state.photoViewSpec.zoomFactor;
 };
 
+export const getLoupeViewMediaItemId = (state: TedTaggerState): string => {
+  return state.photoViewSpec.loupeViewMediaItemId;
+};

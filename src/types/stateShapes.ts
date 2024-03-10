@@ -105,4 +105,5 @@ export interface TakeoutsState {
 export interface PhotoViewSpec {
   photoLayout: PhotoLayout;
   zoomFactor: number;
+  loupeViewMediaItemId: string;
 }

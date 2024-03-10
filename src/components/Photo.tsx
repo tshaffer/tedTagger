@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 
 import { Grid, Card, CardMedia } from '@mui/material';
 
-import { TedTaggerDispatch, setFullScreenMediaItemId } from '../models';
+import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 import { selectPhoto } from '../controllers';
 import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
-import { AppTagAvatar, MediaItem, StringToTagLUT, Tag, UserTagAvatar } from '../types';
+import { AppTagAvatar, MediaItem, PhotoLayout, StringToTagLUT, Tag, UserTagAvatar } from '../types';
 
 import path from 'path-browserify';
 import TagAvatar from './TagAvatar';
@@ -46,7 +46,8 @@ export interface PhotoProps extends PhotoPropsFromParent {
   tagsLUT: StringToTagLUT;
   isSelected: boolean;
   onClickPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
-  onSetFullScreenMediaItemId: (id: string) => any;
+  onSetLoupeViewMediaItemId: (id: string) => any;
+  onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
 }
 
 function Photo(props: PhotoProps) {
@@ -82,7 +83,8 @@ function Photo(props: PhotoProps) {
   };
 
   const handleDoubleClick = () => {
-    props.onSetFullScreenMediaItemId(props.mediaItem.googleId);
+    props.onSetLoupeViewMediaItemId(props.mediaItem.googleId);
+    props.onSetPhotoLayoutRedux(PhotoLayout.Loupe);
   };
 
   const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
@@ -156,7 +158,8 @@ function mapStateToProps(state: any, ownProps: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onClickPhoto: selectPhoto,
-    onSetFullScreenMediaItemId: setFullScreenMediaItemId,
+    onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
+    onSetPhotoLayoutRedux: setPhotoLayoutRedux,
   }, dispatch);
 };
 

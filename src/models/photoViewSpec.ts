@@ -6,6 +6,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const SET_PHOTO_LAYOUT = 'SET_PHOTO_LAYOUT';
 export const SET_ZOOM_FACTOR = 'SET_ZOOM_FACTOR';
+export const SET_LOUPE_VIEW_MEDIA_ITEM_ID = 'SET_LOUPE_VIEW_MEDIA_ITEM_ID';
 
 // ------------------------------------
 // Actions
@@ -37,6 +38,19 @@ export const setZoomFactorRedux = (zoomFactor: number): any => {
   };
 };
 
+interface SetLoupeViewMediaItemIdPayload {
+  loupeViewMediaItemId: string,
+}
+
+export const setLoupeViewMediaItemIdRedux = (loupeViewMediaItemId: string): any => {
+  return {
+    type: SET_LOUPE_VIEW_MEDIA_ITEM_ID,
+    payload: {
+      loupeViewMediaItemId,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -44,11 +58,12 @@ export const setZoomFactorRedux = (zoomFactor: number): any => {
 const initialState: PhotoViewSpec = {
   photoLayout: PhotoLayout.Grid,
   zoomFactor: 1,
+  loupeViewMediaItemId: '',
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetZoomFactorPayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetZoomFactorPayload & SetLoupeViewMediaItemIdPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -60,6 +75,11 @@ export const photoViewSpecReducer = (
       return {
         ...state,
         zoomFactor: action.payload.zoomFactor,
+      };
+    case SET_LOUPE_VIEW_MEDIA_ITEM_ID:
+      return {
+        ...state,
+        loupeViewMediaItemId: action.payload.loupeViewMediaItemId,
       };
     default:
       return state;
