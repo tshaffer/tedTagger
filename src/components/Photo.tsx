@@ -18,6 +18,7 @@ const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
   maxWidth: 325,
+  // maxWidth: 100,
   margin: 2,
 };
 
@@ -115,6 +116,11 @@ function Photo(props: PhotoProps) {
 
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
+
+  /*
+    <Grid item xs={3}>
+    <Grid item lg={12/5}>
+  */
 
   return (
     <Grid item xs={3}>
