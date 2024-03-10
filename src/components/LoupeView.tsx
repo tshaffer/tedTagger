@@ -4,16 +4,17 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux } from '../models';
-import { getMediaItemById, getMediaItems } from '../selectors';
+import { getLoupeViewMediaItemId, getMediaItemById, getMediaItems } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
 
-export interface LoupeViewPropsFromParent {
-  mediaItemId: string;
-}
+// export interface LoupeViewPropsFromParent {
+//   // mediaItemId: string;
+// }
 
-export interface LoupeViewProps extends LoupeViewPropsFromParent {
+export interface LoupeViewProps {
+  mediaItemId: string;
   mediaItem: MediaItem | null;
   mediaItems: MediaItem[];
   onSetLoupeViewMediaItemId: (id: string) => any;
@@ -23,8 +24,6 @@ const LoupeView = (props: LoupeViewProps) => {
 
   React.useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      console.log('handleKeyPress: ' + event.key);
-
       switch (event.key) {
         case 'ArrowRight':
           handleDisplayNextPhoto();
@@ -52,6 +51,7 @@ const LoupeView = (props: LoupeViewProps) => {
   const [windowDimensions, setWindowDimensions] = React.useState(getWindowDimensions());
 
   const handleDisplayPreviousPhoto = () => {
+    console.log('handleDisplayPreviousPhoto: mediaItemId: ' + props.mediaItemId);
     const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === props.mediaItemId);
     console.log('handleDisplayPrevPhoto: mediaItemIndex: ' + mediaItemIndex);
     const previousMediaItemIndex = mediaItemIndex - 1;
@@ -60,12 +60,14 @@ const LoupeView = (props: LoupeViewProps) => {
       return;
     } else {
       const previousMediaItem = props.mediaItems[previousMediaItemIndex];
-      console.log('previousMediaItem: ' + previousMediaItem);
+      console.log('setLoupeViewMediaItemId: ' + previousMediaItem.googleId);
+
       props.onSetLoupeViewMediaItemId(previousMediaItem.googleId);
     }
   };
 
   const handleDisplayNextPhoto = () => {
+    console.log('handleDisplayNextPhoto: mediaItemId: ' + props.mediaItemId);
     const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === props.mediaItemId);
     console.log('handleDisplayNextPhoto: mediaItemIndex: ' + mediaItemIndex);
     const nextMediaItemIndex = mediaItemIndex + 1;
@@ -74,7 +76,7 @@ const LoupeView = (props: LoupeViewProps) => {
       return;
     } else {
       const nextMediaItem = props.mediaItems[nextMediaItemIndex];
-      console.log('nextMediaItem: ' + nextMediaItem);
+      console.log('setLoupeViewMediaItemId: ' + nextMediaItem.googleId);
       props.onSetLoupeViewMediaItemId(nextMediaItem.googleId);
     }
   };
@@ -118,8 +120,12 @@ const LoupeView = (props: LoupeViewProps) => {
 };
 
 function mapStateToProps(state: any, ownProps: any) {
+  console.log('mapStateToProps: ' + getLoupeViewMediaItemId(state));
+
   return {
-    mediaItem: getMediaItemById(state, ownProps.mediaItemId),
+    mediaItemId: getLoupeViewMediaItemId(state),
+    mediaItem: getMediaItemById(state, getLoupeViewMediaItemId(state)),
+    // mediaItem: getMediaItemById(state, ownProps.mediaItemId),
     mediaItems: getMediaItems(state),
   };
 }
