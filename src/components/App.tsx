@@ -6,20 +6,19 @@ import '../styles/TedTagger.css';
 import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
-import { getKeywordRootNodeId, getLoupeViewMediaItemId, getPhotoLayout } from '../selectors';
+import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
 
 import Keywords from './Keywords';
 import ViewSpec from './ViewSpec';
 import SearchSpecDialog from './SearchSpecDialog';
 import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
-import LoupeView from './LoupeView';
+import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import PhotoGrid from './PhotoGrid';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
-  loupeViewMediaItemId: string;
   onLoadKeywordData: () => any;
   onLoadDefaultTagAvatarId: () => any;
   onLoadAppTagAvatars: () => any;
@@ -69,16 +68,10 @@ const App = (props: AppProps) => {
       });
   }, []);
 
-  // <LoupeView mediaItemId={'AEEKk92TFxiITyv1uvnEtu4aGKNUyEDUUMoy2rNoJ3HlErxsTjpi8wyK0-BJt3Uzly0ipMNrYrxnf1Xp57m40NlLF9bxUVpsSg'} />
-  // <LoupeView mediaItemId={'AEEKk90Fx9zbfbE_1YBjDw6BrHlfnSWVtuYvPtcYmkWW8ZCUyL2QlqL2_krRkWMaTlA2gMTNx6eU0ob79Lqd_A9v9YYpXKyaow'} />
-  // AEEKk91R187wZeSoD5tysdXQdv12DEH_kS4g_0GwVzqNbPHB4b7BEToQjBlSwAZmsoaeP8J1X7KohxqCk9dmwbrZDOVylmtkZw
-
   const getPhotoDisplay = (): JSX.Element => {
     if (props.photoLayout === PhotoLayout.Loupe) {
       return (
-        <LoupeView
-          mediaItemId={props.loupeViewMediaItemId}
-        />
+        <LoupeViewController />
       );
     } else {
       return (
@@ -87,7 +80,7 @@ const App = (props: AppProps) => {
     }
   };
 
-  const photoDiplay: JSX.Element = getPhotoDisplay();
+  const photoDisplay: JSX.Element = getPhotoDisplay();
 
   return (
     <div>
@@ -109,9 +102,7 @@ const App = (props: AppProps) => {
           />
         </div>
         <div className='centerColumnStyle'>
-          {photoDiplay}
-          {/* <GridView /> */}
-          {/* <LoupeView mediaItemId={'AEEKk91R187wZeSoD5tysdXQdv12DEH_kS4g_0GwVzqNbPHB4b7BEToQjBlSwAZmsoaeP8J1X7KohxqCk9dmwbrZDOVylmtkZw'} /> */}
+          {photoDisplay}
         </div>
         <div className='rightColumnStyle'>Right Panel</div>
         {/* <div className='bottomPanel'>Bottom Panel</div> */}
@@ -125,7 +116,6 @@ const App = (props: AppProps) => {
 function mapStateToProps(state: any) {
   return {
     photoLayout: getPhotoLayout(state),
-    loupeViewMediaItemId: getLoupeViewMediaItemId(state),
     keywordRootNodeId: getKeywordRootNodeId(state),
   };
 }

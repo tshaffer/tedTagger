@@ -4,16 +4,12 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { TedTaggerDispatch } from '../models';
-import { getMediaItemById } from '../selectors';
+import { getLoupeViewMediaItemId, getMediaItemById } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
 
-export interface LoupeViewPropsFromParent {
-  mediaItemId: string;
-}
-
-export interface LoupeViewProps extends LoupeViewPropsFromParent {
+export interface LoupeViewProps {
   mediaItem: MediaItem | null;
 }
 
@@ -59,9 +55,10 @@ const LoupeView = (props: LoupeViewProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: any) {
+function mapStateToProps(state: any) {
+  const loupeViewMediaItemId = getLoupeViewMediaItemId(state);
   return {
-    mediaItem: getMediaItemById(state, ownProps.mediaItemId),
+    mediaItem: getMediaItemById(state, loupeViewMediaItemId),
   };
 }
 

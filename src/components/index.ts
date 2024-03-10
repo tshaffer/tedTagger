@@ -2,6 +2,7 @@ export * from './AddKeywordDialog';
 export * from './App';
 export * from './GridView';
 export * from './LoupeView';
+export * from './LoupeViewController';
 export * from './FullScreenPhoto';
 export * from './PhotoGrid';
 export * from './Home';
