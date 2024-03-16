@@ -12,6 +12,8 @@ import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 import { getPhotoLayout } from '../selectors';
 import { PhotoLayout } from '../types';
 
+import ZoomGroup from './ZoomGroup';
+
 export interface ViewSpecProps {
   photoLayout: PhotoLayout;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
@@ -38,6 +40,7 @@ const ViewSpec = (props: ViewSpecProps) => {
           <FormControlLabel value={'grid'} control={<Radio />} label="Grid" />
           <FormControlLabel value={'loupe'} control={<Radio />} label="Loupe" />
         </RadioGroup>
+        <ZoomGroup />
       </FormControl>
     );
   };
