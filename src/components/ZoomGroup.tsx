@@ -1,16 +1,26 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Button from '@mui/material/Button';
 import { FormControl } from '@mui/material';
 
-export default function ZoomGroup() {
+import { TedTaggerDispatch } from '../models';
 
-  function handleZoomIn(): void {
+export interface ZoomGroupProps {
+  zoomFactor: number;
+  onSetZoomFactor: (zoomFactor: number) => void;
+}
+
+function ZoomGroup(props: ZoomGroupProps) {
+
+  const handleZoomIn = (): void => {
     console.log('Zoom In');
-  }
+  };
 
-  function handleZoomOut(): void {
+  const handleZoomOut = (): void => {
     console.log('Zoom Out');
-  }
+  };
 
   return (
     <FormControl style={{ marginLeft: '0px' }}>
@@ -31,3 +41,15 @@ export default function ZoomGroup() {
     </FormControl>
   );
 }
+
+function mapStateToProps(state: any, ownProps: any) {
+  return {
+  };
+}
+
+const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
+  return bindActionCreators({
+  }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ZoomGroup);
