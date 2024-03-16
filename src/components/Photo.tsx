@@ -2,14 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Grid, Card, CardMedia } from '@mui/material';
+import { Grid, Card, CardMedia, GridSize } from '@mui/material';
 
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 import { selectPhoto } from '../controllers';
-import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
+import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, getZoomFactor, isMediaItemSelected } from '../selectors';
 import { AppTagAvatar, MediaItem, PhotoLayout, StringToTagLUT, Tag, UserTagAvatar } from '../types';
 
-import path from 'path-browserify';
 import TagAvatar from './TagAvatar';
 import { isNil } from 'lodash';
 import { getPhotoUrl } from '../utilities';
@@ -41,6 +40,7 @@ export interface PhotoPropsFromParent {
 }
 
 export interface PhotoProps extends PhotoPropsFromParent {
+  zoomFactor: number;
   appTagAvatars: AppTagAvatar[];
   userTagAvatars: UserTagAvatar[];
   tagsLUT: StringToTagLUT;
@@ -124,8 +124,11 @@ function Photo(props: PhotoProps) {
     <Grid item lg={12/5}>
   */
 
+  const numColumns: number = props.zoomFactor;
+  const gridItemSize: GridSize = 12 / numColumns;
+
   return (
-    <Grid item xs={3}>
+    <Grid item lg={gridItemSize}>
       <Card
         sx={cardStyle}
       >
@@ -148,6 +151,7 @@ function Photo(props: PhotoProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
+    zoomFactor: getZoomFactor(state),
     appTagAvatars: getAllAppTagAvatars(state),
     userTagAvatars: getAllUserTagAvatars(state),
     tagsLUT: getTagsLUT(state),

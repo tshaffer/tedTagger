@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 import Button from '@mui/material/Button';
 import { FormControl } from '@mui/material';
 
-import { TedTaggerDispatch } from '../models';
+import { TedTaggerDispatch, setZoomFactorRedux } from '../models';
+import { getZoomFactor } from '../selectors';
 
 export interface ZoomGroupProps {
   zoomFactor: number;
@@ -16,10 +17,16 @@ function ZoomGroup(props: ZoomGroupProps) {
 
   const handleZoomIn = (): void => {
     console.log('Zoom In');
+    let currentZoomFactor = props.zoomFactor;
+    currentZoomFactor = currentZoomFactor - 1;
+    props.onSetZoomFactor(currentZoomFactor);
   };
 
   const handleZoomOut = (): void => {
     console.log('Zoom Out');
+    let currentZoomFactor = props.zoomFactor;
+    currentZoomFactor = currentZoomFactor + 1;
+    props.onSetZoomFactor(currentZoomFactor);
   };
 
   return (
@@ -44,11 +51,13 @@ function ZoomGroup(props: ZoomGroupProps) {
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
+    zoomFactor: getZoomFactor(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onSetZoomFactor: setZoomFactorRedux
   }, dispatch);
 };
 

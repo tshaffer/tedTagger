@@ -57,7 +57,7 @@ export const setLoupeViewMediaItemIdRedux = (loupeViewMediaItemId: string): any 
 
 const initialState: PhotoViewSpec = {
   photoLayout: PhotoLayout.Grid,
-  zoomFactor: 1,
+  zoomFactor: 3,
   loupeViewMediaItemId: '',
 };
 
