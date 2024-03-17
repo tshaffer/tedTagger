@@ -17,16 +17,22 @@ function ZoomGroup(props: ZoomGroupProps) {
 
   const handleZoomIn = (): void => {
     console.log('Zoom In');
-    let currentZoomFactor = props.zoomFactor;
-    currentZoomFactor = currentZoomFactor - 1;
-    props.onSetZoomFactor(currentZoomFactor);
+    let zoomFactor = props.zoomFactor;
+    zoomFactor = zoomFactor - 1;
+    if (zoomFactor < 1) {
+      return;
+    }
+    props.onSetZoomFactor(zoomFactor);
   };
 
   const handleZoomOut = (): void => {
     console.log('Zoom Out');
-    let currentZoomFactor = props.zoomFactor;
-    currentZoomFactor = currentZoomFactor + 1;
-    props.onSetZoomFactor(currentZoomFactor);
+    let zoomFactor = props.zoomFactor;
+    if (zoomFactor > 10) {
+      return;
+    }
+    zoomFactor = zoomFactor + 1;
+    props.onSetZoomFactor(zoomFactor);
   };
 
   return (

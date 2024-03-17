@@ -13,12 +13,15 @@ import TagAvatar from './TagAvatar';
 import { isNil } from 'lodash';
 import { getPhotoUrl } from '../utilities';
 
+const gridItemStyle = {
+  paddingLeft: '8px',
+  paddingTop: '8px',
+};
+
 const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
-  maxWidth: 325,
-  // maxWidth: 100,
-  margin: 2,
+  margin: '8px',
 };
 
 const selectedCardMediaStyle = {
@@ -128,7 +131,7 @@ function Photo(props: PhotoProps) {
   const gridItemSize: GridSize = 12 / numColumns;
 
   return (
-    <Grid item lg={gridItemSize}>
+    <Grid item lg={gridItemSize} style={gridItemStyle}>
       <Card
         sx={cardStyle}
       >

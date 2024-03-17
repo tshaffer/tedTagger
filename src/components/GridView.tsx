@@ -44,7 +44,7 @@ const GridView = (props: GridViewProps) => {
   }
 
   return (
-    <Box  className='gridView' sx={{ flexGrow: 1 }}>
+    <Box className='gridView' sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         {photoComponents}
       </Grid>
