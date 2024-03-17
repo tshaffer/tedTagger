@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { TedTaggerDispatch } from '../models';
-import { getLoupeViewMediaItemId, getMediaItemById } from '../selectors';
+import { getMediaItemById, getMediaItems, getSelectedMediaItemIds } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
@@ -56,7 +56,15 @@ const LoupeView = (props: LoupeViewProps) => {
 };
 
 function mapStateToProps(state: any) {
-  const loupeViewMediaItemId = getLoupeViewMediaItemId(state);
+  // TEDTODO - better way to do this?
+  let loupeViewMediaItemId: string = '';
+  const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
+  if (selectedMediaItemIds.length > 0) {
+    loupeViewMediaItemId = selectedMediaItemIds[0];
+  } else {
+    const mediaItems: MediaItem[] = getMediaItems(state);
+    loupeViewMediaItemId = mediaItems[0].googleId;
+  }
   return {
     mediaItem: getMediaItemById(state, loupeViewMediaItemId),
   };
