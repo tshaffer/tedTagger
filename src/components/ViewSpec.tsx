@@ -26,6 +26,12 @@ const ViewSpec = (props: ViewSpecProps) => {
     props.onSetPhotoLayout(photoLayout);
   }
 
+  const getZoomGroupJsx = (): JSX.Element | null => {
+    return props.photoLayout === PhotoLayout.Grid ? <ZoomGroup /> : null;
+  };
+
+  const zoomGroupLayout: JSX.Element | null = getZoomGroupJsx();
+
   const renderPhotoLayout = (): JSX.Element => {
 
     return (
@@ -40,7 +46,7 @@ const ViewSpec = (props: ViewSpecProps) => {
           <FormControlLabel value={'grid'} control={<Radio />} label="Grid" />
           <FormControlLabel value={'loupe'} control={<Radio />} label="Loupe" />
         </RadioGroup>
-        <ZoomGroup />
+        {zoomGroupLayout}
       </FormControl>
     );
   };
