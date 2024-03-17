@@ -6,7 +6,7 @@ import { Grid, Card, CardMedia, GridSize } from '@mui/material';
 
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 import { selectPhoto } from '../controllers';
-import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, getZoomFactor, isMediaItemSelected } from '../selectors';
+import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, getNumGridColumns, isMediaItemSelected } from '../selectors';
 import { AppTagAvatar, MediaItem, PhotoLayout, StringToTagLUT, Tag, UserTagAvatar } from '../types';
 
 import TagAvatar from './TagAvatar';
@@ -43,7 +43,7 @@ export interface PhotoPropsFromParent {
 }
 
 export interface PhotoProps extends PhotoPropsFromParent {
-  zoomFactor: number;
+  numGridColumns: number;
   appTagAvatars: AppTagAvatar[];
   userTagAvatars: UserTagAvatar[];
   tagsLUT: StringToTagLUT;
@@ -127,7 +127,7 @@ function Photo(props: PhotoProps) {
     <Grid item lg={12/5}>
   */
 
-  const numColumns: number = props.zoomFactor;
+  const numColumns: number = props.numGridColumns;
   const gridItemSize: GridSize = 12 / numColumns;
 
   return (
@@ -154,7 +154,7 @@ function Photo(props: PhotoProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
-    zoomFactor: getZoomFactor(state),
+    numGridColumns: getNumGridColumns(state),
     appTagAvatars: getAllAppTagAvatars(state),
     userTagAvatars: getAllUserTagAvatars(state),
     tagsLUT: getTagsLUT(state),

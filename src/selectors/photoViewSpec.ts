@@ -8,8 +8,8 @@ export const getPhotoLayout = (state: TedTaggerState): PhotoLayout => {
   return state.photoViewSpec.photoLayout;
 };
 
-export const getZoomFactor = (state: TedTaggerState): number => {
-  return state.photoViewSpec.zoomFactor;
+export const getNumGridColumns = (state: TedTaggerState): number => {
+  return state.photoViewSpec.numGridColumns;
 };
 
 export const getLoupeViewMediaItemId = (state: TedTaggerState): string => {

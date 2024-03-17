@@ -25,15 +25,15 @@ export const setPhotoLayoutRedux = (photoLayout: PhotoLayout): any => {
   };
 };
 
-interface SetZoomFactorPayload {
-  zoomFactor: number,
+interface SetNumGridColumnsPayload {
+  numGridColumns: number,
 }
 
-export const setZoomFactorRedux = (zoomFactor: number): any => {
+export const setNumGridColumnsRedux = (numGridColumns: number): any => {
   return {
     type: SET_ZOOM_FACTOR,
     payload: {
-      zoomFactor,
+      numGridColumns,
     },
   };
 };
@@ -57,13 +57,13 @@ export const setLoupeViewMediaItemIdRedux = (loupeViewMediaItemId: string): any 
 
 const initialState: PhotoViewSpec = {
   photoLayout: PhotoLayout.Grid,
-  zoomFactor: 3,
+  numGridColumns: 3,
   loupeViewMediaItemId: '',
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetZoomFactorPayload & SetLoupeViewMediaItemIdPayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetLoupeViewMediaItemIdPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -74,7 +74,7 @@ export const photoViewSpecReducer = (
     case SET_ZOOM_FACTOR:
       return {
         ...state,
-        zoomFactor: action.payload.zoomFactor,
+        numGridColumns: action.payload.numGridColumns,
       };
     case SET_LOUPE_VIEW_MEDIA_ITEM_ID:
       return {

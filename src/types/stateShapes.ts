@@ -104,6 +104,6 @@ export interface TakeoutsState {
 
 export interface PhotoViewSpec {
   photoLayout: PhotoLayout;
-  zoomFactor: number;
+  numGridColumns: number;
   loupeViewMediaItemId: string;
 }

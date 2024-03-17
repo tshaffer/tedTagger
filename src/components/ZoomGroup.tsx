@@ -5,34 +5,34 @@ import { bindActionCreators } from 'redux';
 import Button from '@mui/material/Button';
 import { FormControl } from '@mui/material';
 
-import { TedTaggerDispatch, setZoomFactorRedux } from '../models';
-import { getZoomFactor } from '../selectors';
+import { TedTaggerDispatch, setNumGridColumnsRedux } from '../models';
+import { getNumGridColumns } from '../selectors';
 
 export interface ZoomGroupProps {
-  zoomFactor: number;
-  onSetZoomFactor: (zoomFactor: number) => void;
+  numGridColumns: number;
+  onSetNumGridColumns: (numGridColumns: number) => void;
 }
 
 function ZoomGroup(props: ZoomGroupProps) {
 
   const handleZoomIn = (): void => {
     console.log('Zoom In');
-    let zoomFactor = props.zoomFactor;
-    zoomFactor = zoomFactor - 1;
-    if (zoomFactor < 1) {
+    let numGridColumns = props.numGridColumns;
+    numGridColumns = numGridColumns - 1;
+    if (numGridColumns < 1) {
       return;
     }
-    props.onSetZoomFactor(zoomFactor);
+    props.onSetNumGridColumns(numGridColumns);
   };
 
   const handleZoomOut = (): void => {
     console.log('Zoom Out');
-    let zoomFactor = props.zoomFactor;
-    if (zoomFactor > 10) {
+    let numGridColumns = props.numGridColumns;
+    if (numGridColumns > 10) {
       return;
     }
-    zoomFactor = zoomFactor + 1;
-    props.onSetZoomFactor(zoomFactor);
+    numGridColumns = numGridColumns + 1;
+    props.onSetNumGridColumns(numGridColumns);
   };
 
   return (
@@ -57,13 +57,13 @@ function ZoomGroup(props: ZoomGroupProps) {
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
-    zoomFactor: getZoomFactor(state),
+    numGridColumns: getNumGridColumns(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onSetZoomFactor: setZoomFactorRedux
+    onSetNumGridColumns: setNumGridColumnsRedux
   }, dispatch);
 };
 
