@@ -138,7 +138,6 @@ function Photo(props: PhotoProps) {
   // console.log('Photo render: ', props.mediaItem.fileName);
   // console.log('Photo render: ', props.mediaItem.width, props.mediaItem.height);
 
-  //           image={photoUrl}
   /*
             id={props.mediaItem.googleId}
             className={cardMediaClassName}
@@ -158,6 +157,12 @@ function Photo(props: PhotoProps) {
         sx={cardStyle}
       >
         <CardMedia
+          id={props.mediaItem.googleId}
+          className={cardMediaClassName}
+          // loading="lazy"
+          title={photoUrl}
+          sx={cardMediaStyle}
+          onClick={handleClicks}
         >
           <img src={photoUrl} alt={props.mediaItem.fileName} style={{ height: '254px' }} />
         </CardMedia>
