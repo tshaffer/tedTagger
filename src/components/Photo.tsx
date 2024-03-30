@@ -164,7 +164,12 @@ function Photo(props: PhotoProps) {
           sx={cardMediaStyle}
           onClick={handleClicks}
         >
-          <img src={photoUrl} alt={props.mediaItem.fileName} style={{ height: '254px' }} />
+          <img
+            src={photoUrl}
+            alt={props.mediaItem.fileName}
+            style={{ height: '254px' }}
+            loading="lazy"
+          />
         </CardMedia>
         {tagAvatars}
       </Card>
