@@ -22,6 +22,7 @@ const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
   margin: '8px',
+  // height: '273px',
 };
 
 const selectedCardMediaStyle = {
@@ -29,6 +30,8 @@ const selectedCardMediaStyle = {
   border: 4,
   borderColor: 'red',
   width: '97%',
+  // height: '97%',
+  // height: '273px',
 };
 
 const unselectedCardMediaStyle = {
@@ -36,6 +39,8 @@ const unselectedCardMediaStyle = {
   border: 4,
   borderColor: 'white',
   width: '97%',
+  // height: '97%',
+  // height: '273px',
 };
 
 export interface PhotoPropsFromParent {
@@ -129,6 +134,9 @@ function Photo(props: PhotoProps) {
 
   const numColumns: number = props.numGridColumns;
   const gridItemSize: GridSize = 12 / numColumns;
+
+  // console.log('Photo render: ', props.mediaItem.fileName);
+  // console.log('Photo render: ', props.mediaItem.width, props.mediaItem.height);
 
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
