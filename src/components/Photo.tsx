@@ -38,9 +38,9 @@ const unselectedCardMediaStyle = {
   objectFit: 'contain',
   border: 4,
   borderColor: 'white',
-  width: '97%',
+  // width: '97%',
   // height: '97%',
-  // height: '273px',
+  height: '273px',
 };
 
 export interface PhotoPropsFromParent {
@@ -138,21 +138,29 @@ function Photo(props: PhotoProps) {
   // console.log('Photo render: ', props.mediaItem.fileName);
   // console.log('Photo render: ', props.mediaItem.width, props.mediaItem.height);
 
+  //           image={photoUrl}
+  /*
+            id={props.mediaItem.googleId}
+            className={cardMediaClassName}
+            component="img"
+            loading="lazy"
+            title={photoUrl}
+            sx={cardMediaStyle}
+
+          <img src={photoUrl} alt={props.mediaItem.fileName} style={{ width: '100%', height: '100%' }} />
+
+                    <img src={photoUrl} alt={props.mediaItem.fileName} style={{ height: '254px' }} />
+
+  */
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
       <Card
         sx={cardStyle}
       >
         <CardMedia
-          id={props.mediaItem.googleId}
-          className={cardMediaClassName}
-          image={photoUrl}
-          component="img"
-          loading="lazy"
-          title={photoUrl}
-          sx={cardMediaStyle}
-          onClick={(e) => handleClicks(e)}
-        />
+        >
+          <img src={photoUrl} alt={props.mediaItem.fileName} style={{ height: '254px' }} />
+        </CardMedia>
         {tagAvatars}
       </Card>
     </Grid>
