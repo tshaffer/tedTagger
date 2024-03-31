@@ -22,7 +22,6 @@ const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
   margin: '8px',
-  // height: '273px',
 };
 
 const selectedCardMediaStyle = {
@@ -120,30 +119,8 @@ function Photo(props: PhotoProps) {
 
   const tagAvatars = getTagAvatars(photoTags);
 
-  /*
-    <Grid item xs={3}>
-    <Grid item lg={12/5}>
-  */
-
   const numColumns: number = props.numGridColumns;
   const gridItemSize: GridSize = 12 / numColumns;
-
-  /*
-    what parameter impacts what setting:
-      unselectedCardMediaStyle.height => 97% of grid item height
-      img.style => photo height, no border
-      resulting photoWidth should be aspect ratio calculated from photoSizeProto
-
-
-    current code in photoSizeProto
-    height: '273px',
-    style={{ height: '254px' }}
-
-    height, including border: 282px
-    when setting style={{ height: '200px' }}, height is limited to 200px
-    when setting style={{ height: '280px' }}, height is limited to 280px
-
-  */
 
   let imageHeight: string = '';
   let cardMediaHeight: number = 0;
@@ -155,7 +132,7 @@ function Photo(props: PhotoProps) {
       break;
     }
     case 3: {
-      cardMediaHeight = 273;
+      cardMediaHeight = 274;
       imageHeight = '270px';
       break;
     }
@@ -182,15 +159,12 @@ function Photo(props: PhotoProps) {
   const scaledWidth: number = Math.round(photoWidth / scaleFactor);
 
   unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-  // const totalHeight: number = cardMediaHeight + 4;
-  // const calculatedWidth = Math.round(totalHeight * 2 / 3);
-  // const leftPadding: string = (Math.round((calculatedWidth - photoWidth) / 2)).toString() + 'px';
-  // const leftPadding: string = (Math.round(scaledWidth / 2)).toString() + 'px';
-
 
   const gridWidth = (cardMediaHeight * 3 / 2);
   const leftPaddingValue = Math.round((gridWidth - scaledWidth) / 2);
   const leftPadding: string = leftPaddingValue.toString() + 'px';
+
+
 
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
@@ -214,7 +188,7 @@ function Photo(props: PhotoProps) {
           <img
             src={photoUrl}
             alt={props.mediaItem.fileName}
-            style={{ height: imageHeight, paddingLeft: leftPadding }}
+            style={{ height: imageHeight, paddingLeft: leftPadding, backgroundColor: 'green'}}
             loading="lazy"
           />
         </CardMedia>
