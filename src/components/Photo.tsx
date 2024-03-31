@@ -124,9 +124,6 @@ function Photo(props: PhotoProps) {
 
   const tagAvatars = getTagAvatars(photoTags);
 
-  const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
-  const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
-
   /*
     <Grid item xs={3}>
     <Grid item lg={12/5}>
@@ -134,6 +131,55 @@ function Photo(props: PhotoProps) {
 
   const numColumns: number = props.numGridColumns;
   const gridItemSize: GridSize = 12 / numColumns;
+
+  /*
+    what parameter impacts what setting:
+      unselectedCardMediaStyle.height => 97% of grid item height
+      img.style => photo height, no border
+      resulting photoWidth should be aspect ratio calculated from photoSizeProto
+
+
+    current code in photoSizeProto
+    height: '273px',
+    style={{ height: '254px' }}
+
+    height, including border: 282px
+    when setting style={{ height: '200px' }}, height is limited to 200px
+    when setting style={{ height: '280px' }}, height is limited to 280px
+
+  */
+
+  let imageHeight: string = '';
+
+  switch (numColumns) {
+    case 2: {
+      unselectedCardMediaStyle.height = '410px';
+      imageHeight = '406px';
+      break;
+    }
+    case 3: {
+      unselectedCardMediaStyle.height = '273px';
+      imageHeight = '270px';
+      break;
+    }
+    case 4: {
+      unselectedCardMediaStyle.height = '206px';
+      imageHeight = '202px';
+      break;
+    }
+    case 5: {
+      unselectedCardMediaStyle.height = '162px';
+      imageHeight = '158px';
+      break;
+    }
+    default:
+      unselectedCardMediaStyle.height = '134px';
+      imageHeight = '130px';
+      break;
+  }
+
+  const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
+  const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
   // console.log('Photo render: ', props.mediaItem.fileName);
   // console.log('Photo render: ', props.mediaItem.width, props.mediaItem.height);
@@ -167,7 +213,7 @@ function Photo(props: PhotoProps) {
           <img
             src={photoUrl}
             alt={props.mediaItem.fileName}
-            style={{ height: '254px' }}
+            style={{ height: imageHeight}}
             loading="lazy"
           />
         </CardMedia>
