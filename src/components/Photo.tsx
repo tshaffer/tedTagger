@@ -29,18 +29,14 @@ const selectedCardMediaStyle = {
   objectFit: 'contain',
   border: 4,
   borderColor: 'red',
-  width: '97%',
-  // height: '97%',
-  // height: '273px',
 };
 
 const unselectedCardMediaStyle = {
   objectFit: 'contain',
   border: 4,
   borderColor: 'white',
-  // width: '97%',
-  // height: '97%',
-  height: '273px',
+  height: '1080px',
+  paddingLeft: '8px',
 };
 
 export interface PhotoPropsFromParent {
@@ -150,53 +146,59 @@ function Photo(props: PhotoProps) {
   */
 
   let imageHeight: string = '';
+  let cardMediaHeight: number = 0;
 
   switch (numColumns) {
     case 2: {
-      unselectedCardMediaStyle.height = '410px';
+      cardMediaHeight = 410;
       imageHeight = '406px';
       break;
     }
     case 3: {
-      unselectedCardMediaStyle.height = '273px';
+      cardMediaHeight = 273;
       imageHeight = '270px';
       break;
     }
     case 4: {
-      unselectedCardMediaStyle.height = '206px';
+      cardMediaHeight = 206;
       imageHeight = '202px';
       break;
     }
     case 5: {
-      unselectedCardMediaStyle.height = '162px';
+      cardMediaHeight = 162;
       imageHeight = '158px';
       break;
     }
     default:
-      unselectedCardMediaStyle.height = '134px';
+      cardMediaHeight = 134;
       imageHeight = '130px';
       break;
   }
 
+  const photoWidth: number = props.mediaItem.width!;
+  const photoHeight: number = props.mediaItem.height!;
+
+  const scaleFactor: number = photoHeight / cardMediaHeight;
+  const scaledWidth: number = Math.round(photoWidth / scaleFactor);
+
+  unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
+  // const totalHeight: number = cardMediaHeight + 4;
+  // const calculatedWidth = Math.round(totalHeight * 2 / 3);
+  // const leftPadding: string = (Math.round((calculatedWidth - photoWidth) / 2)).toString() + 'px';
+  // const leftPadding: string = (Math.round(scaledWidth / 2)).toString() + 'px';
+
+
+  const gridWidth = (cardMediaHeight * 3 / 2);
+  const leftPaddingValue = Math.round((gridWidth - scaledWidth) / 2);
+  const leftPadding: string = leftPaddingValue.toString() + 'px';
+
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
-  // console.log('Photo render: ', props.mediaItem.fileName);
-  // console.log('Photo render: ', props.mediaItem.width, props.mediaItem.height);
+  console.log('Photo render: ', props.mediaItem.fileName);
+  console.log('Photo render: ', props.mediaItem.width, props.mediaItem.height);
+  console.log('Left padding: ', leftPadding);
 
-  /*
-            id={props.mediaItem.googleId}
-            className={cardMediaClassName}
-            component="img"
-            loading="lazy"
-            title={photoUrl}
-            sx={cardMediaStyle}
-
-          <img src={photoUrl} alt={props.mediaItem.fileName} style={{ width: '100%', height: '100%' }} />
-
-                    <img src={photoUrl} alt={props.mediaItem.fileName} style={{ height: '254px' }} />
-
-  */
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
       <Card
@@ -205,7 +207,6 @@ function Photo(props: PhotoProps) {
         <CardMedia
           id={props.mediaItem.googleId}
           className={cardMediaClassName}
-          // loading="lazy"
           title={photoUrl}
           sx={cardMediaStyle}
           onClick={handleClicks}
@@ -213,7 +214,7 @@ function Photo(props: PhotoProps) {
           <img
             src={photoUrl}
             alt={props.mediaItem.fileName}
-            style={{ height: imageHeight}}
+            style={{ height: imageHeight, paddingLeft: leftPadding }}
             loading="lazy"
           />
         </CardMedia>
