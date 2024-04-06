@@ -14,8 +14,8 @@ import { isNil } from 'lodash';
 import { getPhotoUrl } from '../utilities';
 
 const gridItemStyle = {
-  paddingLeft: '8px',
-  paddingTop: '8px',
+  // paddingLeft: '8px',
+  // paddingTop: '8px',
 };
 
 const cardStyle = {
@@ -33,9 +33,16 @@ const selectedCardMediaStyle = {
 const unselectedCardMediaStyle = {
   objectFit: 'contain',
   border: 4,
-  borderColor: 'white',
+  borderColor: 'orange',
   height: '1080px',
-  paddingLeft: '8px',
+  // paddingLeft: '8px',
+};
+
+const imgStyle = {
+  height: '100%',
+  backgroundColor: 'green',
+  display: 'block',
+  margin: '0 auto',
 };
 
 export interface PhotoPropsFromParent {
@@ -132,8 +139,8 @@ function Photo(props: PhotoProps) {
       break;
     }
     case 3: {
-      cardMediaHeight = 274;
-      imageHeight = '270px';
+      cardMediaHeight = 264;
+      imageHeight = '264px';
       break;
     }
     case 4: {
@@ -170,9 +177,14 @@ function Photo(props: PhotoProps) {
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
   console.log('Photo render: ', props.mediaItem.fileName);
-  console.log('Photo render: ', props.mediaItem.width, props.mediaItem.height);
-  console.log('Left padding: ', leftPadding);
+  console.log('image dimensions: ', props.mediaItem.width, props.mediaItem.height);
+  // console.log('Left padding: ', leftPadding);
+  console.log('imageHeight: ', imageHeight);
 
+  const imageStyle = {
+    ...imgStyle,
+    height: imageHeight,
+  };
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
       <Card
@@ -188,7 +200,7 @@ function Photo(props: PhotoProps) {
           <img
             src={photoUrl}
             alt={props.mediaItem.fileName}
-            style={{ height: imageHeight, paddingLeft: leftPadding, backgroundColor: 'green'}}
+            style={imageStyle}
             loading="lazy"
           />
         </CardMedia>
