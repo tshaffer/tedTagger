@@ -150,7 +150,7 @@ function Photo(props: PhotoProps) {
     };
   };
 
-  const parseCss = () => {
+  const parseCss = (cssClasses: string[]) => {
 
     // Get the stylesheets
     const stylesheets = document.styleSheets as unknown as CSSStyleSheet[];
@@ -175,8 +175,21 @@ function Photo(props: PhotoProps) {
         for (let j = 0; j < rules.length; j++) {
           const rule = rules[j] as CSSStyleRule;
 
-          // Check if the rule is a class selector
-          console.log('selectorText: ', rule.selectorText);
+
+          const index: number = cssClasses.indexOf(rule.selectorText);
+          if (index >= 0) {
+            // Check if the rule is a class selector
+            console.log('rule for selectorText: ', rule.selectorText);
+            console.log('rule:');
+            console.log(rule);
+            // Access the properties defined in the rule
+            const styles: CSSStyleDeclaration = rule.style;
+            console.log('styles:');
+            console.log(styles);
+          }
+
+          // if (cssClasses.includes(rule.selectorText)) {
+          // }
           // if (rule.selectorText === '.myClass') {
           //   // Access the properties defined in the rule
           //   const color = rule.style.color;
@@ -256,7 +269,8 @@ function Photo(props: PhotoProps) {
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
-  parseCss();
+  // parseCss(['leftColumnStyle', 'rightColumnStyle', 'gridItemStyle', 'cardStyle', 'cardMediaStyle']);
+  parseCss(['.leftColumnStyle', '.rightColumnStyle', 'gridItemStyle', 'cardStyle', 'cardMediaStyle']);
 
   /*
       gridItemWidth,
