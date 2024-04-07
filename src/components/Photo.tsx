@@ -47,10 +47,25 @@ const imgStyle = {
   margin: '0 auto',
 };
 
-// value is an array of css property names to match
-type CSSParseSpec = {
-  [className: string]: string[];
+// value is css property value
+type CSSValues = {
+  [snakeCaseKey: string]: string;
 }
+
+type CSSMatchedProperties = {
+  [className: string]: CSSValues;
+}
+
+// value is camelCaseKey
+type CSSPropertyKeys = {
+  [snakeCaseKey: string]: string;
+}
+
+type CSSParseSpec = {
+  [className: string]: CSSPropertyKeys[];
+}
+
+
 
 export interface PhotoPropsFromParent {
   mediaItem: MediaItem;
@@ -155,7 +170,13 @@ function Photo(props: PhotoProps) {
     };
   };
 
-  const parseCss = (cssParseSpec: CSSParseSpec) => {
+  const stringIsNumber = (value: string): boolean => {
+    return (!Number.isNaN(value));
+  };
+
+  const parseCss = (cssParseSpec: CSSParseSpec): CSSMatchedProperties => {
+
+    const cssMatchedProperties: CSSMatchedProperties = {};
 
     // Get the stylesheets
     const stylesheets = document.styleSheets as unknown as CSSStyleSheet[];
@@ -187,41 +208,42 @@ function Photo(props: PhotoProps) {
 
           if (cssClassNameIndex >= 0) {
 
-            debugger;
-
             // Access the properties defined in the rule
             const styles: CSSStyleDeclaration = rule.style;
 
-            // styles is an object with keys, values
-
-            // Object.keys(styles) is an array of keys
-            // Object.values(styles) is an array of values
-
-            // 0 is first index
-            // Object.keys(styles)[0] is non nil
-            // Object.keys(styles)[0] === '0'
-            // Object.values(styles)[0] === 'flex-grow'
-
             let index: number = 0;
-            while (index < 4) {
+            while (index < Object.keys(styles).length) {
               if (Object.keys(styles).length >= index) {
                 const styleKey: string = Object.keys(styles)[index];
+
                 // only proceed if styleKey represents a number
+                if (!stringIsNumber(styleKey)) {
+                  break;
+                }
+
                 const styleName: string = Object.values(styles)[index];
                 console.log('styleKey: ', styleKey);
                 console.log('styleName: ', styleName);
                 console.log(cssParseSpec);
                 console.log(cssParseSpec[className]);
-                const propertiesToMatch: string[] = cssParseSpec[className];
+                const propertyKeys: CSSPropertyKeys[] = cssParseSpec[className];
+                console.log('propertyToMatch: ', propertyKeys);
 
-                if (propertiesToMatch.includes(styleName)) {
-                  console.log('found it');
-                  const propertyIndex = propertiesToMatch.indexOf(styleName);
-                  console.log('propertyIndex: ', propertyIndex);
-                  // 'flexBasis' is the string corresponding to 'flex-basis'
-                  const indexOfStyleValue = Object.keys(styles).indexOf('flexBasis');
-                  const styleValue: string = Object.values(styles)[indexOfStyleValue];
-                  console.log('styleValue: ', styleValue);
+                for (let piIndex = 0; piIndex < propertyKeys.length; piIndex++) {
+                  const propertyKey: CSSPropertyKeys = propertyKeys[piIndex];
+                  console.log('propertyKey: ', propertyKey);
+                  const snakeCaseKey: string = Object.keys(propertyKey)[0];       // flex-basis
+                  if (snakeCaseKey === styleName) {
+                    console.log('found it');
+                    const camelCaseKey: string = Object.values(propertyKey)[0];   // flexBasis
+                    const indexOfStyleValue = Object.keys(styles).indexOf(camelCaseKey);
+                    const propertyValue: string = Object.values(styles)[indexOfStyleValue];
+                    console.log('propertyValue: ', propertyValue);  // 256px
+                    if (isNil(cssMatchedProperties[className])) {
+                      cssMatchedProperties[className] = {};
+                    }
+                    cssMatchedProperties[className][camelCaseKey] = propertyValue;
+                  }
                 }
               }
               index++;
@@ -236,26 +258,6 @@ function Photo(props: PhotoProps) {
               //   console.log('propertyName: ', propertyName);
               // }
             }
-
-
-            // if (index >= 0) {
-            //   // Check if the rule is a class selector
-            //   console.log('rule for selectorText: ', rule.selectorText);
-            //   console.log('rule:');
-            //   console.log(rule);
-            //   console.log('styles:');
-            //   console.log(styles);
-            // }
-
-            // if (cssClasses.includes(rule.selectorText)) {
-            // }
-            // if (rule.selectorText === '.myClass') {
-            //   // Access the properties defined in the rule
-            //   const color = rule.style.color;
-            //   const fontSize = rule.style.fontSize;
-
-            //   console.log('Color: ' + color + ', Font size: ' + fontSize);
-            // }
           }
         }
 
@@ -279,7 +281,9 @@ function Photo(props: PhotoProps) {
       // }
 
     }
-  }
+
+    return cssMatchedProperties;
+  };
 
   const photoTags: Tag[] = [];
   // props.mediaItem.tagIds.forEach((tagId: string) => {
@@ -329,17 +333,22 @@ function Photo(props: PhotoProps) {
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
-  // parseCss(['leftColumnStyle', 'rightColumnStyle', 'gridItemStyle', 'cardStyle', 'cardMediaStyle']);
   const cssParseSpec: CSSParseSpec = {
     '.leftColumnStyle': [
-      'flex-basis',
+      {
+        'flex-basis': 'flexBasis',
+      }
     ],
     '.rightColumnStyle': [
-      'flex-basis',
+      {
+        'flex-basis': 'flexBasis',
+      }
     ],
   };
-  parseCss(cssParseSpec);
-  // parseCss(['.leftColumnStyle', '.rightColumnStyle', 'gridItemStyle', 'cardStyle', 'cardMediaStyle']);
+
+  const cssMatchedProperties: CSSMatchedProperties = parseCss(cssParseSpec);
+  console.log('cssMatchedProperties');
+  console.log(cssMatchedProperties);
 
   /*
       gridItemWidth,
