@@ -12,6 +12,7 @@ import { AppTagAvatar, MediaItem, PhotoLayout, StringToTagLUT, Tag, UserTagAvata
 import TagAvatar from './TagAvatar';
 import { isNil } from 'lodash';
 import { getPhotoUrl } from '../utilities';
+import { parse } from 'path';
 
 const gridItemStyle = {
   // paddingLeft: '8px',
@@ -149,6 +150,64 @@ function Photo(props: PhotoProps) {
     };
   };
 
+  const parseCss = () => {
+
+    // Get the stylesheets
+    const stylesheets = document.styleSheets as unknown as CSSStyleSheet[];
+
+    // Loop through each stylesheet
+    for (let i = 0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+
+      // Loop through each rule in the stylesheet
+      let rules: CSSRuleList | null = null;
+
+      try {
+        rules = stylesheet.cssRules;
+      } catch (error) {
+        try {
+          rules = stylesheet.rules;
+        } catch (error) {
+          console.log('error getting rules');
+        }
+      }
+      if (!isNil(rules)) {
+        for (let j = 0; j < rules.length; j++) {
+          const rule = rules[j] as CSSStyleRule;
+
+          // Check if the rule is a class selector
+          console.log('selectorText: ', rule.selectorText);
+          // if (rule.selectorText === '.myClass') {
+          //   // Access the properties defined in the rule
+          //   const color = rule.style.color;
+          //   const fontSize = rule.style.fontSize;
+
+          //   console.log('Color: ' + color + ', Font size: ' + fontSize);
+          // }
+        }
+      }
+
+    }
+
+    // if (!isNil(stylesheet.cssRules) || (!isNil(stylesheet.rules))) {
+
+    //   const rules = stylesheet.cssRules || stylesheet.rules; // Handling browser compatibility
+    //   for (let j = 0; j < rules.length; j++) {
+    //     const rule = rules[j] as CSSStyleRule;
+
+    //     // Check if the rule is a class selector
+    //     if (rule.selectorText === '.myClass') {
+    //       // Access the properties defined in the rule
+    //       const color = rule.style.color;
+    //       const fontSize = rule.style.fontSize;
+
+    //       console.log('Color: ' + color + ', Font size: ' + fontSize);
+    //     }
+    //   }
+    // }
+
+  };
+
   const photoTags: Tag[] = [];
   // props.mediaItem.tagIds.forEach((tagId: string) => {
   //   const tag: Tag = props.tagsLUT[tagId];
@@ -192,33 +251,12 @@ function Photo(props: PhotoProps) {
       break;
   }
 
-  // const photoWidth: number = props.mediaItem.width!;
-  // const photoHeight: number = props.mediaItem.height!;
-
-  // const scaleFactor: number = photoHeight / cardMediaHeight;
-  // const scaledWidth: number = Math.round(photoWidth / scaleFactor);
-
   unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-
-  // const gridWidth = (cardMediaHeight * 3 / 2);
-  // const leftPaddingValue = Math.round((gridWidth - scaledWidth) / 2);
-  // const leftPadding: string = leftPaddingValue.toString() + 'px';
-
-
 
   const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
-  // console.log('Photo render: ', props.mediaItem.fileName);
-  // console.log('image dimensions: ', props.mediaItem.width, props.mediaItem.height);
-  // // console.log('Left padding: ', leftPadding);
-  // console.log('imageHeight: ', imageHeight);
-
-  // const imageStyle = {
-  //   ...imgStyle,
-  //   height: imageHeight,
-  // };
-
+  parseCss();
 
   /*
       gridItemWidth,
@@ -237,7 +275,7 @@ function Photo(props: PhotoProps) {
 
 
   // scale the image to fit into the maximum dimensions
-  const xScale = props.mediaItem.width! /dimensions.cardMediaWidth;
+  const xScale = props.mediaItem.width! / dimensions.cardMediaWidth;
   const yScale = props.mediaItem.height! / cardMediaHeight;
   const scale = Math.max(xScale, yScale);
   const scaledWidth = Math.round(props.mediaItem.width! / scale);
@@ -271,7 +309,7 @@ function Photo(props: PhotoProps) {
             src={photoUrl}
             alt={props.mediaItem.fileName}
             style={imageStyle}
-            loading="lazy"
+            loading='lazy'
           />
         </CardMedia>
         {tagAvatars}
