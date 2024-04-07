@@ -47,6 +47,11 @@ const imgStyle = {
   margin: '0 auto',
 };
 
+// value is an array of css property names to match
+type CSSParseSpec = {
+  [className: string]: string[];
+}
+
 export interface PhotoPropsFromParent {
   mediaItem: MediaItem;
 }
@@ -150,10 +155,12 @@ function Photo(props: PhotoProps) {
     };
   };
 
-  const parseCss = (cssClasses: string[]) => {
+  const parseCss = (cssParseSpec: CSSParseSpec) => {
 
     // Get the stylesheets
     const stylesheets = document.styleSheets as unknown as CSSStyleSheet[];
+
+    const cssClassNames = Object.keys(cssParseSpec);
 
     // Loop through each stylesheet
     for (let i = 0; i < stylesheets.length; i++) {
@@ -173,53 +180,106 @@ function Photo(props: PhotoProps) {
       }
       if (!isNil(rules)) {
         for (let j = 0; j < rules.length; j++) {
+
           const rule = rules[j] as CSSStyleRule;
+          const className: string = rule.selectorText;
+          const cssClassNameIndex: number = cssClassNames.indexOf(className);
 
+          if (cssClassNameIndex >= 0) {
 
-          const index: number = cssClasses.indexOf(rule.selectorText);
-          if (index >= 0) {
-            // Check if the rule is a class selector
-            console.log('rule for selectorText: ', rule.selectorText);
-            console.log('rule:');
-            console.log(rule);
+            debugger;
+
             // Access the properties defined in the rule
             const styles: CSSStyleDeclaration = rule.style;
-            console.log('styles:');
-            console.log(styles);
+
+            // styles is an object with keys, values
+
+            // Object.keys(styles) is an array of keys
+            // Object.values(styles) is an array of values
+
+            // 0 is first index
+            // Object.keys(styles)[0] is non nil
+            // Object.keys(styles)[0] === '0'
+            // Object.values(styles)[0] === 'flex-grow'
+
+            let index: number = 0;
+            while (index < 4) {
+              if (Object.keys(styles).length >= index) {
+                const styleKey: string = Object.keys(styles)[index];
+                // only proceed if styleKey represents a number
+                const styleName: string = Object.values(styles)[index];
+                console.log('styleKey: ', styleKey);
+                console.log('styleName: ', styleName);
+                console.log(cssParseSpec);
+                console.log(cssParseSpec[className]);
+                const propertiesToMatch: string[] = cssParseSpec[className];
+
+                if (propertiesToMatch.includes(styleName)) {
+                  console.log('found it');
+                  const propertyIndex = propertiesToMatch.indexOf(styleName);
+                  console.log('propertyIndex: ', propertyIndex);
+                  // 'flexBasis' is the string corresponding to 'flex-basis'
+                  const indexOfStyleValue = Object.keys(styles).indexOf('flexBasis');
+                  const styleValue: string = Object.values(styles)[indexOfStyleValue];
+                  console.log('styleValue: ', styleValue);
+                }
+              }
+              index++;
+            }
+            if (!isNil(Object.keys(styles)[0])) {
+              index++;
+              const i: number = 0;
+              const iAsStr: string = i.toString();
+
+              // if (!isNil(Object.keys(iAsStr))) {
+              //   const propertyName = Object.values(styles)[0];
+              //   console.log('propertyName: ', propertyName);
+              // }
+            }
+
+
+            // if (index >= 0) {
+            //   // Check if the rule is a class selector
+            //   console.log('rule for selectorText: ', rule.selectorText);
+            //   console.log('rule:');
+            //   console.log(rule);
+            //   console.log('styles:');
+            //   console.log(styles);
+            // }
+
+            // if (cssClasses.includes(rule.selectorText)) {
+            // }
+            // if (rule.selectorText === '.myClass') {
+            //   // Access the properties defined in the rule
+            //   const color = rule.style.color;
+            //   const fontSize = rule.style.fontSize;
+
+            //   console.log('Color: ' + color + ', Font size: ' + fontSize);
+            // }
           }
-
-          // if (cssClasses.includes(rule.selectorText)) {
-          // }
-          // if (rule.selectorText === '.myClass') {
-          //   // Access the properties defined in the rule
-          //   const color = rule.style.color;
-          //   const fontSize = rule.style.fontSize;
-
-          //   console.log('Color: ' + color + ', Font size: ' + fontSize);
-          // }
         }
+
       }
 
+      // if (!isNil(stylesheet.cssRules) || (!isNil(stylesheet.rules))) {
+
+      //   const rules = stylesheet.cssRules || stylesheet.rules; // Handling browser compatibility
+      //   for (let j = 0; j < rules.length; j++) {
+      //     const rule = rules[j] as CSSStyleRule;
+
+      //     // Check if the rule is a class selector
+      //     if (rule.selectorText === '.myClass') {
+      //       // Access the properties defined in the rule
+      //       const color = rule.style.color;
+      //       const fontSize = rule.style.fontSize;
+
+      //       console.log('Color: ' + color + ', Font size: ' + fontSize);
+      //     }
+      //   }
+      // }
+
     }
-
-    // if (!isNil(stylesheet.cssRules) || (!isNil(stylesheet.rules))) {
-
-    //   const rules = stylesheet.cssRules || stylesheet.rules; // Handling browser compatibility
-    //   for (let j = 0; j < rules.length; j++) {
-    //     const rule = rules[j] as CSSStyleRule;
-
-    //     // Check if the rule is a class selector
-    //     if (rule.selectorText === '.myClass') {
-    //       // Access the properties defined in the rule
-    //       const color = rule.style.color;
-    //       const fontSize = rule.style.fontSize;
-
-    //       console.log('Color: ' + color + ', Font size: ' + fontSize);
-    //     }
-    //   }
-    // }
-
-  };
+  }
 
   const photoTags: Tag[] = [];
   // props.mediaItem.tagIds.forEach((tagId: string) => {
@@ -270,7 +330,16 @@ function Photo(props: PhotoProps) {
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
   // parseCss(['leftColumnStyle', 'rightColumnStyle', 'gridItemStyle', 'cardStyle', 'cardMediaStyle']);
-  parseCss(['.leftColumnStyle', '.rightColumnStyle', 'gridItemStyle', 'cardStyle', 'cardMediaStyle']);
+  const cssParseSpec: CSSParseSpec = {
+    '.leftColumnStyle': [
+      'flex-basis',
+    ],
+    '.rightColumnStyle': [
+      'flex-basis',
+    ],
+  };
+  parseCss(cssParseSpec);
+  // parseCss(['.leftColumnStyle', '.rightColumnStyle', 'gridItemStyle', 'cardStyle', 'cardMediaStyle']);
 
   /*
       gridItemWidth,
