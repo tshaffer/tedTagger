@@ -32,6 +32,9 @@ const selectedCardMediaStyle = {
   objectFit: 'contain',
   border: 4,
   borderColor: 'red',
+  height: '1080px',
+  // paddingLeft: '8px',
+  backgroundColor: 'purple',
 };
 
 const unselectedCardMediaStyle = {
@@ -179,6 +182,7 @@ function Photo(props: PhotoProps) {
   }
 
   unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
+  selectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
