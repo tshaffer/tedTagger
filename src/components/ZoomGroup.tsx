@@ -16,19 +16,17 @@ export interface ZoomGroupProps {
 function ZoomGroup(props: ZoomGroupProps) {
 
   const handleZoomIn = (): void => {
-    console.log('Zoom In');
     let numGridColumns = props.numGridColumns;
     numGridColumns = numGridColumns - 1;
-    if (numGridColumns < 1) {
+    if (numGridColumns < 2) {
       return;
     }
     props.onSetNumGridColumns(numGridColumns);
   };
 
   const handleZoomOut = (): void => {
-    console.log('Zoom Out');
     let numGridColumns = props.numGridColumns;
-    if (numGridColumns > 10) {
+    if (numGridColumns >= 10) {
       return;
     }
     numGridColumns = numGridColumns + 1;

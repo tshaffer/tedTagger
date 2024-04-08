@@ -153,6 +153,26 @@ function Photo(props: PhotoProps) {
       cardMediaHeight = 162;
       break;
     }
+    case 6: {
+      cardMediaHeight = 140;
+      break;
+    }
+    case 7: {
+      cardMediaHeight = 130;
+      break;
+    }
+    case 8: {
+      cardMediaHeight = 120;
+      break;
+    }
+    case 9: {
+      cardMediaHeight = 110;
+      break;
+    }
+    case 10: {
+      cardMediaHeight = 100;
+      break;
+    }
     default:
       cardMediaHeight = 134;
       break;
