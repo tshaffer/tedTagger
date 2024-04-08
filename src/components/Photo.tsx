@@ -22,6 +22,8 @@ const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
   margin: '8px',
+  width: '100%',
+  height: '100%',
 };
 
 const selectedCardMediaStyle = {
@@ -262,7 +264,8 @@ function Photo(props: PhotoProps) {
       >
         <CardMedia
           id={props.mediaItem.googleId}
-          className={cardMediaClassName}
+          // className={cardMediaClassName}
+          className='image-container'
           title={photoUrl}
           sx={cardMediaStyle}
           onClick={handleClicks}
@@ -270,7 +273,7 @@ function Photo(props: PhotoProps) {
           <img
             src={photoUrl}
             alt={props.mediaItem.fileName}
-            style={imageStyle}
+            // style={imageStyle}
             loading="lazy"
           />
         </CardMedia>
