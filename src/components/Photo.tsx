@@ -16,7 +16,6 @@ import { getPhotoUrl } from '../utilities';
 const gridItemStyle = {
   // paddingLeft: '8px',
   // paddingTop: '8px',
-  backgroundColor: 'lightcoral',
 };
 
 const cardStyle = {
@@ -33,7 +32,6 @@ const selectedCardMediaStyle = {
   objectFit: 'contain',
   border: 4,
   borderColor: 'red',
-  backgroundColor: 'lightcoral',
 };
 
 const unselectedCardMediaStyle = {

@@ -43,7 +43,6 @@
 
 .gridView {
   max-height: 616px;
-  background-color: lightcoral;
 }
 
 .toolbarStyle {
@@ -87,7 +86,6 @@
   height: 100%;
   overflow: hidden;
   position: relative;
-  background-color: lightcoral;
 }
 
 .image-container img {
@@ -99,5 +97,4 @@
   max-height: 100%;
   width: auto;
   height: auto;
-  background-color: lightcoral;
 }
