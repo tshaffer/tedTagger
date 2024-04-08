@@ -26,28 +26,6 @@ const cardStyle = {
   height: '100%',
 };
 
-const selectedCardMediaStyle = {
-  objectFit: 'contain',
-  border: 4,
-  borderColor: 'red',
-};
-
-const unselectedCardMediaStyle = {
-  objectFit: 'contain',
-  border: 4,
-  borderColor: 'orange',
-  height: '1080px',
-  // paddingLeft: '8px',
-  backgroundColor: 'purple',
-};
-
-const imgStyle = {
-  height: '100%',
-  backgroundColor: 'green',
-  display: 'block',
-  margin: '0 auto',
-};
-
 export interface PhotoPropsFromParent {
   mediaItem: MediaItem;
 }
@@ -132,40 +110,6 @@ function Photo(props: PhotoProps) {
   const numColumns: number = props.numGridColumns;
   const gridItemSize: GridSize = 12 / numColumns;
 
-  let imageHeight: string = '';
-  let cardMediaHeight: number = 0;
-
-  switch (numColumns) {
-    case 2: {
-      cardMediaHeight = 410;
-      imageHeight = '406px';
-      break;
-    }
-    case 3: {
-      cardMediaHeight = 264;
-      imageHeight = '264px';
-      break;
-    }
-    case 4: {
-      cardMediaHeight = 206;
-      imageHeight = '202px';
-      break;
-    }
-    case 5: {
-      cardMediaHeight = 162;
-      imageHeight = '158px';
-      break;
-    }
-    default:
-      cardMediaHeight = 134;
-      imageHeight = '130px';
-      break;
-  }
-
-  unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-
-  const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
-
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
       <Card
@@ -176,13 +120,12 @@ function Photo(props: PhotoProps) {
           // className={cardMediaClassName}
           className='image-container'
           title={photoUrl}
-          sx={cardMediaStyle}
+          // sx={cardMediaStyle}
           onClick={handleClicks}
         >
           <img
             src={photoUrl}
             alt={props.mediaItem.fileName}
-            // style={imageStyle}
             loading="lazy"
           />
         </CardMedia>
