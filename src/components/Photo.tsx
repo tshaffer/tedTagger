@@ -119,38 +119,6 @@ function Photo(props: PhotoProps) {
     }
   };
 
-  const getDimensions = () => {
-
-    // window.innerWidth = 1902, which appears to come from
-    // from default-stylesheet.js
-    //   body {
-    //     display: block;
-    //     margin: 8px
-    // }
-    const innerWidth: number = 1902 - 16;
-
-    // .leftColumStyle.width
-    // .rightColumnStyle.width
-    const centerPanel = innerWidth - 256 - 240;
-
-    const numColumns: number = props.numGridColumns;
-
-    // .gridItemStyle
-    const gridItemWidth = centerPanel / numColumns;
-
-    // .cardStyle
-    const cardWidth = gridItemWidth - 16;
-
-    // .cardMediaStyle
-    const cardMediaWidth = cardWidth - 8;
-
-    return {
-      gridItemWidth,
-      cardWidth,
-      cardMediaWidth,
-    };
-  };
-
   const photoTags: Tag[] = [];
   // props.mediaItem.tagIds.forEach((tagId: string) => {
   //   const tag: Tag = props.tagsLUT[tagId];
@@ -164,98 +132,33 @@ function Photo(props: PhotoProps) {
   const numColumns: number = props.numGridColumns;
   const gridItemSize: GridSize = 12 / numColumns;
 
-  let imageHeight: string = '';
   let cardMediaHeight: number = 0;
 
   switch (numColumns) {
     case 2: {
       cardMediaHeight = 410;
-      imageHeight = '406px';
       break;
     }
     case 3: {
       cardMediaHeight = 264;
-      imageHeight = '264px';
       break;
     }
     case 4: {
       cardMediaHeight = 206;
-      imageHeight = '202px';
       break;
     }
     case 5: {
       cardMediaHeight = 162;
-      imageHeight = '158px';
       break;
     }
     default:
       cardMediaHeight = 134;
-      imageHeight = '130px';
       break;
   }
 
-  // const photoWidth: number = props.mediaItem.width!;
-  // const photoHeight: number = props.mediaItem.height!;
-
-  // const scaleFactor: number = photoHeight / cardMediaHeight;
-  // const scaledWidth: number = Math.round(photoWidth / scaleFactor);
-
   unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
-  // const gridWidth = (cardMediaHeight * 3 / 2);
-  // const leftPaddingValue = Math.round((gridWidth - scaledWidth) / 2);
-  // const leftPadding: string = leftPaddingValue.toString() + 'px';
-
-
-
-  const cardMediaClassName: string = props.isSelected ? 'selectedCardMediaStyle' : 'unselectedCardMediaStyle';
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
-
-  // console.log('Photo render: ', props.mediaItem.fileName);
-  // console.log('image dimensions: ', props.mediaItem.width, props.mediaItem.height);
-  // // console.log('Left padding: ', leftPadding);
-  // console.log('imageHeight: ', imageHeight);
-
-  // const imageStyle = {
-  //   ...imgStyle,
-  //   height: imageHeight,
-  // };
-
-
-  /*
-      gridItemWidth,
-      cardWidth,
-      cardMediaWidth,
-  */
-  const dimensions = getDimensions();
-  // console.log('dimensions');
-  // console.log(dimensions);
-
-  console.log('photo dimensions: ', props.mediaItem.width, props.mediaItem.height);
-
-  console.log('maximum image dimensions:');
-  console.log(dimensions.cardMediaWidth);
-  console.log(cardMediaHeight);
-
-
-  // scale the image to fit into the maximum dimensions
-  const xScale = props.mediaItem.width! /dimensions.cardMediaWidth;
-  const yScale = props.mediaItem.height! / cardMediaHeight;
-  const scale = Math.max(xScale, yScale);
-  const scaledWidth = Math.round(props.mediaItem.width! / scale);
-  const scaledHeight = Math.round(props.mediaItem.height! / scale);
-  console.log('scaled dimensions:');
-  console.log(scaledWidth);
-  console.log(scaledHeight);
-
-  const imageStyle = {
-    ...imgStyle,
-    width: scaledWidth,
-    height: scaledHeight,
-  };
-
-
-
 
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
@@ -264,7 +167,6 @@ function Photo(props: PhotoProps) {
       >
         <CardMedia
           id={props.mediaItem.googleId}
-          // className={cardMediaClassName}
           className='image-container'
           title={photoUrl}
           sx={cardMediaStyle}
@@ -273,7 +175,6 @@ function Photo(props: PhotoProps) {
           <img
             src={photoUrl}
             alt={props.mediaItem.fileName}
-            // style={imageStyle}
             loading="lazy"
           />
         </CardMedia>
