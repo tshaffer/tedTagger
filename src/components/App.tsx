@@ -77,7 +77,7 @@ const App = (props: AppProps) => {
     } else if (props.photoLayout === PhotoLayout.Survey) {
       return (
         <SurveyView />
-      )
+      );
     } else {
       return (
         <GridView />
