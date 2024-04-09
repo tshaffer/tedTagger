@@ -45,6 +45,7 @@ const ViewSpec = (props: ViewSpecProps) => {
         >
           <FormControlLabel value={'grid'} control={<Radio />} label="Grid" />
           <FormControlLabel value={'loupe'} control={<Radio />} label="Loupe" />
+          <FormControlLabel value={'survey'} control={<Radio />} label="Survey" />
         </RadioGroup>
         {zoomGroupLayout}
       </FormControl>

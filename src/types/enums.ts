@@ -45,4 +45,5 @@ export enum DateSearchRuleType {
 export enum PhotoLayout {
   Grid = 'grid',
   Loupe = 'loupe',
+  Survey = 'survey',
 }

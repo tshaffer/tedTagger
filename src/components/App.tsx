@@ -16,6 +16,7 @@ import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
 import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import PhotoGrid from './PhotoGrid';
+import SurveyView from './SurveyView';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
@@ -73,6 +74,10 @@ const App = (props: AppProps) => {
       return (
         <LoupeViewController />
       );
+    } else if (props.photoLayout === PhotoLayout.Survey) {
+      return (
+        <SurveyView />
+      )
     } else {
       return (
         <GridView />
