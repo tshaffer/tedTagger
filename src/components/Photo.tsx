@@ -14,14 +14,12 @@ import { isNil } from 'lodash';
 import { getPhotoUrl } from '../utilities';
 
 const gridItemStyle = {
-  // paddingLeft: '8px',
-  // paddingTop: '8px',
+  padding: '0px',
 };
 
 const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
-  margin: '8px',
   width: '100%',
   height: '100%',
   backgroundColor: 'lightcoral',
@@ -30,27 +28,14 @@ const cardStyle = {
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
-  border: 4,
-  borderColor: 'red',
   height: '1080px',
-  // paddingLeft: '8px',
   backgroundColor: 'purple',
 };
 
 const unselectedCardMediaStyle = {
   objectFit: 'contain',
-  border: 4,
-  borderColor: 'orange',
   height: '1080px',
-  // paddingLeft: '8px',
   backgroundColor: 'purple',
-};
-
-const imgStyle = {
-  height: '100%',
-  backgroundColor: 'green',
-  display: 'block',
-  margin: '0 auto',
 };
 
 export interface PhotoPropsFromParent {
