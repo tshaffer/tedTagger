@@ -30,20 +30,23 @@ const cardStyle = {
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
-  border: 4,
-  borderColor: 'red',
   height: '1080px',
   // paddingLeft: '8px',
   backgroundColor: 'purple',
+  border: 4,
+  borderColor: 'red',
+  boxSizing: 'border-box',
 };
 
 const unselectedCardMediaStyle = {
   objectFit: 'contain',
-  border: 4,
-  borderColor: 'orange',
   height: '1080px',
   // paddingLeft: '8px',
   backgroundColor: 'purple',
+  // border: 2px solid #000,
+  border: 4,
+  borderColor: 'orange',
+  boxSizing: 'border-box',
 };
 
 const imgStyle = {
