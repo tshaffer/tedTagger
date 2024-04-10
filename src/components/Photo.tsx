@@ -6,11 +6,9 @@ import { Grid, Card, CardMedia, GridSize } from '@mui/material';
 
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 import { selectPhoto } from '../controllers';
-import { getAllAppTagAvatars, getAllUserTagAvatars, getTagsLUT, isMediaItemSelected } from '../selectors';
-import { AppTagAvatar, MediaItem, PhotoLayout, StringToTagLUT, Tag, UserTagAvatar } from '../types';
+import { isMediaItemSelected } from '../selectors';
+import { MediaItem, PhotoLayout } from '../types';
 
-import TagAvatar from './TagAvatar';
-import { isNil } from 'lodash';
 import { getPhotoUrl } from '../utilities';
 
 const gridItemStyle = {
@@ -62,9 +60,6 @@ export interface PhotoPropsFromParent {
 }
 
 export interface PhotoProps extends PhotoPropsFromParent {
-  appTagAvatars: AppTagAvatar[];
-  userTagAvatars: UserTagAvatar[];
-  tagsLUT: StringToTagLUT;
   isSelected: boolean;
   onClickPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
   onSetLoupeViewMediaItemId: (id: string) => any;
@@ -74,34 +69,6 @@ export interface PhotoProps extends PhotoPropsFromParent {
 function Photo(props: PhotoProps) {
 
   const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
-
-  const getTagAvatar = (photoTag: Tag): JSX.Element => {
-    if (isNil(photoTag.avatarId) || isNil(photoTag.avatarType)) {
-      debugger;
-    }
-    return (
-      <TagAvatar
-        key={props.mediaItem.googleId + photoTag.id}
-        googleId={props.mediaItem.googleId}
-        photoTag={photoTag}
-        avatarType={photoTag.avatarType}
-        avatarId={photoTag.avatarId}
-      />
-    );
-  };
-
-  const getTagAvatars = (photoTags: Tag[]): JSX.Element => {
-
-    const photoTagImages: JSX.Element[] = photoTags.map((photoTag: Tag) => {
-      return getTagAvatar(photoTag);
-    });
-
-    return (
-      <div>
-        {photoTagImages}
-      </div>
-    );
-  };
 
   const handleDoubleClick = () => {
     props.onSetLoupeViewMediaItemId(props.mediaItem.googleId);
@@ -127,15 +94,7 @@ function Photo(props: PhotoProps) {
     }
   };
 
-  const photoTags: Tag[] = [];
-  // props.mediaItem.tagIds.forEach((tagId: string) => {
-  //   const tag: Tag = props.tagsLUT[tagId];
-  //   photoTags.push(tag);
-  // });
-
   const photoUrl = getPhotoUrl(props.mediaItem);
-
-  const tagAvatars = getTagAvatars(photoTags);
 
   const numColumns: number = props.numGridColumns;
   const gridItemSize: GridSize = 12 / numColumns;
@@ -207,7 +166,6 @@ function Photo(props: PhotoProps) {
             loading="lazy"
           />
         </CardMedia>
-        {tagAvatars}
       </Card>
     </Grid>
   );
@@ -216,9 +174,6 @@ function Photo(props: PhotoProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
-    appTagAvatars: getAllAppTagAvatars(state),
-    userTagAvatars: getAllUserTagAvatars(state),
-    tagsLUT: getTagsLUT(state),
     isSelected: isMediaItemSelected(state, ownProps.mediaItem),
   };
 }

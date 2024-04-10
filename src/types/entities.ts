@@ -26,7 +26,6 @@ export interface ServerMediaItem {
   description?: string,
   geoData?: GeoData,
   people?: ServerPerson[],
-  tagIds: string[],
   keywordNodeIds: string[],
 }
 
@@ -45,29 +44,7 @@ export interface MediaItem {
   description?: string,
   geoData?: GeoData,
   people?: string[],
-  tagIds: string[],
   keywordNodeIds: string[],
-}
-
-export interface Tag {
-  id: string;
-  label: string;
-  type: string;
-  avatarType: string;
-  avatarId: string;
-}
-
-export interface AppTagAvatar {
-  id: string;
-  label: string;
-  pathToLarge: string;
-  path: string;
-}
-
-export interface UserTagAvatar {
-  id: string;
-  label: string;
-  path: string;
 }
 
 export interface Keyword {

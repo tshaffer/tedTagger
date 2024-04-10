@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { loadDefaultTagAvatarId, loadAppTagAvatars, loadMediaItems, loadTags, loadUserTagAvatars, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
+import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
@@ -15,17 +15,12 @@ import SearchSpecDialog from './SearchSpecDialog';
 import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
 import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
-import PhotoGrid from './PhotoGrid';
 import SurveyView from './SurveyView';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
   onLoadKeywordData: () => any;
-  onLoadDefaultTagAvatarId: () => any;
-  onLoadAppTagAvatars: () => any;
   onLoadMediaItems: () => any;
-  onLoadTags: () => any;
-  onLoadUserTagAvatars: () => any;
   onLoadTakeouts: () => any;
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
@@ -51,16 +46,8 @@ const App = (props: AppProps) => {
 
   React.useEffect(() => {
     console.log('React.useEffect invoked');
-    props.onLoadDefaultTagAvatarId()
+    props.onLoadKeywordData()
       .then(function () {
-        return props.onLoadAppTagAvatars();
-      }).then(function () {
-        return props.onLoadKeywordData();
-      }).then(function () {
-        return props.onLoadUserTagAvatars();
-      }).then(function () {
-        return props.onLoadTags();
-      }).then(function () {
         return props.onLoadTakeouts();
       }).then(function () {
         return props.onLoadMediaItems();
@@ -128,11 +115,7 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onLoadKeywordData: loadKeywordData,
-    onLoadDefaultTagAvatarId: loadDefaultTagAvatarId,
-    onLoadAppTagAvatars: loadAppTagAvatars,
     onLoadMediaItems: loadMediaItems,
-    onLoadTags: loadTags,
-    onLoadUserTagAvatars: loadUserTagAvatars,
     onSetAppInitialized: setAppInitialized,
     onLoadTakeouts: loadTakeouts,
     onImportFromTakeout: importFromTakeout,

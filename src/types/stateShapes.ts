@@ -1,5 +1,5 @@
 import { StringToKeywordLUT, StringToKeywordNodeLUT } from './base';
-import { MediaItem, Tag, AppTagAvatar, UserTagAvatar, Takeout } from './entities';
+import { MediaItem, Takeout } from './entities';
 import {
   DateSearchRuleType,
   KeywordSearchRuleType,
@@ -7,18 +7,12 @@ import {
   MatchRule,
   PhotoLayout,
   SearchRuleType,
-  TagSearchOperator,
-  TagSelectorType
 } from './enums';
 
 export interface TedTaggerState {
   appState: AppState;
   mediaItemsState: MediaItemsState;
   selectionsState: SelectedMediaItemsState;
-  tagsState: TagsState;
-  appTagAvatarsState: AppTagAvatarsState;
-  userTagAvatarsState: UserTagAvatarsState;
-  photosToDisplaySpec: PhotosToDisplaySpec;
   keywordsState: KeywordsState;
   searchUIState: SearchUIState;
   takeoutsState: TakeoutsState;
@@ -38,37 +32,6 @@ export interface MediaItemsState {
 export interface SelectedMediaItemsState {
   lastClickedId: string | null;
   selectedMediaItemIds: string[];
-}
-
-export interface TagsState {
-  tags: Tag[];
-}
-
-export interface AppTagAvatarsState {
-  defaultAvatarId: string;
-  appTagAvatars: AppTagAvatar[];
-}
-
-export interface UserTagAvatarsState {
-  userTagAvatars: UserTagAvatar[];
-}
-
-export interface PhotosToDisplaySpec {
-  dateRangeSpecification: DateRangeSpecification;
-  tagsInSearchSpecification: TagsInSearchSpecification;
-}
-
-export interface DateRangeSpecification {
-  specifyDateRange: boolean;
-  startDate: string;
-  endDate: string;
-}
-
-export interface TagsInSearchSpecification {
-  specifyTagsInSearch: boolean;
-  tagSelector: TagSelectorType;
-  tagIds: string[];
-  tagSearchOperator: TagSearchOperator;
 }
 
 export interface KeywordsState {

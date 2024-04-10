@@ -1,4 +1,4 @@
-import { Keyword, KeywordNode, Tag } from './entities';
+import { Keyword, KeywordNode } from './entities';
 
 export const serverUrl = 'http://localhost:8000';
 // export const serverUrl = 'https://tsmealwheel.herokuapp.com';
@@ -11,10 +11,6 @@ export type StringToStringLUT = {
 
 export type StringToStringArrayLUT = {
   [key: string]: string[];
-}
-
-export type StringToTagLUT = {
-  [key: string]: Tag;
 }
 
 export type StringToBooleanLUT = {
