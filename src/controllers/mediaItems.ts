@@ -12,29 +12,21 @@ import {
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
-  return (dispatch: TedTaggerDispatch, getState: any) => {
+  return (dispatch: TedTaggerDispatch) => {
 
-    // const state: TedTaggerState = getState();
+    const specifyDateRange = false;
+    const startDate = (new Date()).toISOString();
+    const endDate = (new Date()).toISOString();
 
-    // const { specifyDateRange, startDate, endDate } = getDateRangeSpecification(state);
-
-    const path = serverUrl
+    let path = serverUrl
       + apiUrlFragment
       + 'mediaItemsToDisplay';
 
-    // path += '?specifyDateRange=' + specifyDateRange;
-    // path += '&startDate=' + startDate;
-    // path += '&endDate=' + endDate;
-
-    // path += '&specifyTagsInSearch=' + specifyTagsInSearch;
-    // path += '&tagSelector=' + tagSelector;
-    // if (tagIds.length > 0) {
-    //   path += '&tagIds=' + tagIds.join(',');
-    // } else {
-    //   path += '&tagIds=' + [].join(','); // TEDTODO - simpler way?
-    // }
-    // path += '&tagSearchOperator=' + tagSearchOperator;
-
+    path += '?specifyDateRange=' + specifyDateRange;
+    path += '&startDate=' + startDate;
+    path += '&endDate=' + endDate;
+    
+    path += '&specifyTagsInSearch=false&tagSelector=untagged&tagIds=&tagSearchOperator=OR';
 
     return axios.get(path)
       .then((mediaItemsResponse: any) => {
