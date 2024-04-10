@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { TedTaggerDispatch } from '../models';
-import { getAppInitialized, getMediaItemById, getMediaItems } from '../selectors';
+import { getAppInitialized, getMediaItemById, getMediaItems, getNumGridColumns } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
@@ -14,6 +14,7 @@ import Photo from './Photo';
 export interface GridViewProps {
   appInitialized: boolean;
   allMediaItems: MediaItem[],
+  numGridColumns: number;
 }
 
 const GridView = (props: GridViewProps) => {
@@ -23,6 +24,7 @@ const GridView = (props: GridViewProps) => {
       <Photo
         key={mediaItem.googleId}
         mediaItem={mediaItem}
+        numGridColumns={props.numGridColumns}
       />
     );
   };
@@ -56,6 +58,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     appInitialized: getAppInitialized(state),
     allMediaItems: getMediaItems(state),
+    numGridColumns: getNumGridColumns(state),
   };
 }
 
