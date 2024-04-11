@@ -16,6 +16,9 @@ export interface LoupeViewControllerProps {
 const LoupeViewController = (props: LoupeViewControllerProps) => {
 
   React.useEffect(() => {
+
+    console.log('LoupeViewController: React.useEffect - invoked');
+
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.key) {
         case 'ArrowRight':
@@ -59,16 +62,15 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
       }
     };
 
-
     // Add the event listener when the component mounts
     document.addEventListener('keydown', handleKeyPress);
 
     // Remove the event listener when the component unmounts
     return () => {
-      console.log('removeEventListener!');
+      console.log('LoupeViewController: React.useEffect - component unmounts');
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [props.loupeViewMediaItemId]); // Empty dependency array ensures that the effect runs only once on mount
+  }, [props.loupeViewMediaItemId]);
 
   return (
     <LoupeView />
@@ -76,9 +78,9 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
 };
 
 function mapStateToProps(state: any) {
-  console.log('mapStateToProps');
-  console.log(state);
-  console.log(getLoupeViewMediaItemId(state));
+  // console.log('mapStateToProps');
+  // console.log(state);
+  // console.log(getLoupeViewMediaItemId(state));
   return {
     loupeViewMediaItemId: getLoupeViewMediaItemId(state),
     mediaItems: getMediaItems(state),

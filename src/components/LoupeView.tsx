@@ -43,8 +43,6 @@ const LoupeView = (props: LoupeViewProps) => {
   const maxHeightInPixels = windowDimensions.height - 222;
   const maxHeightProperty = maxHeightInPixels.toString() + 'px';
 
-  console.log('maxHeightProperty: ' + maxHeightProperty);
-
   return (
     <div className='loupeView'>
       <img
