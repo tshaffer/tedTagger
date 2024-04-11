@@ -12,7 +12,8 @@ import { MediaItem, PhotoLayout } from '../types';
 import { getPhotoUrl } from '../utilities';
 
 const gridItemStyle = {
-  // paddingLeft: '8px',
+  paddingLeft: '8px',
+  paddingRight: '8px',
   // paddingTop: '8px',
 };
 
@@ -149,12 +150,17 @@ function Photo(props: PhotoProps) {
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
   return (
-    <Grid item lg={gridItemSize} style={gridItemStyle}>
+    <Grid
+      id={'grid:' + props.mediaItem.googleId}
+      item lg={gridItemSize}
+      style={gridItemStyle}
+    >
       <Card
+        id={'card:' + props.mediaItem.googleId}
         sx={cardStyle}
       >
         <CardMedia
-          id={props.mediaItem.googleId}
+          id={'cardMedia:' + props.mediaItem.googleId}
           className='image-container'
           title={photoUrl}
           sx={cardMediaStyle}
