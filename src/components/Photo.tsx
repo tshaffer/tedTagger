@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { Grid, Card, CardMedia, GridSize } from '@mui/material';
+import { Tooltip } from '@mui/material';
 
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 import { selectPhoto } from '../controllers';
@@ -159,19 +160,36 @@ function Photo(props: PhotoProps) {
         id={'card:' + props.mediaItem.googleId}
         sx={cardStyle}
       >
-        <CardMedia
-          id={'cardMedia:' + props.mediaItem.googleId}
-          className='image-container'
-          title={photoUrl}
-          sx={cardMediaStyle}
-          onClick={handleClicks}
+        <Tooltip
+          title={props.mediaItem.fileName}
+          placement="top"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, -32],
+                  },
+                },
+              ],
+            },
+          }}
         >
-          <img
-            src={photoUrl}
-            alt={props.mediaItem.fileName}
-            loading="lazy"
-          />
-        </CardMedia>
+          <CardMedia
+            id={'cardMedia:' + props.mediaItem.googleId}
+            className='image-container'
+            title={photoUrl}
+            sx={cardMediaStyle}
+            onClick={handleClicks}
+          >
+            <img
+              src={photoUrl}
+              alt={props.mediaItem.fileName}
+              loading="lazy"
+            />
+          </CardMedia>
+        </Tooltip>
       </Card>
     </Grid>
   );
