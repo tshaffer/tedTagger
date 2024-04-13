@@ -22,6 +22,8 @@ const gridItemStyle = {
   // margin: '16px',
   backgroundColor: '#A9A9A9',
   // paddingTop: '64px',
+  border: '2px solid #909090',
+  boxSizing: 'border-box',
 };
 
 const cardStyle = {
