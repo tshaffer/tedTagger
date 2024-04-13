@@ -136,7 +136,7 @@ function Photo(props: PhotoProps) {
     <Grid
       id={'grid:' + props.mediaItem.googleId}
       item lg={gridItemSize}
-      style={gridItemStyle}
+      className={'gridItemStyle'}
     >
       <Card
         id={'card:' + props.mediaItem.googleId}
