@@ -15,7 +15,6 @@ import { getPhotoUrl } from '../utilities';
 const gridItemStyle = {
   paddingLeft: '8px',
   paddingRight: '8px',
-  // paddingTop: '8px',
 };
 
 const cardStyle = {
@@ -31,29 +30,13 @@ const cardStyle = {
 const selectedCardMediaStyle = {
   objectFit: 'contain',
   height: '1080px',
-  // paddingLeft: '8px',
   backgroundColor: 'purple',
-  border: 4,
-  borderColor: 'red',
-  boxSizing: 'border-box',
 };
 
 const unselectedCardMediaStyle = {
   objectFit: 'contain',
   height: '1080px',
-  // paddingLeft: '8px',
   backgroundColor: 'purple',
-  // border: 2px solid #000,
-  border: 4,
-  borderColor: 'orange',
-  boxSizing: 'border-box',
-};
-
-const imgStyle = {
-  height: '100%',
-  backgroundColor: 'green',
-  display: 'block',
-  margin: '0 auto',
 };
 
 export interface PhotoPropsFromParent {
@@ -150,6 +133,18 @@ function Photo(props: PhotoProps) {
 
   const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
 
+  // const unselectedImageStyle = {
+  //   ...imgStyle,
+  //   border: 'unset',
+  // };
+
+  // const selectedImageStyle = {
+  //   ...imgStyle,
+  //   border: '4px solid white',
+  // };
+  // const dynamicImageStyle = props.isSelected ? selectedImageStyle : unselectedImageStyle;
+  const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
+
   return (
     <Grid
       id={'grid:' + props.mediaItem.googleId}
@@ -185,7 +180,7 @@ function Photo(props: PhotoProps) {
           >
             <img
               src={photoUrl}
-              alt={props.mediaItem.fileName}
+              className={dynamicImageStyle}
               loading="lazy"
             />
           </CardMedia>
