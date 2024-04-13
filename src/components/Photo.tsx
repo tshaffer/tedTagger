@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Grid, Card, CardMedia, GridSize } from '@mui/material';
+import { Grid, Card, CardMedia, GridSize, CardContent, Typography } from '@mui/material';
 import { Tooltip } from '@mui/material';
 
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
@@ -13,21 +13,16 @@ import { MediaItem, PhotoLayout } from '../types';
 import { getPhotoUrl } from '../utilities';
 
 const gridItemStyle = {
-  paddingLeft: '8px',
-  paddingRight: '8px',
-  width: 'calc(100% - 32px)',
-  height: 'calc(100% - 32px)',
-  backgroundColor: 'purple',
-  margin: '16px',
+  width: '100%',
+  height: '100%',
+  // paddingLeft: '8px',
+  // paddingRight: '8px',
+  // width: 'calc(100% - 32px)',
+  // height: 'calc(100% - 32px)',
+  // margin: '16px',
+  backgroundColor: '#A9A9A9',
+  // paddingTop: '64px',
 };
-
-// const gridItemStyle = {
-//   paddingLeft: '8px',
-//   paddingRight: '8px',
-//   width: 'calc(100% - 32px)',
-//   height: 'calc(100% - 32px)',
-//   backgroundColor: 'purple',
-// };
 
 const cardStyle = {
   display: 'flex',
@@ -41,7 +36,7 @@ const cardStyle = {
 const cardMediaStyle = {
   objectFit: 'contain',
   height: '1080px',
-  backgroundColor: 'purple',
+  backgroundColor: '#A9A9A9',
 };
 
 export interface PhotoPropsFromParent {
@@ -137,6 +132,9 @@ function Photo(props: PhotoProps) {
 
   const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
 
+  //             <div style={{ backgroundColor: '#A9A9A9' }}>
+  // <div style={{ backgroundColor: 'lightGray' }}>
+
   return (
     <Grid
       id={'grid:' + props.mediaItem.googleId}
@@ -149,7 +147,7 @@ function Photo(props: PhotoProps) {
       >
         <Tooltip
           title={props.mediaItem.fileName}
-          placement="top"
+          placement='top'
           slotProps={{
             popper: {
               modifiers: [
@@ -163,19 +161,29 @@ function Photo(props: PhotoProps) {
             },
           }}
         >
-          <CardMedia
-            id={'cardMedia:' + props.mediaItem.googleId}
-            className='image-container'
-            title={photoUrl}
-            sx={cardMediaStyle}
-            onClick={handleClicks}
-          >
-            <img
-              src={photoUrl}
-              className={dynamicImageStyle}
-              loading="lazy"
-            />
-          </CardMedia>
+          <div>
+            <div style={{ backgroundColor: 'silver' }}>
+              <CardContent>
+                <Typography variant='body2' color='black'>
+                  {props.mediaItem.fileName}
+                </Typography>
+              </CardContent>
+
+            </div>
+            <CardMedia
+              id={'cardMedia:' + props.mediaItem.googleId}
+              className='image-container'
+              title={photoUrl}
+              sx={cardMediaStyle}
+              onClick={handleClicks}
+            >
+              <img
+                src={photoUrl}
+                className={dynamicImageStyle}
+                loading='lazy'
+              />
+            </CardMedia>
+          </div>
         </Tooltip>
       </Card>
     </Grid>
