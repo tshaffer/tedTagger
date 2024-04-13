@@ -21,29 +21,28 @@ const gridItemStyle = {
   margin: '16px',
 };
 
+// const gridItemStyle = {
+//   paddingLeft: '8px',
+//   paddingRight: '8px',
+//   width: 'calc(100% - 32px)',
+//   height: 'calc(100% - 32px)',
+//   backgroundColor: 'purple',
+// };
+
 const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
-  // margin: '16px',
   width: '100%',
   height: '100%',
-  // width: 'calc(100% - 32px)',
-  // height: 'calc(100% - 32px)',
   backgroundColor: 'lightcoral',
   boxShadow: 'none',
 };
 
-const commonCardMediaStyle = {
+const cardMediaStyle = {
   objectFit: 'contain',
   height: '1080px',
   backgroundColor: 'purple',
 };
-
-// const unselectedCardMediaStyle = {
-//   objectFit: 'contain',
-//   height: '1080px',
-//   backgroundColor: 'purple',
-// };
 
 export interface PhotoPropsFromParent {
   mediaItem: MediaItem;
@@ -134,13 +133,7 @@ function Photo(props: PhotoProps) {
       break;
   }
 
-  // unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-  // selectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-
-  // const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
-  // cardMediaStyle.height = cardMediaHeight.toString() + 'px';
-
-  commonCardMediaStyle.height = cardMediaHeight.toString() + 'px';
+  cardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
   const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
 
@@ -174,7 +167,7 @@ function Photo(props: PhotoProps) {
             id={'cardMedia:' + props.mediaItem.googleId}
             className='image-container'
             title={photoUrl}
-            sx={commonCardMediaStyle}
+            sx={cardMediaStyle}
             onClick={handleClicks}
           >
             <img
