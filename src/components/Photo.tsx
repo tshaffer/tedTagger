@@ -11,17 +11,12 @@ import { isMediaItemSelected } from '../selectors';
 import { MediaItem, PhotoLayout } from '../types';
 
 import { getPhotoUrl } from '../utilities';
+import dayjs, { Dayjs } from 'dayjs';
 
 const gridItemStyle = {
   width: '100%',
   height: '100%',
-  // paddingLeft: '8px',
-  // paddingRight: '8px',
-  // width: 'calc(100% - 32px)',
-  // height: 'calc(100% - 32px)',
-  // margin: '16px',
   backgroundColor: '#A9A9A9',
-  // paddingTop: '64px',
   border: '2px solid #909090',
   boxSizing: 'border-box',
 };
@@ -134,8 +129,8 @@ function Photo(props: PhotoProps) {
 
   const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
 
-  //             <div style={{ backgroundColor: '#A9A9A9' }}>
-  // <div style={{ backgroundColor: 'lightGray' }}>
+  const creationDate: Dayjs = dayjs(props.mediaItem.creationTime!);
+  const formattedCreationDate: string = creationDate.format('MM/DD/YYYY hh:MM A');
 
   return (
     <Grid
@@ -166,8 +161,12 @@ function Photo(props: PhotoProps) {
           <div>
             <div style={{ backgroundColor: 'silver' }}>
               <CardContent>
-                <Typography variant='body2' color='black'>
+                <Typography variant="body2" color='black' fontSize='12px'>
                   {props.mediaItem.fileName}
+                  <br />
+                  {formattedCreationDate}
+                  <br />
+                  {'Wedding, Sourdough'}
                 </Typography>
               </CardContent>
 
