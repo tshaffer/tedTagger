@@ -15,29 +15,35 @@ import { getPhotoUrl } from '../utilities';
 const gridItemStyle = {
   paddingLeft: '8px',
   paddingRight: '8px',
+  width: 'calc(100% - 32px)',
+  height: 'calc(100% - 32px)',
+  backgroundColor: 'purple',
+  margin: '16px',
 };
 
 const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
-  margin: '8px',
+  // margin: '16px',
   width: '100%',
   height: '100%',
+  // width: 'calc(100% - 32px)',
+  // height: 'calc(100% - 32px)',
   backgroundColor: 'lightcoral',
   boxShadow: 'none',
 };
 
-const selectedCardMediaStyle = {
+const commonCardMediaStyle = {
   objectFit: 'contain',
   height: '1080px',
   backgroundColor: 'purple',
 };
 
-const unselectedCardMediaStyle = {
-  objectFit: 'contain',
-  height: '1080px',
-  backgroundColor: 'purple',
-};
+// const unselectedCardMediaStyle = {
+//   objectFit: 'contain',
+//   height: '1080px',
+//   backgroundColor: 'purple',
+// };
 
 export interface PhotoPropsFromParent {
   mediaItem: MediaItem;
@@ -128,21 +134,14 @@ function Photo(props: PhotoProps) {
       break;
   }
 
-  unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-  selectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
+  // unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
+  // selectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
-  const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
+  // const cardMediaStyle = props.isSelected ? selectedCardMediaStyle : unselectedCardMediaStyle;
+  // cardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
-  // const unselectedImageStyle = {
-  //   ...imgStyle,
-  //   border: 'unset',
-  // };
+  commonCardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
-  // const selectedImageStyle = {
-  //   ...imgStyle,
-  //   border: '4px solid white',
-  // };
-  // const dynamicImageStyle = props.isSelected ? selectedImageStyle : unselectedImageStyle;
   const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
 
   return (
@@ -175,7 +174,7 @@ function Photo(props: PhotoProps) {
             id={'cardMedia:' + props.mediaItem.googleId}
             className='image-container'
             title={photoUrl}
-            sx={cardMediaStyle}
+            sx={commonCardMediaStyle}
             onClick={handleClicks}
           >
             <img
