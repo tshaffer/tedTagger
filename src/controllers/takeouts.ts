@@ -2,6 +2,7 @@ import axios from 'axios';
 import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTakeouts } from '../models';
 import { serverUrl, apiUrlFragment, Takeout, AddedTakeoutData, KeywordData, MediaItem } from '../types';
 import { mergeKeywordData } from './keywords';
+import { isNil } from 'lodash';
 
 export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
@@ -40,10 +41,11 @@ export const importFromTakeout = (takeoutId: string): TedTaggerAnyPromiseThunkAc
       console.log('addedMediaItems', addedMediaItems);
       dispatch(addMediaItems(addedMediaItems));
 
-      const addedKeywordData: KeywordData = addedTakeoutData.addedKeywordData;
-      console.log('mergeKeywordData');
-      dispatch(mergeKeywordData(addedKeywordData));
-      
+      const addedKeywordData: KeywordData | null = addedTakeoutData.addedKeywordData;
+      if (!isNil(addedKeywordData)) {
+        console.log('mergeKeywordData');
+        dispatch(mergeKeywordData(addedKeywordData));  
+      }
       console.log(getState());
     }).catch((error) => {
       console.log('error');

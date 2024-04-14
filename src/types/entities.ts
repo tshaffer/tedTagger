@@ -85,6 +85,6 @@ export interface Takeout {
 }
 
 export interface AddedTakeoutData {
-  addedKeywordData: KeywordData;
+  addedKeywordData: KeywordData | null;
   addedMediaItems: MediaItem[];
 }
