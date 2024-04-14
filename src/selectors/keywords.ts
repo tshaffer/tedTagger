@@ -5,6 +5,7 @@ import {
   KeywordNodeDeep,
   KeywordsState,
   KeywordTreeDeep,
+  MediaItem,
   StringToKeywordLUT,
   StringToKeywordNodeLUT,
   TedTaggerState,
@@ -130,3 +131,21 @@ function recursiveBuildTree(keywordsState: KeywordsState, deepKeywordTree: Keywo
     }
   }
 }
+
+export const getKeywordLabelsForMediaItem = (tedTaggerState: TedTaggerState, mediaItem: MediaItem): string[] => {
+  
+  const keywordLabels: string[] = [];
+
+  const keywordNodeIds: string[] = mediaItem.keywordNodeIds;
+  const keywordNodeIdToKeywordLUT: StringToKeywordLUT = getKeywordNodeIdToKeywordLUT(tedTaggerState);
+
+  for (const keywordNodeId of keywordNodeIds) {
+    const keyword: Keyword = keywordNodeIdToKeywordLUT[keywordNodeId];
+    keywordLabels.push(keyword.label);
+  }
+
+  console.log('keywordLabels');
+  console.log(keywordLabels);
+  
+  return keywordLabels;
+};

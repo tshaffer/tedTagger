@@ -7,19 +7,11 @@ import { Tooltip } from '@mui/material';
 
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 import { selectPhoto } from '../controllers';
-import { isMediaItemSelected } from '../selectors';
+import { getKeywordLabelsForMediaItem, isMediaItemSelected } from '../selectors';
 import { MediaItem, PhotoLayout } from '../types';
 
 import { getPhotoUrl } from '../utilities';
 import dayjs, { Dayjs } from 'dayjs';
-
-const gridItemStyle = {
-  width: '100%',
-  height: '100%',
-  backgroundColor: '#A9A9A9',
-  border: '2px solid #909090',
-  boxSizing: 'border-box',
-};
 
 const cardStyle = {
   display: 'flex',
@@ -43,6 +35,7 @@ export interface PhotoPropsFromParent {
 
 export interface PhotoProps extends PhotoPropsFromParent {
   isSelected: boolean;
+  keywordLabels: string[];
   onClickPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
@@ -132,6 +125,8 @@ function Photo(props: PhotoProps) {
   const creationDate: Dayjs = dayjs(props.mediaItem.creationTime!);
   const formattedCreationDate: string = creationDate.format('MM/DD/YYYY hh:MM A');
 
+  const keywords: string = props.keywordLabels.join(', ');
+
   return (
     <Grid
       id={'grid:' + props.mediaItem.googleId}
@@ -166,7 +161,7 @@ function Photo(props: PhotoProps) {
                   <br />
                   {formattedCreationDate}
                   <br />
-                  {'Wedding, Sourdough'}
+                  {keywords}
                 </Typography>
               </CardContent>
 
@@ -194,6 +189,7 @@ function Photo(props: PhotoProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
+    keywordLabels: getKeywordLabelsForMediaItem(state, ownProps.mediaItem),
     isSelected: isMediaItemSelected(state, ownProps.mediaItem),
   };
 }

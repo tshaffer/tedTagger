@@ -11,12 +11,12 @@ import {
 
 export interface TedTaggerState {
   appState: AppState;
-  mediaItemsState: MediaItemsState;
-  selectionsState: SelectedMediaItemsState;
   keywordsState: KeywordsState;
-  searchUIState: SearchUIState;
-  takeoutsState: TakeoutsState;
+  mediaItemsState: MediaItemsState;
   photoViewSpec: PhotoViewSpec;
+  searchUIState: SearchUIState;
+  selectionsState: SelectedMediaItemsState;
+  takeoutsState: TakeoutsState;
 }
 
 export interface AppState {
