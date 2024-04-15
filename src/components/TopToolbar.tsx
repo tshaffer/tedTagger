@@ -7,6 +7,7 @@ import { IconButton } from '@mui/material';
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 
 import GridViewIcon from '@mui/icons-material/GridView';
+import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
 import { MediaItem, PhotoLayout } from '../types';
@@ -30,31 +31,71 @@ const TopToolbar = (props: TopToolbarProps) => {
     }
   }
 
+  /*
+      <div className="container">
+        <div className="iconButtonRow">
+          <IconButton>
+            <YourIcon />
+          </IconButton>
+          </div>
+          </div>
+        );
+      };
+  */
+
   return (
-    <div className='toolbarStyle'>
-      <IconButton
-        className='toolbarIconStyle'
-        onClick={() => {
-          handleUpdatePhotoLayout(PhotoLayout.Grid);
-        }}>
-        <GridViewIcon />
-      </IconButton>
-      <IconButton
-        className='toolbarIconStyle'
-        onClick={() => {
-          handleUpdatePhotoLayout(PhotoLayout.Loupe);
-        }}>
-        <InsertPhotoIcon />
-      </IconButton>
-      <IconButton
-        className='toolbarIconStyle'
-        onClick={() => {
-          handleUpdatePhotoLayout(PhotoLayout.Survey);
-        }}>
-        <CompareIcon />
-      </IconButton>
+    <div className="toolbarIconButtonContainer">
+      <div className="toolbarIconButtonRow">
+        <IconButton
+          className='toolbarIconStyle'
+          onClick={() => {
+            handleUpdatePhotoLayout(PhotoLayout.Grid);
+          }}>
+          <GridOnIcon />
+        </IconButton>
+        <IconButton
+          className='toolbarIconStyle'
+          onClick={() => {
+            handleUpdatePhotoLayout(PhotoLayout.Loupe);
+          }}>
+          <InsertPhotoIcon />
+        </IconButton>
+        <IconButton
+          className='toolbarIconStyle'
+          onClick={() => {
+            handleUpdatePhotoLayout(PhotoLayout.Survey);
+          }}>
+          <CompareIcon />
+        </IconButton>
+      </div>
     </div>
+    // </div>
   );
+  // return (
+  //   <div className='toolbarStyle'>
+  //     <IconButton
+  //       className='toolbarIconStyle'
+  //       onClick={() => {
+  //         handleUpdatePhotoLayout(PhotoLayout.Grid);
+  //       }}>
+  //       <GridViewIcon />
+  //     </IconButton>
+  //     <IconButton
+  //       className='toolbarIconStyle'
+  //       onClick={() => {
+  //         handleUpdatePhotoLayout(PhotoLayout.Loupe);
+  //       }}>
+  //       <InsertPhotoIcon />
+  //     </IconButton>
+  //     <IconButton
+  //       className='toolbarIconStyle'
+  //       onClick={() => {
+  //         handleUpdatePhotoLayout(PhotoLayout.Survey);
+  //       }}>
+  //       <CompareIcon />
+  //     </IconButton>
+  //   </div>
+  // );
 };
 
 function mapStateToProps(state: any) {
