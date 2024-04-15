@@ -130,25 +130,8 @@
   height: 5vh;
 }
 
-.toolbarIconStyle {}
-
 .toolbarIconButtonRow {
   position: absolute;
   left: 256px;
   bottom: 0px;
 }
-
-/*
-.container {
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-  background-color: #f0f0f0;
-  height: 10vh;
-}
-
-.iconButtonRow {
-  position: absolute;
-  bottom: 20px;
-}
-*/
