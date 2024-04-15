@@ -16,6 +16,7 @@ import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
 import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import SurveyView from './SurveyView';
+import TopToolbar from './TopToolbar';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
@@ -76,7 +77,9 @@ const App = (props: AppProps) => {
 
   return (
     <div>
-      <div className='toolbarStyle' />
+      <React.Fragment>
+        <TopToolbar/>
+      </React.Fragment>
       <div className='appStyle'>
         <div className='leftColumnStyle'>
           <ViewSpec />

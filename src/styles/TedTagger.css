@@ -47,9 +47,12 @@
 
 .toolbarStyle {
   height: 10vh;
-  background-color: lime;
+  background-color:darkgray
 }
 
+.toolbarIconStyle {
+  filter: 'grayscale(100%)'
+}
 .appStyle {
   display: flex;
   height: 80vh;
