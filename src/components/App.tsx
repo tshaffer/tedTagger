@@ -46,7 +46,6 @@ const App = (props: AppProps) => {
   };
 
   React.useEffect(() => {
-    console.log('React.useEffect invoked');
     props.onLoadKeywordData()
       .then(function () {
         return props.onLoadTakeouts();
@@ -78,7 +77,7 @@ const App = (props: AppProps) => {
   return (
     <div>
       <React.Fragment>
-        <TopToolbar/>
+        <TopToolbar />
       </React.Fragment>
       <div className='appStyle'>
         <div className='leftColumnStyle'>

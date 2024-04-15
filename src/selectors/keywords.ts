@@ -144,8 +144,5 @@ export const getKeywordLabelsForMediaItem = (tedTaggerState: TedTaggerState, med
     keywordLabels.push(keyword.label);
   }
 
-  console.log('keywordLabels');
-  console.log(keywordLabels);
-  
   return keywordLabels;
 };

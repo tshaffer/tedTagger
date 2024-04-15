@@ -11,7 +11,6 @@ export const loadTakeouts = (): TedTaggerAnyPromiseThunkAction => {
 
     return axios.get(path)
       .then((response: any) => {
-        console.log('response', response);
         const takeouts: Takeout[] = response.data;
         dispatch(addTakeouts(takeouts));
         return Promise.resolve();

@@ -23,7 +23,6 @@ export const loadKeywordData = (): TedTaggerAnyPromiseThunkAction => {
 
     return axios.get(path)
       .then((response: any) => {
-        console.log('response', response);
         const keywordData: KeywordData = response.data;
         const { keywords, keywordNodes, keywordRootNodeId } = keywordData;
         dispatch(setKeywordRootNodeIdRedux(keywordRootNodeId));
