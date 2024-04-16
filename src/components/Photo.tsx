@@ -154,7 +154,7 @@ function Photo(props: PhotoProps) {
           }}
         >
           <div>
-            <div style={{ backgroundColor: 'silver' }}>
+            <div style={{ backgroundColor: 'silver', minHeight: '92px' }}>
               <CardContent>
                 <Typography variant="body2" color='black' fontSize='12px'>
                   {props.mediaItem.fileName}
