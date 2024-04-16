@@ -4,17 +4,19 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, selectMediaItem, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
+import { TedTaggerDispatch, selectMediaItem, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns } from '../selectors';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
+  numGridColumns: number;
+  onSetNumGridColumns: (numGridColumns: number) => void;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
@@ -22,11 +24,9 @@ export interface TopToolbarProps {
 
 const TopToolbar = (props: TopToolbarProps) => {
 
-  const [value, setValue] = React.useState(30);
-
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number);
-  };
+  function handleSliderChange(event: Event, value: number | number[]): void {
+    props.onSetNumGridColumns(value as number);
+  }
 
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
     if (photoLayout === PhotoLayout.Loupe) {
@@ -67,8 +67,14 @@ const TopToolbar = (props: TopToolbarProps) => {
         </div>
         <Slider
           size="small"
-          value={typeof value === 'number' ? value : 0}
+          value={props.numGridColumns}
           onChange={handleSliderChange}
+          valueLabelDisplay="auto"
+          // shiftStep={30}
+          step={1}
+          marks
+          min={2}
+          max={10}
         />
       </div>
     </div>
@@ -93,6 +99,8 @@ function mapStateToProps(state: any) {
   return {
     selectedMediaItemIds,
     loupeViewMediaItemId,
+    numGridColumns: getNumGridColumns(state),
+
   };
 }
 
@@ -101,6 +109,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetPhotoLayout: setPhotoLayoutRedux,
     onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
     onSetPhotoLayoutRedux: setPhotoLayoutRedux,
+    onSetNumGridColumns: setNumGridColumnsRedux
   }, dispatch);
 };
 
