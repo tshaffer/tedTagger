@@ -136,7 +136,8 @@
 .toolbarIconButtonContainer {
   display: flex;
   /* justify-content: space-between; */
-  align-items: center; /* Vertically align items */
+  align-items: center;
+  /* Vertically align items */
   position: relative;
   background-color: darkgray;
   height: 10vh;
@@ -144,5 +145,14 @@
 
 .sliderContainer {
   width: 300px;
+  margin-left: 12px;
 }
 
+.sliderLabelContainer {
+  margin-bottom: 0px;
+}
+
+.sliderLabel {
+  font-size: 0.9rem;
+  background: transparent;
+}

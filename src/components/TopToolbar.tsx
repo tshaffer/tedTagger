@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { IconButton, Slider } from '@mui/material';
+import { IconButton, Slider, Typography } from '@mui/material';
 import { TedTaggerDispatch, selectMediaItem, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -60,7 +60,13 @@ const TopToolbar = (props: TopToolbarProps) => {
         <CompareIcon />
       </IconButton>
       <div className='sliderContainer'>
+        <div className='sliderLabelContainer'>
+          <span className='sliderLabel'>
+            Grid Size
+          </span>
+        </div>
         <Slider
+          size="small"
           value={typeof value === 'number' ? value : 0}
           onChange={handleSliderChange}
         />
