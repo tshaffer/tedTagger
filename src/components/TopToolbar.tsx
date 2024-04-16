@@ -39,43 +39,30 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   return (
     <div className='toolbarIconButtonContainer'>
-      <div className='toolbarIconButtonRow'>
-        <IconButton
-          className='toolbarIconStyle'
-          onClick={() => {
-            handleUpdatePhotoLayout(PhotoLayout.Grid);
-          }}>
-          <GridOnIcon />
-        </IconButton>
-        <IconButton
-          className='toolbarIconStyle'
-          disabled={props.selectedMediaItemIds.length === 0}
-          onClick={() => {
-            handleUpdatePhotoLayout(PhotoLayout.Loupe);
-          }}>
-          <InsertPhotoIcon />
-        </IconButton>
-        <IconButton
-          className='toolbarIconStyle'
-          disabled={props.selectedMediaItemIds.length < 2}
-          onClick={() => {
-            handleUpdatePhotoLayout(PhotoLayout.Survey);
-          }}>
-          <CompareIcon />
-        </IconButton>
-        <Slider
-          className='toolbarSlider'
-          value={typeof value === 'number' ? value : 0}
-          onChange={handleSliderChange}
-        />
-
-      </div>
-      {/* <div className='toolbarSliderRow'>
-        <Slider
-          value={typeof value === 'number' ? value : 0}
-          onChange={handleSliderChange}
-        />
-      </div> */}
+      <IconButton
+        onClick={() => {
+          handleUpdatePhotoLayout(PhotoLayout.Grid);
+        }}>
+        <GridOnIcon />
+      </IconButton>
+      <IconButton
+        disabled={props.selectedMediaItemIds.length === 0}
+        onClick={() => {
+          handleUpdatePhotoLayout(PhotoLayout.Loupe);
+        }}>
+        <InsertPhotoIcon />
+      </IconButton>
+      <IconButton
+        disabled={props.selectedMediaItemIds.length < 2}
+        onClick={() => {
+          handleUpdatePhotoLayout(PhotoLayout.Survey);
+        }}>
+        <CompareIcon />
+      </IconButton>
+      <Slider
+        value={typeof value === 'number' ? value : 0}
+        onChange={handleSliderChange}
+      />
     </div>
   );
 };

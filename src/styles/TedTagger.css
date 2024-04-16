@@ -122,19 +122,19 @@
   background-color: darkgray
 }
 
-.toolbarIconButtonContainer {
+/* .toolbarIconButtonContainer {
   display: flex;
   justify-content: flex-end;
   position: relative;
   background-color: darkgray;
   height: 10vh;
-}
+} */
 
-.toolbarIconButtonRow {
+/* .toolbarIconButtonRow {
   position: absolute;
   left: 256px;
   bottom: 0px;
-}
+} */
 
 .toolbarSliderRow {
   bottom: 0px;
@@ -144,3 +144,18 @@
 .toolbarSlider {
   margin-left: 8px;
 }
+
+.toolbarIconButtonRow {
+  position: absolute;
+  left: 256px;
+  bottom: 0px;
+}
+
+.toolbarIconButtonContainer {
+  display: flex;
+  justify-content: space-between; /* Adjust spacing between icon buttons and slider */
+  position: relative;
+  background-color: darkgray;
+  height: 10vh;
+}
+
