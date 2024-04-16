@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { IconButton } from '@mui/material';
-import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
+import { TedTaggerDispatch, selectMediaItem, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 
-import GridViewIcon from '@mui/icons-material/GridView';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
@@ -14,6 +13,7 @@ import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems } from '../selectors';
 
 export interface TopToolbarProps {
+  selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
   onSetLoupeViewMediaItemId: (id: string) => any;
@@ -43,6 +43,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         </IconButton>
         <IconButton
           className='toolbarIconStyle'
+          disabled={props.selectedMediaItemIds.length === 0}
           onClick={() => {
             handleUpdatePhotoLayout(PhotoLayout.Loupe);
           }}>
@@ -50,6 +51,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         </IconButton>
         <IconButton
           className='toolbarIconStyle'
+          disabled={props.selectedMediaItemIds.length < 2}
           onClick={() => {
             handleUpdatePhotoLayout(PhotoLayout.Survey);
           }}>
@@ -76,6 +78,7 @@ function mapStateToProps(state: any) {
   }
 
   return {
+    selectedMediaItemIds,
     loupeViewMediaItemId,
   };
 }
