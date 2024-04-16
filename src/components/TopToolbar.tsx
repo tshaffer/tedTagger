@@ -10,12 +10,13 @@ import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout } from '../selectors';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   numGridColumns: number;
+  photoLayout: PhotoLayout;
   onSetNumGridColumns: (numGridColumns: number) => void;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
   onSetLoupeViewMediaItemId: (id: string) => any;
@@ -61,12 +62,13 @@ const TopToolbar = (props: TopToolbarProps) => {
       </IconButton>
       <div className='sliderContainer'>
         <div className='sliderLabelContainer'>
-          <span className='sliderLabel'>
+          <span className={props.photoLayout !== PhotoLayout.Grid ? 'disabledSliderLabel': 'sliderLabel'}>
             Grid Size
           </span>
         </div>
         <Slider
           size="small"
+          disabled={props.photoLayout !== PhotoLayout.Grid}
           value={props.numGridColumns}
           onChange={handleSliderChange}
           valueLabelDisplay="auto"
@@ -100,7 +102,7 @@ function mapStateToProps(state: any) {
     selectedMediaItemIds,
     loupeViewMediaItemId,
     numGridColumns: getNumGridColumns(state),
-
+    photoLayout: getPhotoLayout(state),
   };
 }
 

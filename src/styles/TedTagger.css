@@ -156,3 +156,11 @@
   font-size: 0.9rem;
   background: transparent;
 }
+
+.disabledSliderLabel {
+  font-size: 0.9rem;
+  background: transparent;
+  opacity: 0.5; /* Reduce opacity to visually indicate disabled state */
+  color: gray; /* Change text color to gray */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+}
