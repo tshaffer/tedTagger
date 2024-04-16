@@ -117,22 +117,6 @@
   box-sizing: border-box;
 }
 
-/*
- .toolbarIconButtonContainer {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  background-color: darkgray;
-  height: 10vh;
-} 
-
-.toolbarIconButtonRow {
-  position: absolute;
-  left: 256px;
-  bottom: 0px;
-}
-*/
-
 .toolbarIconButtonContainer {
   display: flex;
   /* justify-content: space-between; */
@@ -157,9 +141,7 @@
   background: transparent;
 }
 
-.disabledSliderLabel {
-  font-size: 0.9rem;
-  background: transparent;
+.disabled {
   opacity: 0.5; /* Reduce opacity to visually indicate disabled state */
   color: gray; /* Change text color to gray */
   pointer-events: none; /* Disable pointer events to prevent interaction */

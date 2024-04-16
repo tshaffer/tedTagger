@@ -62,7 +62,7 @@ const TopToolbar = (props: TopToolbarProps) => {
       </IconButton>
       <div className='sliderContainer'>
         <div className='sliderLabelContainer'>
-          <span className={props.photoLayout !== PhotoLayout.Grid ? 'disabledSliderLabel': 'sliderLabel'}>
+          <span className={'sliderLabel ' + ((props.photoLayout !== PhotoLayout.Grid) ? 'disabled': '')}>
             Grid Size
           </span>
         </div>
