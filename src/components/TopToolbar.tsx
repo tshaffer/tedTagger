@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { IconButton } from '@mui/material';
+import { IconButton, Slider } from '@mui/material';
 import { TedTaggerDispatch, selectMediaItem, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -22,6 +22,12 @@ export interface TopToolbarProps {
 
 const TopToolbar = (props: TopToolbarProps) => {
 
+  const [value, setValue] = React.useState(30);
+
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    setValue(newValue as number);
+  };
+
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
     if (photoLayout === PhotoLayout.Loupe) {
       props.onSetLoupeViewMediaItemId(props.loupeViewMediaItemId);
@@ -32,8 +38,8 @@ const TopToolbar = (props: TopToolbarProps) => {
   }
 
   return (
-    <div className="toolbarIconButtonContainer">
-      <div className="toolbarIconButtonRow">
+    <div className='toolbarIconButtonContainer'>
+      <div className='toolbarIconButtonRow'>
         <IconButton
           className='toolbarIconStyle'
           onClick={() => {
@@ -57,7 +63,19 @@ const TopToolbar = (props: TopToolbarProps) => {
           }}>
           <CompareIcon />
         </IconButton>
+        <Slider
+          className='toolbarSlider'
+          value={typeof value === 'number' ? value : 0}
+          onChange={handleSliderChange}
+        />
+
       </div>
+      {/* <div className='toolbarSliderRow'>
+        <Slider
+          value={typeof value === 'number' ? value : 0}
+          onChange={handleSliderChange}
+        />
+      </div> */}
     </div>
   );
 };
