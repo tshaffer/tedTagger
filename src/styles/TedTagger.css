@@ -117,45 +117,32 @@
   box-sizing: border-box;
 }
 
-.toolbarStyle {
-  height: 10vh;
-  background-color: darkgray
-}
-
-/* .toolbarIconButtonContainer {
+/*
+ .toolbarIconButtonContainer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   position: relative;
   background-color: darkgray;
   height: 10vh;
-} */
-
-/* .toolbarIconButtonRow {
-  position: absolute;
-  left: 256px;
-  bottom: 0px;
-} */
-
-.toolbarSliderRow {
-  bottom: 0px;
-  width: 300px;
-}
-
-.toolbarSlider {
-  margin-left: 8px;
-}
+} 
 
 .toolbarIconButtonRow {
   position: absolute;
   left: 256px;
   bottom: 0px;
 }
+*/
 
 .toolbarIconButtonContainer {
   display: flex;
-  justify-content: space-between; /* Adjust spacing between icon buttons and slider */
+  /* justify-content: space-between; */
+  align-items: center; /* Vertically align items */
   position: relative;
   background-color: darkgray;
   height: 10vh;
+}
+
+.sliderContainer {
+  width: 300px;
 }
 

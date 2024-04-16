@@ -59,10 +59,12 @@ const TopToolbar = (props: TopToolbarProps) => {
         }}>
         <CompareIcon />
       </IconButton>
-      <Slider
-        value={typeof value === 'number' ? value : 0}
-        onChange={handleSliderChange}
-      />
+      <div className='sliderContainer'>
+        <Slider
+          value={typeof value === 'number' ? value : 0}
+          onChange={handleSliderChange}
+        />
+      </div>
     </div>
   );
 };
