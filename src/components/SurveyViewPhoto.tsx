@@ -96,7 +96,7 @@ function SurveyViewPhotos(props: SurveyViewPhotosPropsFromParent) {
         >
           <img
             src={photoUrl}
-            className='unselectedImageStyle'
+            className='surveyImageStyle'
             loading="lazy"
           />
         </CardMedia>
