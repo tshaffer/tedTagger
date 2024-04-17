@@ -127,6 +127,8 @@ function Photo(props: PhotoProps) {
 
   const keywords: string = props.keywordLabels.join(', ');
 
+  // , minHeight: '92px'
+
   return (
     <Grid
       id={'grid:' + props.mediaItem.googleId}
@@ -154,8 +156,10 @@ function Photo(props: PhotoProps) {
           }}
         >
           <div>
-            <div style={{ backgroundColor: 'silver', minHeight: '92px' }}>
-              <CardContent>
+            <div style={{ backgroundColor: 'silver', minHeight: '60px' }}>
+              <CardContent
+                style={{ padding: '4px' }}
+              >
                 <Typography variant="body2" color='black' fontSize='12px'>
                   {props.mediaItem.fileName}
                   <br />
