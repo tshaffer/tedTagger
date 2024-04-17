@@ -8,6 +8,7 @@ export const SET_PHOTO_LAYOUT = 'SET_PHOTO_LAYOUT';
 export const SET_ZOOM_FACTOR = 'SET_ZOOM_FACTOR';
 export const SET_LOUPE_VIEW_MEDIA_ITEM_ID = 'SET_LOUPE_VIEW_MEDIA_ITEM_ID';
 export const SET_DISPLAY_METADATA = 'SET_DISPLAY_METADATA';
+export const SET_SURVEY_MODE_ZOOM_FACTOR = 'SET_SURVEY_MODE_ZOOM_FACTOR';
 
 // ------------------------------------
 // Actions
@@ -65,6 +66,18 @@ export const setDisplayMetadata = (displayMetadata: boolean): any => {
   };
 };
 
+interface SetSurveyModeZoomFactorPayload {
+  surveyModeZoomFactor: number,
+}
+
+export const setSurveyModeZoomFactorRedux = (surveyModeZoomFactor: number): any => {
+  return {
+    type: SET_SURVEY_MODE_ZOOM_FACTOR,
+    payload: {
+      surveyModeZoomFactor,
+    },
+  };
+};
 
 // ------------------------------------
 // Reducer
@@ -75,6 +88,7 @@ const initialState: PhotoViewSpec = {
   numGridColumns: 3,
   loupeViewMediaItemId: '',
   displayMetadata: false,
+  surveyModeZoomFactor: 1,
 };
 
 export const photoViewSpecReducer = (
@@ -82,6 +96,7 @@ export const photoViewSpecReducer = (
   action: TedTaggerModelBaseAction<
     SetPhotoLayoutPayload &
     SetNumGridColumnsPayload &
+    SetSurveyModeZoomFactorPayload &
     SetLoupeViewMediaItemIdPayload &
     SetDisplayMetadata>,
 ): PhotoViewSpec => {
@@ -105,6 +120,11 @@ export const photoViewSpecReducer = (
       return {
         ...state,
         displayMetadata: action.payload.displayMetadata,
+      };
+    case SET_SURVEY_MODE_ZOOM_FACTOR:
+      return {
+        ...state,
+        surveyModeZoomFactor: action.payload.surveyModeZoomFactor,
       };
 
     default:

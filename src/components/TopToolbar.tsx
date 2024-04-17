@@ -4,22 +4,24 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, selectMediaItem, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux } from '../models';
+import { TedTaggerDispatch, selectMediaItem, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setSurveyModeZoomFactorRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
 import { KeywordAssignedToSelectedMediaItemsStatus, MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
 import { ChangeEvent } from 'react';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   numGridColumns: number;
+  surveyModeZoomFactor: number;
   photoLayout: PhotoLayout;
   displayMetadata: boolean;
   onSetNumGridColumns: (numGridColumns: number) => void;
+  onSetSurveyModeZoomFactor: (numGridColumns: number) => void;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
@@ -30,6 +32,10 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   function handleSliderChange(event: Event, value: number | number[]): void {
     props.onSetNumGridColumns(value as number);
+  }
+
+  function handleSurveyModeZoomFactorChange(event: Event, value: number | number[], activeThumb: number): void {
+    props.onSetSurveyModeZoomFactor(value as number);
   }
 
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
@@ -44,6 +50,79 @@ const TopToolbar = (props: TopToolbarProps) => {
   function handlaToggleDisplayMetadata(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
     props.onSetDisplayMetadata(checked);
   }
+
+  const getPhotoLayoutPropsUI = (): JSX.Element | null => {
+    switch (props.photoLayout) {
+      case PhotoLayout.Survey: {
+        return (
+          <React.Fragment>
+            <div className='sliderContainer'>
+              <div className='sliderLabelContainer'>
+                <span className={'sliderLabel'}>
+                  Zoom
+                </span>
+              </div>
+              <Slider
+                size='small'
+                value={props.surveyModeZoomFactor}
+                onChange={handleSurveyModeZoomFactorChange}
+                valueLabelDisplay='auto'
+                min={1}
+                step={0.1}
+                max={2}
+              />
+            </div>
+          </React.Fragment>
+        );
+      }
+      case PhotoLayout.Grid: {
+        return (
+          <React.Fragment>
+            <div className='sliderContainer'>
+              <div className='sliderLabelContainer'>
+                <span className={'sliderLabel'}>
+                  Grid Size
+                </span>
+              </div>
+              <Slider
+                size='small'
+                value={props.numGridColumns}
+                onChange={handleSliderChange}
+                valueLabelDisplay='auto'
+                // shiftStep={30}
+                step={1}
+                marks
+                min={2}
+                max={10}
+              />
+            </div>
+            <div>
+              <FormGroup>
+                <FormControlLabel
+                  style={{ marginLeft: '4px' }}
+                  control={
+                    <Checkbox
+                      size='small'
+                      checked={props.displayMetadata}
+                      onChange={handlaToggleDisplayMetadata}
+                    />
+                  }
+                  label={
+                    <span style={{ fontSize: '13px', marginLeft: '-2px' }}>
+                      Show Metadata
+                    </span>
+                  }
+                />
+              </FormGroup>
+            </div>
+          </React.Fragment>
+        );
+        break;
+      }
+    }
+
+    return null;
+  };
 
   return (
     <div className='toolbarIconButtonContainer'>
@@ -67,45 +146,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         }}>
         <CompareIcon />
       </IconButton>
-      <div className='sliderContainer'>
-        <div className='sliderLabelContainer'>
-          <span className={'sliderLabel ' + ((props.photoLayout !== PhotoLayout.Grid) ? 'disabled' : '')}>
-            Grid Size
-          </span>
-        </div>
-        <Slider
-          size='small'
-          disabled={props.photoLayout !== PhotoLayout.Grid}
-          value={props.numGridColumns}
-          onChange={handleSliderChange}
-          valueLabelDisplay='auto'
-          // shiftStep={30}
-          step={1}
-          marks
-          min={2}
-          max={10}
-        />
-      </div>
-      <div>
-        <FormGroup>
-          <FormControlLabel
-            style={{ marginLeft: '4px' }}
-            control={
-              <Checkbox
-                size='small'
-                checked={props.displayMetadata}
-                onChange={handlaToggleDisplayMetadata}
-                disabled={props.photoLayout !== PhotoLayout.Grid}
-              />
-            }
-            label={
-              <span style={{ fontSize: '13px', marginLeft: '-2px' }}>
-                Show Metadata
-              </span>
-            }
-          />
-        </FormGroup>
-      </div>
+      {getPhotoLayoutPropsUI()}
     </div>
   );
 };
@@ -129,6 +170,7 @@ function mapStateToProps(state: any) {
     selectedMediaItemIds,
     loupeViewMediaItemId,
     numGridColumns: getNumGridColumns(state),
+    surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     photoLayout: getPhotoLayout(state),
     displayMetadata: getDisplayMetadata(state),
   };
@@ -141,6 +183,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetPhotoLayoutRedux: setPhotoLayoutRedux,
     onSetNumGridColumns: setNumGridColumnsRedux,
     onSetDisplayMetadata: setDisplayMetadata,
+    onSetSurveyModeZoomFactor: setSurveyModeZoomFactorRedux,
   }, dispatch);
 };
 

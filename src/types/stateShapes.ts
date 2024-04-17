@@ -70,4 +70,5 @@ export interface PhotoViewSpec {
   numGridColumns: number;
   loupeViewMediaItemId: string;
   displayMetadata: boolean;
+  surveyModeZoomFactor: number;
 }

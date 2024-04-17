@@ -8,6 +8,7 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
 
 import { getPhotoUrl } from '../utilities';
+import { getSurveyModeZoomFactor } from '../selectors';
 
 const gridItemStyle = {
   // paddingLeft: '8px',
@@ -48,10 +49,11 @@ export interface SurveyViewPhotosPropsFromParent {
   numGridRows: number;
 }
 
-// export interface SurveyViewPhotosProps extends SurveyViewPhotosPropsFromParent {
-// }
+export interface SurveyViewPhotosProps extends SurveyViewPhotosPropsFromParent {
+  surveyModeZoomFactor: number;
+}
 
-function SurveyViewPhotos(props: SurveyViewPhotosPropsFromParent) {
+function SurveyViewPhotos(props: SurveyViewPhotosProps) {
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
@@ -83,6 +85,12 @@ function SurveyViewPhotos(props: SurveyViewPhotosPropsFromParent) {
 
   const cardMediaStyle = unselectedCardMediaStyle;
 
+  const elementId: string = 'surveyImage' + props.mediaItem.googleId;
+  const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
+  if (imageElement) {
+    imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
+  }
+
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
       <Card
@@ -95,6 +103,7 @@ function SurveyViewPhotos(props: SurveyViewPhotosPropsFromParent) {
           sx={cardMediaStyle}
         >
           <img
+            id={elementId}
             src={photoUrl}
             className='surveyImageStyle'
             loading="lazy"
@@ -108,6 +117,7 @@ function SurveyViewPhotos(props: SurveyViewPhotosPropsFromParent) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
+    surveyModeZoomFactor: getSurveyModeZoomFactor(state),
   };
 }
 

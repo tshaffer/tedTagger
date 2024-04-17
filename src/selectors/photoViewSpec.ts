@@ -19,3 +19,8 @@ export const getLoupeViewMediaItemId = (state: TedTaggerState): string => {
 export const getDisplayMetadata = (state: TedTaggerState): boolean => {
   return state.photoViewSpec.displayMetadata;
 };
+
+export const getSurveyModeZoomFactor = (state: TedTaggerState): number => {
+  return state.photoViewSpec.surveyModeZoomFactor;
+};
+
