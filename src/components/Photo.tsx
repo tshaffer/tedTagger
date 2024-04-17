@@ -36,6 +36,7 @@ export interface PhotoPropsFromParent {
 export interface PhotoProps extends PhotoPropsFromParent {
   isSelected: boolean;
   keywordLabels: string[];
+  displayMetadata: boolean;
   onClickPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
@@ -44,6 +45,31 @@ export interface PhotoProps extends PhotoPropsFromParent {
 function Photo(props: PhotoProps) {
 
   const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
+
+  const getMetadataJsx = (): JSX.Element | null => {
+
+    if (!props.displayMetadata) {
+      return null;
+    }
+
+    return (
+      <div style={{ backgroundColor: 'silver', minHeight: '60px' }}>
+        <CardContent
+          style={{ padding: '4px' }}
+        >
+          <Typography variant="body2" color='black' fontSize='12px'>
+            {props.mediaItem.fileName}
+            <br />
+            {formattedCreationDate}
+            <br />
+            {keywords}
+          </Typography>
+        </CardContent>
+
+      </div>
+    );
+
+  };
 
   const handleDoubleClick = () => {
     props.onSetLoupeViewMediaItemId(props.mediaItem.googleId);
@@ -127,7 +153,7 @@ function Photo(props: PhotoProps) {
 
   const keywords: string = props.keywordLabels.join(', ');
 
-  // , minHeight: '92px'
+  const metadataJsx: JSX.Element | null = getMetadataJsx();
 
   return (
     <Grid
@@ -156,20 +182,7 @@ function Photo(props: PhotoProps) {
           }}
         >
           <div>
-            <div style={{ backgroundColor: 'silver', minHeight: '60px' }}>
-              <CardContent
-                style={{ padding: '4px' }}
-              >
-                <Typography variant="body2" color='black' fontSize='12px'>
-                  {props.mediaItem.fileName}
-                  <br />
-                  {formattedCreationDate}
-                  <br />
-                  {keywords}
-                </Typography>
-              </CardContent>
-
-            </div>
+            {metadataJsx}
             <CardMedia
               id={'cardMedia:' + props.mediaItem.googleId}
               className='image-container'
