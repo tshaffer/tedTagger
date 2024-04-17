@@ -64,7 +64,7 @@ const App = (props: AppProps) => {
     } else if (props.photoLayout === PhotoLayout.Survey) {
       return (
         <SurveyView />
-      )
+      );
     } else {
       return (
         <GridView />
@@ -95,7 +95,7 @@ const App = (props: AppProps) => {
             onClose={handleCloseImportFromTakeoutDialog}
           />
         </div>
-        <div className='centerColumnStyle'>
+        <div id='centerColumn' className='centerColumnStyle'>
           {photoDisplay}
         </div>
         <div className='rightColumnStyle'>Right Panel</div>

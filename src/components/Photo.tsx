@@ -57,7 +57,7 @@ function Photo(props: PhotoProps) {
         <CardContent
           style={{ padding: '4px' }}
         >
-          <Typography variant="body2" color='black' fontSize='12px'>
+          <Typography variant='body2' color='black' fontSize='12px'>
             {props.mediaItem.fileName}
             <br />
             {formattedCreationDate}
@@ -78,6 +78,12 @@ function Photo(props: PhotoProps) {
 
   const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     props.onClickPhoto(props.mediaItem.googleId, e.metaKey, e.shiftKey);
+    // const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
+    // if (divElement) {
+    //   // const scrollPosition = divElement.scrollTop;
+    //   // console.log('Scroll Position:', scrollPosition);
+    //   divElement.scrollTop = 596;
+    // }
   };
 
   const handleClicks = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
