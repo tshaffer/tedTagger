@@ -69,4 +69,5 @@ export interface PhotoViewSpec {
   photoLayout: PhotoLayout;
   numGridColumns: number;
   loupeViewMediaItemId: string;
+  displayMetadata: boolean;
 }

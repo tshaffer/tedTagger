@@ -15,3 +15,7 @@ export const getNumGridColumns = (state: TedTaggerState): number => {
 export const getLoupeViewMediaItemId = (state: TedTaggerState): string => {
   return state.photoViewSpec.loupeViewMediaItemId;
 };
+
+export const getDisplayMetadata = (state: TedTaggerState): boolean => {
+  return state.photoViewSpec.displayMetadata;
+};

@@ -3,24 +3,27 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, selectMediaItem, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux } from '../models';
+import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider, Typography } from '@mui/material';
+import { TedTaggerDispatch, selectMediaItem, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
-import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout } from '../selectors';
+import { KeywordAssignedToSelectedMediaItemsStatus, MediaItem, PhotoLayout } from '../types';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata } from '../selectors';
+import { ChangeEvent } from 'react';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   numGridColumns: number;
   photoLayout: PhotoLayout;
+  displayMetadata: boolean;
   onSetNumGridColumns: (numGridColumns: number) => void;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
+  onSetDisplayMetadata: (displayMetadata: boolean) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -36,6 +39,10 @@ const TopToolbar = (props: TopToolbarProps) => {
     } else {
       props.onSetPhotoLayout(photoLayout);
     }
+  }
+
+  function handlaToggleDisplayMetadata(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
+    props.onSetDisplayMetadata(checked);
   }
 
   return (
@@ -62,22 +69,42 @@ const TopToolbar = (props: TopToolbarProps) => {
       </IconButton>
       <div className='sliderContainer'>
         <div className='sliderLabelContainer'>
-          <span className={'sliderLabel ' + ((props.photoLayout !== PhotoLayout.Grid) ? 'disabled': '')}>
+          <span className={'sliderLabel ' + ((props.photoLayout !== PhotoLayout.Grid) ? 'disabled' : '')}>
             Grid Size
           </span>
         </div>
         <Slider
-          size="small"
+          size='small'
           disabled={props.photoLayout !== PhotoLayout.Grid}
           value={props.numGridColumns}
           onChange={handleSliderChange}
-          valueLabelDisplay="auto"
+          valueLabelDisplay='auto'
           // shiftStep={30}
           step={1}
           marks
           min={2}
           max={10}
         />
+      </div>
+      <div>
+        <FormGroup>
+          <FormControlLabel
+            style={{ marginLeft: '4px' }}
+            control={
+              <Checkbox
+                size='small'
+                checked={props.displayMetadata}
+                onChange={handlaToggleDisplayMetadata}
+                disabled={props.photoLayout !== PhotoLayout.Grid}
+              />
+            }
+            label={
+              <span style={{ fontSize: '13px', marginLeft: '-2px' }}>
+                Show Metadata
+              </span>
+            }
+          />
+        </FormGroup>
       </div>
     </div>
   );
@@ -103,6 +130,7 @@ function mapStateToProps(state: any) {
     loupeViewMediaItemId,
     numGridColumns: getNumGridColumns(state),
     photoLayout: getPhotoLayout(state),
+    displayMetadata: getDisplayMetadata(state),
   };
 }
 
@@ -111,7 +139,8 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetPhotoLayout: setPhotoLayoutRedux,
     onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
     onSetPhotoLayoutRedux: setPhotoLayoutRedux,
-    onSetNumGridColumns: setNumGridColumnsRedux
+    onSetNumGridColumns: setNumGridColumnsRedux,
+    onSetDisplayMetadata: setDisplayMetadata,
   }, dispatch);
 };
 

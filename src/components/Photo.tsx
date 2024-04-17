@@ -7,7 +7,7 @@ import { Tooltip } from '@mui/material';
 
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 import { selectPhoto } from '../controllers';
-import { getKeywordLabelsForMediaItem, isMediaItemSelected } from '../selectors';
+import { getDisplayMetadata, getKeywordLabelsForMediaItem, isMediaItemSelected } from '../selectors';
 import { MediaItem, PhotoLayout } from '../types';
 
 import { getPhotoUrl } from '../utilities';
@@ -191,6 +191,7 @@ function mapStateToProps(state: any, ownProps: any) {
     mediaItem: ownProps.mediaItem,
     keywordLabels: getKeywordLabelsForMediaItem(state, ownProps.mediaItem),
     isSelected: isMediaItemSelected(state, ownProps.mediaItem),
+    displayMetadata: getDisplayMetadata(state),
   };
 }
 
