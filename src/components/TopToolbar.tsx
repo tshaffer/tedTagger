@@ -40,13 +40,12 @@ const TopToolbar = (props: TopToolbarProps) => {
   }
 
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
-    if (props.photoLayout === PhotoLayout.Grid) {
-      if (props.photoLayout === PhotoLayout.Grid) {
-        const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
-        if (divElement) {
-          const scrollPosition: number = divElement.scrollTop;
-          props.onSetScrollPosition(scrollPosition);
-        }
+    // capture the scroll position is transitioning out of Grid layout.
+    if (props.photoLayout === PhotoLayout.Grid && photoLayout !== PhotoLayout.Grid) {
+      const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
+      if (divElement) {
+        const scrollPosition: number = divElement.scrollTop;
+        props.onSetScrollPosition(scrollPosition);
       }
     }
     if (photoLayout === PhotoLayout.Loupe) {

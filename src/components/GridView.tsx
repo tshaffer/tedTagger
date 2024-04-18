@@ -20,7 +20,7 @@ const GridView = (props: GridViewProps) => {
 
   React.useEffect(() => {
 
-    console.log('GridView React.useEffect for invoked');
+    console.log('GridView React.useEffect for GridViw invoked');
 
     const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
     if (divElement) {

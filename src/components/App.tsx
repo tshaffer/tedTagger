@@ -57,32 +57,6 @@ const App = (props: AppProps) => {
       });
   }, []);
 
-  React.useEffect(() => {
-
-    const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
-
-    if (divElement) {
-      divElement.addEventListener('scroll', handleScroll);
-    }
-
-    // Cleanup function to remove the listener when component unmounts
-    return () => {
-      if (divElement) {
-        console.log('React.useEffect for removing event listener invoked');
-        divElement.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, []);
-
-  function handleScroll(event: Event) {
-    console.log('handleScroll invoked');
-    if (props.photoLayout === PhotoLayout.Grid) {
-      const target = event.target as HTMLDivElement;
-      const scrollPosition: number = target.scrollTop;
-      // props.onSetScrollPosition(scrollPosition);
-    }
-  }
-
   const getPhotoDisplay = (): JSX.Element => {
     if (props.photoLayout === PhotoLayout.Loupe) {
       return (
