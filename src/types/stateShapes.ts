@@ -71,4 +71,5 @@ export interface PhotoViewSpec {
   loupeViewMediaItemId: string;
   displayMetadata: boolean;
   surveyModeZoomFactor: number;
+  scrollPosition: number;
 }

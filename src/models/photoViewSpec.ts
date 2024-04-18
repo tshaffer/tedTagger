@@ -9,6 +9,7 @@ export const SET_ZOOM_FACTOR = 'SET_ZOOM_FACTOR';
 export const SET_LOUPE_VIEW_MEDIA_ITEM_ID = 'SET_LOUPE_VIEW_MEDIA_ITEM_ID';
 export const SET_DISPLAY_METADATA = 'SET_DISPLAY_METADATA';
 export const SET_SURVEY_MODE_ZOOM_FACTOR = 'SET_SURVEY_MODE_ZOOM_FACTOR';
+export const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION';
 
 // ------------------------------------
 // Actions
@@ -79,6 +80,19 @@ export const setSurveyModeZoomFactorRedux = (surveyModeZoomFactor: number): any 
   };
 };
 
+interface SetScrollPositionPayload {
+  scrollPosition: number,
+}
+
+export const setScrollPositionRedux = (scrollPosition: number): any => {
+  return {
+    type: SET_SCROLL_POSITION,
+    payload: {
+      scrollPosition,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -89,16 +103,12 @@ const initialState: PhotoViewSpec = {
   loupeViewMediaItemId: '',
   displayMetadata: false,
   surveyModeZoomFactor: 1,
+  scrollPosition: 0,
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<
-    SetPhotoLayoutPayload &
-    SetNumGridColumnsPayload &
-    SetSurveyModeZoomFactorPayload &
-    SetLoupeViewMediaItemIdPayload &
-    SetDisplayMetadata>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -125,6 +135,11 @@ export const photoViewSpecReducer = (
       return {
         ...state,
         surveyModeZoomFactor: action.payload.surveyModeZoomFactor,
+      };
+    case SET_SCROLL_POSITION:
+      return {
+        ...state,
+        scrollPosition: action.payload.scrollPosition,
       };
 
     default:

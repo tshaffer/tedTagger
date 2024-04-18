@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
-import { TedTaggerDispatch, setAppInitialized } from '../models';
+import { TedTaggerDispatch, setAppInitialized, setScrollPositionRedux } from '../models';
 import GridView from './GridView';
 import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
@@ -26,6 +26,7 @@ export interface AppProps {
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
   onImportFromTakeout: (id: string) => void;
+  onSetScrollPosition: (scrollPosition: number) => any;
 }
 
 const App = (props: AppProps) => {
@@ -46,9 +47,6 @@ const App = (props: AppProps) => {
   };
 
   React.useEffect(() => {
-
-    console.log('React.useEffect for loading invoked');
-
     props.onLoadKeywordData()
       .then(function () {
         return props.onLoadTakeouts();
@@ -61,12 +59,9 @@ const App = (props: AppProps) => {
 
   React.useEffect(() => {
 
-    console.log('React.useEffect for centerColumn invoked');
-
     const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
 
     if (divElement) {
-      console.log('divElement does exists');
       divElement.addEventListener('scroll', handleScroll);
     }
 
@@ -77,16 +72,17 @@ const App = (props: AppProps) => {
         divElement.removeEventListener('scroll', handleScroll);
       }
     };
-  }, []); // Empty dependency array ensures this effect runs only once after initial render
+  }, []);
 
   function handleScroll(event: Event) {
-    const target = event.target as HTMLDivElement;
-    // Get the current scroll position
-    const scrollPosition = target.scrollTop;
-    console.log('Scroll Position:', scrollPosition);
-    // You can perform any actions based on the scroll position here
+    console.log('handleScroll invoked');
+    if (props.photoLayout === PhotoLayout.Grid) {
+      const target = event.target as HTMLDivElement;
+      const scrollPosition: number = target.scrollTop;
+      props.onSetScrollPosition(scrollPosition);
+    }
   }
-  
+
   const getPhotoDisplay = (): JSX.Element => {
     if (props.photoLayout === PhotoLayout.Loupe) {
       return (
@@ -104,8 +100,6 @@ const App = (props: AppProps) => {
   };
 
   const photoDisplay: JSX.Element = getPhotoDisplay();
-
-  console.log('render');
 
   return (
     <div>
@@ -154,6 +148,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetAppInitialized: setAppInitialized,
     onLoadTakeouts: loadTakeouts,
     onImportFromTakeout: importFromTakeout,
+    onSetScrollPosition: setScrollPositionRedux,
   }, dispatch);
 };
 

@@ -24,3 +24,7 @@ export const getSurveyModeZoomFactor = (state: TedTaggerState): number => {
   return state.photoViewSpec.surveyModeZoomFactor;
 };
 
+export const getScrollPosition = (state: TedTaggerState): number => {
+  return state.photoViewSpec.scrollPosition;
+};
+
