@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
-import { TedTaggerDispatch, setAppInitialized, setScrollPositionRedux } from '../models';
+import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
@@ -26,7 +26,6 @@ export interface AppProps {
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
   onImportFromTakeout: (id: string) => void;
-  onSetScrollPosition: (scrollPosition: number) => any;
 }
 
 const App = (props: AppProps) => {
@@ -122,7 +121,6 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetAppInitialized: setAppInitialized,
     onLoadTakeouts: loadTakeouts,
     onImportFromTakeout: importFromTakeout,
-    onSetScrollPosition: setScrollPositionRedux,
   }, dispatch);
 };
 
