@@ -46,6 +46,9 @@ const App = (props: AppProps) => {
   };
 
   React.useEffect(() => {
+
+    console.log('React.useEffect for loading invoked');
+
     props.onLoadKeywordData()
       .then(function () {
         return props.onLoadTakeouts();
@@ -56,6 +59,34 @@ const App = (props: AppProps) => {
       });
   }, []);
 
+  React.useEffect(() => {
+
+    console.log('React.useEffect for centerColumn invoked');
+
+    const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
+
+    if (divElement) {
+      console.log('divElement does exists');
+      divElement.addEventListener('scroll', handleScroll);
+    }
+
+    // Cleanup function to remove the listener when component unmounts
+    return () => {
+      if (divElement) {
+        console.log('React.useEffect for removing event listener invoked');
+        divElement.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []); // Empty dependency array ensures this effect runs only once after initial render
+
+  function handleScroll(event: Event) {
+    const target = event.target as HTMLDivElement;
+    // Get the current scroll position
+    const scrollPosition = target.scrollTop;
+    console.log('Scroll Position:', scrollPosition);
+    // You can perform any actions based on the scroll position here
+  }
+  
   const getPhotoDisplay = (): JSX.Element => {
     if (props.photoLayout === PhotoLayout.Loupe) {
       return (
@@ -73,6 +104,8 @@ const App = (props: AppProps) => {
   };
 
   const photoDisplay: JSX.Element = getPhotoDisplay();
+
+  console.log('render');
 
   return (
     <div>
