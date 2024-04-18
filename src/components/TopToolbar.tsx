@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, selectMediaItem, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setSurveyModeZoomFactorRedux } from '../models';
+import { TedTaggerDispatch, selectMediaItem, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -26,6 +26,7 @@ export interface TopToolbarProps {
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
   onSetDisplayMetadata: (displayMetadata: boolean) => any;
+  onSetScrollPosition: (scrollPosition: number) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -39,6 +40,15 @@ const TopToolbar = (props: TopToolbarProps) => {
   }
 
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
+    if (props.photoLayout === PhotoLayout.Grid) {
+      if (props.photoLayout === PhotoLayout.Grid) {
+        const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
+        if (divElement) {
+          const scrollPosition: number = divElement.scrollTop;
+          props.onSetScrollPosition(scrollPosition);
+        }
+      }
+    }
     if (photoLayout === PhotoLayout.Loupe) {
       props.onSetLoupeViewMediaItemId(props.loupeViewMediaItemId);
       props.onSetPhotoLayoutRedux(PhotoLayout.Loupe);
@@ -184,6 +194,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetNumGridColumns: setNumGridColumnsRedux,
     onSetDisplayMetadata: setDisplayMetadata,
     onSetSurveyModeZoomFactor: setSurveyModeZoomFactorRedux,
+    onSetScrollPosition: setScrollPositionRedux,
   }, dispatch);
 };
 

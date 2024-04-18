@@ -79,7 +79,7 @@ const App = (props: AppProps) => {
     if (props.photoLayout === PhotoLayout.Grid) {
       const target = event.target as HTMLDivElement;
       const scrollPosition: number = target.scrollTop;
-      props.onSetScrollPosition(scrollPosition);
+      // props.onSetScrollPosition(scrollPosition);
     }
   }
 
