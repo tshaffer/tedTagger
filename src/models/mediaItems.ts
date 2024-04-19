@@ -8,6 +8,7 @@ import { TedTaggerModelBaseAction } from './baseAction';
 // ------------------------------------
 export const REPLACE_MEDIA_ITEMS = 'REPLACE_MEDIA_ITEMS';
 export const ADD_MEDIA_ITEMS = 'ADD_MEDIA_ITEMS';
+export const DELETE_MEDIA_ITEMS = 'DELETE_MEDIA_ITEMS';
 export const ADD_KEYWORD_TO_MEDIA_ITEM_IDS = 'ADD_KEYWORD_TO_MEDIA_ITEM_IDS';
 export const REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS = 'REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS';
 export const ADD_KEYWORD_TO_MEDIA_ITEMS = 'ADD_KEYWORD_TO_MEDIA_ITEMS';
@@ -42,6 +43,21 @@ export const addMediaItems = (
     type: ADD_MEDIA_ITEMS,
     payload: {
       mediaItems
+    }
+  };
+};
+
+interface DeleteMediaItemIdsPayload {
+  mediaItemIds: string[];
+}
+
+export const deleteMediaItems = (
+  mediaItemIds: string[],
+) => {
+  return {
+    type: DELETE_MEDIA_ITEMS,
+    payload: {
+      mediaItemIds,
     }
   };
 };
@@ -165,7 +181,7 @@ const initialState: MediaItemsState =
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
   // action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload & ReplaceTagInMediaItemsPayload>
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload & DeleteMediaItemIdsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case REPLACE_MEDIA_ITEMS: {
@@ -178,6 +194,14 @@ export const mediaItemsStateReducer = (
       return {
         ...state,
         mediaItems: state.mediaItems.concat(action.payload.mediaItems)
+      };
+    }
+    case DELETE_MEDIA_ITEMS: {
+      let updatedMediaItems = cloneDeep(state.mediaItems);
+      updatedMediaItems = updatedMediaItems.filter(item => !(action.payload.mediaItemIds.includes(item.googleId)));
+      return {
+        ...state,
+        mediaItems: updatedMediaItems,
       };
     }
     case ADD_KEYWORD_TO_MEDIA_ITEM_IDS: {

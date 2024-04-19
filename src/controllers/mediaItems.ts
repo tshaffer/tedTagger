@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux, replaceMediaItems } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux, replaceMediaItems, deleteMediaItems, clearMediaItemSelection } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, TedTaggerState, MatchRule, SearchRule,
 } from '../types';
@@ -8,6 +8,7 @@ import { cloneDeep, isNil } from 'lodash';
 import {
   getMatchRule,
   getSearchRules,
+  getSelectedMediaItemIds,
 } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
@@ -25,7 +26,7 @@ export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
     path += '?specifyDateRange=' + specifyDateRange;
     path += '&startDate=' + startDate;
     path += '&endDate=' + endDate;
-    
+
     path += '&specifyTagsInSearch=false&tagSelector=untagged&tagIds=&tagSearchOperator=OR';
 
     return axios.get(path)
@@ -134,3 +135,11 @@ export const addKeywordToMediaItems = (
   };
 };
 
+export const deleteSelectedMediaItems = () => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+    const state: any = getState();
+    const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
+    dispatch(clearMediaItemSelection());
+    dispatch(deleteMediaItems(selectedMediaItemIds));
+  };
+};

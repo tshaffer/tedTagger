@@ -16,6 +16,7 @@ import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayo
 import { ChangeEvent } from 'react';
 import ConfirmDeleteDialog from './ConfirmationDialog';
 import ConfirmationDialog from './ConfirmationDialog';
+import { deleteSelectedMediaItems } from '../controllers';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
@@ -31,6 +32,7 @@ export interface TopToolbarProps {
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
   onSetDisplayMetadata: (displayMetadata: boolean) => any;
   onSetScrollPosition: (scrollPosition: number) => any;
+  onDeleteSelectedMediaItems: () => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -72,6 +74,7 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   const handleConfirmDelete = () => {
     setOpenDialog(false);
+    props.onDeleteSelectedMediaItems();
   };
 
   function handleDeleteSelectedPhotos() {
@@ -231,6 +234,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetDisplayMetadata: setDisplayMetadata,
     onSetSurveyModeZoomFactor: setSurveyModeZoomFactorRedux,
     onSetScrollPosition: setScrollPositionRedux,
+    onDeleteSelectedMediaItems: deleteSelectedMediaItems,
   }, dispatch);
 };
 
