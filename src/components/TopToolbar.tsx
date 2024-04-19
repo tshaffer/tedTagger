@@ -9,9 +9,13 @@ import { TedTaggerDispatch, selectMediaItem, setDisplayMetadata, setLoupeViewMed
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
-import { KeywordAssignedToSelectedMediaItemsStatus, MediaItem, PhotoLayout } from '../types';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
 import { ChangeEvent } from 'react';
+import ConfirmDeleteDialog from './ConfirmationDialog';
+import ConfirmationDialog from './ConfirmationDialog';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
@@ -30,6 +34,8 @@ export interface TopToolbarProps {
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
+
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   function handleSliderChange(event: Event, value: number | number[]): void {
     props.onSetNumGridColumns(value as number);
@@ -58,6 +64,18 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   function handlaToggleDisplayMetadata(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
     props.onSetDisplayMetadata(checked);
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleConfirmDelete = () => {
+    setOpenDialog(false);
+  };
+
+  function handleDeleteSelectedPhotos() {
+    setOpenDialog(true);
   }
 
   const getPhotoLayoutPropsUI = (): JSX.Element | null => {
@@ -134,29 +152,48 @@ const TopToolbar = (props: TopToolbarProps) => {
   };
 
   return (
-    <div className='toolbarIconButtonContainer'>
-      <IconButton
-        onClick={() => {
-          handleUpdatePhotoLayout(PhotoLayout.Grid);
-        }}>
-        <GridOnIcon />
-      </IconButton>
-      <IconButton
-        disabled={props.selectedMediaItemIds.length === 0}
-        onClick={() => {
-          handleUpdatePhotoLayout(PhotoLayout.Loupe);
-        }}>
-        <InsertPhotoIcon />
-      </IconButton>
-      <IconButton
-        disabled={props.selectedMediaItemIds.length < 2}
-        onClick={() => {
-          handleUpdatePhotoLayout(PhotoLayout.Survey);
-        }}>
-        <CompareIcon />
-      </IconButton>
-      {getPhotoLayoutPropsUI()}
-    </div>
+    <React.Fragment>
+      <div>
+        <ConfirmationDialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          onConfirm={handleConfirmDelete}
+          title="Confirm Delete"
+          message="Are you sure you want to delete the selected photo(s)?"
+        />
+      </div>
+      <div className='toolbarIconButtonContainer'>
+        <IconButton
+          onClick={() => {
+            handleUpdatePhotoLayout(PhotoLayout.Grid);
+          }}>
+          <GridOnIcon />
+        </IconButton>
+        <IconButton
+          disabled={props.selectedMediaItemIds.length === 0}
+          onClick={() => {
+            handleUpdatePhotoLayout(PhotoLayout.Loupe);
+          }}>
+          <InsertPhotoIcon />
+        </IconButton>
+        <IconButton
+          disabled={props.selectedMediaItemIds.length < 2}
+          onClick={() => {
+            handleUpdatePhotoLayout(PhotoLayout.Survey);
+          }}>
+          <CompareIcon />
+        </IconButton>
+        <IconButton
+          disabled={props.selectedMediaItemIds.length < 1}
+          onClick={() => {
+            handleDeleteSelectedPhotos();
+          }}>
+          <DeleteIcon />
+        </IconButton>
+
+        {getPhotoLayoutPropsUI()}
+      </div>
+    </React.Fragment>
   );
 };
 
