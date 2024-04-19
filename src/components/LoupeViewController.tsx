@@ -78,9 +78,6 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
 };
 
 function mapStateToProps(state: any) {
-  // console.log('mapStateToProps');
-  // console.log(state);
-  // console.log(getLoupeViewMediaItemId(state));
   return {
     loupeViewMediaItemId: getLoupeViewMediaItemId(state),
     mediaItems: getMediaItems(state),
