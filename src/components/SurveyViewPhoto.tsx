@@ -110,7 +110,12 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
               className='surveyImageStyle'
               loading="lazy"
             />
-            <IconButton className='iconButtonStyle'>
+            <IconButton
+              className='iconButtonStyle'
+              style={{
+                color: 'white',
+              }}
+            >
               <DeleteIcon />
             </IconButton>
           </div>

@@ -110,9 +110,7 @@
 }
 
 .iconButtonStyle {
-  position: 'absolute';
-  top: 128px;
-  right: 128px;
+  right: -90%;
   z-index: 1;
 }
 
