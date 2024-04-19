@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux, replaceMediaItems, deleteMediaItems, clearMediaItemSelection } from '../models';
+import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux, replaceMediaItems, deleteMediaItemsRedux, clearMediaItemSelection } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, TedTaggerState, MatchRule, SearchRule,
 } from '../types';
@@ -135,11 +135,11 @@ export const addKeywordToMediaItems = (
   };
 };
 
-export const deleteSelectedMediaItems = () => {
+export const deleteMediaItems = (mediaItemIds: string[]) => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
     const state: any = getState();
-    const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
+    // const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
     dispatch(clearMediaItemSelection());
-    dispatch(deleteMediaItems(selectedMediaItemIds));
+    dispatch(deleteMediaItemsRedux(mediaItemIds));
   };
 };

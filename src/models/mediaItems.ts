@@ -51,7 +51,7 @@ interface DeleteMediaItemIdsPayload {
   mediaItemIds: string[];
 }
 
-export const deleteMediaItems = (
+export const deleteMediaItemsRedux = (
   mediaItemIds: string[],
 ) => {
   return {

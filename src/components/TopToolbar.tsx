@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, selectMediaItem, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
+import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider } from '@mui/material';
+import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -14,9 +14,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
 import { ChangeEvent } from 'react';
-import ConfirmDeleteDialog from './ConfirmationDialog';
 import ConfirmationDialog from './ConfirmationDialog';
-import { deleteSelectedMediaItems } from '../controllers';
+import { deleteMediaItems } from '../controllers';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
@@ -32,7 +31,7 @@ export interface TopToolbarProps {
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
   onSetDisplayMetadata: (displayMetadata: boolean) => any;
   onSetScrollPosition: (scrollPosition: number) => any;
-  onDeleteSelectedMediaItems: () => any;
+  onDeleteMediaItems: (mediaItemIds: string[]) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -74,7 +73,7 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   const handleConfirmDelete = () => {
     setOpenDialog(false);
-    props.onDeleteSelectedMediaItems();
+    props.onDeleteMediaItems(props.selectedMediaItemIds);
   };
 
   function handleDeleteSelectedPhotos() {
@@ -234,7 +233,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetDisplayMetadata: setDisplayMetadata,
     onSetSurveyModeZoomFactor: setSurveyModeZoomFactorRedux,
     onSetScrollPosition: setScrollPositionRedux,
-    onDeleteSelectedMediaItems: deleteSelectedMediaItems,
+    onDeleteMediaItems: deleteMediaItems,
   }, dispatch);
 };
 
