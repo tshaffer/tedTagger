@@ -16,6 +16,7 @@ import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayo
 import { ChangeEvent } from 'react';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems } from '../controllers';
+import Photo from './Photo';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
@@ -73,7 +74,20 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   const handleConfirmDelete = () => {
     setOpenDialog(false);
-    props.onDeleteMediaItems(props.selectedMediaItemIds);
+    switch(props.photoLayout) {
+      case PhotoLayout.Grid: {
+        props.onDeleteMediaItems(props.selectedMediaItemIds);
+        break;
+      }
+      case PhotoLayout.Loupe: {
+        props.onDeleteMediaItems([props.loupeViewMediaItemId]);
+        break;
+      }
+      case PhotoLayout.Survey: {
+        console.log('not implemented yet');
+        break;
+      }
+    }
   };
 
   function handleDeleteSelectedPhotos() {

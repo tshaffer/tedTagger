@@ -2,7 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Grid, Card, CardMedia, GridSize } from '@mui/material';
+import { Grid, Card, CardMedia, GridSize, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
@@ -98,16 +99,21 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
       >
         <CardMedia
           id={props.mediaItem.googleId}
-          className='image-container'
+          className='survey-image-container'
           title={photoUrl}
           sx={cardMediaStyle}
         >
-          <img
-            id={elementId}
-            src={photoUrl}
-            className='surveyImageStyle'
-            loading="lazy"
-          />
+          <div className='container'>
+            <img
+              id={elementId}
+              src={photoUrl}
+              className='surveyImageStyle'
+              loading="lazy"
+            />
+            <IconButton className='iconButtonStyle'>
+              <DeleteIcon />
+            </IconButton>
+          </div>
         </CardMedia>
       </Card>
     </Grid>
