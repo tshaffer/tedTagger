@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider, Typography } from '@mui/material';
 import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -74,7 +74,7 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   const handleConfirmDelete = () => {
     setOpenDialog(false);
-    switch(props.photoLayout) {
+    switch (props.photoLayout) {
       case PhotoLayout.Grid: {
         props.onDeleteMediaItems(props.selectedMediaItemIds);
         break;
@@ -100,11 +100,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         return (
           <React.Fragment>
             <div className='sliderContainer'>
-              <div className='sliderLabelContainer'>
-                <span className={'sliderLabel'}>
-                  Zoom
-                </span>
-              </div>
+              <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
               <Slider
                 size='small'
                 value={props.surveyModeZoomFactor}
@@ -122,11 +118,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         return (
           <React.Fragment>
             <div className='sliderContainer'>
-              <div className='sliderLabelContainer'>
-                <span className={'sliderLabel'}>
-                  Grid Column Count
-                </span>
-              </div>
+              <Typography gutterBottom style={{ fontSize: '13px' }}>Grid Column Count</Typography>
               <Slider
                 size='small'
                 value={props.numGridColumns}
