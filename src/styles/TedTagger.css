@@ -109,11 +109,6 @@
   display: 'inline-block';
 }
 
-.iconButtonStyle {
-  right: -90%;
-  z-index: 1;
-}
-
 .imgStyle {
   max-width: 100%;
   max-height: 100%;
