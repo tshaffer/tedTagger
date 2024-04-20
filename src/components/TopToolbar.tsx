@@ -112,7 +112,7 @@ const TopToolbar = (props: TopToolbarProps) => {
                 valueLabelDisplay='auto'
                 min={1}
                 step={0.1}
-                max={2}
+                max={6}
               />
             </div>
           </React.Fragment>
@@ -124,7 +124,7 @@ const TopToolbar = (props: TopToolbarProps) => {
             <div className='sliderContainer'>
               <div className='sliderLabelContainer'>
                 <span className={'sliderLabel'}>
-                  Grid Size
+                  Grid Column Count
                 </span>
               </div>
               <Slider
