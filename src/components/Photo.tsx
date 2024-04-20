@@ -192,7 +192,7 @@ function Photo(props: PhotoProps) {
             >
               <img
                 src={photoUrl}
-                className={dynamicImageStyle}
+                className={'imageStyle ' + dynamicImageStyle}
                 loading='lazy'
               />
             </CardMedia>
