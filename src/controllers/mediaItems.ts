@@ -8,7 +8,6 @@ import { cloneDeep, isNil } from 'lodash';
 import {
   getMatchRule,
   getSearchRules,
-  getSelectedMediaItemIds,
 } from '../selectors';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
@@ -136,10 +135,23 @@ export const addKeywordToMediaItems = (
 };
 
 export const deleteMediaItems = (mediaItemIds: string[]) => {
-  return (dispatch: TedTaggerDispatch, getState: any) => {
-    const state: any = getState();
-    // const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
-    dispatch(clearMediaItemSelection());
-    dispatch(deleteMediaItemsRedux(mediaItemIds));
+
+  return (dispatch: TedTaggerDispatch) => {
+
+    const path = serverUrl + apiUrlFragment + 'deleteMediaItems';
+
+    const deleteMediaItemsBody = { mediaItemIds };
+
+    return axios.post(
+      path,
+      deleteMediaItemsBody
+    ).then((response) => {
+      dispatch(clearMediaItemSelection());
+      dispatch(deleteMediaItemsRedux(mediaItemIds));
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return '';
+    });
   };
 };
