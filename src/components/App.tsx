@@ -10,7 +10,6 @@ import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
 
 import Keywords from './Keywords';
-import ViewSpec from './ViewSpec';
 import SearchSpecDialog from './SearchSpecDialog';
 import ImportFromTakeoutDialog from './ImportFromTakeoutDialog';
 import LoupeViewController from './LoupeViewController';
@@ -81,7 +80,6 @@ const App = (props: AppProps) => {
       </React.Fragment>
       <div className='appStyle'>
         <div className='leftColumnStyle'>
-          <ViewSpec />
           <Keywords />
           <Button onClick={() => setShowSearchSpecDialog(true)}>Set Search Spec</Button>
           <SearchSpecDialog

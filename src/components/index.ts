@@ -14,7 +14,6 @@ export * from './PhotoProperties';
 export * from './SearchSpecDialog';
 export * from './SurveyView';
 export * from './TopToolbar';
-export * from './ViewSpec';
 export * from './ZoomGroup';
 
 
