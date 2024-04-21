@@ -20,7 +20,8 @@ const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
   margin: '8px',
-  width: '100%',
+  // width: '100%',
+  width: '800px',
   height: '100%',
   backgroundColor: 'lightcoral',
   boxShadow: 'none',
@@ -99,7 +100,7 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
       >
         <CardMedia
           id={props.mediaItem.googleId}
-          className='image-container'
+          className='survey-image-container'
           title={photoUrl}
           sx={cardMediaStyle}
         >
