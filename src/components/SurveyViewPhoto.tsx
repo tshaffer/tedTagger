@@ -92,6 +92,36 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
     imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
   }
 
+  console.log('render surveyViewPhoto');
+
+  const cardMediaElement = document.getElementById(props.mediaItem.googleId) as HTMLDivElement | null;
+  if (cardMediaElement) {
+    console.log('CardMediaElement ' + props.mediaItem.googleId + ' found');
+    const scrollPosition: number = cardMediaElement.scrollLeft;
+    console.log(scrollPosition);
+
+    /*
+      The scrollWidth value is equal to the minimum width the element would require in order to fit all the content in the viewport 
+      without using a horizontal scrollbar. The width is measured in the same way as clientWidth    
+    */
+    const scrollWidth: number = cardMediaElement.scrollWidth;
+    console.log(scrollWidth);
+    const clientWidth: number = cardMediaElement.clientWidth;
+    console.log(clientWidth);
+
+    /*
+      Fully scrolled to the right when
+        scrollPosition + clientWidth >= scrollWidth
+    */
+  }
+
+  // const imgElement = document.getElementById(elementId) as any;
+  // if (imgElement) {
+  //   console.log('imgElement ' + elementId + ' found');
+  //   const scrollPosition: number = imgElement.scrollLeft;
+  //   console.log(scrollPosition);
+  // }
+
   return (
     <Grid item lg={gridItemSize} style={gridItemStyle}>
       <Card
