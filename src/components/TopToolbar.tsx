@@ -98,7 +98,11 @@ const TopToolbar = (props: TopToolbarProps) => {
     switch (props.photoLayout) {
       case PhotoLayout.Survey: {
         return (
-          <React.Fragment>
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            transform: 'translate(40%, -50%)',
+          }}>
             <div className='sliderContainer'>
               <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
               <Slider
@@ -111,46 +115,31 @@ const TopToolbar = (props: TopToolbarProps) => {
                 max={6}
               />
             </div>
-          </React.Fragment>
+          </div>
         );
       }
       case PhotoLayout.Grid: {
         return (
-          <React.Fragment>
-            <div className='sliderContainer'>
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            transform: 'translate(40%, -50%)',
+          }}>
+            <div className='sliderContainer'> {/* sliderContainer wrapped inside the parent */}
               <Typography gutterBottom style={{ fontSize: '13px' }}>Grid Column Count</Typography>
               <Slider
                 size='small'
                 value={props.numGridColumns}
                 onChange={handleSliderChange}
                 valueLabelDisplay='auto'
-                // shiftStep={30}
                 step={1}
                 marks
                 min={2}
                 max={10}
               />
             </div>
-            <div>
-              <FormGroup>
-                <FormControlLabel
-                  style={{ marginLeft: '4px' }}
-                  control={
-                    <Checkbox
-                      size='small'
-                      checked={props.displayMetadata}
-                      onChange={handlaToggleDisplayMetadata}
-                    />
-                  }
-                  label={
-                    <span style={{ fontSize: '13px', marginLeft: '-2px' }}>
-                      Show Metadata
-                    </span>
-                  }
-                />
-              </FormGroup>
-            </div>
-          </React.Fragment>
+          </div>
+
         );
         break;
       }
