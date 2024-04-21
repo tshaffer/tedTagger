@@ -99,26 +99,16 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
       >
         <CardMedia
           id={props.mediaItem.googleId}
-          className='survey-image-container'
+          className='image-container'
           title={photoUrl}
           sx={cardMediaStyle}
         >
-          <div className='container'>
-            <img
-              id={elementId}
-              src={photoUrl}
-              className='surveyImageStyle'
-              loading="lazy"
-            />
-            <IconButton
-              style={{
-                color: 'white',
-                zIndex: 1,
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </div>
+          <img
+            id={elementId}
+            src={photoUrl}
+            className='surveyImageStyle'
+            loading="lazy"
+          />
         </CardMedia>
       </Card>
     </Grid>
