@@ -171,26 +171,29 @@ const TopToolbar = (props: TopToolbarProps) => {
         />
       </div>
       <div className='toolbarIconButtonContainer'>
-        <IconButton
-          onClick={() => {
-            handleUpdatePhotoLayout(PhotoLayout.Grid);
-          }}>
-          <GridOnIcon />
-        </IconButton>
-        <IconButton
-          disabled={props.selectedMediaItemIds.length === 0}
-          onClick={() => {
-            handleUpdatePhotoLayout(PhotoLayout.Loupe);
-          }}>
-          <InsertPhotoIcon />
-        </IconButton>
-        <IconButton
-          disabled={props.selectedMediaItemIds.length < 2}
-          onClick={() => {
-            handleUpdatePhotoLayout(PhotoLayout.Survey);
-          }}>
-          <CompareIcon />
-        </IconButton>
+        <div>
+          <IconButton
+            onClick={() => {
+              handleUpdatePhotoLayout(PhotoLayout.Grid);
+            }}>
+            <GridOnIcon />
+          </IconButton>
+          <IconButton
+            disabled={props.selectedMediaItemIds.length === 0}
+            onClick={() => {
+              handleUpdatePhotoLayout(PhotoLayout.Loupe);
+            }}>
+            <InsertPhotoIcon />
+          </IconButton>
+          <IconButton
+            disabled={props.selectedMediaItemIds.length < 2}
+            onClick={() => {
+              handleUpdatePhotoLayout(PhotoLayout.Survey);
+            }}>
+            <CompareIcon />
+          </IconButton>
+          {getPhotoLayoutPropsUI()}
+        </div>
         <IconButton
           disabled={props.selectedMediaItemIds.length < 1}
           onClick={() => {
@@ -198,9 +201,8 @@ const TopToolbar = (props: TopToolbarProps) => {
           }}>
           <DeleteIcon />
         </IconButton>
-
-        {getPhotoLayoutPropsUI()}
       </div>
+
     </React.Fragment>
   );
 };
