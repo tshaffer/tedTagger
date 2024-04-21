@@ -2,29 +2,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Grid, Card, CardMedia, GridSize, IconButton } from '@mui/material';
-import ScrollingCardMedia from './ScrollingCardMedia';
+import { CardMedia } from '@mui/material';
 
 import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
 
 import { getPhotoUrl } from '../utilities';
+import CardMediaImage from './CardMediaImage';
 import { getSurveyModeZoomFactor } from '../selectors';
-
-const gridItemStyle = {
-  // paddingLeft: '8px',
-  // paddingTop: '8px',
-};
-
-const cardStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  margin: '8px',
-  width: '100%',
-  height: '100%',
-  backgroundColor: 'lightcoral',
-  boxShadow: 'none',
-};
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
@@ -44,22 +29,21 @@ const unselectedCardMediaStyle = {
   backgroundColor: 'purple',
 };
 
-export interface SurveyViewPhotosPropsFromParent {
+export interface ScrollingCardMediaPropsFromParent {
   mediaItem: MediaItem;
   numGridColumns: number;
   numGridRows: number;
 }
 
-export interface SurveyViewPhotosProps extends SurveyViewPhotosPropsFromParent {
+export interface ScrollingCardMediaProps extends ScrollingCardMediaPropsFromParent {
   surveyModeZoomFactor: number;
 }
 
-function SurveyViewPhotos(props: SurveyViewPhotosProps) {
+function ScrollingCardMedia(props: ScrollingCardMediaProps) {
+
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const photoUrl = getPhotoUrl(props.mediaItem);
-
-  const numColumns: number = props.numGridColumns;
-  const gridItemSize: GridSize = 12 / numColumns;
 
   let cardMediaHeight: number = 0;
 
@@ -86,25 +70,19 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
 
   const cardMediaStyle = unselectedCardMediaStyle;
 
-  const elementId: string = 'surveyImage' + props.mediaItem.googleId;
-  const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
-  if (imageElement) {
-    imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
-  }
-
   return (
-    <Grid item lg={gridItemSize} style={gridItemStyle}>
-      <Card
-        sx={cardStyle}
-      >
-        <ScrollingCardMedia
-          mediaItem={props.mediaItem}
-          numGridColumns={props.numGridColumns}
-          numGridRows={props.numGridRows}
-        >
-        </ScrollingCardMedia>
-      </Card>
-    </Grid>
+    <CardMedia
+      ref={containerRef}
+      id={props.mediaItem.googleId}
+      className='survey-image-container'
+      title={photoUrl}
+      sx={cardMediaStyle}
+    >
+      <CardMediaImage
+        mediaItem={props.mediaItem}
+      />
+    </CardMedia>
+
   );
 }
 
@@ -120,4 +98,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyViewPhotos);
+export default connect(mapStateToProps, mapDispatchToProps)(ScrollingCardMedia);

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider, Typography } from '@mui/material';
+import { IconButton, Slider, Typography } from '@mui/material';
 import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -16,7 +16,6 @@ import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayo
 import { ChangeEvent } from 'react';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems } from '../controllers';
-import Photo from './Photo';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];

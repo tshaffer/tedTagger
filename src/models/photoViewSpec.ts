@@ -141,7 +141,6 @@ export const photoViewSpecReducer = (
         ...state,
         scrollPosition: action.payload.scrollPosition,
       };
-
     default:
       return state;
   }
