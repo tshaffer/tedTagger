@@ -1,4 +1,4 @@
-import { TedTaggerState, PhotoViewSpec, PhotoLayout } from '../types';
+import { TedTaggerState, PhotoViewSpec, PhotoLayout, Position } from '../types';
 
 export const getPhotoViewSpec = (state: TedTaggerState): PhotoViewSpec => {
   return state.photoViewSpec;
@@ -26,5 +26,9 @@ export const getSurveyModeZoomFactor = (state: TedTaggerState): number => {
 
 export const getScrollPosition = (state: TedTaggerState): number => {
   return state.photoViewSpec.scrollPosition;
+};
+
+export const getScrollBarPosition = (state: TedTaggerState): Position => {
+  return state.photoViewSpec.scrollBarPosition;
 };
 

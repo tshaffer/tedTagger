@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { TedTaggerDispatch } from '../models';
-import { MediaItem } from '../types';
+import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
-import { getSurveyModeZoomFactor } from '../selectors';
+import { getScrollBarPosition, getSurveyModeZoomFactor } from '../selectors';
 
 export interface CardMediaImagePropsFromParent {
   mediaItem: MediaItem;
@@ -14,6 +14,7 @@ export interface CardMediaImagePropsFromParent {
 
 export interface CardMediaImageProps extends CardMediaImagePropsFromParent {
   surveyModeZoomFactor: number;
+  scrollBarPosition: Position;
 }
 
 function CardMediaImage(props: CardMediaImageProps) {
@@ -27,7 +28,8 @@ function CardMediaImage(props: CardMediaImageProps) {
   }
 
   console.log('render CardMediaImage');
-
+  console.log(props.scrollBarPosition);
+  
   return (
     <img
       id={elementId}
@@ -42,6 +44,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
+    scrollBarPosition: getScrollBarPosition(state),
   };
 }
 

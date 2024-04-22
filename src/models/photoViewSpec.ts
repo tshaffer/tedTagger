@@ -1,4 +1,4 @@
-import { PhotoLayout, PhotoViewSpec } from '../types';
+import { PhotoLayout, PhotoViewSpec, Position } from '../types';
 import { TedTaggerModelBaseAction } from './baseAction';
 
 // ------------------------------------
@@ -10,6 +10,7 @@ export const SET_LOUPE_VIEW_MEDIA_ITEM_ID = 'SET_LOUPE_VIEW_MEDIA_ITEM_ID';
 export const SET_DISPLAY_METADATA = 'SET_DISPLAY_METADATA';
 export const SET_SURVEY_MODE_ZOOM_FACTOR = 'SET_SURVEY_MODE_ZOOM_FACTOR';
 export const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION';
+export const SET_SCROLL_BAR_POSITION = 'SET_SCROLL_BAR_POSITION';
 
 // ------------------------------------
 // Actions
@@ -93,6 +94,19 @@ export const setScrollPositionRedux = (scrollPosition: number): any => {
   };
 };
 
+interface SetScrollBarPositionPayload {
+  scrollBarPosition: Position,
+}
+
+export const setScrollBarPosition = (scrollBarPosition: Position): any => {
+  return {
+    type: SET_SCROLL_BAR_POSITION,
+    payload: {
+      scrollBarPosition,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -104,11 +118,12 @@ const initialState: PhotoViewSpec = {
   displayMetadata: false,
   surveyModeZoomFactor: 1,
   scrollPosition: 0,
+  scrollBarPosition: { x: 0, y: 0 }
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetScrollBarPositionPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -141,7 +156,11 @@ export const photoViewSpecReducer = (
         ...state,
         scrollPosition: action.payload.scrollPosition,
       };
-
+    case SET_SCROLL_BAR_POSITION:
+      return {
+        ...state,
+        scrollBarPosition: action.payload.scrollBarPosition,
+      }
     default:
       return state;
   }

@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux';
 
 import { CardMedia } from '@mui/material';
 
-import { TedTaggerDispatch } from '../models';
-import { MediaItem } from '../types';
+import { TedTaggerDispatch, setScrollBarPosition } from '../models';
+import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
 import CardMediaImage from './CardMediaImage';
+import { getScrollBarPosition } from '../selectors';
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
@@ -35,6 +36,9 @@ export interface ScrollingCardMediaPropsFromParent {
 }
 
 export interface ScrollingCardMediaProps extends ScrollingCardMediaPropsFromParent {
+  scrollBarPosition: Position;
+  onSetScrollBarPosition: (p: Position) => any;
+
 }
 
 function ScrollingCardMedia(props: ScrollingCardMediaProps) {
@@ -55,8 +59,7 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
       const y = container.scrollTop;
       console.log('handleScroll: ', x, y);
       setScrollPosition({ x, y });
-      // handleScrollTo(x, y);
-      handleScrollTo(0, 0);
+      handleScrollTo(x, y);
     };
 
     // Attach scroll event listener
@@ -71,9 +74,10 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
   const handleScrollTo = (x: number, y: number) => {
     console.log('handleScrollTo: ', x, y);
-    if (containerRef.current) {
-      containerRef.current.scrollTo({ left: x, top: y, behavior: 'smooth' });
-    }
+    props.onSetScrollBarPosition({ x, y });
+    // if (containerRef.current) {
+    //   containerRef.current.scrollTo({ left: x, top: y, behavior: 'smooth' });
+    // }
   };
 
   const photoUrl = getPhotoUrl(props.mediaItem);
@@ -124,11 +128,13 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
+    scrollBarPosition: getScrollBarPosition(state),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onSetScrollBarPosition: setScrollBarPosition,
   }, dispatch);
 };
 

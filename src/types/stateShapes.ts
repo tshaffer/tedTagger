@@ -65,6 +65,11 @@ export interface TakeoutsState {
   takeouts: Takeout[];
 }
 
+export interface Position {
+  x: number;
+  y: number;
+}
+
 export interface PhotoViewSpec {
   photoLayout: PhotoLayout;
   numGridColumns: number;
@@ -72,4 +77,5 @@ export interface PhotoViewSpec {
   displayMetadata: boolean;
   surveyModeZoomFactor: number;
   scrollPosition: number;
+  scrollBarPosition: Position;
 }
