@@ -47,16 +47,22 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
     const container = containerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
+    const handleScroll = (event: Event) => {
+
+      event.preventDefault();
+
       // Calculate the scroll position based on the container's scrollLeft and scrollTop
       const x = container.scrollLeft;
       const y = container.scrollTop;
       console.log('handleScroll: ', x, y);
       setScrollPosition({ x, y });
+      // handleScrollTo(x, y);
+      handleScrollTo(0, 0);
     };
 
     // Attach scroll event listener
-    container.addEventListener('scroll', handleScroll);
+    // container.addEventListener('scroll', handleScroll);
+    container.addEventListener('scroll', handleScroll, { passive: false });
 
     return () => {
       // Cleanup: remove event listener
@@ -68,7 +74,7 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
     console.log('handleScrollTo: ', x, y);
     console.log('containerRef.current: ', containerRef.current);
     if (containerRef.current) {
-      // containerRef.current.scrollTo({ left: x, top: y, behavior: 'smooth' });
+      containerRef.current.scrollTo({ left: x, top: y, behavior: 'smooth' });
     }
   };
 
