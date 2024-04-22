@@ -11,6 +11,7 @@ export * from './LoupeView';
 export * from './LoupeViewController';
 export * from './Photo';
 export * from './PhotoProperties';
+export * from './ScrollingCardMedia';
 export * from './SearchSpecDialog';
 export * from './SurveyView';
 export * from './TopToolbar';
