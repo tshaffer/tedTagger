@@ -1,5 +1,6 @@
 export * from './AddKeywordDialog';
 export * from './App';
+export * from './CardMediaImage';
 export * from './ConfirmationDialog';
 export * from './GridView';
 export * from './FullScreenPhoto';

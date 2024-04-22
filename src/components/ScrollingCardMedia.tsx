@@ -8,7 +8,7 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
 
 import { getPhotoUrl } from '../utilities';
-import { getSurveyModeZoomFactor } from '../selectors';
+import CardMediaImage from './CardMediaImage';
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
@@ -35,7 +35,6 @@ export interface ScrollingCardMediaPropsFromParent {
 }
 
 export interface ScrollingCardMediaProps extends ScrollingCardMediaPropsFromParent {
-  surveyModeZoomFactor: number;
 }
 
 function ScrollingCardMedia(props: ScrollingCardMediaProps) {
@@ -72,7 +71,6 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
   const handleScrollTo = (x: number, y: number) => {
     console.log('handleScrollTo: ', x, y);
-    console.log('containerRef.current: ', containerRef.current);
     if (containerRef.current) {
       containerRef.current.scrollTo({ left: x, top: y, behavior: 'smooth' });
     }
@@ -105,11 +103,7 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
   const cardMediaStyle = unselectedCardMediaStyle;
 
-  const elementId: string = 'surveyImage' + props.mediaItem.googleId;
-  const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
-  if (imageElement) {
-    imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
-  }
+  console.log('render ScrollingCardMedia');
 
   return (
     <CardMedia
@@ -119,11 +113,8 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
       title={photoUrl}
       sx={cardMediaStyle}
     >
-      <img
-        id={elementId}
-        src={photoUrl}
-        className='surveyImageStyle'
-        loading="lazy"
+      <CardMediaImage
+        mediaItem={props.mediaItem}
       />
     </CardMedia>
 
@@ -133,7 +124,6 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
-    surveyModeZoomFactor: getSurveyModeZoomFactor(state),
   };
 }
 
