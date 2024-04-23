@@ -27,9 +27,9 @@ function CardMediaImage(props: CardMediaImageProps) {
     imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
   }
 
-  console.log('render CardMediaImage');
-  console.log(props.scrollBarPosition);
-  
+  // console.log('render CardMediaImage');
+  // console.log(props.scrollBarPosition);
+
   return (
     <img
       id={elementId}

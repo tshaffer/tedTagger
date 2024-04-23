@@ -52,19 +52,31 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
     const handleScroll = (event: Event) => {
 
-      event.preventDefault();
+      // const isScrollBarAtRight = container.scrollLeft === container.scrollWidth - container.clientWidth;
+      console.log('scrollLeft: ', container.scrollLeft);
+      console.log('scrollWidth: ', container.scrollWidth);
+      console.log('clientWidth: ', container.clientWidth);
+      // console.log(container.scrollWidth - container.clientWidth);
+
+      const maxScrollLeftPosition = container.scrollWidth - container.clientWidth;
+      const currentScrollLeftPosition = container.scrollLeft;
+      const percentageScrolledToTheRight = (maxScrollLeftPosition - currentScrollLeftPosition) / maxScrollLeftPosition * 100;
+      console.log('percentage offset from the right: ', percentageScrolledToTheRight);
+
+
+      // event.preventDefault();
 
       // Calculate the scroll position based on the container's scrollLeft and scrollTop
       const x = container.scrollLeft;
       const y = container.scrollTop;
-      console.log('handleScroll: ', x, y);
+      // console.log('handleScroll: ', x, y);
       setScrollPosition({ x, y });
       handleScrollTo(x, y);
     };
 
     // Attach scroll event listener
-    // container.addEventListener('scroll', handleScroll);
-    container.addEventListener('scroll', handleScroll, { passive: false });
+    container.addEventListener('scroll', handleScroll);
+    // container.addEventListener('scroll', handleScroll, { passive: false });
 
     return () => {
       // Cleanup: remove event listener
@@ -73,7 +85,7 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
   }, []);
 
   const handleScrollTo = (x: number, y: number) => {
-    console.log('handleScrollTo: ', x, y);
+    // console.log('handleScrollTo: ', x, y);
     props.onSetScrollBarPosition({ x, y });
     // if (containerRef.current) {
     //   containerRef.current.scrollTo({ left: x, top: y, behavior: 'smooth' });
@@ -107,7 +119,7 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
   const cardMediaStyle = unselectedCardMediaStyle;
 
-  console.log('render ScrollingCardMedia');
+  // console.log('render ScrollingCardMedia');
 
   return (
     <CardMedia
