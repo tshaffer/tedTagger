@@ -6,7 +6,7 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
-import { getScrollBarPosition, getSurveyModeZoomFactor } from '../selectors';
+import { getPercentageScrolledToTheRight, getScrollBarPosition, getSurveyModeZoomFactor } from '../selectors';
 
 export interface CardMediaImagePropsFromParent {
   mediaItem: MediaItem;
@@ -15,6 +15,7 @@ export interface CardMediaImagePropsFromParent {
 export interface CardMediaImageProps extends CardMediaImagePropsFromParent {
   surveyModeZoomFactor: number;
   scrollBarPosition: Position;
+  percentageScrolledToTheRight: number;
 }
 
 function CardMediaImage(props: CardMediaImageProps) {
@@ -27,8 +28,8 @@ function CardMediaImage(props: CardMediaImageProps) {
     imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
   }
 
-  // console.log('render CardMediaImage');
-  // console.log(props.scrollBarPosition);
+  console.log('render CardMediaImage');
+  console.log(props.percentageScrolledToTheRight);
 
   return (
     <img
@@ -45,6 +46,7 @@ function mapStateToProps(state: any, ownProps: any) {
     mediaItem: ownProps.mediaItem,
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     scrollBarPosition: getScrollBarPosition(state),
+    percentageScrolledToTheRight: getPercentageScrolledToTheRight(state),
   };
 }
 

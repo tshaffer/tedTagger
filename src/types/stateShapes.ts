@@ -78,4 +78,5 @@ export interface PhotoViewSpec {
   surveyModeZoomFactor: number;
   scrollPosition: number;
   scrollBarPosition: Position;
+  percentageScrolledToTheRight: number;
 }

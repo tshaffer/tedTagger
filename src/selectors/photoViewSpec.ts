@@ -32,3 +32,7 @@ export const getScrollBarPosition = (state: TedTaggerState): Position => {
   return state.photoViewSpec.scrollBarPosition;
 };
 
+export const getPercentageScrolledToTheRight = (state: TedTaggerState): number => {
+  return state.photoViewSpec.percentageScrolledToTheRight;
+};
+

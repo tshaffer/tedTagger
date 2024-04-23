@@ -11,7 +11,7 @@ export const SET_DISPLAY_METADATA = 'SET_DISPLAY_METADATA';
 export const SET_SURVEY_MODE_ZOOM_FACTOR = 'SET_SURVEY_MODE_ZOOM_FACTOR';
 export const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION';
 export const SET_SCROLL_BAR_POSITION = 'SET_SCROLL_BAR_POSITION';
-
+export const SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT = 'SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT';
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -107,6 +107,19 @@ export const setScrollBarPosition = (scrollBarPosition: Position): any => {
   };
 };
 
+interface SetPercentageScrolledToTheRightPayload {
+  percentageScrolledToTheRight: number,
+}
+
+export const setPercentageScrolledToTheRight = (percentageScrolledToTheRight: number): any => {
+  return {
+    type: SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT,
+    payload: {
+      percentageScrolledToTheRight,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -118,12 +131,13 @@ const initialState: PhotoViewSpec = {
   displayMetadata: false,
   surveyModeZoomFactor: 1,
   scrollPosition: 0,
-  scrollBarPosition: { x: 0, y: 0 }
+  scrollBarPosition: { x: 0, y: 0 },
+  percentageScrolledToTheRight: 0,
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetScrollBarPositionPayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetScrollBarPositionPayload & SetPercentageScrolledToTheRightPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -160,7 +174,12 @@ export const photoViewSpecReducer = (
       return {
         ...state,
         scrollBarPosition: action.payload.scrollBarPosition,
-      }
+      };
+    case SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT:
+      return {
+        ...state,
+        percentageScrolledToTheRight: action.payload.percentageScrolledToTheRight,
+      };
     default:
       return state;
   }

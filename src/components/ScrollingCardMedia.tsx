@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { CardMedia } from '@mui/material';
 
-import { TedTaggerDispatch, setScrollBarPosition } from '../models';
+import { TedTaggerDispatch, setPercentageScrolledToTheRight, setScrollBarPosition } from '../models';
 import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
@@ -38,6 +38,7 @@ export interface ScrollingCardMediaPropsFromParent {
 export interface ScrollingCardMediaProps extends ScrollingCardMediaPropsFromParent {
   scrollBarPosition: Position;
   onSetScrollBarPosition: (p: Position) => any;
+  onSetPercentageScrolledToTheRight: (p: number) => any;
 
 }
 
@@ -62,7 +63,7 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
       const currentScrollLeftPosition = container.scrollLeft;
       const percentageScrolledToTheRight = (maxScrollLeftPosition - currentScrollLeftPosition) / maxScrollLeftPosition * 100;
       console.log('percentage offset from the right: ', percentageScrolledToTheRight);
-
+      props.onSetPercentageScrolledToTheRight(percentageScrolledToTheRight);
 
       // event.preventDefault();
 
@@ -147,6 +148,7 @@ function mapStateToProps(state: any, ownProps: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onSetScrollBarPosition: setScrollBarPosition,
+    onSetPercentageScrolledToTheRight: setPercentageScrolledToTheRight,
   }, dispatch);
 };
 
