@@ -25,7 +25,10 @@ function CardMediaImage(props: CardMediaImageProps) {
   const elementId: string = 'surveyImage' + props.mediaItem.googleId;
   const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
   if (imageElement) {
-    imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
+    // imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
+    const xTranslate: string = 'translate(' + Math.round(100 - props.percentageScrolledToTheRight).toString() + '%';
+    console.log('xTranslate: ' + xTranslate);
+    imageElement.style.transform = xTranslate + ` scale(${props.surveyModeZoomFactor})`;
   }
 
   console.log('render CardMediaImage');
