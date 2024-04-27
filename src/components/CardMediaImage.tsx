@@ -29,10 +29,16 @@ function CardMediaImage(props: CardMediaImageProps) {
   const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
   if (imageElement) {
     // imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
+    // const xTranslate: string = 'translate(' + Math.round(-50 + props.xTranslateOffset).toString() + '%';
+    // console.log('xTranslate: ' + xTranslate);
+    // imageElement.style.transform = xTranslate + `, -50%) scale(${props.surveyModeZoomFactor})`;
+    // console.log(imageElement.style.transform);
+
+    // const xTranslate: string = 'translate(' + Math.round(100 - props.percentageScrolledToTheRight).toString() + '%';
     const xTranslate: string = 'translate(' + Math.round(-50 + props.xTranslateOffset).toString() + '%';
-    console.log('xTranslate: ' + xTranslate);
     imageElement.style.transform = xTranslate + `, -50%) scale(${props.surveyModeZoomFactor})`;
-    console.log(imageElement.style.transform);
+    console.log('imageElement.style.transform: ' + imageElement.style.transform);
+
   }
 
   // console.log(props.percentageScrolledToTheRight);

@@ -4,12 +4,12 @@ import { bindActionCreators } from 'redux';
 
 import { CardMedia } from '@mui/material';
 
-import { TedTaggerDispatch, setPercentageScrolledToTheRight, setScrollBarPosition } from '../models';
+import { TedTaggerDispatch, setPercentageScrolledToTheRight, setScrollBarPosition, setXTranslateOffset } from '../models';
 import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
 import CardMediaImage from './CardMediaImage';
-import { getScrollBarPosition } from '../selectors';
+import { getScrollBarPosition, getSurveyModeZoomFactor } from '../selectors';
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
@@ -37,8 +37,10 @@ export interface ScrollingCardMediaPropsFromParent {
 
 export interface ScrollingCardMediaProps extends ScrollingCardMediaPropsFromParent {
   scrollBarPosition: Position;
+  surveyModeZoomFactor: number;
   onSetScrollBarPosition: (p: Position) => any;
   onSetPercentageScrolledToTheRight: (p: number) => any;
+  onSetXTranslateOffset: (xTranslateOffset: number) => any;
 
 }
 
@@ -53,26 +55,41 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
     const handleScroll = (event: Event) => {
 
-      // const isScrollBarAtRight = container.scrollLeft === container.scrollWidth - container.clientWidth;
-      console.log('scrollLeft: ', container.scrollLeft);
-      console.log('scrollWidth: ', container.scrollWidth);
-      console.log('clientWidth: ', container.clientWidth);
-      // console.log(container.scrollWidth - container.clientWidth);
-
+      const scale = props.surveyModeZoomFactor;
       const maxScrollLeftPosition = container.scrollWidth - container.clientWidth;
       const currentScrollLeftPosition = container.scrollLeft;
       const percentageScrolledToTheRight = (maxScrollLeftPosition - currentScrollLeftPosition) / maxScrollLeftPosition * 100;
-      console.log('percentage offset from the right: ', percentageScrolledToTheRight);
-      props.onSetPercentageScrolledToTheRight(percentageScrolledToTheRight);
 
-      // event.preventDefault();
+      // Calculate translateX value
+      // const imageWidth = imageElement.offsetWidth; // Width of the image
+      const imageWidth = 343;
+      const containerWidth = container.offsetWidth; // Width of the container
 
-      // Calculate the scroll position based on the container's scrollLeft and scrollTop
-      const x = container.scrollLeft;
-      const y = container.scrollTop;
-      // console.log('handleScroll: ', x, y);
-      setScrollPosition({ x, y });
-      handleScrollTo(x, y);
+      const maxTranslateX = imageWidth - containerWidth;
+      const translateX = maxTranslateX * (percentageScrolledToTheRight / 100) * scale;
+      // props.onSetXTranslateOffset(translateX);
+      props.onSetXTranslateOffset(0);
+
+      // // const isScrollBarAtRight = container.scrollLeft === container.scrollWidth - container.clientWidth;
+      // console.log('scrollLeft: ', container.scrollLeft);
+      // console.log('scrollWidth: ', container.scrollWidth);
+      // console.log('clientWidth: ', container.clientWidth);
+      // // console.log(container.scrollWidth - container.clientWidth);
+
+      // const maxScrollLeftPosition = container.scrollWidth - container.clientWidth;
+      // const currentScrollLeftPosition = container.scrollLeft;
+      // const percentageScrolledToTheRight = (maxScrollLeftPosition - currentScrollLeftPosition) / maxScrollLeftPosition * 100;
+      // console.log('percentage offset from the right: ', percentageScrolledToTheRight);
+      // props.onSetPercentageScrolledToTheRight(percentageScrolledToTheRight);
+
+      // // event.preventDefault();
+
+      // // Calculate the scroll position based on the container's scrollLeft and scrollTop
+      // const x = container.scrollLeft;
+      // const y = container.scrollTop;
+      // // console.log('handleScroll: ', x, y);
+      // setScrollPosition({ x, y });
+      // handleScrollTo(x, y);
     };
 
     // Attach scroll event listener
@@ -83,6 +100,54 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
       // Cleanup: remove event listener
       container.removeEventListener('scroll', handleScroll);
     };
+    // container.addEventListener('wheel', (event) => {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   //     event.stopImmediatePropagation();
+
+    //   // now define custom functionality
+    //   console.log('wheelEvent');
+    // }, { passive: false });
+
+    // container.addEventListener('click', (event) => {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   //     event.stopImmediatePropagation();
+
+    //   // now define custom functionality
+    //   console.log('clickEvent');
+    // }, { passive: false });
+
+    // container.addEventListener('mousedown', (event) => {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   //     event.stopImmediatePropagation();
+
+    //   // now define custom functionality
+    //   console.log('mousedown');
+    // }, { passive: false });
+
+    // container.addEventListener('scroll', (event) => {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   event.stopImmediatePropagation();
+
+    //   // now define custom functionality
+    //   console.log('scroll');
+    // }, { passive: false });
+
+    // const scrollbar = document.querySelector('::-webkit-scrollbar');
+    // // Set the width of the scrollbar
+    // (scrollbar! as any).style.width = '10px';
+
+    // // Set the background color of the scrollbar track
+    // (scrollbar! as any).style.backgroundColor = '#f1f1f1';
+
+    // // Set the background color of the scrollbar thumb
+    // (scrollbar! as any).style.thumbColor = '#888';
+
+    // // Set the background color of the scrollbar thumb when hovered over
+    // (scrollbar! as any).style.thumbHoverColor = '#555';
   }, []);
 
   const handleScrollTo = (x: number, y: number) => {
@@ -142,6 +207,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
     scrollBarPosition: getScrollBarPosition(state),
+    surveyModeZoomFactor: getSurveyModeZoomFactor(state),
   };
 }
 
@@ -149,6 +215,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onSetScrollBarPosition: setScrollBarPosition,
     onSetPercentageScrolledToTheRight: setPercentageScrolledToTheRight,
+    onSetXTranslateOffset: setXTranslateOffset,
   }, dispatch);
 };
 
