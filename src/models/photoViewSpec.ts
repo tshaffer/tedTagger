@@ -12,6 +12,7 @@ export const SET_SURVEY_MODE_ZOOM_FACTOR = 'SET_SURVEY_MODE_ZOOM_FACTOR';
 export const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION';
 export const SET_SCROLL_BAR_POSITION = 'SET_SCROLL_BAR_POSITION';
 export const SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT = 'SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT';
+export const SET_X_TRANSLATE_OFFSET = 'SET_X_TRANSLATE_OFFSET';
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -120,6 +121,19 @@ export const setPercentageScrolledToTheRight = (percentageScrolledToTheRight: nu
   };
 };
 
+interface SetXTranslateOffsetPayload {
+  xTranslateOffset: number,
+}
+
+export const setXTranslateOffset = (xTranslateOffset: number): any => {
+  return {
+    type: SET_X_TRANSLATE_OFFSET,
+    payload: {
+      xTranslateOffset,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -133,11 +147,12 @@ const initialState: PhotoViewSpec = {
   scrollPosition: 0,
   scrollBarPosition: { x: 0, y: 0 },
   percentageScrolledToTheRight: 0,
+  xTranslateOffset: 0,
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetScrollBarPositionPayload & SetPercentageScrolledToTheRightPayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetScrollBarPositionPayload & SetPercentageScrolledToTheRightPayload & SetXTranslateOffsetPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -179,6 +194,11 @@ export const photoViewSpecReducer = (
       return {
         ...state,
         percentageScrolledToTheRight: action.payload.percentageScrolledToTheRight,
+      };
+    case SET_X_TRANSLATE_OFFSET:
+      return {
+        ...state,
+        xTranslateOffset: action.payload.xTranslateOffset,
       };
     default:
       return state;

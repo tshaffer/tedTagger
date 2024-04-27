@@ -4,19 +4,20 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { Checkbox, FormControlLabel, FormGroup, IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
+import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux, setXTranslateOffset } from '../models';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getXTranslateOffset } from '../selectors';
 import { ChangeEvent } from 'react';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems } from '../controllers';
-import Photo from './Photo';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
@@ -25,6 +26,7 @@ export interface TopToolbarProps {
   surveyModeZoomFactor: number;
   photoLayout: PhotoLayout;
   displayMetadata: boolean;
+  xTranslateOffset: number;
   onSetNumGridColumns: (numGridColumns: number) => void;
   onSetSurveyModeZoomFactor: (numGridColumns: number) => void;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
@@ -33,6 +35,7 @@ export interface TopToolbarProps {
   onSetDisplayMetadata: (displayMetadata: boolean) => any;
   onSetScrollPosition: (scrollPosition: number) => any;
   onDeleteMediaItems: (mediaItemIds: string[]) => any;
+  onSetXTranslateOffset: (xTranslateOffset: number) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -68,6 +71,18 @@ const TopToolbar = (props: TopToolbarProps) => {
     props.onSetDisplayMetadata(checked);
   }
 
+  function handleDecrementXTranslate() {
+    let xOffset: number = props.xTranslateOffset;
+    xOffset -= 2;
+    props.onSetXTranslateOffset(xOffset);
+  }
+
+  function handleIncrementXTranslate() {
+    let xOffset: number = props.xTranslateOffset;
+    xOffset += 2;
+    props.onSetXTranslateOffset(xOffset);
+  }
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
@@ -101,7 +116,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(40%, -50%)',
+            transform: 'translate(65%, -50%)',
           }}>
             <div className='sliderContainer'>
               <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
@@ -123,7 +138,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(40%, -50%)',
+            transform: 'translate(65%, -50%)',
           }}>
             <div className='sliderContainer'> {/* sliderContainer wrapped inside the parent */}
               <Typography gutterBottom style={{ fontSize: '13px' }}>Grid Column Count</Typography>
@@ -182,6 +197,18 @@ const TopToolbar = (props: TopToolbarProps) => {
             <CompareIcon />
           </IconButton>
           {getPhotoLayoutPropsUI()}
+          <IconButton
+            onClick={() => {
+              handleDecrementXTranslate();
+            }}>
+            <ArrowCircleLeftIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              handleIncrementXTranslate();
+            }}>
+            <ArrowCircleRightIcon />
+          </IconButton>
         </div>
         <IconButton
           disabled={props.selectedMediaItemIds.length < 1}
@@ -218,6 +245,7 @@ function mapStateToProps(state: any) {
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     photoLayout: getPhotoLayout(state),
     displayMetadata: getDisplayMetadata(state),
+    xTranslateOffset: getXTranslateOffset(state),
   };
 }
 
@@ -231,6 +259,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetSurveyModeZoomFactor: setSurveyModeZoomFactorRedux,
     onSetScrollPosition: setScrollPositionRedux,
     onDeleteMediaItems: deleteMediaItems,
+    onSetXTranslateOffset: setXTranslateOffset,
   }, dispatch);
 };
 

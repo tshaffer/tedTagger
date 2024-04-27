@@ -36,3 +36,7 @@ export const getPercentageScrolledToTheRight = (state: TedTaggerState): number =
   return state.photoViewSpec.percentageScrolledToTheRight;
 };
 
+export const getXTranslateOffset = (state: TedTaggerState): number => {
+  return state.photoViewSpec.xTranslateOffset;
+};
+

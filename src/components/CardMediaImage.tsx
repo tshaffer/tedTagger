@@ -6,7 +6,7 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
-import { getPercentageScrolledToTheRight, getScrollBarPosition, getSurveyModeZoomFactor } from '../selectors';
+import { getPercentageScrolledToTheRight, getScrollBarPosition, getSurveyModeZoomFactor, getXTranslateOffset } from '../selectors';
 
 export interface CardMediaImagePropsFromParent {
   mediaItem: MediaItem;
@@ -16,9 +16,12 @@ export interface CardMediaImageProps extends CardMediaImagePropsFromParent {
   surveyModeZoomFactor: number;
   scrollBarPosition: Position;
   percentageScrolledToTheRight: number;
+  xTranslateOffset: number;
 }
 
 function CardMediaImage(props: CardMediaImageProps) {
+
+  console.log('render CardMediaImage');
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
@@ -26,13 +29,13 @@ function CardMediaImage(props: CardMediaImageProps) {
   const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
   if (imageElement) {
     // imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
-    const xTranslate: string = 'translate(' + Math.round(100 - props.percentageScrolledToTheRight).toString() + '%';
+    const xTranslate: string = 'translate(' + Math.round(-50 + props.xTranslateOffset).toString() + '%';
     console.log('xTranslate: ' + xTranslate);
-    imageElement.style.transform = xTranslate + ` scale(${props.surveyModeZoomFactor})`;
+    imageElement.style.transform = xTranslate + `, -50%) scale(${props.surveyModeZoomFactor})`;
+    console.log(imageElement.style.transform);
   }
 
-  console.log('render CardMediaImage');
-  console.log(props.percentageScrolledToTheRight);
+  // console.log(props.percentageScrolledToTheRight);
 
   return (
     <img
@@ -50,6 +53,7 @@ function mapStateToProps(state: any, ownProps: any) {
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     scrollBarPosition: getScrollBarPosition(state),
     percentageScrolledToTheRight: getPercentageScrolledToTheRight(state),
+    xTranslateOffset: getXTranslateOffset(state),
   };
 }
 
