@@ -39,6 +39,7 @@ function CardMediaImage(props: CardMediaImageProps) {
     imageElement.style.transform = xTranslate + `, -50%) scale(${props.surveyModeZoomFactor})`;
     console.log('imageElement.style.transform: ' + imageElement.style.transform);
 
+    console.log('offsetWidth: ', imageElement.offsetWidth);
   }
 
   // console.log(props.percentageScrolledToTheRight);

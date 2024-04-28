@@ -55,20 +55,32 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
     const handleScroll = (event: Event) => {
 
-      const scale = props.surveyModeZoomFactor;
+      // const scale = props.surveyModeZoomFactor;
+      const scale = 2;
       const maxScrollLeftPosition = container.scrollWidth - container.clientWidth;
       const currentScrollLeftPosition = container.scrollLeft;
       const percentageScrolledToTheRight = (maxScrollLeftPosition - currentScrollLeftPosition) / maxScrollLeftPosition * 100;
 
       // Calculate translateX value
       // const imageWidth = imageElement.offsetWidth; // Width of the image
-      const imageWidth = 343;
+      // const imageWidth = 633;
+      const imageWidth = 458;
       const containerWidth = container.offsetWidth; // Width of the container
 
       const maxTranslateX = imageWidth - containerWidth;
       const translateX = maxTranslateX * (percentageScrolledToTheRight / 100) * scale;
+
+
+      /*
+        50 = maxTranslateX * 2
+        maxTranslateX = 25
+        25 = imageWidth - 608
+        imageWidth = 633
+      */
+      console.log('translateX: ', translateX);
       // props.onSetXTranslateOffset(translateX);
-      props.onSetXTranslateOffset(0);
+      // props.onSetXTranslateOffset(50);
+      props.onSetXTranslateOffset(translateX);
 
       // // const isScrollBarAtRight = container.scrollLeft === container.scrollWidth - container.clientWidth;
       // console.log('scrollLeft: ', container.scrollLeft);
