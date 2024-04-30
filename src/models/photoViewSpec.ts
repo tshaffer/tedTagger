@@ -13,6 +13,9 @@ export const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION';
 export const SET_SCROLL_BAR_POSITION = 'SET_SCROLL_BAR_POSITION';
 export const SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT = 'SET_PERCENTAGE_SCROLLED_TO_THE_RIGHT';
 export const SET_X_TRANSLATE_OFFSET = 'SET_X_TRANSLATE_OFFSET';
+export const SET_CLIENT_WIDTH = 'SET_CLIENT_WIDTH';
+export const SET_SCROLL_LEFT = 'SET_SCROLL_LEFT';
+export const SET_SCROLL_WIDTH = 'SET_SCROLL_WIDTH';
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -134,6 +137,45 @@ export const setXTranslateOffset = (xTranslateOffset: number): any => {
   };
 };
 
+interface SetClientWidthPayload {
+  clientWidth: number,
+}
+
+export const setClientWidth = (clientWidth: number): any => {
+  return {
+    type: SET_CLIENT_WIDTH,
+    payload: {
+      clientWidth,
+    },
+  };
+};
+
+interface SetScrollLeftPayload {
+  scrollLeft: number,
+}
+
+export const setScrollLeft = (scrollLeft: number): any => {
+  return {
+    type: SET_SCROLL_LEFT,
+    payload: {
+      scrollLeft,
+    },
+  };
+};
+
+interface SetScrollWidthPayload {
+  scrollWidth: number,
+}
+
+export const setScrollWidth = (scrollWidth: number): any => {
+  return {
+    type: SET_SCROLL_WIDTH,
+    payload: {
+      scrollWidth,
+    },
+  };
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -148,11 +190,16 @@ const initialState: PhotoViewSpec = {
   scrollBarPosition: { x: 0, y: 0 },
   percentageScrolledToTheRight: 0,
   xTranslateOffset: 0,
+  clientWidth: 0,
+  scrollLeft: 0,
+  scrollWidth: 0,
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetScrollBarPositionPayload & SetPercentageScrolledToTheRightPayload & SetXTranslateOffsetPayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload
+    & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetScrollBarPositionPayload
+    & SetPercentageScrolledToTheRightPayload & SetXTranslateOffsetPayload & SetClientWidthPayload & SetScrollLeftPayload & SetScrollWidthPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -200,6 +247,22 @@ export const photoViewSpecReducer = (
         ...state,
         xTranslateOffset: action.payload.xTranslateOffset,
       };
+    case SET_CLIENT_WIDTH:
+      return {
+        ...state,
+        clientWidth: action.payload.clientWidth,
+      };
+    case SET_SCROLL_LEFT:
+      return {
+        ...state,
+        scrollLeft: action.payload.scrollLeft,
+      };
+    case SET_SCROLL_WIDTH:
+      return {
+        ...state,
+        scrollWidth: action.payload.scrollWidth,
+      };
+
     default:
       return state;
   }

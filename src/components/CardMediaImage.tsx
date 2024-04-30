@@ -6,7 +6,7 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
-import { getPercentageScrolledToTheRight, getScrollBarPosition, getSurveyModeZoomFactor, getXTranslateOffset } from '../selectors';
+import { getClientWidth, getPercentageScrolledToTheRight, getScrollBarPosition, getScrollLeft, getScrollWidth, getSurveyModeZoomFactor, getXTranslateOffset } from '../selectors';
 
 export interface CardMediaImagePropsFromParent {
   mediaItem: MediaItem;
@@ -17,11 +17,21 @@ export interface CardMediaImageProps extends CardMediaImagePropsFromParent {
   scrollBarPosition: Position;
   percentageScrolledToTheRight: number;
   xTranslateOffset: number;
+  clientWidth: number;
+  scrollLeft: number;
+  scrollWidth: number;
 }
 
 function CardMediaImage(props: CardMediaImageProps) {
 
   console.log('render CardMediaImage');
+
+  console.log('clientWidth:',props.clientWidth);
+  console.log('scrollLeft:', props.scrollLeft);
+  console.log('scrollWidth:', props.scrollWidth);
+
+  console.log('percentage of image visible:', props.clientWidth / props.scrollWidth * 100);
+  console.log('percentage of image offset from left:', props.scrollLeft / props.scrollWidth * 100);
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
@@ -61,6 +71,10 @@ function mapStateToProps(state: any, ownProps: any) {
     scrollBarPosition: getScrollBarPosition(state),
     percentageScrolledToTheRight: getPercentageScrolledToTheRight(state),
     xTranslateOffset: getXTranslateOffset(state),
+
+    clientWidth: getClientWidth(state),
+    scrollLeft: getScrollLeft(state),
+    scrollWidth: getScrollWidth(state),
   };
 }
 

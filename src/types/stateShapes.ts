@@ -80,4 +80,8 @@ export interface PhotoViewSpec {
   scrollBarPosition: Position;
   percentageScrolledToTheRight: number;
   xTranslateOffset: number;
+
+  clientWidth: number;
+  scrollLeft: number;
+  scrollWidth: number;
 }

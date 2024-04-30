@@ -40,3 +40,15 @@ export const getXTranslateOffset = (state: TedTaggerState): number => {
   return state.photoViewSpec.xTranslateOffset;
 };
 
+export const getClientWidth = (state: TedTaggerState): number => {
+  return state.photoViewSpec.clientWidth;
+};
+
+export const getScrollLeft = (state: TedTaggerState): number => {
+  return state.photoViewSpec.scrollLeft;
+};
+
+export const getScrollWidth = (state: TedTaggerState): number => {
+  return state.photoViewSpec.scrollWidth;
+};
+

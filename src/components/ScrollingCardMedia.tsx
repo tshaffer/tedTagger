@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { CardMedia } from '@mui/material';
 
-import { TedTaggerDispatch, setPercentageScrolledToTheRight, setScrollBarPosition, setXTranslateOffset } from '../models';
+import { TedTaggerDispatch, setClientWidth, setPercentageScrolledToTheRight, setScrollBarPosition, setScrollLeft, setScrollWidth, setXTranslateOffset } from '../models';
 import { MediaItem, Position } from '../types';
 
 import { getPhotoUrl } from '../utilities';
@@ -41,7 +41,9 @@ export interface ScrollingCardMediaProps extends ScrollingCardMediaPropsFromPare
   onSetScrollBarPosition: (p: Position) => any;
   onSetPercentageScrolledToTheRight: (p: number) => any;
   onSetXTranslateOffset: (xTranslateOffset: number) => any;
-
+  onSetClientWidth: (clientWidth: number) => any;
+  onSetScrollLeft: (scrollLeft: number) => any;
+  onSetScrollWidth: (scrollWidth: number) => any;
 }
 
 function ScrollingCardMedia(props: ScrollingCardMediaProps) {
@@ -55,11 +57,15 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
     const handleScroll = (event: Event) => {
 
-      console.log('clientWidth: ', container.clientWidth);
+      props.onSetClientWidth(container.clientWidth);
+      props.onSetScrollLeft(container.scrollLeft);
+      props.onSetScrollWidth(container.scrollWidth);
+
+      // console.log('clientWidth: ', container.clientWidth);
       // console.log('offsetWidth: ', container.offsetWidth);
-      console.log('scrollLeft: ', container.scrollLeft);
+      // console.log('scrollLeft: ', container.scrollLeft);
       // console.log('scrollLeftMax: ', (container as any).scrollLeftMax);
-      console.log('scrollWidth: ', container.scrollWidth);
+      // console.log('scrollWidth: ', container.scrollWidth);
 
       const scale = props.surveyModeZoomFactor;
       const maxScrollLeftPosition = container.scrollWidth - container.clientWidth;
@@ -82,7 +88,7 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
         25 = imageWidth - 608
         imageWidth = 633
       */
-      console.log('translateX: ', translateX);
+      // console.log('translateX: ', translateX);
       // props.onSetXTranslateOffset(translateX);
       // props.onSetXTranslateOffset(50);
       props.onSetXTranslateOffset(translateX);
@@ -165,6 +171,9 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetScrollBarPosition: setScrollBarPosition,
     onSetPercentageScrolledToTheRight: setPercentageScrolledToTheRight,
     onSetXTranslateOffset: setXTranslateOffset,
+    onSetClientWidth: setClientWidth,
+    onSetScrollLeft: setScrollLeft,
+    onSetScrollWidth: setScrollWidth,
   }, dispatch);
 };
 
