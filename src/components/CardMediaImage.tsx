@@ -28,18 +28,18 @@ function CardMediaImage(props: CardMediaImageProps) {
   const elementId: string = 'surveyImage' + props.mediaItem.googleId;
   const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
   if (imageElement) {
-    // imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
+    imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
     // const xTranslate: string = 'translate(' + Math.round(-50 + props.xTranslateOffset).toString() + '%';
     // console.log('xTranslate: ' + xTranslate);
     // imageElement.style.transform = xTranslate + `, -50%) scale(${props.surveyModeZoomFactor})`;
     // console.log(imageElement.style.transform);
 
     // const xTranslate: string = 'translate(' + Math.round(100 - props.percentageScrolledToTheRight).toString() + '%';
-    const xTranslate: string = 'translate(' + Math.round(-50 + props.xTranslateOffset).toString() + '%';
-    imageElement.style.transform = xTranslate + `, -50%) scale(${props.surveyModeZoomFactor})`;
-    console.log('imageElement.style.transform: ' + imageElement.style.transform);
+    // const xTranslate: string = 'translate(' + Math.round(-50 + props.xTranslateOffset).toString() + '%';
+    // imageElement.style.transform = xTranslate + `, -50%) scale(${props.surveyModeZoomFactor})`;
+    // console.log('imageElement.style.transform: ' + imageElement.style.transform);
 
-    console.log('offsetWidth: ', imageElement.offsetWidth);
+    // console.log('offsetWidth: ', imageElement.offsetWidth);
   }
 
   // console.log(props.percentageScrolledToTheRight);

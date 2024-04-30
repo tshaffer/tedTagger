@@ -55,16 +55,21 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
     const handleScroll = (event: Event) => {
 
-      // const scale = props.surveyModeZoomFactor;
-      const scale = 2;
+      console.log('clientWidth: ', container.clientWidth);
+      // console.log('offsetWidth: ', container.offsetWidth);
+      console.log('scrollLeft: ', container.scrollLeft);
+      // console.log('scrollLeftMax: ', (container as any).scrollLeftMax);
+      console.log('scrollWidth: ', container.scrollWidth);
+
+      const scale = props.surveyModeZoomFactor;
       const maxScrollLeftPosition = container.scrollWidth - container.clientWidth;
       const currentScrollLeftPosition = container.scrollLeft;
       const percentageScrolledToTheRight = (maxScrollLeftPosition - currentScrollLeftPosition) / maxScrollLeftPosition * 100;
 
       // Calculate translateX value
       // const imageWidth = imageElement.offsetWidth; // Width of the image
-      // const imageWidth = 633;
-      const imageWidth = 458;
+      const imageWidth = 633;
+      // const imageWidth = 458;
       const containerWidth = container.offsetWidth; // Width of the container
 
       const maxTranslateX = imageWidth - containerWidth;
@@ -82,26 +87,6 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
       // props.onSetXTranslateOffset(50);
       props.onSetXTranslateOffset(translateX);
 
-      // // const isScrollBarAtRight = container.scrollLeft === container.scrollWidth - container.clientWidth;
-      // console.log('scrollLeft: ', container.scrollLeft);
-      // console.log('scrollWidth: ', container.scrollWidth);
-      // console.log('clientWidth: ', container.clientWidth);
-      // // console.log(container.scrollWidth - container.clientWidth);
-
-      // const maxScrollLeftPosition = container.scrollWidth - container.clientWidth;
-      // const currentScrollLeftPosition = container.scrollLeft;
-      // const percentageScrolledToTheRight = (maxScrollLeftPosition - currentScrollLeftPosition) / maxScrollLeftPosition * 100;
-      // console.log('percentage offset from the right: ', percentageScrolledToTheRight);
-      // props.onSetPercentageScrolledToTheRight(percentageScrolledToTheRight);
-
-      // // event.preventDefault();
-
-      // // Calculate the scroll position based on the container's scrollLeft and scrollTop
-      // const x = container.scrollLeft;
-      // const y = container.scrollTop;
-      // // console.log('handleScroll: ', x, y);
-      // setScrollPosition({ x, y });
-      // handleScrollTo(x, y);
     };
 
     // Attach scroll event listener
@@ -112,54 +97,6 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
       // Cleanup: remove event listener
       container.removeEventListener('scroll', handleScroll);
     };
-    // container.addEventListener('wheel', (event) => {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   //     event.stopImmediatePropagation();
-
-    //   // now define custom functionality
-    //   console.log('wheelEvent');
-    // }, { passive: false });
-
-    // container.addEventListener('click', (event) => {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   //     event.stopImmediatePropagation();
-
-    //   // now define custom functionality
-    //   console.log('clickEvent');
-    // }, { passive: false });
-
-    // container.addEventListener('mousedown', (event) => {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   //     event.stopImmediatePropagation();
-
-    //   // now define custom functionality
-    //   console.log('mousedown');
-    // }, { passive: false });
-
-    // container.addEventListener('scroll', (event) => {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   event.stopImmediatePropagation();
-
-    //   // now define custom functionality
-    //   console.log('scroll');
-    // }, { passive: false });
-
-    // const scrollbar = document.querySelector('::-webkit-scrollbar');
-    // // Set the width of the scrollbar
-    // (scrollbar! as any).style.width = '10px';
-
-    // // Set the background color of the scrollbar track
-    // (scrollbar! as any).style.backgroundColor = '#f1f1f1';
-
-    // // Set the background color of the scrollbar thumb
-    // (scrollbar! as any).style.thumbColor = '#888';
-
-    // // Set the background color of the scrollbar thumb when hovered over
-    // (scrollbar! as any).style.thumbHoverColor = '#555';
   }, []);
 
   const handleScrollTo = (x: number, y: number) => {
