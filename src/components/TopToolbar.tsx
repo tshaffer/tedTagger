@@ -10,10 +10,10 @@ import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
-import { ChangeEvent } from 'react';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems } from '../controllers';
 
@@ -63,8 +63,8 @@ const TopToolbar = (props: TopToolbarProps) => {
     }
   }
 
-  function handlaToggleDisplayMetadata(event: ChangeEvent<HTMLInputElement>, checked: boolean): void {
-    props.onSetDisplayMetadata(checked);
+  function handlaToggleDisplayMetadata(): void {
+    props.onSetDisplayMetadata(!props.displayMetadata);
   }
 
   const handleCloseDialog = () => {
@@ -100,7 +100,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(40%, -50%)',
+            transform: 'translate(48%, -50%)',
           }}>
             <div className='sliderContainer'>
               <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
@@ -122,7 +122,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(40%, -50%)',
+            transform: 'translate(48%, -50%)',
           }}>
             <div className='sliderContainer'> {/* sliderContainer wrapped inside the parent */}
               <Typography gutterBottom style={{ fontSize: '13px' }}>Grid Column Count</Typography>
@@ -179,6 +179,12 @@ const TopToolbar = (props: TopToolbarProps) => {
               handleUpdatePhotoLayout(PhotoLayout.Survey);
             }}>
             <CompareIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              handlaToggleDisplayMetadata();
+            }}>
+            <InfoIcon />
           </IconButton>
           {getPhotoLayoutPropsUI()}
         </div>
