@@ -168,7 +168,6 @@ const TopToolbar = (props: TopToolbarProps) => {
         <DeletedMediaItemsDialog
           open={showDeletedMediaItemsDialog}
           onClose={handleCloseDialog}
-          appInitialized={true}
         />
       </div>
       <div className='toolbarIconButtonContainer'>

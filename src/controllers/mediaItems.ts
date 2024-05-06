@@ -7,7 +7,8 @@ import {
   addKeywordToMediaItemIdsRedux,
   removeKeywordFromMediaItemIdsRedux,
   replaceMediaItems,
-  deleteMediaItemsRedux
+  deleteMediaItemsRedux,
+  addDeletedMediaItems
 } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, TedTaggerState, MatchRule, SearchRule,
@@ -177,11 +178,12 @@ export const loadDeletedMediaItems = (): TedTaggerAnyPromiseThunkAction => {
     return axios.get(path)
       .then((deletedMediaItemsResponse: any) => {
 
-        // const deletedMediaItems: MediaItem[] = [];
-        const deletedMediaItemEntitiesFromServer: ServerMediaItem[] = (deletedMediaItemsResponse as any).data;
+        const deletedMediaItems: MediaItem[] = (deletedMediaItemsResponse as any).data;
 
-        console.log('deletedMediaItemEntitiesFromServer', deletedMediaItemEntitiesFromServer);
+        console.log('deletedMediaItemEntitiesFromServer', deletedMediaItems);
 
+        dispatch(addDeletedMediaItems(deletedMediaItems));
+        
         return Promise.resolve();
       });
   };

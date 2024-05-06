@@ -7,6 +7,7 @@ import { getDeletedMediaItems } from '../selectors';
 import { Dialog, DialogTitle, DialogContent, Box, FormControl, InputLabel, Select, OutlinedInput, DialogActions, Button, Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 import CommentIcon from '@mui/icons-material/Comment';
+import { MediaItem } from '../types';
 
 export interface DeletedMediaItemsDialogPropsFromParent {
   open: boolean;
@@ -14,7 +15,7 @@ export interface DeletedMediaItemsDialogPropsFromParent {
 }
 
 export interface DeletedMediaItemsDialogProps extends DeletedMediaItemsDialogPropsFromParent {
-  appInitialized: boolean;
+  deleteMediaItems: MediaItem[];
 }
 
 const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
@@ -51,35 +52,31 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
             autoComplete="off"
           >
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {[0, 1, 2, 3].map((value) => {
-                const labelId = `checkbox-list-label-${value}`;
+              {props.deleteMediaItems.map((mediaItem: MediaItem, index: number) => {
+                const labelId = `checkbox-list-label-${mediaItem.fileName}`;
 
                 return (
                   <ListItem
-                    key={value}
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="comments">
-                        <CommentIcon />
-                      </IconButton>
-                    }
+                    key={mediaItem.googleId}
                     disablePadding
                   >
-                    <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                    <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
                       <ListItemIcon>
                         <Checkbox
                           edge="start"
-                          checked={checked.indexOf(value) !== -1}
+                          checked={checked.indexOf(index) !== -1}
                           tabIndex={-1}
                           disableRipple
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </ListItemIcon>
-                      <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                      <ListItemText id={labelId} primary={mediaItem.fileName} />
                     </ListItemButton>
                   </ListItem>
                 );
               })}
-            </List>          </Box>
+            </List>
+          </Box>
         </div>
       </DialogContent>
       <DialogActions>
