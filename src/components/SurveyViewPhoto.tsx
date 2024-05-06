@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Grid, Card, CardMedia, GridSize, IconButton } from '@mui/material';
-import ScrollingCardMedia from './ScrollingCardMedia';
+import { Grid, Card, GridSize } from '@mui/material';
+import SurveyViewMedia from './SurveyViewMedia';
 
 import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
@@ -84,8 +84,6 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
   unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
   selectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
-  const cardMediaStyle = unselectedCardMediaStyle;
-
   const elementId: string = 'surveyImage' + props.mediaItem.googleId;
   const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
   if (imageElement) {
@@ -97,12 +95,12 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
       <Card
         sx={cardStyle}
       >
-        <ScrollingCardMedia
+        <SurveyViewMedia
           mediaItem={props.mediaItem}
           numGridColumns={props.numGridColumns}
           numGridRows={props.numGridRows}
         >
-        </ScrollingCardMedia>
+        </SurveyViewMedia>
       </Card>
     </Grid>
   );

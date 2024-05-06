@@ -8,10 +8,11 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
 
 import { getPhotoUrl } from '../utilities';
-import CardMediaImage from './CardMediaImage';
+import SurveyViewImage from './SurveyViewImage';
 import { getSurveyModeZoomFactor } from '../selectors';
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteMediaItems } from '../controllers';
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
@@ -31,19 +32,18 @@ const unselectedCardMediaStyle = {
   backgroundColor: 'purple',
 };
 
-export interface ScrollingCardMediaPropsFromParent {
+export interface SurveyViewMediaPropsFromParent {
   mediaItem: MediaItem;
   numGridColumns: number;
   numGridRows: number;
 }
 
-export interface ScrollingCardMediaProps extends ScrollingCardMediaPropsFromParent {
+export interface SurveyViewMediaProps extends SurveyViewMediaPropsFromParent {
   surveyModeZoomFactor: number;
+  onDeleteMediaItems: (mediaItemIds: string[]) => any;
 }
 
-function ScrollingCardMedia(props: ScrollingCardMediaProps) {
-
-  const containerRef = React.useRef<HTMLDivElement>(null);
+function SurveyViewMedia(props: SurveyViewMediaProps) {
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
@@ -72,21 +72,27 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
 
   const cardMediaStyle = unselectedCardMediaStyle;
 
+  function handleDeleteSurveyPhoto(googleId: string) {
+    props.onDeleteMediaItems([googleId]);
+  }
+
   return (
     <CardMedia
-      ref={containerRef}
       id={props.mediaItem.googleId}
       className='survey-image-container'
       title={photoUrl}
       sx={cardMediaStyle}
     >
       <div>
-        <CardMediaImage
+        <SurveyViewImage
           mediaItem={props.mediaItem}
         />
         <div
           className='overlayIconStyle'>
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              handleDeleteSurveyPhoto(props.mediaItem.googleId);
+            }}>
             <DeleteIcon />
           </IconButton>
         </div>
@@ -105,7 +111,8 @@ function mapStateToProps(state: any, ownProps: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onDeleteMediaItems: deleteMediaItems,
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScrollingCardMedia);
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyViewMedia);

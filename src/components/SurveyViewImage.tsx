@@ -8,15 +8,15 @@ import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { getSurveyModeZoomFactor } from '../selectors';
 
-export interface CardMediaImagePropsFromParent {
+export interface SurveyViewImagePropsFromParent {
   mediaItem: MediaItem;
 }
 
-export interface CardMediaImageProps extends CardMediaImagePropsFromParent {
+export interface SurveyViewImageProps extends SurveyViewImagePropsFromParent {
   surveyModeZoomFactor: number;
 }
 
-function CardMediaImage(props: CardMediaImageProps) {
+function SurveyViewImage(props: SurveyViewImageProps) {
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
@@ -48,4 +48,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardMediaImage);
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyViewImage);

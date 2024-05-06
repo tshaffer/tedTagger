@@ -1,6 +1,5 @@
 export * from './AddKeywordDialog';
 export * from './App';
-export * from './CardMediaImage';
 export * from './ConfirmationDialog';
 export * from './GridView';
 export * from './FullScreenPhoto';
@@ -12,9 +11,10 @@ export * from './LoupeView';
 export * from './LoupeViewController';
 export * from './Photo';
 export * from './PhotoProperties';
-export * from './ScrollingCardMedia';
 export * from './SearchSpecDialog';
 export * from './SurveyView';
+export * from './SurveyViewImage';
+export * from './SurveyViewMedia';
 export * from './TopToolbar';
 export * from './ZoomGroup';
 
