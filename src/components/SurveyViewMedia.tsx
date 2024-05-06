@@ -12,7 +12,8 @@ import SurveyViewImage from './SurveyViewImage';
 import { getSurveyModeZoomFactor } from '../selectors';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteMediaItems } from '../controllers';
+import { deleteSurveyViewMediaItem } from '../controllers';
+import ConfirmationDialog from './ConfirmationDialog';
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
@@ -40,10 +41,25 @@ export interface SurveyViewMediaPropsFromParent {
 
 export interface SurveyViewMediaProps extends SurveyViewMediaPropsFromParent {
   surveyModeZoomFactor: number;
-  onDeleteMediaItems: (mediaItemIds: string[]) => any;
+  onDeleteSurveyViewMediaItem: (mediaItemId: string) => any;
 }
 
 function SurveyViewMedia(props: SurveyViewMediaProps) {
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  function handleDeleteSurveyPhoto() {
+    setOpenDialog(true);
+  }
+
+  const handleConfirmDelete = () => {
+    setOpenDialog(false);
+    props.onDeleteSurveyViewMediaItem(props.mediaItem.googleId);
+  };
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
@@ -72,33 +88,39 @@ function SurveyViewMedia(props: SurveyViewMediaProps) {
 
   const cardMediaStyle = unselectedCardMediaStyle;
 
-  function handleDeleteSurveyPhoto(googleId: string) {
-    props.onDeleteMediaItems([googleId]);
-  }
-
   return (
-    <CardMedia
-      id={props.mediaItem.googleId}
-      className='survey-image-container'
-      title={photoUrl}
-      sx={cardMediaStyle}
-    >
+    <React.Fragment>
       <div>
-        <SurveyViewImage
-          mediaItem={props.mediaItem}
+        <ConfirmationDialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          onConfirm={handleConfirmDelete}
+          title="Confirm Delete"
+          message="Are you sure you want to delete the selected photo(s)?"
         />
-        <div
-          className='overlayIconStyle'>
-          <IconButton
-            onClick={() => {
-              handleDeleteSurveyPhoto(props.mediaItem.googleId);
-            }}>
-            <DeleteIcon />
-          </IconButton>
-        </div>
       </div>
-    </CardMedia>
-
+      <CardMedia
+        id={props.mediaItem.googleId}
+        className='survey-image-container'
+        title={photoUrl}
+        sx={cardMediaStyle}
+      >
+        <div>
+          <SurveyViewImage
+            mediaItem={props.mediaItem}
+          />
+          <div
+            className='overlayIconStyle'>
+            <IconButton
+              onClick={() => {
+                handleDeleteSurveyPhoto();
+              }}>
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        </div>
+      </CardMedia>
+    </React.Fragment>
   );
 }
 
@@ -111,7 +133,7 @@ function mapStateToProps(state: any, ownProps: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onDeleteMediaItems: deleteMediaItems,
+    onDeleteSurveyViewMediaItem: deleteSurveyViewMediaItem
   }, dispatch);
 };
 

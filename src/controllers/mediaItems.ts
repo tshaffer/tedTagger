@@ -1,14 +1,23 @@
 import axios from 'axios';
 
-import { TedTaggerAnyPromiseThunkAction, TedTaggerDispatch, addMediaItems, addTagToMediaItemsRedux, deleteTagFromMediaItemsRedux, replaceTagInMediaItemsRedux, addKeywordToMediaItemIdsRedux, removeKeywordFromMediaItemIdsRedux, replaceMediaItems, deleteMediaItemsRedux, clearMediaItemSelection } from '../models';
+import {
+  TedTaggerAnyPromiseThunkAction,
+  TedTaggerDispatch,
+  addMediaItems,
+  addKeywordToMediaItemIdsRedux,
+  removeKeywordFromMediaItemIdsRedux,
+  replaceMediaItems,
+  deleteMediaItemsRedux
+} from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, TedTaggerState, MatchRule, SearchRule,
 } from '../types';
-import { cloneDeep, isNil } from 'lodash';
+import { cloneDeep } from 'lodash';
 import {
   getMatchRule,
   getSearchRules,
 } from '../selectors';
+import { deselectMediaItems } from './selectMediaItem';
 
 export const loadMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
@@ -134,7 +143,7 @@ export const addKeywordToMediaItems = (
   };
 };
 
-export const deleteMediaItems = (mediaItemIds: string[]) => {
+export const deleteMediaItems = (mediaItemIds: string[]): any => {
 
   return (dispatch: TedTaggerDispatch) => {
 
@@ -146,12 +155,13 @@ export const deleteMediaItems = (mediaItemIds: string[]) => {
       path,
       deleteMediaItemsBody
     ).then((response) => {
-      dispatch(clearMediaItemSelection());
+      dispatch(deselectMediaItems(mediaItemIds));
       dispatch(deleteMediaItemsRedux(mediaItemIds));
+      return Promise.resolve();
     }).catch((error) => {
       console.log('error');
       console.log(error);
-      return '';
+      return Promise.reject();
     });
   };
 };

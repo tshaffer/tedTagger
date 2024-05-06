@@ -28,7 +28,6 @@ export interface TopToolbarProps {
   onSetSurveyModeZoomFactor: (numGridColumns: number) => void;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
   onSetLoupeViewMediaItemId: (id: string) => any;
-  onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
   onSetDisplayMetadata: (displayMetadata: boolean) => any;
   onSetScrollPosition: (scrollPosition: number) => any;
   onDeleteMediaItems: (mediaItemIds: string[]) => any;
@@ -47,7 +46,7 @@ const TopToolbar = (props: TopToolbarProps) => {
   }
 
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
-    // capture the scroll position is transitioning out of Grid layout.
+    // capture the scroll position if transitioning out of Grid layout.
     if (props.photoLayout === PhotoLayout.Grid && photoLayout !== PhotoLayout.Grid) {
       const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
       if (divElement) {
@@ -57,7 +56,7 @@ const TopToolbar = (props: TopToolbarProps) => {
     }
     if (photoLayout === PhotoLayout.Loupe) {
       props.onSetLoupeViewMediaItemId(props.loupeViewMediaItemId);
-      props.onSetPhotoLayoutRedux(PhotoLayout.Loupe);
+      props.onSetPhotoLayout(PhotoLayout.Loupe);
     } else {
       props.onSetPhotoLayout(photoLayout);
     }
@@ -230,7 +229,6 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onSetPhotoLayout: setPhotoLayoutRedux,
     onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
-    onSetPhotoLayoutRedux: setPhotoLayoutRedux,
     onSetNumGridColumns: setNumGridColumnsRedux,
     onSetDisplayMetadata: setDisplayMetadata,
     onSetSurveyModeZoomFactor: setSurveyModeZoomFactorRedux,

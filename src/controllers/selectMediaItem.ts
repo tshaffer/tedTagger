@@ -3,6 +3,14 @@ import { TedTaggerDispatch, clearMediaItemSelection, deselectMediaItem, selectMe
 import { MediaItem } from '../types';
 import { getLastClickedId, getMediaItems, getSelectedMediaItemIds } from '../selectors';
 
+export const deselectMediaItems = (ids: string[]) => {
+  return (dispatch: TedTaggerDispatch) => {
+    ids.forEach((id) => {
+      dispatch(deselectMediaItem(id));
+    });
+  };
+};
+
 export const selectPhoto = (id: string, commandKey: boolean, shiftKey: boolean) => {
 
   return (dispatch: TedTaggerDispatch, getState: any) => {
