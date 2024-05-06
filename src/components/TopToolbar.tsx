@@ -37,7 +37,7 @@ export interface TopToolbarProps {
 
 const TopToolbar = (props: TopToolbarProps) => {
 
-  const [openDialog, setOpenDialog] = React.useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   const [showDeletedMediaItemsDialog, setShowDeletedMediaItemsDialog] = React.useState(false);
 
   function handleSliderChange(event: Event, value: number | number[]): void {
@@ -69,12 +69,16 @@ const TopToolbar = (props: TopToolbarProps) => {
     props.onSetDisplayMetadata(!props.displayMetadata);
   }
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleCloseConfirmationDialog = () => {
+    setShowConfirmationDialog(false);
   };
 
+  const handleCloseDeletedMediaItemsDialog = () => {
+    setShowDeletedMediaItemsDialog(false);
+  }
+
   const handleConfirmDelete = () => {
-    setOpenDialog(false);
+    setShowConfirmationDialog(false);
     switch (props.photoLayout) {
       case PhotoLayout.Grid: {
         props.onDeleteMediaItems(props.selectedMediaItemIds);
@@ -96,7 +100,7 @@ const TopToolbar = (props: TopToolbarProps) => {
   };
 
   function handleDeleteSelectedPhotos() {
-    setOpenDialog(true);
+    setShowConfirmationDialog(true);
   }
 
   const getPhotoLayoutPropsUI = (): JSX.Element | null => {
@@ -157,8 +161,8 @@ const TopToolbar = (props: TopToolbarProps) => {
     <React.Fragment>
       <div>
         <ConfirmationDialog
-          open={openDialog}
-          onClose={handleCloseDialog}
+          open={showConfirmationDialog}
+          onClose={handleCloseConfirmationDialog}
           onConfirm={handleConfirmDelete}
           title="Confirm Delete"
           message="Are you sure you want to delete the selected photo(s)?"
@@ -167,7 +171,7 @@ const TopToolbar = (props: TopToolbarProps) => {
       <div>
         <DeletedMediaItemsDialog
           open={showDeletedMediaItemsDialog}
-          onClose={handleCloseDialog}
+          onClose={handleCloseDeletedMediaItemsDialog}
         />
       </div>
       <div className='toolbarIconButtonContainer'>

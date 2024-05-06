@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import List from '@mui/material/List';
 import { getDeletedMediaItems } from '../selectors';
-import { Dialog, DialogTitle, DialogContent, Box, FormControl, InputLabel, Select, OutlinedInput, DialogActions, Button, Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Box, DialogActions, Button, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
-import CommentIcon from '@mui/icons-material/Comment';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { MediaItem } from '../types';
 
 export interface DeletedMediaItemsDialogPropsFromParent {
@@ -28,22 +28,13 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
     onClose();
   };
 
-  const handleToggle = (value: number) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
+  const handleRemoveDeletedMediaItem = (googleId: string) => {
+    console.log('handleRemoveDeletedMediaItem: ', googleId);
   };
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Import from Takeout</DialogTitle>
+      <DialogTitle>Deleted Media Items</DialogTitle>
       <DialogContent style={{ paddingBottom: '0px' }}>
         <div>
           <Box
@@ -54,21 +45,14 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
               {props.deleteMediaItems.map((mediaItem: MediaItem, index: number) => {
                 const labelId = `checkbox-list-label-${mediaItem.fileName}`;
-
                 return (
                   <ListItem
                     key={mediaItem.googleId}
-                    disablePadding
+                  // disablePadding
                   >
-                    <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
+                    <ListItemButton role={undefined} onClick={() => {handleRemoveDeletedMediaItem(mediaItem.googleId);}} dense>
                       <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          checked={checked.indexOf(index) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
+                        <RemoveCircleIcon />
                       </ListItemIcon>
                       <ListItemText id={labelId} primary={mediaItem.fileName} />
                     </ListItemButton>
