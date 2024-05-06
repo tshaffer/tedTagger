@@ -11,6 +11,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CompareIcon from '@mui/icons-material/Compare';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 
 import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
@@ -187,13 +188,18 @@ const TopToolbar = (props: TopToolbarProps) => {
           </IconButton>
           {getPhotoLayoutPropsUI()}
         </div>
-        <IconButton
-          disabled={props.selectedMediaItemIds.length < 1}
-          onClick={() => {
-            handleDeleteSelectedPhotos();
-          }}>
-          <DeleteIcon />
-        </IconButton>
+        <div>
+          <IconButton>
+            <DeleteSweepIcon />
+          </IconButton>
+          <IconButton
+            disabled={props.selectedMediaItemIds.length < 1}
+            onClick={() => {
+              handleDeleteSelectedPhotos();
+            }}>
+            <DeleteIcon />
+          </IconButton>
+        </div>
       </div>
 
     </React.Fragment>

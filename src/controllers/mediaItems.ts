@@ -165,3 +165,25 @@ export const deleteMediaItems = (mediaItemIds: string[]): any => {
     });
   };
 };
+
+export const loadDeletedMediaItems = (): TedTaggerAnyPromiseThunkAction => {
+
+  return (dispatch: TedTaggerDispatch) => {
+
+    const path = serverUrl
+      + apiUrlFragment
+      + 'deletedMediaItems';
+
+    return axios.get(path)
+      .then((deletedMediaItemsResponse: any) => {
+
+        // const deletedMediaItems: MediaItem[] = [];
+        const deletedMediaItemEntitiesFromServer: ServerMediaItem[] = (deletedMediaItemsResponse as any).data;
+
+        console.log('deletedMediaItemEntitiesFromServer', deletedMediaItemEntitiesFromServer);
+
+        return Promise.resolve();
+      });
+  };
+};
+

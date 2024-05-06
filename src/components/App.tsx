@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout } from '../controllers';
+import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout, loadDeletedMediaItems } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import GridView from './GridView';
 import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
@@ -21,6 +21,7 @@ export interface AppProps {
   photoLayout: PhotoLayout;
   onLoadKeywordData: () => any;
   onLoadMediaItems: () => any;
+  onLoadDeletedMediaItems: () => any;
   onLoadTakeouts: () => any;
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
@@ -50,6 +51,8 @@ const App = (props: AppProps) => {
         return props.onLoadTakeouts();
       }).then(function () {
         return props.onLoadMediaItems();
+      }).then(function () {
+        return props.onLoadDeletedMediaItems();
       }).then(function () {
         return props.onSetAppInitialized();
       });
@@ -116,6 +119,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onLoadKeywordData: loadKeywordData,
     onLoadMediaItems: loadMediaItems,
+    onLoadDeletedMediaItems: loadDeletedMediaItems,
     onSetAppInitialized: setAppInitialized,
     onLoadTakeouts: loadTakeouts,
     onImportFromTakeout: importFromTakeout,
