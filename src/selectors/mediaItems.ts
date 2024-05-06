@@ -17,3 +17,7 @@ export const getMediaItemById = (state: TedTaggerState, googleId: string): Media
 
   return null;
 };
+
+export const getDeletedMediaItems = (state: TedTaggerState): MediaItem[] => {
+  return state.mediaItemsState.deletedMediaItems;
+};

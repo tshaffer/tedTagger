@@ -17,6 +17,7 @@ import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems } from '../controllers';
+import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
 
 export interface TopToolbarProps {
   selectedMediaItemIds: string[];
@@ -37,6 +38,7 @@ export interface TopToolbarProps {
 const TopToolbar = (props: TopToolbarProps) => {
 
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [showDeletedMediaItemsDialog, setShowDeletedMediaItemsDialog] = React.useState(false);
 
   function handleSliderChange(event: Event, value: number | number[]): void {
     props.onSetNumGridColumns(value as number);
@@ -87,6 +89,10 @@ const TopToolbar = (props: TopToolbarProps) => {
         break;
       }
     }
+  };
+
+  const handleShowDeleteMediaItemsListDialog = () => {
+    setShowDeletedMediaItemsDialog(true);
   };
 
   function handleDeleteSelectedPhotos() {
@@ -158,6 +164,13 @@ const TopToolbar = (props: TopToolbarProps) => {
           message="Are you sure you want to delete the selected photo(s)?"
         />
       </div>
+      <div>
+        <DeletedMediaItemsDialog
+          open={showDeletedMediaItemsDialog}
+          onClose={handleCloseDialog}
+          appInitialized={true}
+        />
+      </div>
       <div className='toolbarIconButtonContainer'>
         <div>
           <IconButton
@@ -189,7 +202,10 @@ const TopToolbar = (props: TopToolbarProps) => {
           {getPhotoLayoutPropsUI()}
         </div>
         <div>
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              handleShowDeleteMediaItemsListDialog();
+            }}>
             <DeleteSweepIcon />
           </IconButton>
           <IconButton

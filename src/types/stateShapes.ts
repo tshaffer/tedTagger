@@ -27,6 +27,7 @@ export interface AppState {
 
 export interface MediaItemsState {
   mediaItems: MediaItem[];
+  deletedMediaItems: MediaItem[];
 }
 
 export interface SelectedMediaItemsState {

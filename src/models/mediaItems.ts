@@ -16,6 +16,8 @@ export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
 export const REPLACE_TAG_IN_MEDIA_ITEMS = 'REPLACE_TAG_IN_MEDIA_ITEMS';
 export const DELETE_TAG_FROM_MEDIA_ITEMS = 'DELETE_TAG_FROM_MEDIA_ITEMS';
 
+export const ADD_DELETED_MEDIA_ITEMS = 'ADD_DELETED_MEDIA_ITEMS';
+
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -41,6 +43,17 @@ export const addMediaItems = (
 ): any => {
   return {
     type: ADD_MEDIA_ITEMS,
+    payload: {
+      mediaItems
+    }
+  };
+};
+
+export const addDeletedMediaItems = (
+  mediaItems: MediaItem[],
+): any => {
+  return {
+    type: ADD_DELETED_MEDIA_ITEMS,
     payload: {
       mediaItems
     }
@@ -176,6 +189,7 @@ export const deleteTagFromMediaItemsRedux = (
 const initialState: MediaItemsState =
 {
   mediaItems: [],
+  deletedMediaItems: [],
 };
 
 export const mediaItemsStateReducer = (
@@ -194,6 +208,12 @@ export const mediaItemsStateReducer = (
       return {
         ...state,
         mediaItems: state.mediaItems.concat(action.payload.mediaItems)
+      };
+    }
+    case ADD_DELETED_MEDIA_ITEMS: {
+      return {
+        ...state,
+        deletedMediaItems: state.deletedMediaItems.concat(action.payload.mediaItems)
       };
     }
     case DELETE_MEDIA_ITEMS: {
