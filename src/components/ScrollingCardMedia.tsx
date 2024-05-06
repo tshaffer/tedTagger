@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { CardMedia } from '@mui/material';
+import { CardMedia, IconButton } from '@mui/material';
 
 import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
@@ -10,6 +10,8 @@ import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import CardMediaImage from './CardMediaImage';
 import { getSurveyModeZoomFactor } from '../selectors';
+
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
@@ -78,9 +80,17 @@ function ScrollingCardMedia(props: ScrollingCardMediaProps) {
       title={photoUrl}
       sx={cardMediaStyle}
     >
-      <CardMediaImage
-        mediaItem={props.mediaItem}
-      />
+      <div>
+        <CardMediaImage
+          mediaItem={props.mediaItem}
+        />
+        <div
+          className='overlayIconStyle'>
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </div>
+      </div>
     </CardMedia>
 
   );

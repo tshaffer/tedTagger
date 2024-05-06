@@ -91,6 +91,13 @@
   display: 'inline-block';
 }
 
+.overlayIconStyle {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  background-color: white;
+}
+
 .surveyImageStyle {
   position: absolute;
   top: 50%;
