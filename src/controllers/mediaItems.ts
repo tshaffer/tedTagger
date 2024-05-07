@@ -215,3 +215,24 @@ export const removeDeletedMediaItem = (mediaItemId: string): any => {
   };
 };
 
+export const redownloadMediaItem = (mediaItemId: string): any => {
+
+  return (dispatch: TedTaggerDispatch) => {
+
+    const path = serverUrl + apiUrlFragment + 'redownloadMediaItem';
+
+    const redownloadMediaItemBody = { id: mediaItemId };
+
+    return axios.post(
+      path,
+      redownloadMediaItemBody
+    ).then((response) => {
+      return Promise.resolve();
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return Promise.reject();
+    });
+  };
+};
+

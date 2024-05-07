@@ -12,11 +12,12 @@ import CompareIcon from '@mui/icons-material/Compare';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import DownloadIcon from '@mui/icons-material/Download';
 
 import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
-import { deleteMediaItems } from '../controllers';
+import { deleteMediaItems, redownloadMediaItem } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
 
 export interface TopToolbarProps {
@@ -34,6 +35,7 @@ export interface TopToolbarProps {
   onSetDisplayMetadata: (displayMetadata: boolean) => any;
   onSetScrollPosition: (scrollPosition: number) => any;
   onDeleteMediaItems: (mediaItemIds: string[]) => any;
+  onRedownloadMediaItem: (mediaItemId: string) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -99,6 +101,10 @@ const TopToolbar = (props: TopToolbarProps) => {
   const handleRemoveDeletedMediaItemPhoto = () => {
     setShowDeletedMediaItemsDialog(true);
   };
+
+  function handleRedownloadMediaItem() {
+    props.onRedownloadMediaItem(props.selectedMediaItemIds[0]);
+  }
 
   function handleDeleteSelectedPhotos() {
     setShowConfirmationDialog(true);
@@ -207,6 +213,13 @@ const TopToolbar = (props: TopToolbarProps) => {
         </div>
         <div>
           <IconButton
+            disabled={props.selectedMediaItemIds.length !== 1}
+            onClick={() => {
+              handleRedownloadMediaItem();
+            }}>
+            <DownloadIcon />
+          </IconButton>
+          <IconButton
             disabled={props.deletedMediaItems.length < 1}
             onClick={() => {
               handleRemoveDeletedMediaItemPhoto();
@@ -262,6 +275,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetSurveyModeZoomFactor: setSurveyModeZoomFactorRedux,
     onSetScrollPosition: setScrollPositionRedux,
     onDeleteMediaItems: deleteMediaItems,
+    onRedownloadMediaItem: redownloadMediaItem,
   }, dispatch);
 };
 
