@@ -16,7 +16,7 @@ export interface DeletedMediaItemsDialogPropsFromParent {
 }
 
 export interface DeletedMediaItemsDialogProps extends DeletedMediaItemsDialogPropsFromParent {
-  deleteMediaItems: MediaItem[];
+  deletedMediaItems: MediaItem[];
   onRemoveDeletedMediaItem: (mediaItemId: string) => void;
 }
 
@@ -44,7 +44,7 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
             autoComplete="off"
           >
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {props.deleteMediaItems.map((mediaItem: MediaItem, index: number) => {
+              {props.deletedMediaItems.map((mediaItem: MediaItem, index: number) => {
                 const labelId = `checkbox-list-label-${mediaItem.fileName}`;
                 return (
                   <ListItem
@@ -73,7 +73,7 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
 
 function mapStateToProps(state: any) {
   return {
-    deleteMediaItems: getDeletedMediaItems(state),
+    deletedMediaItems: getDeletedMediaItems(state),
   };
 }
 

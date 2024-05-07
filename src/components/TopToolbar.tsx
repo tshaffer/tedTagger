@@ -14,7 +14,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
@@ -26,6 +26,7 @@ export interface TopToolbarProps {
   surveyModeZoomFactor: number;
   photoLayout: PhotoLayout;
   displayMetadata: boolean;
+  deletedMediaItems: MediaItem[];
   onSetNumGridColumns: (numGridColumns: number) => void;
   onSetSurveyModeZoomFactor: (numGridColumns: number) => void;
   onSetPhotoLayout: (photoLayout: PhotoLayout) => void;
@@ -75,7 +76,7 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   const handleCloseDeletedMediaItemsDialog = () => {
     setShowDeletedMediaItemsDialog(false);
-  }
+  };
 
   const handleConfirmDelete = () => {
     setShowConfirmationDialog(false);
@@ -206,6 +207,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         </div>
         <div>
           <IconButton
+            disabled={props.deletedMediaItems.length < 1}
             onClick={() => {
               handleRemoveDeletedMediaItemPhoto();
             }}>
@@ -247,6 +249,7 @@ function mapStateToProps(state: any) {
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     photoLayout: getPhotoLayout(state),
     displayMetadata: getDisplayMetadata(state),
+    deletedMediaItems: getDeletedMediaItems(state),
   };
 }
 
