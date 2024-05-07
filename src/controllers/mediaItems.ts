@@ -184,35 +184,34 @@ export const loadDeletedMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         console.log('deletedMediaItemEntitiesFromServer', deletedMediaItems);
 
         dispatch(addDeletedMediaItems(deletedMediaItems));
-        
+
         return Promise.resolve();
       });
   };
 };
 
-export const removeDeleteMediaItem = (mediaItemId: string): any => {
+export const removeDeletedMediaItem = (mediaItemId: string): any => {
 
   return (dispatch: TedTaggerDispatch) => {
 
-    dispatch(removeDeletedMediaItemRedux(mediaItemId));
-    return Promise.resolve();
+    // dispatch(removeDeletedMediaItemRedux(mediaItemId));
+    // return Promise.resolve();
 
-    // const path = serverUrl + apiUrlFragment + 'deleteMediaItems';
+    const path = serverUrl + apiUrlFragment + 'removeDeletedMediaItem';
 
-    // const deleteMediaItemsBody = { mediaItemIds };
+    const removeDeletedMediaItemBody = { mediaItemId };
 
-    // return axios.post(
-    //   path,
-    //   deleteMediaItemsBody
-    // ).then((response) => {
-    //   dispatch(deselectMediaItems(mediaItemIds));
-    //   dispatch(deleteMediaItemsRedux(mediaItemIds));
-    //   return Promise.resolve();
-    // }).catch((error) => {
-    //   console.log('error');
-    //   console.log(error);
-    //   return Promise.reject();
-    // });
+    return axios.post(
+      path,
+      removeDeletedMediaItemBody
+    ).then((response) => {
+      dispatch(removeDeletedMediaItemRedux(mediaItemId));
+      return Promise.resolve();
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return Promise.reject();
+    });
   };
 };
 

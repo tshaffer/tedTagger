@@ -8,7 +8,7 @@ import { Dialog, DialogTitle, DialogContent, Box, DialogActions, Button, ListIte
 
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { MediaItem } from '../types';
-import { removeDeleteMediaItem } from '../controllers';
+import { removeDeletedMediaItem } from '../controllers';
 
 export interface DeletedMediaItemsDialogPropsFromParent {
   open: boolean;
@@ -17,12 +17,12 @@ export interface DeletedMediaItemsDialogPropsFromParent {
 
 export interface DeletedMediaItemsDialogProps extends DeletedMediaItemsDialogPropsFromParent {
   deleteMediaItems: MediaItem[];
-  onRemoveDeleteMediaItem: (mediaItemId: string) => void;
+  onRemoveDeletedMediaItem: (mediaItemId: string) => void;
 }
 
 const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
 
-  const { open, onClose, onRemoveDeleteMediaItem } = props;
+  const { open, onClose, onRemoveDeletedMediaItem } = props;
 
   const handleClose = () => {
     onClose();
@@ -30,7 +30,7 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
 
   const handleRemoveDeletedMediaItem = (googleId: string) => {
     console.log('handleRemoveDeletedMediaItem: ', googleId);
-    onRemoveDeleteMediaItem(googleId);
+    onRemoveDeletedMediaItem(googleId);
   };
 
   return (
@@ -51,7 +51,7 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
                     key={mediaItem.googleId}
                   // disablePadding
                   >
-                    <ListItemButton role={undefined} onClick={() => {handleRemoveDeletedMediaItem(mediaItem.googleId);}} dense>
+                    <ListItemButton role={undefined} onClick={() => { handleRemoveDeletedMediaItem(mediaItem.googleId); }} dense>
                       <ListItemIcon>
                         <RemoveCircleIcon />
                       </ListItemIcon>
@@ -79,7 +79,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    onRemoveDeleteMediaItem: removeDeleteMediaItem,
+    onRemoveDeletedMediaItem: removeDeletedMediaItem,
   }, dispatch);
 };
 
