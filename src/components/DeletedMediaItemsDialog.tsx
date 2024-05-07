@@ -8,6 +8,7 @@ import { Dialog, DialogTitle, DialogContent, Box, DialogActions, Button, ListIte
 
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { MediaItem } from '../types';
+import { removeDeleteMediaItem } from '../controllers';
 
 export interface DeletedMediaItemsDialogPropsFromParent {
   open: boolean;
@@ -16,13 +17,12 @@ export interface DeletedMediaItemsDialogPropsFromParent {
 
 export interface DeletedMediaItemsDialogProps extends DeletedMediaItemsDialogPropsFromParent {
   deleteMediaItems: MediaItem[];
+  onRemoveDeleteMediaItem: (mediaItemId: string) => void;
 }
 
 const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
 
-  const { open, onClose } = props;
-
-  const [checked, setChecked] = React.useState([0]);
+  const { open, onClose, onRemoveDeleteMediaItem } = props;
 
   const handleClose = () => {
     onClose();
@@ -30,6 +30,7 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
 
   const handleRemoveDeletedMediaItem = (googleId: string) => {
     console.log('handleRemoveDeletedMediaItem: ', googleId);
+    onRemoveDeleteMediaItem(googleId);
   };
 
   return (
@@ -78,6 +79,7 @@ function mapStateToProps(state: any) {
 
 const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
+    onRemoveDeleteMediaItem: removeDeleteMediaItem,
   }, dispatch);
 };
 

@@ -95,7 +95,7 @@ const TopToolbar = (props: TopToolbarProps) => {
     }
   };
 
-  const handleShowDeleteMediaItemsListDialog = () => {
+  const handleRemoveDeletedMediaItemPhoto = () => {
     setShowDeletedMediaItemsDialog(true);
   };
 
@@ -207,7 +207,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         <div>
           <IconButton
             onClick={() => {
-              handleShowDeleteMediaItemsListDialog();
+              handleRemoveDeletedMediaItemPhoto();
             }}>
             <DeleteSweepIcon />
           </IconButton>

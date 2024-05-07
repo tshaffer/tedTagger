@@ -17,6 +17,7 @@ export const REPLACE_TAG_IN_MEDIA_ITEMS = 'REPLACE_TAG_IN_MEDIA_ITEMS';
 export const DELETE_TAG_FROM_MEDIA_ITEMS = 'DELETE_TAG_FROM_MEDIA_ITEMS';
 
 export const ADD_DELETED_MEDIA_ITEMS = 'ADD_DELETED_MEDIA_ITEMS';
+export const REMOVE_DELETED_MEDIA_ITEM = 'REMOVE_DELETED_MEDIA_ITEM';
 
 // ------------------------------------
 // Actions
@@ -71,6 +72,21 @@ export const deleteMediaItemsRedux = (
     type: DELETE_MEDIA_ITEMS,
     payload: {
       mediaItemIds,
+    }
+  };
+};
+
+interface RemoveDeletedMediaItemIdPayload {
+  mediaItemId: string;
+}
+
+export const removeDeletedMediaItemRedux = (
+  mediaItemId: string,
+) => {
+  return {
+    type: REMOVE_DELETED_MEDIA_ITEM,
+    payload: {
+      mediaItemId,
     }
   };
 };
@@ -195,7 +211,7 @@ const initialState: MediaItemsState =
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
   // action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload & ReplaceTagInMediaItemsPayload>
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload & DeleteMediaItemIdsPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload & DeleteMediaItemIdsPayload & RemoveDeletedMediaItemIdPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case REPLACE_MEDIA_ITEMS: {
@@ -214,6 +230,14 @@ export const mediaItemsStateReducer = (
       return {
         ...state,
         deletedMediaItems: state.deletedMediaItems.concat(action.payload.mediaItems)
+      };
+    }
+    case REMOVE_DELETED_MEDIA_ITEM: {
+      let updatedDeletedMediaItems = cloneDeep(state.deletedMediaItems);
+      updatedDeletedMediaItems = updatedDeletedMediaItems.filter(item => item.googleId !== action.payload.mediaItemId);
+      return {
+        ...state,
+        deletedMediaItems: updatedDeletedMediaItems,
       };
     }
     case DELETE_MEDIA_ITEMS: {

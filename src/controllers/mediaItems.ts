@@ -8,7 +8,8 @@ import {
   removeKeywordFromMediaItemIdsRedux,
   replaceMediaItems,
   deleteMediaItemsRedux,
-  addDeletedMediaItems
+  addDeletedMediaItems,
+  removeDeletedMediaItemRedux
 } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, TedTaggerState, MatchRule, SearchRule,
@@ -186,6 +187,32 @@ export const loadDeletedMediaItems = (): TedTaggerAnyPromiseThunkAction => {
         
         return Promise.resolve();
       });
+  };
+};
+
+export const removeDeleteMediaItem = (mediaItemId: string): any => {
+
+  return (dispatch: TedTaggerDispatch) => {
+
+    dispatch(removeDeletedMediaItemRedux(mediaItemId));
+    return Promise.resolve();
+
+    // const path = serverUrl + apiUrlFragment + 'deleteMediaItems';
+
+    // const deleteMediaItemsBody = { mediaItemIds };
+
+    // return axios.post(
+    //   path,
+    //   deleteMediaItemsBody
+    // ).then((response) => {
+    //   dispatch(deselectMediaItems(mediaItemIds));
+    //   dispatch(deleteMediaItemsRedux(mediaItemIds));
+    //   return Promise.resolve();
+    // }).catch((error) => {
+    //   console.log('error');
+    //   console.log(error);
+    //   return Promise.reject();
+    // });
   };
 };
 
