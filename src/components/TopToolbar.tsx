@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import '../styles/TedTagger.css';
 import { IconButton, Slider, Typography } from '@mui/material';
 import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
+import { Tooltip } from '@mui/material';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -70,7 +71,7 @@ const TopToolbar = (props: TopToolbarProps) => {
     }
   }
 
-  function handlaDeselectAll(): void {
+  function handleDeselectAll(): void {
     props.onDeselectAllPhotos();
   }
 
@@ -189,64 +190,92 @@ const TopToolbar = (props: TopToolbarProps) => {
       </div>
       <div className='toolbarIconButtonContainer'>
         <div>
-          <IconButton
-            onClick={() => {
-              handleUpdatePhotoLayout(PhotoLayout.Grid);
-            }}>
-            <GridOnIcon />
-          </IconButton>
-          <IconButton
-            disabled={props.selectedMediaItemIds.length === 0}
-            onClick={() => {
-              handleUpdatePhotoLayout(PhotoLayout.Loupe);
-            }}>
-            <InsertPhotoIcon />
-          </IconButton>
-          <IconButton
-            disabled={props.selectedMediaItemIds.length < 2}
-            onClick={() => {
-              handleUpdatePhotoLayout(PhotoLayout.Survey);
-            }}>
-            <CompareIcon />
-          </IconButton>
-          <IconButton
-            disabled={props.selectedMediaItemIds.length === 0}
-            onClick={() => {
-              handlaDeselectAll();
-            }}
-          >
-            <DeselectIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => {
-              handlaToggleDisplayMetadata();
-            }}>
-            <InfoIcon />
-          </IconButton>
+          <Tooltip title="Grid">
+            <IconButton
+              onClick={() => {
+                handleUpdatePhotoLayout(PhotoLayout.Grid);
+              }}>
+              <GridOnIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Loupe">
+            <span>
+              <IconButton
+                disabled={props.selectedMediaItemIds.length === 0}
+                onClick={() => {
+                  handleUpdatePhotoLayout(PhotoLayout.Loupe);
+                }}>
+                <InsertPhotoIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Survey">
+            <span>
+              <IconButton
+                disabled={props.selectedMediaItemIds.length < 2}
+                onClick={() => {
+                  handleUpdatePhotoLayout(PhotoLayout.Survey);
+                }}>
+                <CompareIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Deselect All">
+            <span>
+              <IconButton
+                disabled={props.selectedMediaItemIds.length === 0}
+                onClick={() => {
+                  handleDeselectAll();
+                }}
+              >
+                <DeselectIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Metadata">
+            <IconButton
+              onClick={() => {
+                handlaToggleDisplayMetadata();
+              }}>
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
           {getPhotoLayoutPropsUI()}
         </div>
         <div>
-          <IconButton
-            disabled={props.selectedMediaItemIds.length !== 1}
-            onClick={() => {
-              handleRedownloadMediaItem();
-            }}>
-            <DownloadIcon />
-          </IconButton>
-          <IconButton
-            disabled={props.deletedMediaItems.length < 1}
-            onClick={() => {
-              handleRemoveDeletedMediaItemPhoto();
-            }}>
-            <DeleteSweepIcon />
-          </IconButton>
-          <IconButton
-            disabled={props.selectedMediaItemIds.length < 1}
-            onClick={() => {
-              handleDeleteSelectedPhotos();
-            }}>
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Redownload Image">
+            <span>
+              <IconButton
+                disabled={props.selectedMediaItemIds.length !== 1}
+                onClick={() => {
+                  handleRedownloadMediaItem();
+                }}>
+                <DownloadIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Show Deleted Photos">
+            <span>
+              <IconButton
+                disabled={props.deletedMediaItems.length < 1}
+                onClick={() => {
+                  handleRemoveDeletedMediaItemPhoto();
+                }}>
+                <DeleteSweepIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Delete Selected Photos">
+            <span>
+              <IconButton
+                disabled={props.selectedMediaItemIds.length < 1}
+                onClick={() => {
+                  handleDeleteSelectedPhotos();
+                }}>
+                <DeleteIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
         </div>
       </div>
 
