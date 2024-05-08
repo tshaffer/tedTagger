@@ -53,7 +53,7 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
 
   const renderTakeout = (takeout: Takeout): JSX.Element => {
     return (
-      <MenuItem value={takeout.id}>{takeout.label}</MenuItem>
+      <MenuItem key={takeout.id} value={takeout.id}>{takeout.label}</MenuItem>
     );
   };
 
