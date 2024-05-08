@@ -223,7 +223,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <Tooltip title="Deselect All">
             <span>
               <IconButton
-                disabled={props.selectedMediaItemIds.length === 0}
+                disabled={props.selectedMediaItemIds.length === 0 || props.photoLayout !== PhotoLayout.Grid}
                 onClick={() => {
                   handleDeselectAll();
                 }}
