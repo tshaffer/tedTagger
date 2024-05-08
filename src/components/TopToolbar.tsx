@@ -13,11 +13,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import DownloadIcon from '@mui/icons-material/Download';
+import DeselectIcon from '@mui/icons-material/Deselect';
 
 import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
-import { deleteMediaItems, redownloadMediaItem } from '../controllers';
+import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
 
 export interface TopToolbarProps {
@@ -36,6 +37,7 @@ export interface TopToolbarProps {
   onSetScrollPosition: (scrollPosition: number) => any;
   onDeleteMediaItems: (mediaItemIds: string[]) => any;
   onRedownloadMediaItem: (mediaItemId: string) => any;
+  onDeselectAllPhotos: () => void;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -66,6 +68,10 @@ const TopToolbar = (props: TopToolbarProps) => {
     } else {
       props.onSetPhotoLayout(photoLayout);
     }
+  }
+
+  function handlaDeselectAll(): void {
+    props.onDeselectAllPhotos();
   }
 
   function handlaToggleDisplayMetadata(): void {
@@ -117,7 +123,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(48%, -50%)',
+            transform: 'translate(64%, -50%)',
           }}>
             <div className='sliderContainer'>
               <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
@@ -139,7 +145,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(48%, -50%)',
+            transform: 'translate(64%, -50%)',
           }}>
             <div className='sliderContainer'> {/* sliderContainer wrapped inside the parent */}
               <Typography gutterBottom style={{ fontSize: '13px' }}>Grid Column Count</Typography>
@@ -202,6 +208,14 @@ const TopToolbar = (props: TopToolbarProps) => {
               handleUpdatePhotoLayout(PhotoLayout.Survey);
             }}>
             <CompareIcon />
+          </IconButton>
+          <IconButton
+            disabled={props.selectedMediaItemIds.length === 0}
+            onClick={() => {
+              handlaDeselectAll();
+            }}
+          >
+            <DeselectIcon />
           </IconButton>
           <IconButton
             onClick={() => {
@@ -276,6 +290,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetScrollPosition: setScrollPositionRedux,
     onDeleteMediaItems: deleteMediaItems,
     onRedownloadMediaItem: redownloadMediaItem,
+    onDeselectAllPhotos: deselectAllPhotos,
   }, dispatch);
 };
 
