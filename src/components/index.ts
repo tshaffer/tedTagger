@@ -13,8 +13,9 @@ export * from './Photo';
 export * from './PhotoProperties';
 export * from './SearchSpecDialog';
 export * from './SurveyView';
+export * from './SurveyViewGridItem';
 export * from './SurveyViewImage';
-export * from './SurveyViewMedia';
+export * from './SurveyViewImageContainer';
 export * from './TopToolbar';
 export * from './ZoomGroup';
 

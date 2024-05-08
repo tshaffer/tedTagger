@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { Grid, Card, GridSize } from '@mui/material';
-import SurveyViewMedia from './SurveyViewMedia';
+import SurveyViewImageContainer from './SurveyViewImageContainer';
 
 import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
@@ -44,17 +44,17 @@ const unselectedCardMediaStyle = {
   backgroundColor: 'purple',
 };
 
-export interface SurveyViewPhotosPropsFromParent {
+export interface SurveyViewGridItemsPropsFromParent {
   mediaItem: MediaItem;
   numGridColumns: number;
   numGridRows: number;
 }
 
-export interface SurveyViewPhotosProps extends SurveyViewPhotosPropsFromParent {
+export interface SurveyViewGridItemsProps extends SurveyViewGridItemsPropsFromParent {
   surveyModeZoomFactor: number;
 }
 
-function SurveyViewPhotos(props: SurveyViewPhotosProps) {
+function SurveyViewGridItems(props: SurveyViewGridItemsProps) {
 
   const photoUrl = getPhotoUrl(props.mediaItem);
 
@@ -95,12 +95,12 @@ function SurveyViewPhotos(props: SurveyViewPhotosProps) {
       <Card
         sx={cardStyle}
       >
-        <SurveyViewMedia
+        <SurveyViewImageContainer
           mediaItem={props.mediaItem}
           numGridColumns={props.numGridColumns}
           numGridRows={props.numGridRows}
         >
-        </SurveyViewMedia>
+        </SurveyViewImageContainer>
       </Card>
     </Grid>
   );
@@ -118,4 +118,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyViewPhotos);
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyViewGridItems);

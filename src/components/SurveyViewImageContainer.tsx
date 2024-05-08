@@ -12,7 +12,7 @@ import SurveyViewImage from './SurveyViewImage';
 import { getSurveyModeZoomFactor } from '../selectors';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteSurveyViewMediaItem } from '../controllers';
+import { deleteSurveyViewImageContainerItem } from '../controllers';
 import ConfirmationDialog from './ConfirmationDialog';
 
 const selectedCardMediaStyle = {
@@ -33,18 +33,18 @@ const unselectedCardMediaStyle = {
   backgroundColor: 'purple',
 };
 
-export interface SurveyViewMediaPropsFromParent {
+export interface SurveyViewImageContainerPropsFromParent {
   mediaItem: MediaItem;
   numGridColumns: number;
   numGridRows: number;
 }
 
-export interface SurveyViewMediaProps extends SurveyViewMediaPropsFromParent {
+export interface SurveyViewImageContainerProps extends SurveyViewImageContainerPropsFromParent {
   surveyModeZoomFactor: number;
-  onDeleteSurveyViewMediaItem: (mediaItemId: string) => any;
+  onDeleteSurveyViewImageContainerItem: (mediaItemId: string) => any;
 }
 
-function SurveyViewMedia(props: SurveyViewMediaProps) {
+function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
 
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -58,7 +58,7 @@ function SurveyViewMedia(props: SurveyViewMediaProps) {
 
   const handleConfirmDelete = () => {
     setOpenDialog(false);
-    props.onDeleteSurveyViewMediaItem(props.mediaItem.googleId);
+    props.onDeleteSurveyViewImageContainerItem(props.mediaItem.googleId);
   };
 
   const photoUrl = getPhotoUrl(props.mediaItem);
@@ -133,8 +133,8 @@ function mapStateToProps(state: any, ownProps: any) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onDeleteSurveyViewMediaItem: deleteSurveyViewMediaItem
+    onDeleteSurveyViewImageContainerItem: deleteSurveyViewImageContainerItem
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyViewMedia);
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyViewImageContainer);

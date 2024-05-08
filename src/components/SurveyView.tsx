@@ -6,7 +6,7 @@ import '../styles/TedTagger.css';
 import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getMediaItems, getSelectedMediaItems } from '../selectors';
-import SurveyViewPhoto from './SurveyViewPhoto';
+import SurveyViewGridItem from './SurveyViewGridItem';
 import { Box, Grid } from '@mui/material';
 
 export interface SurveyViewProps {
@@ -32,7 +32,7 @@ const SurveyView = (props: SurveyViewProps) => {
     numGridColumns: number
   ): JSX.Element => {
     return (
-      <SurveyViewPhoto
+      <SurveyViewGridItem
         key={mediaItem.googleId}
         mediaItem={mediaItem}
         numGridRows={numGridRows}
