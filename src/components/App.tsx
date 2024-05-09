@@ -16,7 +16,7 @@ import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import SurveyView from './SurveyView';
 import TopToolbar from './TopToolbar';
-import CSSGrid from './CSSGrid';
+import FlexBox from './FlexBox';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
@@ -75,34 +75,18 @@ const App = (props: AppProps) => {
     }
   };
 
-  const getCSSGrid = (): JSX.Element => {
-
-    const columnWidthsByRowIndex: any = {
-      0: [50, 80],
-      1: [40, 100, 50, 200],
-      2: [90, 20, 111]
-    };
-
-    const gridItemColorsByRowIndex: any = {
-      0: ['#ff0000', '#00ff00'],
-      1: ['#0000ff', '#ffff00', '#ff00ff', '#00ffff'],
-      2: ['#f0f0f0', '#0f0f0f', '#abcdef']
-    };
+  const getFlexBox = (): JSX.Element => {
 
     return (
       <div>
-        <CSSGrid
-          rowHeights={[100, 150, 125]}
-          columnWidthsByRowIndex={ columnWidthsByRowIndex }
-          gridItemColorsByRowIndex={ gridItemColorsByRowIndex }
-        />
+        <FlexBox/>
       </div>
     );
   };
 
   const photoDisplay: JSX.Element = getPhotoDisplay();
 
-  const cssGrid: JSX.Element = getCSSGrid();
+  const cssGrid: JSX.Element = getFlexBox();
 
   return (
     <div>
