@@ -88,3 +88,10 @@ export interface AddedTakeoutData {
   addedKeywordData: KeywordData | null;
   addedMediaItems: MediaItem[];
 }
+
+export interface GridRowData {
+  mediaItemIndex: number;
+  numMediaItems: number;
+  rowHeight: number;
+  cellWidths: number[];
+}

@@ -16,6 +16,7 @@ import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import SurveyView from './SurveyView';
 import TopToolbar from './TopToolbar';
+import DivGridView from './DivGridView';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
@@ -69,7 +70,7 @@ const App = (props: AppProps) => {
       );
     } else {
       return (
-        <GridView />
+        <DivGridView />
       );
     }
   };

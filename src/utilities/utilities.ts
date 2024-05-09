@@ -31,11 +31,6 @@ export const getPhotoUrl = (mediaItem: MediaItem): string => {
     basename,
   );
 
-  // if (photoUrl === '/images') {
-  //   debugger;
-  // }
-  // console.log(photoUrl);
-
   return photoUrl;
 };
 
