@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getMediaItems } from '../selectors';
-
-const centerColumnWidth = 1376;
+import DivGridCell from './DivGridCell';
 
 export interface DivGridRowPropsFromParent {
-  startingMediaItemIndex: number;
+  mediaItemIndex: number;
+  numMediaItems: number;
+  rowHeight: number;
+  cellWidths: number[];
 }
 
 export interface DivGridRowProps extends DivGridRowPropsFromParent {
@@ -26,36 +28,41 @@ const DivGridRow = (props: DivGridRowProps) => {
     return null;
   }
 
-  // let previousCumulativeWidth = 0;
-  // let cumulativeWidth = 0;
-  // const targetHeight = 220;
+  const getGridCell = (mediaItemIndex: number, cellWidth: number): JSX.Element => {
+    return (
+      <DivGridCell
+        mediaItemIndex={mediaItemIndex}
+        rowHeight={props.rowHeight}
+        cellWidth={cellWidth}
+      />
+    );
+  };
 
-  // debugger;
+  const getGridCells = (): JSX.Element[] => {
+    const gridCells: JSX.Element[] = [];
+    for (let index = props.mediaItemIndex; index < (props.mediaItemIndex + props.numMediaItems); index++) {
+      const cellWidth = props.cellWidths[index - props.mediaItemIndex];
+      const gridCellElement = getGridCell(index, cellWidth);
+      gridCells.push(gridCellElement);
+    }
+    return gridCells;
+  };
 
-  // let index = props.startingMediaItemIndex;
-  // while (cumulativeWidth < centerColumnWidth) {
-  //   const mediaItem = props.allMediaItems[index];
-  //   const aspectRatio = mediaItem.width! / mediaItem.height!;
-  //   const width = targetHeight * aspectRatio;
-  //   previousCumulativeWidth = cumulativeWidth;
-  //   cumulativeWidth += width;
-  //   index++;
-  // }
-
-  // const widthUnderflow = previousCumulativeWidth / centerColumnWidth;
-  // const calculatedHeight = targetHeight / widthUnderflow;
-
-  // debugger;
+  const gridCells = getGridCells();
 
   return (
-    <div>pizza</div>
+    <div style={{
+      height: props.rowHeight.toString() + 'px'
+    }}>
+      {gridCells}
+    </div>
   );
+
 };
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
     appInitialized: getAppInitialized(state),
-    startingMediaItemIndex: ownProps.startingMediaItemIndex,
     allMediaItems: getMediaItems(state),
   };
 }

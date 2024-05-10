@@ -93,4 +93,5 @@ export interface GridRowData {
   mediaItemIndex: number;
   numMediaItems: number;
   rowHeight: number;
+  cellWidths: number[];
 }

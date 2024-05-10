@@ -24,17 +24,46 @@ const DivGridView = (props: DivGridViewProps) => {
     return null;
   }
 
-  let mediaItemIndex = 0;
-  while (mediaItemIndex < props.allMediaItems.length) {
-    const gridRowData: GridRowData = getGridRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
-    console.log('gridRowData: ', gridRowData);
-    mediaItemIndex = mediaItemIndex + gridRowData.numMediaItems;
-  }
+  const getGridRowData = (): GridRowData[] => {
+    const gridRows: GridRowData[] = [];
+    let mediaItemIndex = 0;
+    while (mediaItemIndex < props.allMediaItems.length) {
+      const gridRowData: GridRowData = getGridRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
+      console.log('gridRowData: ', gridRowData);
+      mediaItemIndex = mediaItemIndex + gridRowData.numMediaItems;
+      gridRows.push(gridRowData);
+    }
+    return gridRows;
+  };
+
+  const renderGridRow = (gridRowData: GridRowData): JSX.Element => {
+    const { mediaItemIndex, numMediaItems, rowHeight, cellWidths } = gridRowData;
+    return (
+      <DivGridRow
+        mediaItemIndex={mediaItemIndex}
+        numMediaItems={numMediaItems}
+        rowHeight={rowHeight}
+        cellWidths={cellWidths}
+      />
+    );
+  };
+
+  const renderGridRows = (gridRows: GridRowData[]): JSX.Element[] => {
+    const renderedGridRows: JSX.Element[] = gridRows.map((gridRowData: GridRowData, index: number) => {
+      const renderedGridRow = renderGridRow(gridRowData);
+      return renderedGridRow;
+    });
+
+    return renderedGridRows;
+  };
+
+  const gridRows: GridRowData[] = getGridRowData();
+  const renderedGridRows = renderGridRows(gridRows);
 
   return (
-    <DivGridRow
-      startingMediaItemIndex={0}
-    />
+    <div>
+      {renderedGridRows}
+    </div>
   );
 };
 
