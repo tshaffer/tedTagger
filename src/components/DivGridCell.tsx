@@ -7,6 +7,7 @@ import { TedTaggerDispatch } from '../models';
 import '../styles/TedTagger.css';
 import { MediaItem } from '../types';
 import { getMediaItems } from '../selectors';
+import { getPhotoUrl } from '../utilities';
 
 export interface DivGridCellPropsFromParent {
   mediaItemIndex: number;
@@ -25,13 +26,20 @@ const DivGridCell = (props: DivGridCellProps) => {
   const widthAttribute: string = props.cellWidth.toString() + 'px';
   const heightAttribute: string = props.rowHeight.toString() + 'px';
 
+  const photoUrl = getPhotoUrl(mediaItem);
+
   return (
     <div style={{
       display: 'inline-block',
       width: widthAttribute,
       height: heightAttribute,
     }}>
-      {mediaItem.fileName}
+      <img
+        src={photoUrl}
+        width={widthAttribute}
+        height={heightAttribute}
+        loading='lazy'
+      />
     </div>
   );
 };
