@@ -25,12 +25,11 @@ const DivGridView = (props: DivGridViewProps) => {
   }
 
   let mediaItemIndex = 0;
-  for (let rowIndex = 0; rowIndex < 20; rowIndex++) {
-    debugger;
-    const { height, endingMediaItemIndex } = getRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex);
+  while (mediaItemIndex < props.allMediaItems.length) {
+    const { height, endingMediaItemIndex } = getRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
     console.log('height: ', height);
     console.log('endingMediaItemIndex: ', endingMediaItemIndex);
-    mediaItemIndex = endingMediaItemIndex;
+    mediaItemIndex = endingMediaItemIndex + 1;
   }
 
   return (

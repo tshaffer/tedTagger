@@ -1,13 +1,14 @@
+import { isNil } from 'lodash';
 import { MediaItem } from '../types';
 
-export const getRowHeight = (rowWidth: number, mediaItems: MediaItem[], startingMediaItemIndex: number): any => {
+export const getRowHeight = (rowWidth: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): any => {
 
   let previousCumulativeWidth = 0;
   let cumulativeWidth = 0;
   const targetHeight = 220;
 
   let index = startingMediaItemIndex;
-  while (cumulativeWidth < rowWidth) {
+  while ((cumulativeWidth < rowWidth) && (index <= maxRowIndex)) {
     const mediaItem = mediaItems[index];
     const aspectRatio = mediaItem.width! / mediaItem.height!;
     const width = targetHeight * aspectRatio;
@@ -22,7 +23,7 @@ export const getRowHeight = (rowWidth: number, mediaItems: MediaItem[], starting
   cumulativeWidth = 0;
 
   index = startingMediaItemIndex;
-  while (cumulativeWidth < rowWidth) {
+  while ((cumulativeWidth < rowWidth) && (index <= maxRowIndex)) {
     const mediaItem = mediaItems[index];
     const aspectRatio = mediaItem.width! / mediaItem.height!;
     const width = calculatedHeight * aspectRatio;
@@ -30,6 +31,8 @@ export const getRowHeight = (rowWidth: number, mediaItems: MediaItem[], starting
     cumulativeWidth += width;
     index++;
   }
+
+  console.log('ENDING VALUES: ', cumulativeWidth, rowWidth);
 
   return {
     height: calculatedHeight,
