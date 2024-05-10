@@ -16,7 +16,7 @@ import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import SurveyView from './SurveyView';
 import TopToolbar from './TopToolbar';
-import FlexBox from './DivBox';
+import DivGridView from './DivGridView';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
@@ -75,18 +75,18 @@ const App = (props: AppProps) => {
     }
   };
 
-  const getFlexBox = (): JSX.Element => {
+  const getDivGridView = (): JSX.Element => {
 
     return (
       <div>
-        <FlexBox/>
+        <DivGridView/>
       </div>
     );
   };
 
   const photoDisplay: JSX.Element = getPhotoDisplay();
 
-  const cssGrid: JSX.Element = getFlexBox();
+  const divGridView: JSX.Element = getDivGridView();
 
   return (
     <div>
@@ -109,7 +109,7 @@ const App = (props: AppProps) => {
           />
         </div>
         <div id='centerColumn' className='centerColumnStyle'>
-          {cssGrid}
+          {divGridView}
         </div>
         <div className='rightColumnStyle'>Right Panel</div>
         {/* <div className='bottomPanel'>Bottom Panel</div> */}
