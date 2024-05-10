@@ -7,25 +7,28 @@ import { TedTaggerDispatch } from '../models';
 import '../styles/TedTagger.css';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface FlexBoxProps {
+export interface DivBoxProps {
 }
 
-const FlexBox = (props: FlexBoxProps) => {
+const DivBox = (props: DivBoxProps) => {
 
   const getRow0 = (): JSX.Element => {
     return (
       <div style={{
-        display: 'flex',
         height: '240px'
       }}>
         <div style={{
-          flex: 100,
+          display: 'inline-block',
+          width: '100px',
+          height: '240px',
           backgroundColor: 'lightgreen'
         }}>
           Item 1
         </div>
         <div style={{
-          flex: 200,
+          display: 'inline-block',
+          width: '200px',
+          height: '240px',
           backgroundColor: 'lightblue'
         }}>
           Item 2
@@ -37,23 +40,28 @@ const FlexBox = (props: FlexBoxProps) => {
   const getRow1 = (): JSX.Element => {
     return (
       <div style={{
-        display: 'flex',
         height: '200px'
       }}>
         <div style={{
-          flex: 400,
+          display: 'inline-block',
+          width: '400px',
+          height: '200px',
           backgroundColor: 'lightgreen'
         }}>
           Item 1
         </div>
         <div style={{
-          flex: 200,
+          display: 'inline-block',
+          width: '200px',
+          height: '200px',
           backgroundColor: 'lightblue'
         }}>
           Item 2
         </div>
         <div style={{
-          flex: 300,
+          display: 'inline-block',
+          width: '300px',
+          height: '200px',
           backgroundColor: 'navajowhite'
         }}>
           Item 2
@@ -65,23 +73,28 @@ const FlexBox = (props: FlexBoxProps) => {
   const getRow3 = (): JSX.Element => {
     return (
       <div style={{
-        display: 'flex',
-        height: '500px'
+        height: '500px',
       }}>
         <div style={{
-          flex: 600,
+          display: 'inline-block',
+          width: '600px',
+          height: '500px',
           backgroundColor: 'lightgray'
         }}>
           Item 1
         </div>
         <div style={{
-          flex: 300,
+          display: 'inline-block',
+          width: '300px',
+          height: '500px',
           backgroundColor: 'cyan'
         }}>
           Item 2
         </div>
         <div style={{
-          flex: 200,
+          display: 'inline-block',
+          width: '200px',
+          height: '500px',
           backgroundColor: 'brown'
         }}>
           Item 2
@@ -113,4 +126,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlexBox);
+export default connect(mapStateToProps, mapDispatchToProps)(DivBox);

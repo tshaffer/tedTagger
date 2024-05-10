@@ -16,7 +16,7 @@ import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import SurveyView from './SurveyView';
 import TopToolbar from './TopToolbar';
-import FlexBox from './FlexBox';
+import FlexBox from './DivBox';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
