@@ -24,7 +24,8 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
   cumulativeWidth = 0;
 
   index = startingMediaItemIndex;
-  while ((cumulativeWidth < rowWidth) && (index <= maxRowIndex)) {
+  // HACK - to work around small round off error - not stopping to think about the correct code
+  while (((cumulativeWidth + 5) < rowWidth) && (index <= maxRowIndex)) {
     const mediaItem = mediaItems[index];
     const aspectRatio = mediaItem.width! / mediaItem.height!;
     const width = calculatedHeight * aspectRatio;
