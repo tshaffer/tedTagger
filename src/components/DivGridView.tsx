@@ -5,6 +5,7 @@ import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getMediaItems } from '../selectors';
 import DivGridRow from './DivGridRow';
+import { getRowHeight } from '../utilities';
 
 const centerColumnWidth = 1376;
 
@@ -23,7 +24,14 @@ const DivGridView = (props: DivGridViewProps) => {
     return null;
   }
 
-
+  let mediaItemIndex = 0;
+  for (let rowIndex = 0; rowIndex < 20; rowIndex++) {
+    debugger;
+    const { height, endingMediaItemIndex } = getRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex);
+    console.log('height: ', height);
+    console.log('endingMediaItemIndex: ', endingMediaItemIndex);
+    mediaItemIndex = endingMediaItemIndex;
+  }
 
   return (
     <DivGridRow

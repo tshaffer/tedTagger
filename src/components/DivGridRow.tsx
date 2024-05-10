@@ -26,26 +26,26 @@ const DivGridRow = (props: DivGridRowProps) => {
     return null;
   }
 
-  let previousCumulativeWidth = 0;
-  let cumulativeWidth = 0;
-  const targetHeight = 220;
+  // let previousCumulativeWidth = 0;
+  // let cumulativeWidth = 0;
+  // const targetHeight = 220;
 
-  debugger;
+  // debugger;
 
-  let index = props.startingMediaItemIndex;
-  while (cumulativeWidth < centerColumnWidth) {
-    const mediaItem = props.allMediaItems[index];
-    const aspectRatio = mediaItem.width! / mediaItem.height!;
-    const width = targetHeight * aspectRatio;
-    previousCumulativeWidth = cumulativeWidth;
-    cumulativeWidth += width;
-    index++;
-  }
+  // let index = props.startingMediaItemIndex;
+  // while (cumulativeWidth < centerColumnWidth) {
+  //   const mediaItem = props.allMediaItems[index];
+  //   const aspectRatio = mediaItem.width! / mediaItem.height!;
+  //   const width = targetHeight * aspectRatio;
+  //   previousCumulativeWidth = cumulativeWidth;
+  //   cumulativeWidth += width;
+  //   index++;
+  // }
 
-  const widthUnderflow = previousCumulativeWidth / centerColumnWidth;
-  const calculatedHeight = targetHeight / widthUnderflow;
+  // const widthUnderflow = previousCumulativeWidth / centerColumnWidth;
+  // const calculatedHeight = targetHeight / widthUnderflow;
 
-  debugger;
+  // debugger;
 
   return (
     <div>pizza</div>
