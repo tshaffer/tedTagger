@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { MediaItem } from '../types';
+import { GridRowData, MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getMediaItems } from '../selectors';
 import DivGridRow from './DivGridRow';
-import { getRowHeight } from '../utilities';
+import { getGridRowHeight } from '../utilities';
 
 const centerColumnWidth = 1376;
 
@@ -26,10 +26,9 @@ const DivGridView = (props: DivGridViewProps) => {
 
   let mediaItemIndex = 0;
   while (mediaItemIndex < props.allMediaItems.length) {
-    const { height, endingMediaItemIndex } = getRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
-    console.log('height: ', height);
-    console.log('endingMediaItemIndex: ', endingMediaItemIndex);
-    mediaItemIndex = endingMediaItemIndex + 1;
+    const gridRowData: GridRowData = getGridRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
+    console.log('gridRowData: ', gridRowData);
+    mediaItemIndex = mediaItemIndex + gridRowData.numMediaItems;
   }
 
   return (

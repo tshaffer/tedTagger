@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
-import { MediaItem } from '../types';
+import { GridRowData, MediaItem } from '../types';
 
-export const getRowHeight = (rowWidth: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): any => {
+export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): GridRowData => {
 
   let previousCumulativeWidth = 0;
   let cumulativeWidth = 0;
@@ -32,11 +32,10 @@ export const getRowHeight = (rowWidth: number, mediaItems: MediaItem[], starting
     index++;
   }
 
-  console.log('ENDING VALUES: ', cumulativeWidth, rowWidth);
-
   return {
-    height: calculatedHeight,
-    endingMediaItemIndex: index,
+    mediaItemIndex: startingMediaItemIndex,
+    numMediaItems: index - startingMediaItemIndex,
+    rowHeight: calculatedHeight,
   };
-  
+
 };
