@@ -6,8 +6,10 @@ import { TedTaggerDispatch } from '../models';
 
 import '../styles/TedTagger.css';
 import { MediaItem } from '../types';
-import { getMediaItems } from '../selectors';
+import { getDisplayMetadata, getKeywordLabelsForMediaItem, getMediaItems } from '../selectors';
 import { getPhotoUrl } from '../utilities';
+import { Typography } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 
 export interface DivGridCellPropsFromParent {
   mediaItemIndex: number;
@@ -17,14 +19,48 @@ export interface DivGridCellPropsFromParent {
 }
 
 export interface DivGridCellProps extends DivGridCellPropsFromParent {
-  allMediaItems: MediaItem[],
+  allMediaItems: MediaItem[];
+  keywordLabels: string[];
+  displayMetadata: boolean;
 }
 
 const DivGridCell = (props: DivGridCellProps) => {
 
   const mediaItem: MediaItem = props.allMediaItems[props.mediaItemIndex];
+
+  const getMetadataJsx = (): JSX.Element | null => {
+
+    if (!props.displayMetadata) {
+      return null;
+    }
+
+    const creationDate: Dayjs = dayjs(mediaItem.creationTime!);
+    const formattedCreationDate: string = creationDate.format('MM/DD/YYYY hh:MM A');
+    const keywords: string = props.keywordLabels.join(', ');
+
+    return (
+      <div style={{
+        backgroundColor: 'silver',
+        minHeight: '60px',
+        padding: '4px'
+      }}
+      >
+        <Typography variant='body2' color='black' fontSize='12px'>
+          {mediaItem.fileName}
+          <br />
+          {formattedCreationDate}
+          <br />
+          {keywords}
+        </Typography>
+      </div >
+    );
+
+  };
+
   const widthAttribute: string = props.cellWidth.toString() + 'px';
   const heightAttribute: string = props.rowHeight.toString() + 'px';
+
+  const metadataJsx: JSX.Element | null = getMetadataJsx();
 
   const photoUrl = getPhotoUrl(mediaItem);
 
@@ -36,6 +72,7 @@ const DivGridCell = (props: DivGridCellProps) => {
       paddingRight: props.includePadding ? '4px' : '0px',
 
     }}>
+      {metadataJsx}
       <img
         src={photoUrl}
         width={widthAttribute}
@@ -46,9 +83,11 @@ const DivGridCell = (props: DivGridCellProps) => {
   );
 };
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: any, ownProps: DivGridCellPropsFromParent) {
   return {
     allMediaItems: getMediaItems(state),
+    displayMetadata: getDisplayMetadata(state),
+    keywordLabels: getKeywordLabelsForMediaItem(state, getMediaItems(state)[ownProps.mediaItemIndex]),
   };
 }
 
