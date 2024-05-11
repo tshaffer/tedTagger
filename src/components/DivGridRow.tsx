@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
-import { getAppInitialized, getMediaItems } from '../selectors';
+import { getAppInitialized, getDisplayMetadata, getMediaItems } from '../selectors';
 import DivGridCell from './DivGridCell';
 
 export interface DivGridRowPropsFromParent {
@@ -16,6 +16,7 @@ export interface DivGridRowPropsFromParent {
 export interface DivGridRowProps extends DivGridRowPropsFromParent {
   appInitialized: boolean;
   allMediaItems: MediaItem[],
+  displayMetadata: boolean;
 }
 
 const DivGridRow = (props: DivGridRowProps) => {
@@ -52,9 +53,12 @@ const DivGridRow = (props: DivGridRowProps) => {
 
   const gridCells = getGridCells();
 
+  const metadataHeight: number = props.displayMetadata ? 68 : 0;
+  const heightAttribute: string = (props.rowHeight + metadataHeight).toString() + 'px';
+
   return (
     <div style={{
-      height: props.rowHeight.toString() + 'px',
+      height: heightAttribute,
       paddingBottom: '4px',
       backgroundColor: 'white',
     }}>
@@ -68,6 +72,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     appInitialized: getAppInitialized(state),
     allMediaItems: getMediaItems(state),
+    displayMetadata: getDisplayMetadata(state),
   };
 }
 

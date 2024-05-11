@@ -20,8 +20,8 @@ export interface DivGridCellPropsFromParent {
 
 export interface DivGridCellProps extends DivGridCellPropsFromParent {
   allMediaItems: MediaItem[];
-  keywordLabels: string[];
   displayMetadata: boolean;
+  keywordLabels: string[];
 }
 
 const DivGridCell = (props: DivGridCellProps) => {
@@ -58,7 +58,9 @@ const DivGridCell = (props: DivGridCellProps) => {
   };
 
   const widthAttribute: string = props.cellWidth.toString() + 'px';
-  const heightAttribute: string = props.rowHeight.toString() + 'px';
+  const metadataHeight: number = props.displayMetadata ? 68 : 0;
+  const imgHeightAttribute: string = props.rowHeight.toString() + 'px';
+  const divHeightAttribute: string = (props.rowHeight + metadataHeight).toString() + 'px';
 
   const metadataJsx: JSX.Element | null = getMetadataJsx();
 
@@ -68,7 +70,7 @@ const DivGridCell = (props: DivGridCellProps) => {
     <div style={{
       display: 'inline-block',
       width: widthAttribute,
-      height: heightAttribute,
+      height: divHeightAttribute,
       paddingRight: props.includePadding ? '4px' : '0px',
 
     }}>
@@ -76,7 +78,7 @@ const DivGridCell = (props: DivGridCellProps) => {
       <img
         src={photoUrl}
         width={widthAttribute}
-        height={heightAttribute}
+        height={imgHeightAttribute}
         loading='lazy'
       />
     </div>
