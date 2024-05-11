@@ -2,14 +2,15 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { TedTaggerDispatch } from '../models';
+import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 
 import '../styles/TedTagger.css';
-import { MediaItem } from '../types';
+import { MediaItem, PhotoLayout } from '../types';
 import { getDisplayMetadata, getKeywordLabelsForMediaItem, getMediaItems, isMediaItemSelected } from '../selectors';
 import { getPhotoUrl } from '../utilities';
 import { Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
+import { selectPhoto } from '../controllers';
 
 export interface DivGridCellPropsFromParent {
   mediaItemIndex: number;
@@ -23,11 +24,41 @@ export interface DivGridCellProps extends DivGridCellPropsFromParent {
   displayMetadata: boolean;
   isSelected: boolean;
   keywordLabels: string[];
+  onClickPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
+  onSetLoupeViewMediaItemId: (id: string) => any;
+  onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
 }
 
 const DivGridCell = (props: DivGridCellProps) => {
 
+  const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
+
   const mediaItem: MediaItem = props.mediaItem;
+
+  const handleDoubleClick = () => {
+    props.onSetLoupeViewMediaItemId(props.mediaItem.googleId);
+    props.onSetPhotoLayoutRedux(PhotoLayout.Loupe);
+  };
+
+  const handleClickPhoto = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    props.onClickPhoto(props.mediaItem.googleId, e.metaKey, e.shiftKey);
+  };
+
+  const handleClicks = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    if (clickTimeout !== null) {
+      clearTimeout(clickTimeout);
+      setClickTimeout(null);
+      handleDoubleClick();
+    } else {
+      const clickTimeout = setTimeout(() => {
+        clearTimeout(clickTimeout);
+        setClickTimeout(null);
+        handleClickPhoto(e);
+      }, 200);
+      setClickTimeout(clickTimeout);
+    }
+  };
+
 
   const getMetadataJsx = (): JSX.Element | null => {
 
@@ -70,13 +101,15 @@ const DivGridCell = (props: DivGridCellProps) => {
   const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
 
   return (
-    <div style={{
-      display: 'inline-block',
-      width: widthAttribute,
-      height: divHeightAttribute,
-      paddingRight: props.includePadding ? '4px' : '0px',
-
-    }}>
+    <div
+      style={{
+        display: 'inline-block',
+        width: widthAttribute,
+        height: divHeightAttribute,
+        paddingRight: props.includePadding ? '4px' : '0px',
+      }}
+      onClick={handleClicks}
+    >
       {metadataJsx}
       <img
         src={photoUrl}
@@ -100,6 +133,9 @@ function mapStateToProps(state: any, ownProps: DivGridCellPropsFromParent) {
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
+    onClickPhoto: selectPhoto,
+    onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
+    onSetPhotoLayoutRedux: setPhotoLayoutRedux,
   }, dispatch);
 };
 
