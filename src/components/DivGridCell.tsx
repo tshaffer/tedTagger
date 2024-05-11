@@ -33,6 +33,8 @@ const DivGridCell = (props: DivGridCellProps) => {
       display: 'inline-block',
       width: widthAttribute,
       height: heightAttribute,
+      paddingRight: '4px',
+
     }}>
       <img
         src={photoUrl}

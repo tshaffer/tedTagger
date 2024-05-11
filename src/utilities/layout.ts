@@ -7,6 +7,7 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
   let previousCumulativeWidth = 0;
   let cumulativeWidth = 0;
   const targetHeight = 220;
+  const padding = 4;
 
   let index = startingMediaItemIndex;
   while ((cumulativeWidth < rowWidth) && (index <= maxRowIndex)) {
@@ -14,7 +15,7 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
     const aspectRatio = mediaItem.width! / mediaItem.height!;
     const width = targetHeight * aspectRatio;
     previousCumulativeWidth = cumulativeWidth;
-    cumulativeWidth += width;
+    cumulativeWidth += width + padding;
     index++;
   }
 
@@ -31,7 +32,7 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
     const width = calculatedHeight * aspectRatio;
     cellWidths.push(width);
     previousCumulativeWidth = cumulativeWidth;
-    cumulativeWidth += width;
+    cumulativeWidth += width + padding;
     index++;
   }
 

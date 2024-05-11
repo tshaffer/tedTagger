@@ -52,7 +52,9 @@ const DivGridRow = (props: DivGridRowProps) => {
 
   return (
     <div style={{
-      height: props.rowHeight.toString() + 'px'
+      height: props.rowHeight.toString() + 'px',
+      paddingBottom: '4px',
+      backgroundColor: 'white',
     }}>
       {gridCells}
     </div>
