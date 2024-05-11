@@ -33,6 +33,7 @@ const DivGridRow = (props: DivGridRowProps) => {
     return (
       <DivGridCell
         mediaItemIndex={mediaItemIndex}
+        mediaItem={props.allMediaItems[mediaItemIndex]}
         rowHeight={props.rowHeight}
         cellWidth={cellWidth}
         includePadding={includePadding}

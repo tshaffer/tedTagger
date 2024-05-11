@@ -6,27 +6,28 @@ import { TedTaggerDispatch } from '../models';
 
 import '../styles/TedTagger.css';
 import { MediaItem } from '../types';
-import { getDisplayMetadata, getKeywordLabelsForMediaItem, getMediaItems } from '../selectors';
+import { getDisplayMetadata, getKeywordLabelsForMediaItem, getMediaItems, isMediaItemSelected } from '../selectors';
 import { getPhotoUrl } from '../utilities';
 import { Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 
 export interface DivGridCellPropsFromParent {
   mediaItemIndex: number;
+  mediaItem: MediaItem
   rowHeight: number;
   cellWidth: number;
   includePadding: boolean;
 }
 
 export interface DivGridCellProps extends DivGridCellPropsFromParent {
-  allMediaItems: MediaItem[];
   displayMetadata: boolean;
+  isSelected: boolean;
   keywordLabels: string[];
 }
 
 const DivGridCell = (props: DivGridCellProps) => {
 
-  const mediaItem: MediaItem = props.allMediaItems[props.mediaItemIndex];
+  const mediaItem: MediaItem = props.mediaItem;
 
   const getMetadataJsx = (): JSX.Element | null => {
 
@@ -66,6 +67,8 @@ const DivGridCell = (props: DivGridCellProps) => {
 
   const photoUrl = getPhotoUrl(mediaItem);
 
+  const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
+
   return (
     <div style={{
       display: 'inline-block',
@@ -77,6 +80,7 @@ const DivGridCell = (props: DivGridCellProps) => {
       {metadataJsx}
       <img
         src={photoUrl}
+        className={dynamicImageStyle}
         width={widthAttribute}
         height={imgHeightAttribute}
         loading='lazy'
@@ -87,8 +91,9 @@ const DivGridCell = (props: DivGridCellProps) => {
 
 function mapStateToProps(state: any, ownProps: DivGridCellPropsFromParent) {
   return {
-    allMediaItems: getMediaItems(state),
     displayMetadata: getDisplayMetadata(state),
+    isSelected: isMediaItemSelected(state, ownProps.mediaItem),
+    mediaItem: ownProps.mediaItem,
     keywordLabels: getKeywordLabelsForMediaItem(state, getMediaItems(state)[ownProps.mediaItemIndex]),
   };
 }
