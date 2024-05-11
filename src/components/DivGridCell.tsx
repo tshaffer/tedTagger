@@ -13,9 +13,9 @@ export interface DivGridCellPropsFromParent {
   mediaItemIndex: number;
   rowHeight: number;
   cellWidth: number;
+  includePadding: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DivGridCellProps extends DivGridCellPropsFromParent {
   allMediaItems: MediaItem[],
 }
@@ -33,7 +33,7 @@ const DivGridCell = (props: DivGridCellProps) => {
       display: 'inline-block',
       width: widthAttribute,
       height: heightAttribute,
-      paddingRight: '4px',
+      paddingRight: props.includePadding ? '4px' : '0px',
 
     }}>
       <img

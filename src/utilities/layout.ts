@@ -19,6 +19,8 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
     index++;
   }
 
+  previousCumulativeWidth -= padding;
+  
   const widthUnderflow = previousCumulativeWidth / rowWidth;
   const calculatedHeight = targetHeight / widthUnderflow;
 

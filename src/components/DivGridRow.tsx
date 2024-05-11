@@ -28,12 +28,13 @@ const DivGridRow = (props: DivGridRowProps) => {
     return null;
   }
 
-  const getGridCell = (mediaItemIndex: number, cellWidth: number): JSX.Element => {
+  const getGridCell = (mediaItemIndex: number, cellWidth: number, includePadding: boolean): JSX.Element => {
     return (
       <DivGridCell
         mediaItemIndex={mediaItemIndex}
         rowHeight={props.rowHeight}
         cellWidth={cellWidth}
+        includePadding={includePadding}
       />
     );
   };
@@ -42,7 +43,8 @@ const DivGridRow = (props: DivGridRowProps) => {
     const gridCells: JSX.Element[] = [];
     for (let index = props.mediaItemIndex; index < (props.mediaItemIndex + props.numMediaItems); index++) {
       const cellWidth = props.cellWidths[index - props.mediaItemIndex];
-      const gridCellElement = getGridCell(index, cellWidth);
+      const includePadding = index < (props.mediaItemIndex + props.numMediaItems - 1);
+      const gridCellElement = getGridCell(index, cellWidth, includePadding);
       gridCells.push(gridCellElement);
     }
     return gridCells;
