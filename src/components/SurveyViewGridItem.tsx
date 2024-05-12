@@ -28,17 +28,12 @@ const cardStyle = {
 
 const selectedCardMediaStyle = {
   objectFit: 'contain',
-  border: 4,
-  borderColor: 'red',
   height: '1080px',
-  // paddingLeft: '8px',
   backgroundColor: 'purple',
 };
 
 const unselectedCardMediaStyle = {
   objectFit: 'contain',
-  border: 4,
-  borderColor: 'orange',
   height: '1080px',
   // paddingLeft: '8px',
   backgroundColor: 'purple',
