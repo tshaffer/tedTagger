@@ -6,6 +6,8 @@ import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getDisplayMetadata, getMediaItems } from '../selectors';
 import DivGridCell from './DivGridCell';
 
+import { borderSize, bordersSize } from '../types';
+
 export interface DivGridRowPropsFromParent {
   mediaItemIndex: number;
   numMediaItems: number;
@@ -55,12 +57,12 @@ const DivGridRow = (props: DivGridRowProps) => {
   const gridCells = getGridCells();
 
   const metadataHeight: number = props.displayMetadata ? 60 : 0;
-  const heightAttribute: string = (props.rowHeight + metadataHeight).toString() + 'px';
+  const heightAttribute: string = (props.rowHeight + metadataHeight + bordersSize).toString() + 'px';
 
   return (
     <div style={{
       height: heightAttribute,
-      paddingBottom: '0px',
+      // paddingBottom: '0px',
       backgroundColor: 'white',
     }}>
       {gridCells}

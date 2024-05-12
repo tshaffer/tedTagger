@@ -107,13 +107,14 @@ const DivGridCell = (props: DivGridCellProps) => {
         width: widthAttribute,
         height: divHeightAttribute,
         paddingRight: props.includePadding ? '0px' : '0px',
+        border: props.isSelected ? '4px solid blue' : '4px solid white',
       }}
       onClick={handleClicks}
     >
       {metadataJsx}
       <img
         src={photoUrl}
-        className={dynamicImageStyle}
+        className={'unselectedImageStyle'}
         width={widthAttribute}
         height={imgHeightAttribute}
         loading='lazy'

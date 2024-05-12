@@ -24,3 +24,8 @@ export type StringToKeywordLUT = {
 export type StringToKeywordNodeLUT = {
   [key: string]: KeywordNode;
 }
+
+
+export const borderSize: number = 4;
+export const bordersSize: number = 8;
+export const borderSizeStr: string = '4px';

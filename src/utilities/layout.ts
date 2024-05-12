@@ -1,5 +1,7 @@
 import { GridRowData, MediaItem } from '../types';
 
+import { borderSize, bordersSize } from '../types';
+
 export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): GridRowData => {
 
   const cellWidths: number[] = [];
@@ -15,11 +17,11 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
     const aspectRatio = mediaItem.width! / mediaItem.height!;
     const width = targetHeight * aspectRatio;
     previousCumulativeWidth = cumulativeWidth;
-    cumulativeWidth += width + padding;
+    cumulativeWidth += width + bordersSize;
     index++;
   }
 
-  previousCumulativeWidth -= padding;
+  // previousCumulativeWidth -= padding;
   
   const widthUnderflow = previousCumulativeWidth / rowWidth;
   const calculatedHeight = targetHeight / widthUnderflow;
@@ -34,7 +36,7 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
     const width = calculatedHeight * aspectRatio;
     cellWidths.push(width);
     previousCumulativeWidth = cumulativeWidth;
-    cumulativeWidth += width + padding;
+    cumulativeWidth += width + bordersSize;
     index++;
   }
 
