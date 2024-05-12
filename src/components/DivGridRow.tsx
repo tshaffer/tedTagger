@@ -54,13 +54,13 @@ const DivGridRow = (props: DivGridRowProps) => {
 
   const gridCells = getGridCells();
 
-  const metadataHeight: number = props.displayMetadata ? 68 : 0;
+  const metadataHeight: number = props.displayMetadata ? 60 : 0;
   const heightAttribute: string = (props.rowHeight + metadataHeight).toString() + 'px';
 
   return (
     <div style={{
       height: heightAttribute,
-      paddingBottom: '4px',
+      paddingBottom: '0px',
       backgroundColor: 'white',
     }}>
       {gridCells}

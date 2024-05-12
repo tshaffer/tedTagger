@@ -74,7 +74,7 @@ const DivGridCell = (props: DivGridCellProps) => {
       <div style={{
         backgroundColor: 'silver',
         minHeight: '60px',
-        padding: '4px'
+        padding: '0px'
       }}
       >
         <Typography variant='body2' color='black' fontSize='12px'>
@@ -106,7 +106,7 @@ const DivGridCell = (props: DivGridCellProps) => {
         display: 'inline-block',
         width: widthAttribute,
         height: divHeightAttribute,
-        paddingRight: props.includePadding ? '4px' : '0px',
+        paddingRight: props.includePadding ? '0px' : '0px',
       }}
       onClick={handleClicks}
     >

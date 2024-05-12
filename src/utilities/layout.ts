@@ -7,7 +7,7 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
   let previousCumulativeWidth = 0;
   let cumulativeWidth = 0;
   const targetHeight = 220;
-  const padding = 4;
+  const padding = 0;
 
   let index = startingMediaItemIndex;
   while ((cumulativeWidth < rowWidth) && (index <= maxRowIndex)) {
