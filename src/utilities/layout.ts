@@ -1,14 +1,13 @@
+import { bordersSize } from '../constants';
 import { GridRowData, MediaItem } from '../types';
 
-import { bordersSize } from '../types';
-
-export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): GridRowData => {
+export const getGridRowHeight = (rowWidth: number, targetHeight: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): GridRowData => {
 
   const cellWidths: number[] = [];
 
   let previousCumulativeWidth = 0;
   let cumulativeWidth = 0;
-  const targetHeight = 220;
+  // const targetHeight = 220;
 
   let index = startingMediaItemIndex;
   while ((cumulativeWidth < rowWidth) && (index <= maxRowIndex)) {

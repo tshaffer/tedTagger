@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 
 import '../styles/TedTagger.css';
-import { MediaItem, PhotoLayout, borderSizeStr } from '../types';
+import { MediaItem, PhotoLayout } from '../types';
 import { getDisplayMetadata, getKeywordLabelsForMediaItem, getMediaItems, isMediaItemSelected } from '../selectors';
 import { getPhotoUrl } from '../utilities';
 import { Tooltip, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { selectPhoto } from '../controllers';
+import { borderSizeStr } from '../constants';
 
 export interface DivGridCellPropsFromParent {
   mediaItemIndex: number;

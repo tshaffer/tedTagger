@@ -3,15 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { GridRowData, MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
-import { getAppInitialized, getMediaItems } from '../selectors';
+import { getAppInitialized, getMediaItems, getNumGridColumns } from '../selectors';
 import DivGridRow from './DivGridRow';
 import { getGridRowHeight } from '../utilities';
-
-const centerColumnWidth = 1376;
+import { centerColumnWidth, targetHeights } from '../constants';
 
 export interface DivGridViewProps {
   appInitialized: boolean;
   allMediaItems: MediaItem[],
+  numGridColumns: number;
 }
 
 const DivGridView = (props: DivGridViewProps) => {
@@ -25,10 +25,13 @@ const DivGridView = (props: DivGridViewProps) => {
   }
 
   const getGridRowData = (): GridRowData[] => {
+
+    const targetHeight = targetHeights[props.numGridColumns - 2];
+
     const gridRows: GridRowData[] = [];
     let mediaItemIndex = 0;
     while (mediaItemIndex < props.allMediaItems.length) {
-      const gridRowData: GridRowData = getGridRowHeight(centerColumnWidth, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
+      const gridRowData: GridRowData = getGridRowHeight(centerColumnWidth, targetHeight, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
       console.log('gridRowData: ', gridRowData);
       mediaItemIndex = mediaItemIndex + gridRowData.numMediaItems;
       gridRows.push(gridRowData);
@@ -71,6 +74,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     appInitialized: getAppInitialized(state),
     allMediaItems: getMediaItems(state),
+    numGridColumns: getNumGridColumns(state),
   };
 }
 

@@ -5,8 +5,7 @@ import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getDisplayMetadata, getMediaItems } from '../selectors';
 import DivGridCell from './DivGridCell';
-
-import { bordersSize } from '../types';
+import { bordersSize } from '../constants';
 
 export interface DivGridRowPropsFromParent {
   mediaItemIndex: number;

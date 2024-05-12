@@ -149,7 +149,7 @@ const TopToolbar = (props: TopToolbarProps) => {
             transform: 'translate(64%, -50%)',
           }}>
             <div className='sliderContainer'> {/* sliderContainer wrapped inside the parent */}
-              <Typography gutterBottom style={{ fontSize: '13px' }}>Grid Column Count</Typography>
+              <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
               <Slider
                 size='small'
                 value={props.numGridColumns}
