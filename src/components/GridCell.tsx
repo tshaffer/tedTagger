@@ -13,7 +13,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { selectPhoto } from '../controllers';
 import { borderSizeStr } from '../constants';
 
-export interface DivGridCellPropsFromParent {
+export interface GridCellPropsFromParent {
   mediaItemIndex: number;
   mediaItem: MediaItem
   rowHeight: number;
@@ -21,7 +21,7 @@ export interface DivGridCellPropsFromParent {
   includePadding: boolean;
 }
 
-export interface DivGridCellProps extends DivGridCellPropsFromParent {
+export interface GridCellProps extends GridCellPropsFromParent {
   displayMetadata: boolean;
   isSelected: boolean;
   keywordLabels: string[];
@@ -30,7 +30,7 @@ export interface DivGridCellProps extends DivGridCellPropsFromParent {
   onSetPhotoLayoutRedux: (photoLayout: PhotoLayout) => any;
 }
 
-const DivGridCell = (props: DivGridCellProps) => {
+const GridCell = (props: GridCellProps) => {
 
   const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
 
@@ -139,7 +139,7 @@ const DivGridCell = (props: DivGridCellProps) => {
   );
 };
 
-function mapStateToProps(state: any, ownProps: DivGridCellPropsFromParent) {
+function mapStateToProps(state: any, ownProps: GridCellPropsFromParent) {
   return {
     displayMetadata: getDisplayMetadata(state),
     isSelected: isMediaItemSelected(state, ownProps.mediaItem),
@@ -156,4 +156,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DivGridCell);
+export default connect(mapStateToProps, mapDispatchToProps)(GridCell);

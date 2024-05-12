@@ -4,23 +4,23 @@ import { connect } from 'react-redux';
 import { MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
 import { getAppInitialized, getDisplayMetadata, getMediaItems } from '../selectors';
-import DivGridCell from './DivGridCell';
+import GridCell from './GridCell';
 import { bordersSize } from '../constants';
 
-export interface DivGridRowPropsFromParent {
+export interface GridRowPropsFromParent {
   mediaItemIndex: number;
   numMediaItems: number;
   rowHeight: number;
   cellWidths: number[];
 }
 
-export interface DivGridRowProps extends DivGridRowPropsFromParent {
+export interface GridRowProps extends GridRowPropsFromParent {
   appInitialized: boolean;
   allMediaItems: MediaItem[],
   displayMetadata: boolean;
 }
 
-const DivGridRow = (props: DivGridRowProps) => {
+const GridRow = (props: GridRowProps) => {
 
   if (!props.appInitialized) {
     return null;
@@ -32,7 +32,7 @@ const DivGridRow = (props: DivGridRowProps) => {
 
   const getGridCell = (mediaItemIndex: number, cellWidth: number, includePadding: boolean): JSX.Element => {
     return (
-      <DivGridCell
+      <GridCell
         mediaItemIndex={mediaItemIndex}
         mediaItem={props.allMediaItems[mediaItemIndex]}
         rowHeight={props.rowHeight}
@@ -82,4 +82,4 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DivGridRow);
+export default connect(mapStateToProps, mapDispatchToProps)(GridRow);

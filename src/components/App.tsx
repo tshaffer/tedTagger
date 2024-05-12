@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import '../styles/TedTagger.css';
 import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout, loadDeletedMediaItems } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
-import GridView from './GridView';
 import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
 
@@ -16,7 +15,7 @@ import LoupeViewController from './LoupeViewController';
 import { PhotoLayout } from '../types';
 import SurveyView from './SurveyView';
 import TopToolbar from './TopToolbar';
-import DivGridView from './DivGridView';
+import GridView from './GridView';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
@@ -70,7 +69,7 @@ const App = (props: AppProps) => {
       );
     } else {
       return (
-        <DivGridView />
+        <GridView />
       );
     }
   };
