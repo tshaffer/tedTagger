@@ -70,23 +70,12 @@ const App = (props: AppProps) => {
       );
     } else {
       return (
-        <GridView />
+        <DivGridView />
       );
     }
   };
 
-  const getDivGridView = (): JSX.Element => {
-
-    return (
-      <div>
-        <DivGridView/>
-      </div>
-    );
-  };
-
   const photoDisplay: JSX.Element = getPhotoDisplay();
-
-  const divGridView: JSX.Element = getDivGridView();
 
   return (
     <div>
@@ -109,7 +98,7 @@ const App = (props: AppProps) => {
           />
         </div>
         <div id='centerColumn' className='centerColumnStyle'>
-          {divGridView}
+          {photoDisplay}
         </div>
         <div className='rightColumnStyle'>Right Panel</div>
         {/* <div className='bottomPanel'>Bottom Panel</div> */}
