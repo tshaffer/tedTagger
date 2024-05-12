@@ -1,6 +1,6 @@
 import { GridRowData, MediaItem } from '../types';
 
-import { borderSize, bordersSize } from '../types';
+import { bordersSize } from '../types';
 
 export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): GridRowData => {
 
@@ -9,7 +9,6 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
   let previousCumulativeWidth = 0;
   let cumulativeWidth = 0;
   const targetHeight = 220;
-  const padding = 0;
 
   let index = startingMediaItemIndex;
   while ((cumulativeWidth < rowWidth) && (index <= maxRowIndex)) {
@@ -21,8 +20,6 @@ export const getGridRowHeight = (rowWidth: number, mediaItems: MediaItem[], star
     index++;
   }
 
-  // previousCumulativeWidth -= padding;
-  
   const widthUnderflow = previousCumulativeWidth / rowWidth;
   const calculatedHeight = targetHeight / widthUnderflow;
 

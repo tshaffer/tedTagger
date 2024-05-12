@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux, setPhotoLayoutRedux } from '../models';
 
 import '../styles/TedTagger.css';
-import { MediaItem, PhotoLayout } from '../types';
+import { MediaItem, PhotoLayout, borderSizeStr } from '../types';
 import { getDisplayMetadata, getKeywordLabelsForMediaItem, getMediaItems, isMediaItemSelected } from '../selectors';
 import { getPhotoUrl } from '../utilities';
 import { Typography } from '@mui/material';
@@ -74,7 +74,6 @@ const DivGridCell = (props: DivGridCellProps) => {
       <div style={{
         backgroundColor: 'silver',
         minHeight: '60px',
-        padding: '0px'
       }}
       >
         <Typography variant='body2' color='black' fontSize='12px'>
@@ -90,7 +89,7 @@ const DivGridCell = (props: DivGridCellProps) => {
   };
 
   const widthAttribute: string = props.cellWidth.toString() + 'px';
-  const metadataHeight: number = props.displayMetadata ? 68 : 0;
+  const metadataHeight: number = props.displayMetadata ? 60 : 0;
   const imgHeightAttribute: string = props.rowHeight.toString() + 'px';
   const divHeightAttribute: string = (props.rowHeight + metadataHeight).toString() + 'px';
 
@@ -98,23 +97,22 @@ const DivGridCell = (props: DivGridCellProps) => {
 
   const photoUrl = getPhotoUrl(mediaItem);
 
-  const dynamicImageStyle = props.isSelected ? 'selectedImageStyle' : 'unselectedImageStyle';
-
+  let borderAttr: string = borderSizeStr + ' ';
+  borderAttr += props.isSelected ? ' solid blue' : ' solid white';
+  
   return (
     <div
       style={{
         display: 'inline-block',
         width: widthAttribute,
         height: divHeightAttribute,
-        paddingRight: props.includePadding ? '0px' : '0px',
-        border: props.isSelected ? '4px solid blue' : '4px solid white',
+        border: borderAttr,
       }}
       onClick={handleClicks}
     >
       {metadataJsx}
       <img
         src={photoUrl}
-        className={'unselectedImageStyle'}
         width={widthAttribute}
         height={imgHeightAttribute}
         loading='lazy'
