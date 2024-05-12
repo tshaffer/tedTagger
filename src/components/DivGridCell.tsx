@@ -8,7 +8,7 @@ import '../styles/TedTagger.css';
 import { MediaItem, PhotoLayout, borderSizeStr } from '../types';
 import { getDisplayMetadata, getKeywordLabelsForMediaItem, getMediaItems, isMediaItemSelected } from '../selectors';
 import { getPhotoUrl } from '../utilities';
-import { Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { selectPhoto } from '../controllers';
 
@@ -99,25 +99,42 @@ const DivGridCell = (props: DivGridCellProps) => {
 
   let borderAttr: string = borderSizeStr + ' ';
   borderAttr += props.isSelected ? ' solid blue' : ' solid white';
-  
+
   return (
-    <div
-      style={{
-        display: 'inline-block',
-        width: widthAttribute,
-        height: divHeightAttribute,
-        border: borderAttr,
+    <Tooltip
+      title={props.mediaItem.fileName}
+      placement='top'
+      slotProps={{
+        popper: {
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: [0, -32],
+              },
+            },
+          ],
+        },
       }}
-      onClick={handleClicks}
     >
-      {metadataJsx}
-      <img
-        src={photoUrl}
-        width={widthAttribute}
-        height={imgHeightAttribute}
-        loading='lazy'
-      />
-    </div>
+      <div
+        style={{
+          display: 'inline-block',
+          width: widthAttribute,
+          height: divHeightAttribute,
+          border: borderAttr,
+        }}
+        onClick={handleClicks}
+      >
+        {metadataJsx}
+        <img
+          src={photoUrl}
+          width={widthAttribute}
+          height={imgHeightAttribute}
+          loading='lazy'
+        />
+      </div>
+    </Tooltip>
   );
 };
 
