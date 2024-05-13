@@ -3,6 +3,13 @@ import { TedTaggerDispatch, clearMediaItemSelection, deselectMediaItem, selectMe
 import { MediaItem } from '../types';
 import { getLastClickedId, getMediaItems, getSelectedMediaItemIds } from '../selectors';
 
+export const deselectAllPhotos = () => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+    dispatch(clearMediaItemSelection());
+    dispatch(setLastClickedId(null));
+  };
+};
+
 export const deselectMediaItems = (ids: string[]) => {
   return (dispatch: TedTaggerDispatch) => {
     ids.forEach((id) => {
@@ -76,11 +83,4 @@ const handleShiftClick = (index: number, mediaItems: MediaItem[], selectedMediaI
   };
 };
 
-
-export const deselectAllPhotos = () => {
-  return (dispatch: TedTaggerDispatch, getState: any) => {
-    dispatch(clearMediaItemSelection());
-    dispatch(setLastClickedId(null));
-  };
-};
 

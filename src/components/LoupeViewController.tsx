@@ -6,11 +6,14 @@ import LoupeView from './LoupeView';
 import { getLoupeViewMediaItemId, getMediaItems } from '../selectors';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux } from '../models';
+import { deselectAllPhotos, selectPhoto } from '../controllers';
 
 export interface LoupeViewControllerProps {
   loupeViewMediaItemId: string;
   mediaItems: MediaItem[];
   onSetLoupeViewMediaItemId: (id: string) => any;
+  onSelectPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
+  onDeselectAllPhotos: () => any;
 }
 
 const LoupeViewController = (props: LoupeViewControllerProps) => {
@@ -43,6 +46,8 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
       } else {
         const previousMediaItem = props.mediaItems[previousMediaItemIndex];
         props.onSetLoupeViewMediaItemId(previousMediaItem.googleId);
+        props.onDeselectAllPhotos();
+        props.onSelectPhoto(previousMediaItem.googleId, false, false);
       }
     };
 
@@ -59,6 +64,8 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
         const nextMediaItem = props.mediaItems[nextMediaItemIndex];
         console.log('nextMediaItem: ' + nextMediaItem);
         props.onSetLoupeViewMediaItemId(nextMediaItem.googleId);
+        props.onDeselectAllPhotos();
+        props.onSelectPhoto(nextMediaItem.googleId, false, false);
       }
     };
 
@@ -87,6 +94,8 @@ function mapStateToProps(state: any) {
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
     onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
+    onSelectPhoto: selectPhoto,
+    onDeselectAllPhotos: deselectAllPhotos,
   }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LoupeViewController);
