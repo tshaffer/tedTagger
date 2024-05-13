@@ -93,9 +93,10 @@ const TopToolbar = (props: TopToolbarProps) => {
 
     const loupeViewMediaItemId = props.loupeViewMediaItemId;
     const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
+
     let newMediaItemIndex = -1;
     const prevMediaItemIndex = mediaItemIndex - 1;
-    const nextMediaItemIndex = mediaItemIndex + 1;
+    const nextMediaItemIndex = mediaItemIndex + 2; // +2 because we are deleting the current media item.
     if (nextMediaItemIndex < props.mediaItems.length) {
       newMediaItemIndex = nextMediaItemIndex;
     } else if (prevMediaItemIndex >= 0) {
@@ -110,7 +111,6 @@ const TopToolbar = (props: TopToolbarProps) => {
 
     props.onSetLoupeViewMediaItemId(newMediaItem.googleId);
     props.onSelectPhoto(newMediaItem.googleId, false, false);
-
 
   };
 
