@@ -28,6 +28,7 @@ const GridRow = (props: GridRowProps) => {
   const getGridCell = (mediaItemIndex: number, cellWidth: number): JSX.Element => {
     return (
       <GridCell
+        key={mediaItemIndex}
         mediaItemIndex={mediaItemIndex}
         mediaItem={props.allMediaItems[mediaItemIndex]}
         rowHeight={props.rowHeight}

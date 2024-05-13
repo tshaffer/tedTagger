@@ -181,8 +181,6 @@ export const loadDeletedMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
         const deletedMediaItems: MediaItem[] = (deletedMediaItemsResponse as any).data;
 
-        console.log('deletedMediaItemEntitiesFromServer', deletedMediaItems);
-
         dispatch(addDeletedMediaItems(deletedMediaItems));
 
         return Promise.resolve();

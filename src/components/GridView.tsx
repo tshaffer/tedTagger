@@ -32,7 +32,6 @@ const GridView = (props: GridViewProps) => {
     let mediaItemIndex = 0;
     while (mediaItemIndex < props.allMediaItems.length) {
       const gridRowData: GridRowData = getGridRowHeight(centerColumnWidth, targetHeight, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
-      console.log('gridRowData: ', gridRowData);
       mediaItemIndex = mediaItemIndex + gridRowData.numMediaItems;
       gridRows.push(gridRowData);
     }
@@ -43,6 +42,7 @@ const GridView = (props: GridViewProps) => {
     const { mediaItemIndex, numMediaItems, rowHeight, cellWidths } = gridRowData;
     return (
       <GridRow
+        key={mediaItemIndex}
         mediaItemIndex={mediaItemIndex}
         numMediaItems={numMediaItems}
         rowHeight={rowHeight}
