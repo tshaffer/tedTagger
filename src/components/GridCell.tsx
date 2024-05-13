@@ -18,7 +18,6 @@ export interface GridCellPropsFromParent {
   mediaItem: MediaItem
   rowHeight: number;
   cellWidth: number;
-  includePadding: boolean;
 }
 
 export interface GridCellProps extends GridCellPropsFromParent {
