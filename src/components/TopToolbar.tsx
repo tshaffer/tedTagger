@@ -19,10 +19,11 @@ import DeselectIcon from '@mui/icons-material/Deselect';
 import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
-import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem } from '../controllers';
+import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem, selectPhoto } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
 
 export interface TopToolbarProps {
+  mediaItems: MediaItem[];
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   numGridColumns: number;
@@ -39,6 +40,7 @@ export interface TopToolbarProps {
   onDeleteMediaItems: (mediaItemIds: string[]) => any;
   onRedownloadMediaItem: (mediaItemId: string) => any;
   onDeselectAllPhotos: () => void;
+  onSelectPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -87,6 +89,31 @@ const TopToolbar = (props: TopToolbarProps) => {
     setShowDeletedMediaItemsDialog(false);
   };
 
+  const deleteLoupeViewMediaItem = () => {
+
+    const loupeViewMediaItemId = props.loupeViewMediaItemId;
+    const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
+    let newMediaItemIndex = -1;
+    const prevMediaItemIndex = mediaItemIndex - 1;
+    const nextMediaItemIndex = mediaItemIndex + 1;
+    if (nextMediaItemIndex < props.mediaItems.length) {
+      newMediaItemIndex = nextMediaItemIndex;
+    } else if (prevMediaItemIndex >= 0) {
+      newMediaItemIndex = prevMediaItemIndex;
+    } else {
+      debugger;
+    }
+    const newMediaItem: MediaItem = props.mediaItems[newMediaItemIndex];
+    
+    props.onDeselectAllPhotos();
+    props.onDeleteMediaItems([props.loupeViewMediaItemId]);
+
+    props.onSetLoupeViewMediaItemId(newMediaItem.googleId);
+    props.onSelectPhoto(newMediaItem.googleId, false, false);
+
+
+  };
+
   const handleConfirmDelete = () => {
     setShowConfirmationDialog(false);
     switch (props.photoLayout) {
@@ -95,7 +122,7 @@ const TopToolbar = (props: TopToolbarProps) => {
         break;
       }
       case PhotoLayout.Loupe: {
-        props.onDeleteMediaItems([props.loupeViewMediaItemId]);
+        deleteLoupeViewMediaItem();
         break;
       }
       case PhotoLayout.Survey: {
@@ -299,6 +326,7 @@ function mapStateToProps(state: any) {
   }
 
   return {
+    mediaItems: getMediaItems(state),
     selectedMediaItemIds,
     loupeViewMediaItemId,
     numGridColumns: getNumGridColumns(state),
@@ -320,6 +348,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onDeleteMediaItems: deleteMediaItems,
     onRedownloadMediaItem: redownloadMediaItem,
     onDeselectAllPhotos: deselectAllPhotos,
+    onSelectPhoto: selectPhoto,
   }, dispatch);
 };
 
