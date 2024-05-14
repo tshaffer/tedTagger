@@ -69,8 +69,18 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
       }
     };
 
-    // Add the event listener when the component mounts
+    const handleFullScreenChange = () => {
+      console.log('handleFullScreenChange invoked');
+      if (document.fullscreenElement) {
+        console.log('fullscreenmode entered');
+      } else {
+        console.log('fullscreenmode exited');
+      }
+    };
+
     document.addEventListener('keydown', handleKeyPress);
+
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
 
     // Remove the event listener when the component unmounts
     return () => {
