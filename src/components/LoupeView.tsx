@@ -45,30 +45,14 @@ const LoupeView = (props: LoupeViewProps) => {
   const maxHeightProperty = maxHeightInPixels.toString() + 'px';
 
   return (
-    <div className='loupeView'>
+    <div id='loupeViewImage'>
       <img
-        className='imgView'
         style={{ width: '100%', objectFit: 'contain', maxHeight: maxHeightProperty }}
         src={src}
       />
     </div>
   );
 };
-
-// function mapStateToProps(state: any) {
-//   // TEDTODO - better way to do this?
-//   let loupeViewMediaItemId: string = '';
-//   const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
-//   if (selectedMediaItemIds.length > 0) {
-//     loupeViewMediaItemId = selectedMediaItemIds[0];
-//   } else {
-//     const mediaItems: MediaItem[] = getMediaItems(state);
-//     loupeViewMediaItemId = mediaItems[0].googleId;
-//   }
-//   return {
-//     mediaItem: getMediaItemById(state, loupeViewMediaItemId),
-//   };
-// }
 
 function mapStateToProps(state: any) {
   const loupeViewMediaItemId = getLoupeViewMediaItemId(state);

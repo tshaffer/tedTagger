@@ -15,6 +15,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeselectIcon from '@mui/icons-material/Deselect';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 import { MediaItem, PhotoLayout } from '../types';
 import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems } from '../selectors';
@@ -72,6 +73,15 @@ const TopToolbar = (props: TopToolbarProps) => {
       props.onSetPhotoLayout(photoLayout);
     }
   }
+
+  const handleEnterFullScreenMode = () => {
+    const elem = document.getElementById('loupeViewImage');
+    if (elem) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      }
+    }
+  };
 
   function handleDeselectAll(): void {
     props.onDeselectAllPhotos();
@@ -233,6 +243,17 @@ const TopToolbar = (props: TopToolbarProps) => {
                   handleUpdatePhotoLayout(PhotoLayout.Loupe);
                 }}>
                 <InsertPhotoIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Full screen">
+            <span>
+              <IconButton
+                disabled={props.photoLayout !== PhotoLayout.Loupe}
+                onClick={() => {
+                  handleEnterFullScreenMode();
+                }}>
+                <FullscreenIcon />
               </IconButton>
             </span>
           </Tooltip>
