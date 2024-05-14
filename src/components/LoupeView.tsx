@@ -9,6 +9,7 @@ import { getLoupeViewMediaItemId, getMediaItemById } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
+import { bodyMargins, footerHeight, toolbarHeight } from '../constants';
 
 export interface LoupeViewProps {
   mediaItem: MediaItem | null;
@@ -40,7 +41,7 @@ const LoupeView = (props: LoupeViewProps) => {
 
   const src = getPhotoUrl(props.mediaItem);
 
-  const maxHeightInPixels = windowDimensions.height - 222;
+  const maxHeightInPixels = windowDimensions.height - (toolbarHeight + footerHeight + bodyMargins);
   const maxHeightProperty = maxHeightInPixels.toString() + 'px';
 
   return (

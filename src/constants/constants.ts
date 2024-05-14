@@ -1,3 +1,7 @@
+export const toolbarHeight = 85;
+export const footerHeight = 68;
+export const bodyMargins = 16;
+
 export const centerColumnWidth = 1376;
 
 export const bordersSize: number = 8;
