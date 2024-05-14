@@ -4,6 +4,8 @@ export const bodyMargins = 16;
 
 export const centerColumnWidth = 1376;
 
+export const sliderContainerXTranslate = 74;
+
 export const bordersSize: number = 8;
 export const borderSizeStr: string = '4px';
 

@@ -73,4 +73,5 @@ export interface PhotoViewSpec {
   displayMetadata: boolean;
   surveyModeZoomFactor: number;
   scrollPosition: number;
+  fullScreenMode: boolean;
 }

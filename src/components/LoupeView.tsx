@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import '../styles/TedTagger.css';
 import { TedTaggerDispatch } from '../models';
 // import { getMediaItemById, getMediaItems, getSelectedMediaItemIds } from '../selectors';
-import { getLoupeViewMediaItemId, getMediaItemById } from '../selectors';
+import { getFullScreenMode, getLoupeViewMediaItemId, getMediaItemById } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
@@ -13,6 +13,7 @@ import { bodyMargins, footerHeight, toolbarHeight } from '../constants';
 
 export interface LoupeViewProps {
   mediaItem: MediaItem | null;
+  fullScreenMode: boolean;
 }
 
 const LoupeView = (props: LoupeViewProps) => {
@@ -41,7 +42,7 @@ const LoupeView = (props: LoupeViewProps) => {
 
   const src = getPhotoUrl(props.mediaItem);
 
-  const maxHeightInPixels = windowDimensions.height - (toolbarHeight + footerHeight + bodyMargins);
+  const maxHeightInPixels = windowDimensions.height - (props.fullScreenMode ? 0 : toolbarHeight + footerHeight + bodyMargins);
   const maxHeightProperty = maxHeightInPixels.toString() + 'px';
 
   return (
@@ -58,6 +59,7 @@ function mapStateToProps(state: any) {
   const loupeViewMediaItemId = getLoupeViewMediaItemId(state);
   return {
     mediaItem: getMediaItemById(state, loupeViewMediaItemId),
+    fullScreenMode: getFullScreenMode(state),
   };
 }
 

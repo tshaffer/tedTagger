@@ -28,3 +28,6 @@ export const getScrollPosition = (state: TedTaggerState): number => {
   return state.photoViewSpec.scrollPosition;
 };
 
+export const getFullScreenMode = (state: TedTaggerState): boolean => {
+  return state.photoViewSpec.fullScreenMode;
+};

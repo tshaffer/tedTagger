@@ -10,7 +10,7 @@ export const SET_LOUPE_VIEW_MEDIA_ITEM_ID = 'SET_LOUPE_VIEW_MEDIA_ITEM_ID';
 export const SET_DISPLAY_METADATA = 'SET_DISPLAY_METADATA';
 export const SET_SURVEY_MODE_ZOOM_FACTOR = 'SET_SURVEY_MODE_ZOOM_FACTOR';
 export const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION';
-
+export const SET_FULL_SCREEN_MODE = 'SET_FULL_SCREEN_MODE';
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -93,6 +93,19 @@ export const setScrollPositionRedux = (scrollPosition: number): any => {
   };
 };
 
+interface SetFullScreenModePayload {
+  fullScreenMode: boolean,
+}
+
+export const setFullScreenMode = (fullScreenMode: boolean): any => {
+  return {
+    type: SET_FULL_SCREEN_MODE,
+    payload: {
+      fullScreenMode,
+    },
+  };
+}
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -104,11 +117,12 @@ const initialState: PhotoViewSpec = {
   displayMetadata: false,
   surveyModeZoomFactor: 1,
   scrollPosition: 0,
+  fullScreenMode: false,
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetFullScreenModePayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -140,6 +154,11 @@ export const photoViewSpecReducer = (
       return {
         ...state,
         scrollPosition: action.payload.scrollPosition,
+      };
+    case SET_FULL_SCREEN_MODE:
+      return {
+        ...state,
+        fullScreenMode: action.payload.fullScreenMode,
       };
     default:
       return state;

@@ -5,7 +5,7 @@ import { MediaItem } from '../types';
 import LoupeView from './LoupeView';
 import { getLoupeViewMediaItemId, getMediaItems } from '../selectors';
 import { bindActionCreators } from 'redux';
-import { TedTaggerDispatch, setLoupeViewMediaItemIdRedux } from '../models';
+import { TedTaggerDispatch, setFullScreenMode, setLoupeViewMediaItemIdRedux } from '../models';
 import { deselectAllPhotos, selectPhoto } from '../controllers';
 
 export interface LoupeViewControllerProps {
@@ -14,6 +14,7 @@ export interface LoupeViewControllerProps {
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSelectPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
   onDeselectAllPhotos: () => any;
+  onSetFullScreenMode: (fullScreenMode: boolean) => any;
 }
 
 const LoupeViewController = (props: LoupeViewControllerProps) => {
@@ -70,12 +71,8 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
     };
 
     const handleFullScreenChange = () => {
-      console.log('handleFullScreenChange invoked');
-      if (document.fullscreenElement) {
-        console.log('fullscreenmode entered');
-      } else {
-        console.log('fullscreenmode exited');
-      }
+      const enterFullScreenMode = document.fullscreenElement !== null;
+      props.onSetFullScreenMode(enterFullScreenMode);
     };
 
     document.addEventListener('keydown', handleKeyPress);
@@ -86,6 +83,7 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
     return () => {
       console.log('LoupeViewController: React.useEffect - component unmounts');
       document.removeEventListener('keydown', handleKeyPress);
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
     };
   }, [props.loupeViewMediaItemId]);
 
@@ -106,6 +104,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onSetLoupeViewMediaItemId: setLoupeViewMediaItemIdRedux,
     onSelectPhoto: selectPhoto,
     onDeselectAllPhotos: deselectAllPhotos,
+    onSetFullScreenMode: setFullScreenMode
   }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LoupeViewController);

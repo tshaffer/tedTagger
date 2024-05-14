@@ -22,6 +22,7 @@ import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayo
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem, selectPhoto } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
+import { sliderContainerXTranslate } from '../constants';
 
 export interface TopToolbarProps {
   mediaItems: MediaItem[];
@@ -161,7 +162,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(64%, -50%)',
+            transform: 'translate(' + sliderContainerXTranslate.toString() + '%, -50%)',
           }}>
             <div className='sliderContainer'>
               <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
@@ -183,7 +184,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           <div style={{
             position: 'absolute',
             top: '50%',
-            transform: 'translate(64%, -50%)',
+            transform: 'translate(' + sliderContainerXTranslate.toString() + '%, -50%)',
           }}>
             <div className='sliderContainer'> {/* sliderContainer wrapped inside the parent */}
               <Typography gutterBottom style={{ fontSize: '13px' }}>Zoom</Typography>
