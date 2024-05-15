@@ -6,7 +6,7 @@ import { TedTaggerDispatch } from '../models';
 import { MediaItem } from '../types';
 
 import { getPhotoUrl } from '../utilities';
-import { getSurveyModeZoomFactor } from '../selectors';
+import { getMediaItemZoomFactor, getSurveyModeZoomFactor } from '../selectors';
 
 export interface SurveyViewImagePropsFromParent {
   mediaItem: MediaItem;
@@ -14,6 +14,7 @@ export interface SurveyViewImagePropsFromParent {
 
 export interface SurveyViewImageProps extends SurveyViewImagePropsFromParent {
   surveyModeZoomFactor: number;
+  mediaItemZoomFactor: number;
 }
 
 function SurveyViewImage(props: SurveyViewImageProps) {
@@ -22,8 +23,9 @@ function SurveyViewImage(props: SurveyViewImageProps) {
 
   const elementId: string = 'surveyImage' + props.mediaItem.googleId;
   const imageElement = document.getElementById(elementId) as HTMLImageElement | null;
+  const zoomFactor = props.surveyModeZoomFactor * props.mediaItemZoomFactor;
   if (imageElement) {
-    imageElement.style.transform = `translate(-50%, -50%) scale(${props.surveyModeZoomFactor})`;
+    imageElement.style.transform = `translate(-50%, -50%) scale(${zoomFactor})`;
   }
 
   return (
@@ -40,6 +42,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
+    mediaItemZoomFactor: getMediaItemZoomFactor(state, ownProps.mediaItem.googleId),
   };
 }
 

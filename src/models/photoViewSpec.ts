@@ -11,6 +11,8 @@ export const SET_DISPLAY_METADATA = 'SET_DISPLAY_METADATA';
 export const SET_SURVEY_MODE_ZOOM_FACTOR = 'SET_SURVEY_MODE_ZOOM_FACTOR';
 export const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION';
 export const SET_FULL_SCREEN_MODE = 'SET_FULL_SCREEN_MODE';
+export const SET_MEDIA_ITEM_ZOOM_FACTOR = 'SET_MEDIA_ITEM_ZOOM_FACTOR';
+
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -104,7 +106,22 @@ export const setFullScreenMode = (fullScreenMode: boolean): any => {
       fullScreenMode,
     },
   };
+};
+
+interface SetMediaItemZoomFactorPayload {
+  mediaItemId: string,
+  zoomFactor: number,
 }
+
+export const setMediaItemZoomFactor = (mediaItemId: string, zoomFactor: number): any => {
+  return {
+    type: SET_MEDIA_ITEM_ZOOM_FACTOR,
+    payload: {
+      mediaItemId,
+      zoomFactor,
+    },
+  };
+};
 
 // ------------------------------------
 // Reducer
@@ -118,11 +135,12 @@ const initialState: PhotoViewSpec = {
   surveyModeZoomFactor: 1,
   scrollPosition: 0,
   fullScreenMode: false,
+  mediaItemZoomFactorById: {},
 };
 
 export const photoViewSpecReducer = (
   state: PhotoViewSpec = initialState,
-  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetFullScreenModePayload>,
+  action: TedTaggerModelBaseAction<SetPhotoLayoutPayload & SetNumGridColumnsPayload & SetSurveyModeZoomFactorPayload & SetLoupeViewMediaItemIdPayload & SetDisplayMetadata & SetScrollPositionPayload & SetFullScreenModePayload & SetMediaItemZoomFactorPayload>,
 ): PhotoViewSpec => {
   switch (action.type) {
     case SET_PHOTO_LAYOUT:
@@ -159,6 +177,14 @@ export const photoViewSpecReducer = (
       return {
         ...state,
         fullScreenMode: action.payload.fullScreenMode,
+      };
+    case SET_MEDIA_ITEM_ZOOM_FACTOR:
+      return {
+        ...state,
+        mediaItemZoomFactorById: {
+          ...state.mediaItemZoomFactorById,
+          [action.payload.mediaItemId]: action.payload.zoomFactor,
+        },
       };
     default:
       return state;

@@ -4,13 +4,15 @@ import { bindActionCreators } from 'redux';
 
 import { CardMedia, IconButton } from '@mui/material';
 
-import { TedTaggerDispatch } from '../models';
+import { TedTaggerDispatch, setMediaItemZoomFactor } from '../models';
 import { MediaItem } from '../types';
 
 import { getPhotoUrl } from '../utilities';
 import SurveyViewImage from './SurveyViewImage';
-import { getSurveyModeZoomFactor } from '../selectors';
+import { getMediaItemZoomFactor, getSurveyModeZoomFactor } from '../selectors';
 
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteSurveyViewImageContainerItem } from '../controllers';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -35,12 +37,22 @@ export interface SurveyViewImageContainerPropsFromParent {
 
 export interface SurveyViewImageContainerProps extends SurveyViewImageContainerPropsFromParent {
   surveyModeZoomFactor: number;
+  mediaItemZoomFactor: number;
   onDeleteSurveyViewImageContainerItem: (mediaItemId: string) => any;
+  onSetMediaItemZoomFactor: (mediaItemId: string, zoomFactor: number) => any;
 }
 
 function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
 
   const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleSurveyViewImageZoomIn = () => {
+    props.onSetMediaItemZoomFactor(props.mediaItem.googleId, props.mediaItemZoomFactor + 0.2);
+  };
+
+  const handleSurveyViewImageZoomOut = () => {
+    props.onSetMediaItemZoomFactor(props.mediaItem.googleId, props.mediaItemZoomFactor - 0.2);
+  }
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -107,6 +119,18 @@ function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
             className='overlayIconStyle'>
             <IconButton
               onClick={() => {
+                handleSurveyViewImageZoomIn();
+              }}>
+              <AddIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                handleSurveyViewImageZoomOut();
+              }}>
+              <RemoveIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => {
                 handleDeleteSurveyPhoto();
               }}>
               <DeleteIcon />
@@ -122,12 +146,14 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     mediaItem: ownProps.mediaItem,
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
+    mediaItemZoomFactor: getMediaItemZoomFactor(state, ownProps.mediaItem.googleId),
   };
 }
 
 const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
   return bindActionCreators({
-    onDeleteSurveyViewImageContainerItem: deleteSurveyViewImageContainerItem
+    onDeleteSurveyViewImageContainerItem: deleteSurveyViewImageContainerItem,
+    onSetMediaItemZoomFactor: setMediaItemZoomFactor,
   }, dispatch);
 };
 

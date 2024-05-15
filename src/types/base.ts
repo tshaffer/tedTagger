@@ -24,3 +24,7 @@ export type StringToKeywordLUT = {
 export type StringToKeywordNodeLUT = {
   [key: string]: KeywordNode;
 }
+
+export type StringToNumberLUT = {
+  [key: string]: number;
+}

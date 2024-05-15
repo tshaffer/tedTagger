@@ -1,4 +1,4 @@
-import { StringToKeywordLUT, StringToKeywordNodeLUT } from './base';
+import { StringToKeywordLUT, StringToKeywordNodeLUT, StringToNumberLUT } from './base';
 import { MediaItem, Takeout } from './entities';
 import {
   DateSearchRuleType,
@@ -74,4 +74,5 @@ export interface PhotoViewSpec {
   surveyModeZoomFactor: number;
   scrollPosition: number;
   fullScreenMode: boolean;
+  mediaItemZoomFactorById: StringToNumberLUT;
 }
