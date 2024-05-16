@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setLoupeViewMediaItemIds, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
+import { TedTaggerDispatch, removeLoupeViewMediaItemId, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setLoupeViewMediaItemIds, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
 import { Tooltip } from '@mui/material';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -45,6 +45,7 @@ export interface TopToolbarProps {
   onDeselectAllPhotos: () => void;
   onSelectPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
   onSetLoupeViewMediaItemIds: (mediaItemIds: string[]) => any;
+  onRemoveLoupeViewMediaItemId: (mediaItemId: string) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -130,7 +131,9 @@ const TopToolbar = (props: TopToolbarProps) => {
     const newMediaItem: MediaItem = props.mediaItems[newMediaItemIndex];
 
     props.onDeselectAllPhotos();
+
     props.onDeleteMediaItems([props.loupeViewMediaItemId]);
+    props.onRemoveLoupeViewMediaItemId(props.loupeViewMediaItemId);
 
     props.onSetLoupeViewMediaItemId(newMediaItem.googleId);
     props.onSelectPhoto(newMediaItem.googleId, false, false);
@@ -385,6 +388,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onDeselectAllPhotos: deselectAllPhotos,
     onSelectPhoto: selectPhoto,
     onSetLoupeViewMediaItemIds: setLoupeViewMediaItemIds,
+    onRemoveLoupeViewMediaItemId: removeLoupeViewMediaItemId,
   }, dispatch);
 };
 
