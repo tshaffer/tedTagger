@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 
 import { MediaItem } from '../types';
 import LoupeView from './LoupeView';
-import { getLoupeViewMediaItemId, getMediaItems } from '../selectors';
+import { getLoupeViewMediaItemId, getLoupeViewMediaItemIds, getMediaItems } from '../selectors';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch, setFullScreenMode, setLoupeViewMediaItemIdRedux } from '../models';
 import { deselectAllPhotos, selectPhoto } from '../controllers';
 
 export interface LoupeViewControllerProps {
   loupeViewMediaItemId: string;
+  loupeViewMediaItemIds: string[];
   mediaItems: MediaItem[];
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSelectPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
@@ -40,15 +41,21 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
 
       const loupeViewMediaItemId = props.loupeViewMediaItemId;
 
-      const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
-      const previousMediaItemIndex = mediaItemIndex - 1;
+      const loupeViewMediaItemIndex = props.loupeViewMediaItemIds.indexOf(loupeViewMediaItemId);
+      if (loupeViewMediaItemIndex < 0) {
+        debugger;
+      }
+
+      // const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
+      const previousMediaItemIndex = loupeViewMediaItemIndex - 1;
       if (previousMediaItemIndex < 0) {
         return;
       } else {
-        const previousMediaItem = props.mediaItems[previousMediaItemIndex];
-        props.onSetLoupeViewMediaItemId(previousMediaItem.googleId);
+        const previousMediaItemId: string = props.loupeViewMediaItemIds[previousMediaItemIndex];
+        const previousMediaItem = props.mediaItems.find((mediaItem: MediaItem) => mediaItem.googleId === previousMediaItemId);
+        props.onSetLoupeViewMediaItemId(previousMediaItem!.googleId);
         props.onDeselectAllPhotos();
-        props.onSelectPhoto(previousMediaItem.googleId, false, false);
+        props.onSelectPhoto(previousMediaItem!.googleId, false, false);
       }
     };
 
@@ -56,17 +63,23 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
 
       const loupeViewMediaItemId = props.loupeViewMediaItemId;
 
-      const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
-      const nextMediaItemIndex = mediaItemIndex + 1;
-      if (nextMediaItemIndex >= props.mediaItems.length) {
+      const loupeViewMediaItemIndex = props.loupeViewMediaItemIds.indexOf(loupeViewMediaItemId);
+      if (loupeViewMediaItemIndex < 0) {
+        debugger;
+      }
+
+      // const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
+      const nextMediaItemIndex = loupeViewMediaItemIndex + 1;
+      if (nextMediaItemIndex >= props.loupeViewMediaItemIds.length) {
         console.log('at end');
         return;
       } else {
-        const nextMediaItem = props.mediaItems[nextMediaItemIndex];
+        const nextMediaItemId: string = props.loupeViewMediaItemIds[nextMediaItemIndex];
+        const nextMediaItem = props.mediaItems.find((mediaItem: MediaItem) => mediaItem.googleId === nextMediaItemId);
         console.log('nextMediaItem: ' + nextMediaItem);
-        props.onSetLoupeViewMediaItemId(nextMediaItem.googleId);
+        props.onSetLoupeViewMediaItemId(nextMediaItem!.googleId);
         props.onDeselectAllPhotos();
-        props.onSelectPhoto(nextMediaItem.googleId, false, false);
+        props.onSelectPhoto(nextMediaItem!.googleId, false, false);
       }
     };
 
@@ -95,6 +108,7 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
 function mapStateToProps(state: any) {
   return {
     loupeViewMediaItemId: getLoupeViewMediaItemId(state),
+    loupeViewMediaItemIds: getLoupeViewMediaItemIds(state),
     mediaItems: getMediaItems(state),
   };
 }

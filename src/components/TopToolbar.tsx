@@ -18,7 +18,7 @@ import DeselectIcon from '@mui/icons-material/Deselect';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems, getLoupeViewMediaItemIds } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems, getLoupeViewMediaItemIds, getMediaItemIds } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem, selectPhoto } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
@@ -26,7 +26,7 @@ import { sliderContainerXTranslate } from '../constants';
 
 export interface TopToolbarProps {
   mediaItems: MediaItem[];
-  // loupeViewMediaItemIds: string[];
+  mediaItemIds: string[];
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   numGridColumns: number;
@@ -77,7 +77,7 @@ const TopToolbar = (props: TopToolbarProps) => {
       props.onSetPhotoLayout(PhotoLayout.Loupe);
 
       if (props.selectedMediaItemIds.length < 2) {
-        props.onSetLoupeViewMediaItemIds([props.loupeViewMediaItemId]);
+        props.onSetLoupeViewMediaItemIds(props.mediaItemIds);
       } else {
         props.onSetLoupeViewMediaItemIds(props.selectedMediaItemIds);
       }
@@ -361,7 +361,7 @@ function mapStateToProps(state: any) {
 
   return {
     mediaItems: getMediaItems(state),
-    // loupeViewMediaItemIds: getLoupeViewMediaItemIds(state),
+    mediaItemIds: getMediaItemIds(state),
     selectedMediaItemIds,
     loupeViewMediaItemId,
     numGridColumns: getNumGridColumns(state),
