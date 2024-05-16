@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { GridRowData, MediaItem } from '../types';
 import { TedTaggerDispatch } from '../models';
-import { getAppInitialized, getMediaItems, getNumGridColumns } from '../selectors';
+import { getAppInitialized, getMediaItems, getNumGridColumns, getScrollPosition } from '../selectors';
 import GridRow from './GridRow';
 import { getGridRowHeight } from '../utilities';
 import { centerColumnWidth, targetHeights } from '../constants';
@@ -12,6 +12,7 @@ export interface GridViewProps {
   appInitialized: boolean;
   allMediaItems: MediaItem[],
   numGridColumns: number;
+  scrollPosition: number;
 }
 
 const GridView = (props: GridViewProps) => {
@@ -23,6 +24,25 @@ const GridView = (props: GridViewProps) => {
   if (props.allMediaItems.length === 0) {
     return null;
   }
+
+  React.useEffect(() => {
+
+    console.log('GridView React.useEffect for GridViw invoked');
+
+    const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
+    if (divElement) {
+      console.log('set scroll position: ', props.scrollPosition);
+      divElement.scrollTop = props.scrollPosition;
+    } else {
+      console.log('divElement does not exist');
+    }
+
+    return () => {
+      console.log('GridView React.useEffect for removing event listener invoked');
+    };
+  }, []);
+
+
 
   const getGridRowData = (): GridRowData[] => {
 
@@ -75,6 +95,7 @@ function mapStateToProps(state: any, ownProps: any) {
     appInitialized: getAppInitialized(state),
     allMediaItems: getMediaItems(state),
     numGridColumns: getNumGridColumns(state),
+    scrollPosition: getScrollPosition(state),
   };
 }
 
