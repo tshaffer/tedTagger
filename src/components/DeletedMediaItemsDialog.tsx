@@ -9,6 +9,7 @@ import { Dialog, DialogTitle, DialogContent, Box, DialogActions, Button, ListIte
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { MediaItem } from '../types';
 import { removeDeletedMediaItem } from '../controllers';
+import { cloneDeep } from 'lodash';
 
 export interface DeletedMediaItemsDialogPropsFromParent {
   open: boolean;
@@ -33,6 +34,17 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
     onRemoveDeletedMediaItem(googleId);
   };
 
+  const deletedMediaItems = cloneDeep(props.deletedMediaItems);
+  deletedMediaItems.sort((a: MediaItem, b: MediaItem) => {
+    if (a.fileName < b.fileName) {
+      return -1;
+    }
+    if (a.fileName > b.fileName) {
+      return 1;
+    }
+    return 0;
+  });
+
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Deleted Media Items</DialogTitle>
@@ -44,7 +56,7 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
             autoComplete="off"
           >
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {props.deletedMediaItems.map((mediaItem: MediaItem, index: number) => {
+              {deletedMediaItems.map((mediaItem: MediaItem) => {
                 const labelId = `checkbox-list-label-${mediaItem.fileName}`;
                 return (
                   <ListItem
