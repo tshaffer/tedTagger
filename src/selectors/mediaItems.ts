@@ -21,3 +21,7 @@ export const getMediaItemById = (state: TedTaggerState, googleId: string): Media
 export const getDeletedMediaItems = (state: TedTaggerState): MediaItem[] => {
   return state.mediaItemsState.deletedMediaItems;
 };
+
+export const getLoupeViewMediaItemIds = (state: TedTaggerState): string[] => {
+  return state.mediaItemsState.loupeViewMediaItemIds;
+};

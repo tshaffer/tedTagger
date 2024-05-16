@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { IconButton, Slider, Typography } from '@mui/material';
-import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
+import { TedTaggerDispatch, setDisplayMetadata, setLoupeViewMediaItemIdRedux, setLoupeViewMediaItemIds, setNumGridColumnsRedux, setPhotoLayoutRedux, setScrollPositionRedux, setSurveyModeZoomFactorRedux } from '../models';
 import { Tooltip } from '@mui/material';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -18,7 +18,7 @@ import DeselectIcon from '@mui/icons-material/Deselect';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems, getLoupeViewMediaItemIds } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem, selectPhoto } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
@@ -26,6 +26,7 @@ import { sliderContainerXTranslate } from '../constants';
 
 export interface TopToolbarProps {
   mediaItems: MediaItem[];
+  // loupeViewMediaItemIds: string[];
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   numGridColumns: number;
@@ -43,6 +44,7 @@ export interface TopToolbarProps {
   onRedownloadMediaItem: (mediaItemId: string) => any;
   onDeselectAllPhotos: () => void;
   onSelectPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
+  onSetLoupeViewMediaItemIds: (mediaItemIds: string[]) => any;
 }
 
 const TopToolbar = (props: TopToolbarProps) => {
@@ -59,6 +61,9 @@ const TopToolbar = (props: TopToolbarProps) => {
   }
 
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
+    if (photoLayout === props.photoLayout) {
+      return;
+    }
     // capture the scroll position if transitioning out of Grid layout.
     if (props.photoLayout === PhotoLayout.Grid && photoLayout !== PhotoLayout.Grid) {
       const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
@@ -70,6 +75,13 @@ const TopToolbar = (props: TopToolbarProps) => {
     if (photoLayout === PhotoLayout.Loupe) {
       props.onSetLoupeViewMediaItemId(props.loupeViewMediaItemId);
       props.onSetPhotoLayout(PhotoLayout.Loupe);
+
+      if (props.selectedMediaItemIds.length < 2) {
+        props.onSetLoupeViewMediaItemIds([props.loupeViewMediaItemId]);
+      } else {
+        props.onSetLoupeViewMediaItemIds(props.selectedMediaItemIds);
+      }
+
     } else {
       props.onSetPhotoLayout(photoLayout);
     }
@@ -116,7 +128,7 @@ const TopToolbar = (props: TopToolbarProps) => {
       debugger;
     }
     const newMediaItem: MediaItem = props.mediaItems[newMediaItemIndex];
-    
+
     props.onDeselectAllPhotos();
     props.onDeleteMediaItems([props.loupeViewMediaItemId]);
 
@@ -349,6 +361,7 @@ function mapStateToProps(state: any) {
 
   return {
     mediaItems: getMediaItems(state),
+    // loupeViewMediaItemIds: getLoupeViewMediaItemIds(state),
     selectedMediaItemIds,
     loupeViewMediaItemId,
     numGridColumns: getNumGridColumns(state),
@@ -371,6 +384,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onRedownloadMediaItem: redownloadMediaItem,
     onDeselectAllPhotos: deselectAllPhotos,
     onSelectPhoto: selectPhoto,
+    onSetLoupeViewMediaItemIds: setLoupeViewMediaItemIds,
   }, dispatch);
 };
 

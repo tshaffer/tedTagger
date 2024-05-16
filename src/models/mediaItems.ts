@@ -16,6 +16,11 @@ export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
 export const REPLACE_TAG_IN_MEDIA_ITEMS = 'REPLACE_TAG_IN_MEDIA_ITEMS';
 export const DELETE_TAG_FROM_MEDIA_ITEMS = 'DELETE_TAG_FROM_MEDIA_ITEMS';
 
+// loupeViewMediaItemIds
+export const SET_LOUPE_VIEW_MEDIA_ITEM_IDS = 'SET_LOUPE_VIEW_MEDIA_ITEM_IDS';
+// export const ADD_LOUPE_VIEW_MEDIA_ITEM_ID = 'ADD_LOUPE_VIEW_MEDIA_ITEM_ID';
+// export const REMOVE_LOUPE_VIEW_MEDIA_ITEM_ID = 'REMOVE_LOUPE_VIEW_MEDIA_ITEM_ID';
+
 export const ADD_DELETED_MEDIA_ITEMS = 'ADD_DELETED_MEDIA_ITEMS';
 export const REMOVE_DELETED_MEDIA_ITEM = 'REMOVE_DELETED_MEDIA_ITEM';
 
@@ -198,6 +203,20 @@ export const deleteTagFromMediaItemsRedux = (
   };
 };
 
+interface SetLoupeViewMediaItemIdsPayload {
+  mediaItemIds: string[];
+}
+
+export const setLoupeViewMediaItemIds = (
+  mediaItemIds: string[],
+): any => {
+  return {
+    type: SET_LOUPE_VIEW_MEDIA_ITEM_IDS,
+    payload: {
+      mediaItemIds
+    }
+  };
+};
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -206,12 +225,13 @@ const initialState: MediaItemsState =
 {
   mediaItems: [],
   deletedMediaItems: [],
+  loupeViewMediaItemIds: [],
 };
 
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
   // action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload & ReplaceTagInMediaItemsPayload>
-  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload & DeleteMediaItemIdsPayload & RemoveDeletedMediaItemIdPayload>
+  action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload & DeleteMediaItemIdsPayload & RemoveDeletedMediaItemIdPayload & SetLoupeViewMediaItemIdsPayload>
 ): MediaItemsState => {
   switch (action.type) {
     case REPLACE_MEDIA_ITEMS: {
@@ -343,6 +363,12 @@ export const mediaItemsStateReducer = (
     //   console.log(newState);
     //   return newState;
     // }
+    case SET_LOUPE_VIEW_MEDIA_ITEM_IDS: {
+      return {
+        ...state,
+        loupeViewMediaItemIds: action.payload.mediaItemIds
+      };
+    }
     default:
       return state;
   }
