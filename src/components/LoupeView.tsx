@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
 import { TedTaggerDispatch } from '../models';
-// import { getMediaItemById, getMediaItems, getSelectedMediaItemIds } from '../selectors';
 import { getFullScreenMode, getLoupeViewMediaItemId, getMediaItemById } from '../selectors';
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
 import { bodyMargins, footerHeight, toolbarHeight } from '../constants';
+import { Tooltip } from '@mui/material';
 
 export interface LoupeViewProps {
   mediaItem: MediaItem | null;
@@ -46,11 +46,32 @@ const LoupeView = (props: LoupeViewProps) => {
   const maxHeightProperty = maxHeightInPixels.toString() + 'px';
 
   return (
-    <div id='loupeViewImage'>
-      <img
-        style={{ width: '100%', objectFit: 'contain', maxHeight: maxHeightProperty }}
-        src={src}
-      />
+    <div
+      id='loupeViewImage'
+    >
+      <Tooltip
+        title={props.mediaItem.fileName}
+        placement='top'
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: 'offset',
+                options: {
+                  offset: [0, -32],
+                },
+              },
+            ],
+          },
+        }}
+      >
+        <div>
+          <img
+            style={{ width: '100%', objectFit: 'contain', maxHeight: maxHeightProperty }}
+            src={src}
+          />
+        </div>
+      </Tooltip>
     </div>
   );
 };
