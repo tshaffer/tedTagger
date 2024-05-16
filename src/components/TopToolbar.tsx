@@ -18,7 +18,7 @@ import DeselectIcon from '@mui/icons-material/Deselect';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems, getLoupeViewMediaItemIds, getMediaItemIds } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems, getLoupeViewMediaItemIds, getMediaItemIds, getSelectedMediaItems } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem, selectPhoto } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
@@ -27,6 +27,7 @@ import { sliderContainerXTranslate } from '../constants';
 export interface TopToolbarProps {
   mediaItems: MediaItem[];
   mediaItemIds: string[];
+  selectedMediaItems: MediaItem[];
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
   numGridColumns: number;
@@ -217,13 +218,18 @@ const TopToolbar = (props: TopToolbarProps) => {
           </div>
 
         );
-        break;
       }
     }
 
     return null;
   };
 
+  let confirmationDialogMessage = 'Are you sure you want to delete ';
+  if (props.selectedMediaItemIds.length === 1) {
+    confirmationDialogMessage += props.selectedMediaItems[0].fileName + '?';
+  } else {
+    confirmationDialogMessage += 'the selected photos?';
+  }
   return (
     <React.Fragment>
       <div>
@@ -232,7 +238,7 @@ const TopToolbar = (props: TopToolbarProps) => {
           onClose={handleCloseConfirmationDialog}
           onConfirm={handleConfirmDelete}
           title="Confirm Delete"
-          message="Are you sure you want to delete the selected photo(s)?"
+          message={confirmationDialogMessage}
         />
       </div>
       <div>
@@ -366,6 +372,7 @@ function mapStateToProps(state: any) {
     mediaItems: getMediaItems(state),
     mediaItemIds: getMediaItemIds(state),
     selectedMediaItemIds,
+    selectedMediaItems: getSelectedMediaItems(state),
     loupeViewMediaItemId,
     numGridColumns: getNumGridColumns(state),
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
