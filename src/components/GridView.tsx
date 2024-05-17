@@ -50,7 +50,7 @@ const GridView = (props: GridViewProps) => {
 
     const gridRows: GridRowData[] = [];
     let mediaItemIndex = 0;
-    while (mediaItemIndex < props.allMediaItems.length) {
+    while (mediaItemIndex < (props.allMediaItems.length - 1)) {
       const gridRowData: GridRowData = getGridRowHeight(centerColumnWidth, targetHeight, props.allMediaItems, mediaItemIndex, props.allMediaItems.length - 1);
       mediaItemIndex = mediaItemIndex + gridRowData.numMediaItems;
       gridRows.push(gridRowData);
