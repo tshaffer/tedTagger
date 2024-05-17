@@ -1,17 +1,10 @@
-.bottomPanel {
-  height: 64px;
-  width: 100%;
-  background-color: yellowgreen;
-  clear: both;
-}
-
 .gridView {
   max-height: 616px;
 }
 
 .appStyle {
   display: flex;
-  height: 80vh;
+  height: 90vh;
 }
 
 .leftColumnStyle {
