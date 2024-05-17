@@ -119,7 +119,6 @@ const App = (props: AppProps) => {
       <div className='appStyle'>
         {photoDisplay}
       </div>
-      <div className='footerStyle' />
     </div>
 
   );

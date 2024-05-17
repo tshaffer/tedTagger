@@ -14,11 +14,6 @@
   height: 80vh;
 }
 
-.footerStyle {
-  height: 8vh;
-  background-color: violet;
-}
-
 .leftColumnStyle {
   flex: 0 0 256px;
   background-color: pink;
@@ -26,7 +21,7 @@
 
 .centerColumnStyle {
   flex: 1;
-  background-color: lightcoral;
+  background-color: black;
   overflow-y: auto;
 }
 
