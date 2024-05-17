@@ -8,7 +8,7 @@ import { getFullScreenMode, getLoupeViewMediaItemId, getMediaItemById } from '..
 import { MediaItem } from '../types';
 import { getPhotoUrl } from '../utilities';
 import { isNil } from 'lodash';
-import { bodyMargins, footerHeight, toolbarHeight } from '../constants';
+import { bodyMargins, toolbarHeight } from '../constants';
 import { Tooltip } from '@mui/material';
 
 export interface LoupeViewProps {
@@ -42,7 +42,7 @@ const LoupeView = (props: LoupeViewProps) => {
 
   const src = getPhotoUrl(props.mediaItem);
 
-  const maxHeightInPixels = windowDimensions.height - (props.fullScreenMode ? 0 : toolbarHeight + footerHeight + bodyMargins);
+  const maxHeightInPixels = windowDimensions.height - (props.fullScreenMode ? 0 : toolbarHeight + bodyMargins);
   const maxHeightProperty = maxHeightInPixels.toString() + 'px';
 
   return (

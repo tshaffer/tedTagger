@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { bordersSize } from '../constants';
 import { GridRowData, MediaItem } from '../types';
 
@@ -25,7 +26,7 @@ export const getGridRowHeight = (rowWidth: number, targetHeight: number, mediaIt
 
   index = startingMediaItemIndex;
   // HACK - to work around small round off error - not stopping to think about the correct code
-  while (((cumulativeWidth + 5) < rowWidth) && (index <= maxRowIndex)) {
+  while (((cumulativeWidth + 0.25) < rowWidth) && (index <= maxRowIndex)) {
     const mediaItem = mediaItems[index];
     const aspectRatio = mediaItem.width! / mediaItem.height!;
     const width = calculatedHeight * aspectRatio;
@@ -35,10 +36,17 @@ export const getGridRowHeight = (rowWidth: number, targetHeight: number, mediaIt
     index++;
   }
 
+  const tmp = cloneDeep(cellWidths);
+  const overflowCellWidth = tmp.pop();
+  const sumOfCellWidths = tmp.reduce((partialSum, a) => partialSum + a, 0);
+  const totalRowWidth = sumOfCellWidths + (tmp.length * bordersSize);
+
+  console.log(startingMediaItemIndex, totalRowWidth, sumOfCellWidths, overflowCellWidth, sumOfCellWidths + overflowCellWidth! + bordersSize);
+
   return {
     rowHeight: calculatedHeight,
     mediaItemIndex: startingMediaItemIndex,
-    numMediaItems: index - startingMediaItemIndex,
+    numMediaItems: (index - 1) - startingMediaItemIndex,
     cellWidths,
   };
 

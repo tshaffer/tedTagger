@@ -58,18 +58,53 @@ const App = (props: AppProps) => {
       });
   }, []);
 
+  const getLeftColumn = (): JSX.Element => {
+    return (
+      <div className='leftColumnStyle'>
+        <Keywords />
+        <Button onClick={() => setShowSearchSpecDialog(true)}>Set Search Spec</Button>
+        <SearchSpecDialog
+          open={showSearchSpecDialog}
+          onClose={handleCloseSearchSpecDialog}
+        />
+        <Button onClick={() => setShowImportFromTakeoutDialog(true)}>Import from Takeout</Button>
+        <ImportFromTakeoutDialog
+          open={showImportFromTakeoutDialog}
+          onImportFromTakeout={handleImportFromTakeout}
+          onClose={handleCloseImportFromTakeoutDialog}
+        />
+      </div>
+    );
+  };
+
   const getPhotoDisplay = (): JSX.Element => {
     if (props.photoLayout === PhotoLayout.Loupe) {
       return (
-        <LoupeViewController />
+        <React.Fragment>
+          <div id='centerColumn' className='centerColumnStyle'>
+            <LoupeViewController />
+          </div>
+        </React.Fragment>
       );
     } else if (props.photoLayout === PhotoLayout.Survey) {
       return (
-        <SurveyView />
+        <React.Fragment>
+          {getLeftColumn()}
+          <div id='centerColumn' className='centerColumnStyle'>
+            <SurveyView />
+          </div>
+          <div className='rightColumnStyle'>Right Panel</div>
+        </React.Fragment>
       );
     } else {
       return (
-        <GridView />
+        <React.Fragment>
+          {getLeftColumn()}
+          <div id='centerColumn' className='centerColumnStyle'>
+            <GridView />
+          </div>
+          <div className='rightColumnStyle'>Right Panel</div>
+        </React.Fragment>
       );
     }
   };
@@ -82,27 +117,8 @@ const App = (props: AppProps) => {
         <TopToolbar />
       </React.Fragment>
       <div className='appStyle'>
-        <div className='leftColumnStyle'>
-          <Keywords />
-          <Button onClick={() => setShowSearchSpecDialog(true)}>Set Search Spec</Button>
-          <SearchSpecDialog
-            open={showSearchSpecDialog}
-            onClose={handleCloseSearchSpecDialog}
-          />
-          <Button onClick={() => setShowImportFromTakeoutDialog(true)}>Import from Takeout</Button>
-          <ImportFromTakeoutDialog
-            open={showImportFromTakeoutDialog}
-            onImportFromTakeout={handleImportFromTakeout}
-            onClose={handleCloseImportFromTakeoutDialog}
-          />
-        </div>
-        <div id='centerColumn' className='centerColumnStyle'>
-          {photoDisplay}
-        </div>
-        <div className='rightColumnStyle'>Right Panel</div>
-        {/* <div className='bottomPanel'>Bottom Panel</div> */}
+        {photoDisplay}
       </div>
-      <div className='footerStyle' />
     </div>
 
   );
