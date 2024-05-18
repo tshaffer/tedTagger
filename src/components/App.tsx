@@ -89,11 +89,9 @@ const App = (props: AppProps) => {
     } else if (props.photoLayout === PhotoLayout.Survey) {
       return (
         <React.Fragment>
-          {getLeftColumn()}
           <div id='centerColumn' className='centerColumnStyle'>
             <SurveyView />
           </div>
-          <div className='rightColumnStyle'>Right Panel</div>
         </React.Fragment>
       );
     } else {

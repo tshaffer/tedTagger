@@ -17,13 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteSurveyViewImageContainerItem } from '../controllers';
 import ConfirmationDialog from './ConfirmationDialog';
 
-const selectedCardMediaStyle = {
-  objectFit: 'contain',
-  height: '1080px',
-  backgroundColor: 'purple',
-};
-
-const unselectedCardMediaStyle = {
+const cardMediaStyle = {
   objectFit: 'contain',
   height: '1080px',
   backgroundColor: 'purple',
@@ -89,10 +83,7 @@ function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
       break;
   }
 
-  unselectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-  selectedCardMediaStyle.height = cardMediaHeight.toString() + 'px';
-
-  const cardMediaStyle = unselectedCardMediaStyle;
+  cardMediaStyle.height = cardMediaHeight.toString() + 'px';
 
   return (
     <React.Fragment>
