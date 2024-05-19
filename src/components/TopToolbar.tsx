@@ -30,6 +30,7 @@ export interface TopToolbarProps {
   selectedMediaItems: MediaItem[];
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
+  loupeViewMediaItemIds: string[];
   numGridColumns: number;
   surveyModeZoomFactor: number;
   photoLayout: PhotoLayout;
@@ -116,6 +117,36 @@ const TopToolbar = (props: TopToolbarProps) => {
 
   const deleteLoupeViewMediaItem = () => {
 
+    debugger;
+
+    const loupeViewMediaItemId = props.loupeViewMediaItemId;
+
+    const loupeViewMediaItemIndex = props.loupeViewMediaItemIds.indexOf(loupeViewMediaItemId);
+    if (loupeViewMediaItemIndex < 0) {
+      debugger;
+    }
+
+    // handle the case where there is only one media item in the loupe view.
+    if (props.loupeViewMediaItemIds.length === 1) {
+      debugger;
+    }
+
+    let newLoupeViewMediaItemIndex = -1;
+    const prevLoupeViewMediaItemIndex = loupeViewMediaItemIndex - 1;
+    const nextLoupeViewMediaItemIndex = loupeViewMediaItemIndex + 2; // +2 because we are deleting the current media item.
+    if (nextLoupeViewMediaItemIndex < props.loupeViewMediaItemIds.length) {
+      newLoupeViewMediaItemIndex = nextLoupeViewMediaItemIndex;
+    } else if (prevLoupeViewMediaItemIndex >= 0) {
+      newLoupeViewMediaItemIndex = prevLoupeViewMediaItemIndex;
+    } else {
+      debugger;
+    }
+
+    // const nextMediaItemId: string = props.loupeViewMediaItemIds[newLoupeViewMediaItemIndex];
+    // const nextMediaItem = props.mediaItems.find((mediaItem: MediaItem) => mediaItem.googleId === nextMediaItemId);
+    // props.onSetLoupeViewMediaItemId(nextMediaItem!.googleId);
+
+    /*
     const loupeViewMediaItemId = props.loupeViewMediaItemId;
     const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
 
@@ -138,7 +169,7 @@ const TopToolbar = (props: TopToolbarProps) => {
 
     props.onSetLoupeViewMediaItemId(newMediaItem.googleId);
     props.onSelectPhoto(newMediaItem.googleId, false, false);
-
+    */
   };
 
   const handleConfirmDelete = () => {
@@ -374,6 +405,7 @@ function mapStateToProps(state: any) {
     selectedMediaItemIds,
     selectedMediaItems: getSelectedMediaItems(state),
     loupeViewMediaItemId,
+    loupeViewMediaItemIds: getLoupeViewMediaItemIds(state),
     numGridColumns: getNumGridColumns(state),
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     photoLayout: getPhotoLayout(state),
