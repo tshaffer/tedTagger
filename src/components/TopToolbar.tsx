@@ -18,7 +18,7 @@ import DeselectIcon from '@mui/icons-material/Deselect';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 import { MediaItem, PhotoLayout } from '../types';
-import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems, getLoupeViewMediaItemIds, getMediaItemIds, getSelectedMediaItems } from '../selectors';
+import { getSelectedMediaItemIds, getMediaItems, getNumGridColumns, getPhotoLayout, getDisplayMetadata, getSurveyModeZoomFactor, getDeletedMediaItems, getLoupeViewMediaItemIds, getMediaItemIds, getSelectedMediaItems, getLoupeViewMediaItemId } from '../selectors';
 import ConfirmationDialog from './ConfirmationDialog';
 import { deleteMediaItems, deselectAllPhotos, redownloadMediaItem, selectPhoto } from '../controllers';
 import DeletedMediaItemsDialog from './DeletedMediaItemsDialog';
@@ -63,9 +63,12 @@ const TopToolbar = (props: TopToolbarProps) => {
   }
 
   function handleUpdatePhotoLayout(photoLayout: PhotoLayout): void {
+
+    // return if the photo layout is already set to the requested layout.
     if (photoLayout === props.photoLayout) {
       return;
     }
+
     // capture the scroll position if transitioning out of Grid layout.
     if (props.photoLayout === PhotoLayout.Grid && photoLayout !== PhotoLayout.Grid) {
       const divElement = document.getElementById('centerColumn') as HTMLDivElement | null;
@@ -74,15 +77,23 @@ const TopToolbar = (props: TopToolbarProps) => {
         props.onSetScrollPosition(scrollPosition);
       }
     }
-    if (photoLayout === PhotoLayout.Loupe) {
-      props.onSetLoupeViewMediaItemId(props.loupeViewMediaItemId);
-      props.onSetPhotoLayout(PhotoLayout.Loupe);
 
-      if (props.selectedMediaItemIds.length < 2) {
+    // transition to new layout
+    if (photoLayout === PhotoLayout.Loupe) {
+
+      // set loupeViewMediaItemId and loupeViewMediaItemIds based on current selection state
+      if (props.selectedMediaItemIds.length === 0) {    // not a real scenario but just in case.
+        props.onSetLoupeViewMediaItemId(props.mediaItemIds[0]);
+        props.onSetLoupeViewMediaItemIds(props.mediaItemIds);
+      } else if (props.selectedMediaItemIds.length === 1) {
+        props.onSetLoupeViewMediaItemId(props.selectedMediaItemIds[0]);
         props.onSetLoupeViewMediaItemIds(props.mediaItemIds);
       } else {
+        props.onSetLoupeViewMediaItemId(props.selectedMediaItemIds[0]);
         props.onSetLoupeViewMediaItemIds(props.selectedMediaItemIds);
       }
+
+      props.onSetPhotoLayout(PhotoLayout.Loupe);
 
     } else {
       props.onSetPhotoLayout(photoLayout);
@@ -355,25 +366,12 @@ const TopToolbar = (props: TopToolbarProps) => {
 
 function mapStateToProps(state: any) {
 
-  let loupeViewMediaItemId: string = '';
-  const selectedMediaItemIds: string[] = getSelectedMediaItemIds(state);
-  if (selectedMediaItemIds.length > 0) {
-    loupeViewMediaItemId = selectedMediaItemIds[0];
-  } else {
-    const mediaItems: MediaItem[] = getMediaItems(state);
-    if (mediaItems.length === 0) {
-      loupeViewMediaItemId = '';
-    } else {
-      loupeViewMediaItemId = mediaItems[0].googleId;
-    }
-  }
-
   return {
     mediaItems: getMediaItems(state),
     mediaItemIds: getMediaItemIds(state),
-    selectedMediaItemIds,
+    selectedMediaItemIds: getSelectedMediaItemIds(state),
     selectedMediaItems: getSelectedMediaItems(state),
-    loupeViewMediaItemId,
+    loupeViewMediaItemId: getLoupeViewMediaItemId(state),
     numGridColumns: getNumGridColumns(state),
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     photoLayout: getPhotoLayout(state),
