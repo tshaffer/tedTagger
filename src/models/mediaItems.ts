@@ -12,9 +12,6 @@ export const DELETE_MEDIA_ITEMS = 'DELETE_MEDIA_ITEMS';
 export const ADD_KEYWORD_TO_MEDIA_ITEM_IDS = 'ADD_KEYWORD_TO_MEDIA_ITEM_IDS';
 export const REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS = 'REMOVE_KEYWORD_FROM_MEDIA_ITEM_IDS';
 export const ADD_KEYWORD_TO_MEDIA_ITEMS = 'ADD_KEYWORD_TO_MEDIA_ITEMS';
-export const ADD_TAG_TO_MEDIA_ITEMS = 'ADD_TAG_TO_MEDIA_ITEMS';
-export const REPLACE_TAG_IN_MEDIA_ITEMS = 'REPLACE_TAG_IN_MEDIA_ITEMS';
-export const DELETE_TAG_FROM_MEDIA_ITEMS = 'DELETE_TAG_FROM_MEDIA_ITEMS';
 
 export const SET_LOUPE_VIEW_MEDIA_ITEM_IDS = 'SET_LOUPE_VIEW_MEDIA_ITEM_IDS';
 export const REMOVE_LOUPE_VIEW_MEDIA_ITEM_ID = 'REMOVE_LOUPE_VIEW_MEDIA_ITEM_ID';
@@ -144,63 +141,6 @@ export const addKeywordToMediaItemsRedux = (
   };
 };
 
-// interface AddTagToMediaItemsPayload {
-//   mediaItem: MediaItem[];
-//   tagId: string;
-// }
-
-export const addTagToMediaItemsRedux = (
-  mediaItems: MediaItem[],
-  tagId: string,
-): any => {
-  return {
-    type: ADD_TAG_TO_MEDIA_ITEMS,
-    payload: {
-      mediaItems,
-      tagId,
-    }
-  };
-};
-
-// interface ReplaceTagInMediaItemsPayload {
-//   mediaItem: MediaItem[];
-//   existingTagId: string,
-//   newTagId: string,
-// }
-
-export const replaceTagInMediaItemsRedux = (
-  mediaItems: MediaItem[],
-  existingTagId: string,
-  newTagId: string,
-): any => {
-  return {
-    type: REPLACE_TAG_IN_MEDIA_ITEMS,
-    payload: {
-      mediaItems,
-      existingTagId,
-      newTagId,
-    }
-  };
-};
-
-// interface DeleteTagFromMediaItemsPayload {
-//   mediaItems: MediaItem[];
-//   tagId: string;
-// }
-
-export const deleteTagFromMediaItemsRedux = (
-  mediaItems: MediaItem[],
-  tagId: string,
-): any => {
-  return {
-    type: DELETE_TAG_FROM_MEDIA_ITEMS,
-    payload: {
-      mediaItems,
-      tagId,
-    }
-  };
-};
-
 interface SetLoupeViewMediaItemIdsPayload {
   mediaItemIds: string[];
 }
@@ -244,7 +184,6 @@ const initialState: MediaItemsState =
 
 export const mediaItemsStateReducer = (
   state: MediaItemsState = initialState,
-  // action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddTagToMediaItemsPayload & DeleteTagFromMediaItemsPayload & ReplaceTagInMediaItemsPayload>
   action: TedTaggerModelBaseAction<SetMediaItemsPayload & AddKeywordToMediaItemsPayload & AddOrRemoveKeywordToMediaItemIdsPayload & DeleteMediaItemIdsPayload & RemoveDeletedMediaItemIdPayload & SetLoupeViewMediaItemIdsPayload & RemoveLoupViewMediaIdPayload>
 ): MediaItemsState => {
   switch (action.type) {
@@ -337,46 +276,6 @@ export const mediaItemsStateReducer = (
       });
       return newState;
     }
-    // case ADD_TAG_TO_MEDIA_ITEMS: {
-    //   const newState = cloneDeep(state) as MediaItemsState;
-    //   newState.mediaItems.forEach((item) => {
-    //     const matchingInputItem = action.payload.mediaItems.find((inputItem) => inputItem.googleId === item.googleId);
-    //     if (matchingInputItem) {
-    //       const tagIndex = item.tagIds.indexOf(action.payload.tagId);
-    //       if (tagIndex === -1) {
-    //         item.tagIds.push(action.payload.tagId);
-    //       }
-    //     }
-    //   });
-    //   return newState;
-    // }
-    // case REPLACE_TAG_IN_MEDIA_ITEMS: {
-    //   const newState = cloneDeep(state) as MediaItemsState;
-    //   newState.mediaItems.forEach((item) => {
-    //     const matchingInputItem = action.payload.mediaItems.find((inputItem) => inputItem.googleId === item.googleId);
-    //     if (matchingInputItem) {
-    //       const tagIndex = item.tagIds.indexOf(action.payload.existingTagId);
-    //       if (tagIndex >= 0) {
-    //         item.tagIds[tagIndex] = action.payload.newTagId;
-    //       }
-    //     }
-    //   });
-    //   return newState;
-    // }
-    // case DELETE_TAG_FROM_MEDIA_ITEMS: {
-    //   const newState = cloneDeep(state) as MediaItemsState;
-    //   newState.mediaItems.forEach((item) => {
-    //     const matchingInputItem = action.payload.mediaItems.find((inputItem) => inputItem.googleId === item.googleId);
-    //     if (matchingInputItem) {
-    //       const tagIndex = item.tagIds.indexOf(action.payload.tagId);
-    //       if (tagIndex !== -1) {
-    //         item.tagIds.splice(tagIndex, 1);
-    //       }
-    //     }
-    //   }); 
-    //   console.log(newState);
-    //   return newState;
-    // }
     case SET_LOUPE_VIEW_MEDIA_ITEM_IDS: {
       return {
         ...state,
