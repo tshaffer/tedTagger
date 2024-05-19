@@ -30,6 +30,7 @@ export interface TopToolbarProps {
   selectedMediaItems: MediaItem[];
   selectedMediaItemIds: string[];
   loupeViewMediaItemId: string;
+  loupeViewMediaItemIds: string[];
   numGridColumns: number;
   surveyModeZoomFactor: number;
   photoLayout: PhotoLayout;
@@ -128,27 +129,33 @@ const TopToolbar = (props: TopToolbarProps) => {
   const deleteLoupeViewMediaItem = () => {
 
     const loupeViewMediaItemId = props.loupeViewMediaItemId;
-    const mediaItemIndex = props.mediaItems.findIndex((mediaItem: MediaItem) => mediaItem.googleId === loupeViewMediaItemId);
 
-    let newMediaItemIndex = -1;
-    const prevMediaItemIndex = mediaItemIndex - 1;
-    const nextMediaItemIndex = mediaItemIndex + 2; // +2 because we are deleting the current media item.
-    if (nextMediaItemIndex < props.mediaItems.length) {
-      newMediaItemIndex = nextMediaItemIndex;
-    } else if (prevMediaItemIndex >= 0) {
-      newMediaItemIndex = prevMediaItemIndex;
+    const loupeViewMediaItemIndex = props.loupeViewMediaItemIds.indexOf(loupeViewMediaItemId);
+    if (loupeViewMediaItemIndex < 0) {
+      debugger;
+    }
+
+    // handle the case where there is only one media item in the loupe view.
+    if (props.loupeViewMediaItemIds.length === 1) {
+      debugger;
+    }
+
+    let newLoupeViewMediaItemIndex = -1;
+    const prevLoupeViewMediaItemIndex = loupeViewMediaItemIndex - 1;
+    const nextLoupeViewMediaItemIndex = loupeViewMediaItemIndex + 1;
+    if (nextLoupeViewMediaItemIndex < props.loupeViewMediaItemIds.length) {
+      newLoupeViewMediaItemIndex = nextLoupeViewMediaItemIndex;
+    } else if (prevLoupeViewMediaItemIndex >= 0) {
+      newLoupeViewMediaItemIndex = prevLoupeViewMediaItemIndex;
     } else {
       debugger;
     }
-    const newMediaItem: MediaItem = props.mediaItems[newMediaItemIndex];
 
-    props.onDeselectAllPhotos();
+    const newLoupeViewMediaItemId = props.loupeViewMediaItemIds[newLoupeViewMediaItemIndex];
 
     props.onDeleteMediaItems([props.loupeViewMediaItemId]);
     props.onRemoveLoupeViewMediaItemId(props.loupeViewMediaItemId);
-
-    props.onSetLoupeViewMediaItemId(newMediaItem.googleId);
-    props.onSelectPhoto(newMediaItem.googleId, false, false);
+    props.onSetLoupeViewMediaItemId(newLoupeViewMediaItemId);
 
   };
 
@@ -372,6 +379,7 @@ function mapStateToProps(state: any) {
     selectedMediaItemIds: getSelectedMediaItemIds(state),
     selectedMediaItems: getSelectedMediaItems(state),
     loupeViewMediaItemId: getLoupeViewMediaItemId(state),
+    loupeViewMediaItemIds: getLoupeViewMediaItemIds(state),
     numGridColumns: getNumGridColumns(state),
     surveyModeZoomFactor: getSurveyModeZoomFactor(state),
     photoLayout: getPhotoLayout(state),
