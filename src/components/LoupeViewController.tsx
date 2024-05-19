@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { MediaItem } from '../types';
 import LoupeView from './LoupeView';
-import { getLoupeViewMediaItemId, getLoupeViewMediaItemIds, getMediaItems } from '../selectors';
+import { getLoupeViewMediaItemId, getLoupeViewMediaItemIds, getMediaItems, getSelectedMediaItemIds } from '../selectors';
 import { bindActionCreators } from 'redux';
 import { TedTaggerDispatch, setFullScreenMode, setLoupeViewMediaItemIdRedux } from '../models';
 import { deselectAllPhotos, selectPhoto } from '../controllers';
@@ -12,6 +12,7 @@ export interface LoupeViewControllerProps {
   loupeViewMediaItemId: string;
   loupeViewMediaItemIds: string[];
   mediaItems: MediaItem[];
+  selectedMediaItemIds: string[],
   onSetLoupeViewMediaItemId: (id: string) => any;
   onSelectPhoto: (id: string, commandKey: boolean, shiftKey: boolean) => any;
   onDeselectAllPhotos: () => any;
@@ -54,8 +55,10 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
         const previousMediaItemId: string = props.loupeViewMediaItemIds[previousMediaItemIndex];
         const previousMediaItem = props.mediaItems.find((mediaItem: MediaItem) => mediaItem.googleId === previousMediaItemId);
         props.onSetLoupeViewMediaItemId(previousMediaItem!.googleId);
-        props.onDeselectAllPhotos();
-        props.onSelectPhoto(previousMediaItem!.googleId, false, false);
+        if (props.selectedMediaItemIds.length === 1) {
+          props.onDeselectAllPhotos(); // only perform the deselect if there's only a single selected item.
+          props.onSelectPhoto(previousMediaItem!.googleId, false, false);
+        }
       }
     };
 
@@ -78,8 +81,10 @@ const LoupeViewController = (props: LoupeViewControllerProps) => {
         const nextMediaItem = props.mediaItems.find((mediaItem: MediaItem) => mediaItem.googleId === nextMediaItemId);
         console.log('nextMediaItem: ' + nextMediaItem);
         props.onSetLoupeViewMediaItemId(nextMediaItem!.googleId);
-        props.onDeselectAllPhotos();
-        props.onSelectPhoto(nextMediaItem!.googleId, false, false);
+        if (props.selectedMediaItemIds.length === 1) {
+          props.onDeselectAllPhotos(); // only perform the deselect if there's only a single selected item.
+          props.onSelectPhoto(nextMediaItem!.googleId, false, false);
+        }
       }
     };
 
@@ -110,6 +115,7 @@ function mapStateToProps(state: any) {
     loupeViewMediaItemId: getLoupeViewMediaItemId(state),
     loupeViewMediaItemIds: getLoupeViewMediaItemIds(state),
     mediaItems: getMediaItems(state),
+    selectedMediaItemIds: getSelectedMediaItemIds(state),
   };
 }
 

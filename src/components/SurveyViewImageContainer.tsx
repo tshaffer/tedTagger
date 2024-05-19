@@ -47,7 +47,7 @@ function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
 
   const handleSurveyViewImageZoomOut = () => {
     props.onSetMediaItemZoomFactor(props.mediaItem.googleId, props.mediaItemZoomFactor - 0.2);
-  }
+  };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
