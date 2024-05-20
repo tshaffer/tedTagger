@@ -9,7 +9,9 @@ import {
   replaceMediaItems,
   deleteMediaItemsRedux,
   addDeletedMediaItems,
-  removeDeletedMediaItemRedux
+  removeDeletedMediaItemRedux,
+  clearDeletedMediaItemsRedux,
+  setDeletedMediaItems
 } from '../models';
 import {
   serverUrl, apiUrlFragment, ServerMediaItem, MediaItem, TedTaggerState, MatchRule, SearchRule,
@@ -17,6 +19,7 @@ import {
 import { cloneDeep } from 'lodash';
 import {
   getMatchRule,
+  getMediaItemById,
   getSearchRules,
 } from '../selectors';
 import { deselectMediaItems } from './selectMediaItem';
@@ -147,7 +150,9 @@ export const addKeywordToMediaItems = (
 
 export const deleteMediaItems = (mediaItemIds: string[]): any => {
 
-  return (dispatch: TedTaggerDispatch) => {
+  return (dispatch: TedTaggerDispatch, getState: any) => {
+
+    const state = getState();
 
     const path = serverUrl + apiUrlFragment + 'deleteMediaItems';
 
@@ -159,6 +164,17 @@ export const deleteMediaItems = (mediaItemIds: string[]): any => {
     ).then((response) => {
       dispatch(deselectMediaItems(mediaItemIds));
       dispatch(deleteMediaItemsRedux(mediaItemIds));
+
+      // this is very suboptimal
+      const deletedMediaItems: MediaItem[] = [];
+      for (const mediaItemId of mediaItemIds) {
+        const deletedMediaItem: MediaItem | null = getMediaItemById(state, mediaItemId);
+        if (deletedMediaItem) {
+          deletedMediaItems.push(deletedMediaItem);
+        }
+      }
+      dispatch(addDeletedMediaItems(deletedMediaItems));
+      
       return Promise.resolve();
     }).catch((error) => {
       console.log('error');
@@ -181,19 +197,36 @@ export const loadDeletedMediaItems = (): TedTaggerAnyPromiseThunkAction => {
 
         const deletedMediaItems: MediaItem[] = (deletedMediaItemsResponse as any).data;
 
-        dispatch(addDeletedMediaItems(deletedMediaItems));
+        dispatch(setDeletedMediaItems(deletedMediaItems));
 
         return Promise.resolve();
       });
   };
 };
 
+export const clearDeletedMediaItems = (): any => {
+
+  return (dispatch: any) => {
+
+    const path = serverUrl + apiUrlFragment + 'clearDeletedMediaItems';
+
+    return axios.post(
+      path,
+    ).then((response) => {
+      dispatch(clearDeletedMediaItemsRedux());
+      return Promise.resolve();
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      return Promise.reject();
+    });
+  };
+};
+
+
 export const removeDeletedMediaItem = (mediaItemId: string): any => {
 
   return (dispatch: TedTaggerDispatch) => {
-
-    // dispatch(removeDeletedMediaItemRedux(mediaItemId));
-    // return Promise.resolve();
 
     const path = serverUrl + apiUrlFragment + 'removeDeletedMediaItem';
 

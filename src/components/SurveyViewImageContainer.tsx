@@ -35,7 +35,7 @@ export interface SurveyViewImageContainerProps extends SurveyViewImageContainerP
   mediaItemZoomFactor: number;
   onDeleteSurveyViewImageContainerItem: (mediaItemId: string) => any;
   onSetMediaItemZoomFactor: (mediaItemId: string, zoomFactor: number) => any;
-}3
+}
 
 function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
 

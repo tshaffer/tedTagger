@@ -16,7 +16,9 @@ export const ADD_KEYWORD_TO_MEDIA_ITEMS = 'ADD_KEYWORD_TO_MEDIA_ITEMS';
 export const SET_LOUPE_VIEW_MEDIA_ITEM_IDS = 'SET_LOUPE_VIEW_MEDIA_ITEM_IDS';
 export const REMOVE_LOUPE_VIEW_MEDIA_ITEM_ID = 'REMOVE_LOUPE_VIEW_MEDIA_ITEM_ID';
 
+export const SET_DELETED_MEDIA_ITEMS = 'SET_DELETED_MEDIA_ITEMS';
 export const ADD_DELETED_MEDIA_ITEMS = 'ADD_DELETED_MEDIA_ITEMS';
+export const CLEAR_DELETED_MEDIA_ITEMS = 'CLEAR_DELETED_MEDIA_ITEMS';
 export const REMOVE_DELETED_MEDIA_ITEM = 'REMOVE_DELETED_MEDIA_ITEM';
 
 // ------------------------------------
@@ -50,6 +52,17 @@ export const addMediaItems = (
   };
 };
 
+export const setDeletedMediaItems = (
+  mediaItems: MediaItem[],
+): any => {
+  return {
+    type: SET_DELETED_MEDIA_ITEMS,
+    payload: {
+      mediaItems
+    }
+  };
+};
+
 export const addDeletedMediaItems = (
   mediaItems: MediaItem[],
 ): any => {
@@ -73,6 +86,13 @@ export const deleteMediaItemsRedux = (
     payload: {
       mediaItemIds,
     }
+  };
+};
+
+export const clearDeletedMediaItemsRedux = (
+) => {
+  return {
+    type: CLEAR_DELETED_MEDIA_ITEMS,
   };
 };
 
@@ -199,10 +219,22 @@ export const mediaItemsStateReducer = (
         mediaItems: state.mediaItems.concat(action.payload.mediaItems)
       };
     }
+    case SET_DELETED_MEDIA_ITEMS: {
+      return {
+        ...state,
+        deletedMediaItems: action.payload.mediaItems
+      };
+    }
     case ADD_DELETED_MEDIA_ITEMS: {
       return {
         ...state,
         deletedMediaItems: state.deletedMediaItems.concat(action.payload.mediaItems)
+      };
+    }
+    case CLEAR_DELETED_MEDIA_ITEMS: {
+      return {
+        ...state,
+        deletedMediaItems: []
       };
     }
     case REMOVE_DELETED_MEDIA_ITEM: {
