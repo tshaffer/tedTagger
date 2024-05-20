@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 
 import { CardMedia, IconButton } from '@mui/material';
 
+import ScrollContainer, { ScrollEvent } from 'react-indiana-drag-scroll';
+
 import { TedTaggerDispatch, setMediaItemZoomFactor } from '../models';
 import { MediaItem } from '../types';
 
@@ -38,6 +40,8 @@ export interface SurveyViewImageContainerProps extends SurveyViewImageContainerP
 }3
 
 function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
+
+  const container = React.createRef<HTMLElement>();
 
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -84,7 +88,22 @@ function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
         title={photoUrl}
         sx={cardMediaStyle}
       >
-        <div>
+        <ScrollContainer
+          innerRef={container}
+          className="scroll-container"
+          onStartScroll={(event: ScrollEvent) => {
+            console.log('onStartScroll', event);
+          }}
+          onScroll={(event: ScrollEvent) => {
+            console.log('onScroll', event);
+          }}
+          // onClick={(event: MouseEvent) => {
+          //   console.log('onClick', event);
+          // }}
+          onEndScroll={(event: ScrollEvent) => {
+            console.log('onEndScroll', event);
+          }}
+        >
           <SurveyViewImage
             mediaItem={props.mediaItem}
           />
@@ -109,7 +128,7 @@ function SurveyViewImageContainer(props: SurveyViewImageContainerProps) {
               <DeleteIcon />
             </IconButton>
           </div>
-        </div>
+        </ScrollContainer>
       </CardMedia>
     </React.Fragment>
   );
