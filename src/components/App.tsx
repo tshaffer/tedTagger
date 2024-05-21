@@ -107,15 +107,21 @@ const App = (props: AppProps) => {
     }
   };
 
-  const photoDisplay: JSX.Element = getPhotoDisplay();
+  // const photoDisplay: JSX.Element = getPhotoDisplay();
 
   return (
     <div>
       <React.Fragment>
-        <TopToolbar />
+        {/* <TopToolbar /> */}
+        <div>
+          pizza
+        </div>
       </React.Fragment>
       <div className='appStyle'>
-        {photoDisplay}
+        {/* {photoDisplay} */}
+        <div>
+          pizza
+        </div>
       </div>
     </div>
 
