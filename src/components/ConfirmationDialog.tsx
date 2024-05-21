@@ -21,6 +21,8 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   title,
   message,
 }) => {
+
+  return null;
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>

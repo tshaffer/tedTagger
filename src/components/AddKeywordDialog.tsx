@@ -93,6 +93,8 @@ const AddKeywordDialog = (props: AddKeywordDialogProps) => {
 
   const keywordParentNodes: JSX.Element[] = renderKeywordParentNodes();
 
+  return null;
+  
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Add Keyword</DialogTitle>

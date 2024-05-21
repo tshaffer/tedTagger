@@ -396,6 +396,8 @@ const SearchSpecDialog = (props: SearchSpecDialogProps) => {
 
   const rows: JSX.Element[] = renderRows();
 
+  return null;
+  
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Search</DialogTitle>

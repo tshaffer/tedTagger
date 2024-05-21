@@ -103,12 +103,12 @@ const Keywords = (props: KeywordsProps) => {
     return (
       <div>
         <Button onClick={() => setShowAddKeywordDialog(true)}>Add Keyword</Button>
-        <TreeView
+        {/* <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
         >
           {treeViewItems}
-        </TreeView>
+        </TreeView> */}
       </div >
     );
   };

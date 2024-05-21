@@ -51,6 +51,8 @@ const DeletedMediaItemsDialog = (props: DeletedMediaItemsDialogProps) => {
     return 0;
   });
 
+  return null;
+  
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Deleted Media Items</DialogTitle>

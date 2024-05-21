@@ -67,6 +67,8 @@ const ImportFromTakeoutDialog = (props: ImportFromTakeoutDialogProps) => {
 
   const takeoutItems: JSX.Element[] = renderTakeouts();
 
+  return null;
+  
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Import from Takeout</DialogTitle>
