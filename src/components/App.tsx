@@ -57,7 +57,7 @@ const App = (props: AppProps) => {
         return props.onSetAppInitialized();
       });
   }, []);
-
+  
   const getLeftColumn = (): JSX.Element => {
     return (
       <div className='leftColumnStyle'>
@@ -107,21 +107,15 @@ const App = (props: AppProps) => {
     }
   };
 
-  // const photoDisplay: JSX.Element = getPhotoDisplay();
+  const photoDisplay: JSX.Element = getPhotoDisplay();
 
   return (
     <div>
       <React.Fragment>
-        {/* <TopToolbar /> */}
-        <div>
-          pizza
-        </div>
+        <TopToolbar />
       </React.Fragment>
       <div className='appStyle'>
-        {/* {photoDisplay} */}
-        <div>
-          pizza
-        </div>
+        {photoDisplay}
       </div>
     </div>
 
