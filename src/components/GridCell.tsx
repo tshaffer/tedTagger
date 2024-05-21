@@ -127,12 +127,13 @@ const GridCell = (props: GridCellProps) => {
         onClick={handleClicks}
       >
         {metadataJsx}
-        <img
+        poo
+        {/* <img
           src={photoUrl}
           width={widthAttribute}
           height={imgHeightAttribute}
           loading='lazy'
-        />
+        /> */}
       </div>
     </Tooltip>
   );
