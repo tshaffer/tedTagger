@@ -35,7 +35,7 @@ export const importFromTakeout = (takeoutId: string): TedTaggerAnyPromiseThunkAc
     ).then((response) => {
       console.log('importFromTakeoutBody response', response);
       const addedTakeoutData: AddedTakeoutData = response.data;
-      
+
       const addedMediaItems: MediaItem[] = addedTakeoutData.addedMediaItems;
       console.log('addedMediaItems', addedMediaItems);
       dispatch(addMediaItems(addedMediaItems));
@@ -43,7 +43,7 @@ export const importFromTakeout = (takeoutId: string): TedTaggerAnyPromiseThunkAc
       const addedKeywordData: KeywordData | null = addedTakeoutData.addedKeywordData;
       if (!isNil(addedKeywordData)) {
         console.log('mergeKeywordData');
-        dispatch(mergeKeywordData(addedKeywordData));  
+        dispatch(mergeKeywordData(addedKeywordData));
       }
       console.log(getState());
     }).catch((error) => {

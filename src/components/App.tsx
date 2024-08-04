@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout, loadDeletedMediaItems } from '../controllers';
+import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout, loadDeletedMediaItems, loadLocalStorageFolders } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
@@ -23,6 +23,7 @@ export interface AppProps {
   onLoadMediaItems: () => any;
   onLoadDeletedMediaItems: () => any;
   onLoadTakeouts: () => any;
+  onLoadLocalStorages: () => any;
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
   onImportFromTakeout: (id: string) => void;
@@ -49,6 +50,8 @@ const App = (props: AppProps) => {
     props.onLoadKeywordData()
       .then(function () {
         return props.onLoadTakeouts();
+      }).then(function () {
+        return props.onLoadLocalStorages();
       }).then(function () {
         return props.onLoadMediaItems();
       }).then(function () {
@@ -136,6 +139,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadDeletedMediaItems: loadDeletedMediaItems,
     onSetAppInitialized: setAppInitialized,
     onLoadTakeouts: loadTakeouts,
+    onLoadLocalStorages: loadLocalStorageFolders,
     onImportFromTakeout: importFromTakeout,
   }, dispatch);
 };
