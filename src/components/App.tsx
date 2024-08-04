@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import '../styles/TedTagger.css';
-import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout, loadDeletedMediaItems, loadLocalStorageFolders } from '../controllers';
+import { loadMediaItems, loadKeywordData, loadTakeouts, importFromTakeout, loadDeletedMediaItems, loadLocalStorageFolders, importFromLocalStorage } from '../controllers';
 import { TedTaggerDispatch, setAppInitialized } from '../models';
 import { getKeywordRootNodeId, getPhotoLayout } from '../selectors';
 import { Button } from '@mui/material';
@@ -16,6 +16,7 @@ import { PhotoLayout } from '../types';
 import SurveyView from './SurveyView';
 import TopToolbar from './TopToolbar';
 import GridView from './GridView';
+import ImportFromLocalStorageDialog from './ImportFromLocalStorageDialog';
 
 export interface AppProps {
   photoLayout: PhotoLayout;
@@ -27,15 +28,21 @@ export interface AppProps {
   onSetAppInitialized: () => any;
   keywordRootNodeId: string;
   onImportFromTakeout: (id: string) => void;
+  onImportFromLocalStorage: (folder: string) => void;
 }
 
 const App = (props: AppProps) => {
 
   const [showSearchSpecDialog, setShowSearchSpecDialog] = React.useState(false);
   const [showImportFromTakeoutDialog, setShowImportFromTakeoutDialog] = React.useState(false);
+  const [showImportFromLocalStorageDialog, setShowImportFromLocalStorageDialog] = React.useState(false);
 
   const handleImportFromTakeout = (takeoutId: string) => {
     props.onImportFromTakeout(takeoutId);
+  };
+
+  const handleImportFromLocalStorage = (takeoutId: string) => {
+    props.onImportFromLocalStorage(takeoutId);
   };
 
   const handleCloseSearchSpecDialog = () => {
@@ -44,6 +51,10 @@ const App = (props: AppProps) => {
 
   const handleCloseImportFromTakeoutDialog = () => {
     setShowImportFromTakeoutDialog(false);
+  };
+
+  const handleCloseImportFromLocalStorageDialog = () => {
+    setShowImportFromLocalStorageDialog(false);
   };
 
   React.useEffect(() => {
@@ -75,6 +86,12 @@ const App = (props: AppProps) => {
           open={showImportFromTakeoutDialog}
           onImportFromTakeout={handleImportFromTakeout}
           onClose={handleCloseImportFromTakeoutDialog}
+        />
+        <Button onClick={() => setShowImportFromLocalStorageDialog(true)}>Import from Local Storage</Button>
+        <ImportFromLocalStorageDialog
+          open={showImportFromLocalStorageDialog}
+          onImportFromLocalStorage={handleImportFromLocalStorage}
+          onClose={handleCloseImportFromLocalStorageDialog}
         />
       </div>
     );
@@ -141,6 +158,7 @@ const mapDispatchToProps = (dispatch: TedTaggerDispatch) => {
     onLoadTakeouts: loadTakeouts,
     onLoadLocalStorages: loadLocalStorageFolders,
     onImportFromTakeout: importFromTakeout,
+    onImportFromLocalStorage: importFromLocalStorage,
   }, dispatch);
 };
 
