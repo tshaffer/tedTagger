@@ -24,8 +24,37 @@ export const loadLocalStorageFolders = (): TedTaggerAnyPromiseThunkAction => {
 
 export const importFromLocalStorage = (folder: string): TedTaggerAnyPromiseThunkAction => {
   return (dispatch: TedTaggerDispatch, getState: any) => {
+
     console.log('importFromLocalStorage', folder);
-    return Promise.resolve();
+
+    const path = serverUrl + apiUrlFragment + 'importFromLocalStorage';
+
+    const importFromLocalStorageBody = { folder };
+
+    return axios.post(
+      path,
+      importFromLocalStorageBody
+    ).then((response) => {
+      console.log('importFromLocalStorage response', response);
+      // const addedTakeoutData: AddedTakeoutData = response.data;
+
+      // const addedMediaItems: MediaItem[] = addedTakeoutData.addedMediaItems;
+      // console.log('addedMediaItems', addedMediaItems);
+      // dispatch(addMediaItems(addedMediaItems));
+
+      // const addedKeywordData: KeywordData | null = addedTakeoutData.addedKeywordData;
+      // if (!isNil(addedKeywordData)) {
+      //   console.log('mergeKeywordData');
+      //   dispatch(mergeKeywordData(addedKeywordData));
+      // }
+      // console.log(getState());
+      return Promise.resolve();
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+      debugger;
+      return '';
+    });
   };
 };
 //   const path = serverUrl + apiUrlFragment + 'importFromLocalStorage';
