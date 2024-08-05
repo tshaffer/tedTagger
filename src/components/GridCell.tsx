@@ -34,30 +34,72 @@ const GridCell = (props: GridCellProps) => {
 
   const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
 
-  const mediaItem: MediaItem = props.mediaItem;
+  const [imageSrc, setImageSrc] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
 
-  const fetchAndConvertHeic = async (url: string): Promise<string> => {
-    console.log('fetchAndConvertHeic:', url);
+  async function fetchAndConvertHeic(url: string) {
     try {
+      console.log('fetchAndConvertHeic:', url);
       // Fetch the HEIC file from the URL
       const response = await fetch(url);
+      console.log('received response');
       const heicBlob = await response.blob();
 
       // Convert the HEIC file to JPEG
-      const conversionResult: Blob = await heic2any({
+      console.log('invoke heic2any');
+      const conversionResult = await heic2any({
         blob: heicBlob,
         toType: 'image/jpeg',
-      }) as Blob;
+      });
+      console.log('conversionResult:', conversionResult);
 
-      // Create a URL for the converted JPEG file and display it
-      const jpegUrl: string = URL.createObjectURL(conversionResult);
-      return jpegUrl;
-
+      // Return the converted JPEG Blob
+      return conversionResult;
     } catch (error) {
       console.error('Error converting HEIC file:', error);
-      return '';
+      throw error;
     }
-  };
+  }
+
+  const mediaItem: MediaItem = props.mediaItem;
+
+  React.useEffect(() => {
+    const convertAndSetImage = async (heicUrl: string) => {
+      console.log('convertAndSetImage:', heicUrl);
+      try {
+        const jpegBlob = await fetchAndConvertHeic(heicUrl);
+        console.log('fetchAndConvertHeic returned');
+        const jpegUrl: string = URL.createObjectURL(jpegBlob as Blob);
+        console.log(jpegUrl);
+        setImageSrc(jpegUrl);
+      } catch (err: any) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    console.log('useEffect for GridCell:', mediaItem);
+
+    const photoUrl = getPhotoUrl(mediaItem);
+
+    console.log('photoUrl:', photoUrl);
+
+    if (photoUrl.endsWith('.HEIC') &&
+      (photoUrl === '/images/c/8/e3ad9a14-0ac5-4078-b6e5-fb05b683d5c8.HEIC') ||
+      (photoUrl === '/images/f/d/0ec37af4-499b-41aa-a00d-dde84e98c4fd.HEIC')
+    ) {
+      console.log('Converting HEIC to JPEG:', photoUrl);
+      convertAndSetImage(photoUrl);
+      debugger;
+    } else {
+      console.log('Setting imageSrc:', photoUrl);
+      // setImageSrc(photoUrl);
+      setLoading(true);
+    }
+
+  }, [props.mediaItem]);
 
 
   const handleDoubleClick = () => {
@@ -123,15 +165,23 @@ const GridCell = (props: GridCellProps) => {
   const photoUrl = getPhotoUrl(mediaItem);
   console.log('photoUrl:', photoUrl);
 
-  if (photoUrl === '/images/7/4/9b21e907-1f2f-42bf-9ef1-8819ce636574.JPG') {
-    const newUrl = '/images/7/4/IMG_9138.HEIC';
-    fetchAndConvertHeic(newUrl).then((jpegUrl) => {
-      console.log('Converted HEIC to JPEG:', jpegUrl);
-    });
-  }
+  // if (photoUrl === '/images/7/4/9b21e907-1f2f-42bf-9ef1-8819ce636574.JPG') {
+  //   const newUrl = '/images/7/4/IMG_9138.HEIC';
+  //   fetchAndConvertHeic(newUrl).then((jpegUrl) => {
+  //     console.log('Converted HEIC to JPEG:', jpegUrl);
+  //   });
+  // }
 
   let borderAttr: string = borderSizeStr + ' ';
   borderAttr += props.isSelected ? ' solid blue' : ' solid white';
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading image: {(error as any).message}</p>;
+  }
 
   return (
     <Tooltip
@@ -161,7 +211,7 @@ const GridCell = (props: GridCellProps) => {
       >
         {metadataJsx}
         <img
-          src={photoUrl}
+          src={imageSrc as string}
           width={widthAttribute}
           height={imgHeightAttribute}
           loading='lazy'
