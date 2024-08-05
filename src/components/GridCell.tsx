@@ -12,6 +12,7 @@ import { Tooltip, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { selectPhoto } from '../controllers';
 import { borderSizeStr } from '../constants';
+import heic2any from 'heic2any';
 
 export interface GridCellPropsFromParent {
   mediaItemIndex: number;
@@ -34,6 +35,30 @@ const GridCell = (props: GridCellProps) => {
   const [clickTimeout, setClickTimeout] = React.useState<NodeJS.Timeout | null>(null);
 
   const mediaItem: MediaItem = props.mediaItem;
+
+  const fetchAndConvertHeic = async (url: string): Promise<string> => {
+    console.log('fetchAndConvertHeic:', url);
+    try {
+      // Fetch the HEIC file from the URL
+      const response = await fetch(url);
+      const heicBlob = await response.blob();
+
+      // Convert the HEIC file to JPEG
+      const conversionResult: Blob = await heic2any({
+        blob: heicBlob,
+        toType: 'image/jpeg',
+      }) as Blob;
+
+      // Create a URL for the converted JPEG file and display it
+      const jpegUrl: string = URL.createObjectURL(conversionResult);
+      return jpegUrl;
+
+    } catch (error) {
+      console.error('Error converting HEIC file:', error);
+      return '';
+    }
+  };
+
 
   const handleDoubleClick = () => {
     props.onSetLoupeViewMediaItemId(props.mediaItem.googleId);
@@ -96,6 +121,14 @@ const GridCell = (props: GridCellProps) => {
   const metadataJsx: JSX.Element | null = getMetadataJsx();
 
   const photoUrl = getPhotoUrl(mediaItem);
+  console.log('photoUrl:', photoUrl);
+
+  if (photoUrl === '/images/7/4/9b21e907-1f2f-42bf-9ef1-8819ce636574.JPG') {
+    const newUrl = '/images/7/4/IMG_9138.HEIC';
+    fetchAndConvertHeic(newUrl).then((jpegUrl) => {
+      console.log('Converted HEIC to JPEG:', jpegUrl);
+    });
+  }
 
   let borderAttr: string = borderSizeStr + ' ';
   borderAttr += props.isSelected ? ' solid blue' : ' solid white';
