@@ -86,13 +86,13 @@ const GridCell = (props: GridCellProps) => {
 
     console.log('photoUrl:', photoUrl);
 
-    if (photoUrl.endsWith('.HEIC') &&
-      (photoUrl === '/images/c/8/e3ad9a14-0ac5-4078-b6e5-fb05b683d5c8.HEIC') ||
-      (photoUrl === '/images/f/d/0ec37af4-499b-41aa-a00d-dde84e98c4fd.HEIC')
+    if (photoUrl.endsWith('.HEIC')
+      //  &&
+      // (photoUrl === '/images/c/8/e3ad9a14-0ac5-4078-b6e5-fb05b683d5c8.HEIC') ||
+      // (photoUrl === '/images/f/d/0ec37af4-499b-41aa-a00d-dde84e98c4fd.HEIC')
     ) {
       console.log('Converting HEIC to JPEG:', photoUrl);
       convertAndSetImage(photoUrl);
-      debugger;
     } else {
       console.log('Setting imageSrc:', photoUrl);
       // setImageSrc(photoUrl);
@@ -164,13 +164,6 @@ const GridCell = (props: GridCellProps) => {
 
   const photoUrl = getPhotoUrl(mediaItem);
   console.log('photoUrl:', photoUrl);
-
-  // if (photoUrl === '/images/7/4/9b21e907-1f2f-42bf-9ef1-8819ce636574.JPG') {
-  //   const newUrl = '/images/7/4/IMG_9138.HEIC';
-  //   fetchAndConvertHeic(newUrl).then((jpegUrl) => {
-  //     console.log('Converted HEIC to JPEG:', jpegUrl);
-  //   });
-  // }
 
   let borderAttr: string = borderSizeStr + ' ';
   borderAttr += props.isSelected ? ' solid blue' : ' solid white';
