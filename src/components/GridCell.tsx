@@ -67,7 +67,7 @@ const GridCell = (props: GridCellProps) => {
     }
 
     const creationDate: Dayjs = dayjs(mediaItem.creationTime!);
-    const formattedCreationDate: string = creationDate.format('MM/DD/YYYY hh:MM A');
+    const formattedCreationDate: string = creationDate.format('MM/DD/YYYY hh:mm A');
     const keywords: string = props.keywordLabels.join(', ');
 
     return (
