@@ -4,6 +4,8 @@ import { GridRowData, MediaItem } from '../types';
 
 export const getGridRowHeight = (rowWidth: number, targetHeight: number, mediaItems: MediaItem[], startingMediaItemIndex: number, maxRowIndex: number): GridRowData => {
 
+  debugger;
+
   const cellWidths: number[] = [];
 
   let previousCumulativeWidth = 0;
@@ -19,7 +21,13 @@ export const getGridRowHeight = (rowWidth: number, targetHeight: number, mediaIt
     index++;
   }
 
-  const widthUnderflow = previousCumulativeWidth / rowWidth;
+  // calculate the available rowWidth minus the space used by margins
+  // the number of margins used here is the number of cells in the row + 1, as another cell may get added
+  rowWidth = rowWidth - (bordersSize * (index - startingMediaItemIndex));
+  const widthUnderflow = (previousCumulativeWidth - (bordersSize * (index - 1))) / rowWidth;
+  
+  // const widthUnderflow = previousCumulativeWidth / rowWidth;
+
   const calculatedHeight = targetHeight / widthUnderflow;
 
   cumulativeWidth = 0;
