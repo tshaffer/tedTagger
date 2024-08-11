@@ -17,14 +17,6 @@ export interface GridViewProps {
 
 const GridView = (props: GridViewProps) => {
 
-  if (!props.appInitialized) {
-    return null;
-  }
-
-  if (props.allMediaItems.length === 0) {
-    return null;
-  }
-
   React.useEffect(() => {
 
     console.log('GridView React.useEffect for GridViw invoked');
@@ -41,7 +33,6 @@ const GridView = (props: GridViewProps) => {
       console.log('GridView React.useEffect for removing event listener invoked');
     };
   }, []);
-
 
 
   const getGridRowData = (): GridRowData[] => {
@@ -79,6 +70,14 @@ const GridView = (props: GridViewProps) => {
 
     return renderedGridRows;
   };
+
+  if (!props.appInitialized) {
+    return null;
+  }
+
+  if (props.allMediaItems.length === 0) {
+    return null;
+  }
 
   const gridRows: GridRowData[] = getGridRowData();
   const renderedGridRows = renderGridRows(gridRows);

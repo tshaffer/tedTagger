@@ -12,7 +12,6 @@ export const loadLocalStorageFolders = (): TedTaggerAnyPromiseThunkAction => {
       .then((response: any) => {
         const folders: string[] = response.data;
         dispatch(addLocalStorages(folders));
-        console.log(folders);
         return Promise.resolve();
       }).catch((error) => {
         console.log('error');
